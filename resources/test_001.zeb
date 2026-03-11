@@ -1,0 +1,4 @@
+
+class Count {
+     val x: Int = a * (b * ((c + d / e) + f) % k)
+}

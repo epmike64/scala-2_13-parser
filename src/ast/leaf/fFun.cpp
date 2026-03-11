@@ -1,0 +1,26 @@
+#include "ast/leaf/fFun.hpp"
+#include "ast/node/fAstNodVisitor.hpp"
+
+#include <string>
+
+namespace zebra::ast::leaf {
+
+	fFun::fFun(sp<fModifiers> &&modifiers) : modifiers_(std::move(modifiers)) {
+		if (this->modifiers_ == nullptr) {
+			throw std::invalid_argument("Modifiers cannot be null");
+		}
+	}
+
+	sp<fModifiers> fFun::getModifiers() const {
+		return modifiers_;
+	}
+
+
+	void fFun::accept(std::shared_ptr<fAstNodVisitor> visitor) {
+		visitor->visit(std::static_pointer_cast<fFun>(shared_from_this()));
+	}
+
+	std::string fFun::toString() const {
+		return "AccessModifier()";
+	}
+}

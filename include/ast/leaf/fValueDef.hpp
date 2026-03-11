@@ -1,0 +1,20 @@
+#pragma once
+#include <vector>
+
+#include "ast/node/fAstProdSubTreeN.hpp"
+#include "util/fCommon.hpp"
+#include "fType.hpp"
+#include "fValue.hpp"
+
+namespace zebra::ast::leaf {
+	using namespace zebra::ast::node;
+
+	class fValueDef : public fValue {
+	public:
+		fValueDef(sp<fModifiers>&& modifiers) ;
+
+		void accept(std::shared_ptr<fAstNodVisitor> visitor) override;
+		std::string toString() const override;
+
+	};
+}

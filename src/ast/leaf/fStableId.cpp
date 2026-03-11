@@ -1,0 +1,92 @@
+#include "ast/leaf/fStableId.hpp"
+
+#include <string>
+
+namespace zebra::ast::leaf {
+
+	fTPair::fTPair(const fToken *id, const fTKnd *const kind)
+			: id_(id), kind_(kind) {
+		assert(id_ != nullptr);
+	}
+
+	fTKnd *fTPair::getKnd() const {
+		return const_cast<fTKnd *>(kind_);
+	}
+
+	std::string fTPair::toString() const {
+		return id_->toString() + ":" + kind_->toString();
+	}
+
+	fStableId::fStableId(bool isPath) : isPath_(isPath) {}
+
+	void fStableId::addTId(const fToken *tId) {
+		tpairs_.push_back(ms<fTPair>(tId, fTKnd::T_ID));
+	}
+
+	std::vector<sp<fTPair>>&  fStableId::getTPairs() {
+		return tpairs_;
+	}
+
+	bool  fStableId::isPath() const {
+		return isPath_;
+	}
+
+	void  fStableId::setIsKwType(bool isKwType) {
+		isKwType_ = isKwType;
+	}
+
+	bool  fStableId::isKwType() const {
+		return isKwType_;
+	}
+
+	void fStableId::addSuper(const fToken* s) {
+		assert(s->getTKind() == fTKnd::T_SUPER);
+		tpairs_.push_back(ms<fTPair>(s, fTKnd::T_SUPER));
+	}
+
+	void fStableId::addThis(const fToken* t) {
+		assert(t->getTKind() == fTKnd::T_THIS);
+		tpairs_.push_back(ms<fTPair>(t, fTKnd::T_THIS));
+	}
+
+	void fStableId::addClassQualifier(const fToken* tId) {
+		tpairs_.push_back(ms<fTPair>(tId, fTKnd::T_CLASS_QUALIFIER));
+	}
+
+	fTKnd *fStableId::getLastTKind() {
+	  if (tpairs_.empty()) {
+	    return nullptr;
+	  }
+	  return tpairs_.operator[](tpairs_.size() - 1)->getKnd();
+	}
+
+
+	void  fStableId::accept(std::shared_ptr<fAstNodVisitor> visitor)  {
+		visitor->visit(std::static_pointer_cast<fStableId>(shared_from_this()));
+	}
+
+	std::string fStableId::toString() const {
+
+		if (tpairs_.empty()) {
+			return "";
+		}
+
+		std::string result;
+		std::string sep = isPath_ ? "." : "#";
+		if (isKwType_) {
+			sep += "type ";
+		} else {
+			sep += "term ";
+		}
+
+		for (const auto& tp : tpairs_) {
+			if (!result.empty()) {
+				result += sep;
+			}
+			result += tp->toString();
+		}
+
+		return result;
+	}
+
+}
