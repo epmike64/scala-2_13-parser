@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 4.1)
-project(zebra_3)
+project(zebra-4-backend)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -9,7 +9,7 @@ include_directories(
 
 
 
-add_executable(zebra_3
+add_executable(zebra-4-backend
 
 		src/zebra_main.cpp
 
@@ -173,6 +173,6 @@ add_executable(zebra_3
 
 )
 
-target_compile_definitions(zebra_3 PRIVATE
+target_compile_definitions(zebra-4-backend PRIVATE
 		PROJECT_ROOT="${CMAKE_SOURCE_DIR}"
 )

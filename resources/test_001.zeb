@@ -1,4 +1,4 @@
 
 class Count {
-     val x: Int = a * (b * ((c + d / e) + f) % k)
+     val x: Int = 3 * (5 * ((7 + 10 / e) + f) % k)
 }

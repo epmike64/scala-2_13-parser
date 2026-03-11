@@ -26,6 +26,7 @@ namespace zebra::ast::leaf {
 			return _kind;
 		}
 
+		void accept(std::shared_ptr<fAstNodVisitor> visitor) override;
 		std::string toString() const override;
 
 	};
