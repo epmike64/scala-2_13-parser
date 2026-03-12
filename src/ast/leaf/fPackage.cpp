@@ -25,6 +25,15 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fPackage::toString() const {
-		return "AccessModifier()";
+		std::stringstream ss;
+		ss << "Package(";
+		for (std::size_t i = 0; i < this->_ids.size(); i++) {
+			ss << this->_ids[i]->toString();
+			if (i < this->_ids.size() - 1) {
+				ss << ".";
+			}
+		}
+		ss << ")";
+		return ss.str();
 	}
 }
