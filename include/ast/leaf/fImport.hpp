@@ -21,19 +21,23 @@ namespace zebra::ast::leaf {
 		const fToken *getTo()  const {
 			return to;
 		}
+
+		std::string toString() const ;
 	};
 
 	class fImportExpr {
-		const sp<fStableId> id;
-		std::vector<sp<fImportSelector>> selectors;
+		const sp<fStableId> sid_;
+		std::vector<sp<fImportSelector>> selectors_;
 	public:
-		fImportExpr(sp<fStableId> &&id) ;
+		fImportExpr(sp<fStableId> &&sid) ;
 
 		void setSelectors(std::vector<sp<fImportSelector>> &&selectors) ;
 
 		sp<fStableId> getId() const ;
 
 		std::vector<sp<fImportSelector>> getSelectors() ;
+
+		std::string toString() const ;
 	};
 
 	class fImport : public fAstOprndNod {

@@ -5,11 +5,11 @@
 
 namespace zebra::ast::leaf {
 
-	fPackage::fPackage(std::vector<const fToken*> &&ids) : _ids(std::move(ids)) {
-		if (this->_ids.empty()) {
+	fPackage::fPackage(std::vector<const fToken*> &&ids) : ids_(std::move(ids)) {
+		if (this->ids_.empty()) {
 			throw std::invalid_argument("Package identifiers cannot be empty");
 		}
-		for (const fToken* id : this->_ids) {
+		for (const fToken* id : this->ids_) {
 			if (id == nullptr) {
 				throw std::invalid_argument("Package identifier cannot be null");
 			}
@@ -17,7 +17,7 @@ namespace zebra::ast::leaf {
 	}
 
 	std::vector<const fToken*> fPackage::getIds() const {
-		return _ids;
+		return ids_;
 	}
 
 	void fPackage::accept(std::shared_ptr<fAstNodVisitor> visitor) {
@@ -27,9 +27,9 @@ namespace zebra::ast::leaf {
 	std::string fPackage::toString() const {
 		std::stringstream ss;
 		ss << "Package(";
-		for (std::size_t i = 0; i < this->_ids.size(); i++) {
-			ss << this->_ids[i]->toString();
-			if (i < this->_ids.size() - 1) {
+		for (std::size_t i = 0; i < this->ids_.size(); i++) {
+			ss << this->ids_[i]->toString();
+			if (i < this->ids_.size() - 1) {
 				ss << ".";
 			}
 		}

@@ -10,7 +10,7 @@ namespace zebra::ast::leaf {
 	using namespace ast::node;
 
 	class fPackage : public fAstOprndNod {
-		const std::vector<const fToken*> _ids;
+		const std::vector<const fToken*> ids_;
 		public:
 			fPackage(std::vector<const fToken*> &&ids) ;
 
