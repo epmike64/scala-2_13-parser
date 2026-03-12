@@ -8,7 +8,7 @@
 #include <fstream>
 #include <iterator>
 
-#include "ast/node/fLangAstVisitor.hpp"
+#include "ast/tree/fLangAstVisitor.hpp"
 #include "lex/fTokzr.hpp"
 #include "lex/fReader.hpp"
 #include "lex/fLexerImpl.hpp"

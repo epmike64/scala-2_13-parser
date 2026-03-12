@@ -3,14 +3,14 @@
 
 #include <iostream>
 
-#include "fAstNod.hpp"
-#include "fAstNodKndE.hpp"
+#include "../node/fAstNod.hpp"
+#include "../node/fAstNodKndE.hpp"
 
 #include <memory>
 #include <stdexcept>
 #include <typeinfo>
 
-#include "fAstNodVisitor.hpp"
+#include "../node/fAstNodVisitor.hpp"
 #include "ast/leaf/fCompileUnit.hpp"
 #include "ast/leaf/fClassDef.hpp"
 #include "ast/leaf/fIf.hpp"
