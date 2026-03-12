@@ -214,6 +214,8 @@ namespace zebra::lex {
                 return tokBuf_.addToken(fToken(tKnd_, pos_, endPos_, tokStrVal_));
             case fTTagE::NUMERIC:
                 return tokBuf_.addToken(fNumToken(tKnd_, pos_, endPos_, tokStrVal_, radix_));
+            case fTTagE::UNDERSCORE:
+                return tokBuf_.addToken(fToken(tKnd_, pos_, endPos_, tokStrVal_));
             default:
                 throw std::runtime_error("Unknown token tag");
         }

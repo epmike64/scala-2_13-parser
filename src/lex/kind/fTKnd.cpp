@@ -95,7 +95,7 @@ namespace zebra::lex::kind {
 	const fTKnd *const fTKnd::T_GTE = createInstance(">=", fTTagE::OPERATOR, T_GTE_E);
 	const fTKnd *const fTKnd::T_CARET = createInstance("^", fTTagE::OPERATOR, T_CARET_E);
 	const fTKnd *const fTKnd::T_QUESTION = createInstance("?", fTTagE::OPERATOR, T_QUESTION_E);
-	const fTKnd *const fTKnd::T_UNDERSCORE = createInstance("_", fTTagE::OPERATOR, T_UNDERSCORE_E);
+	const fTKnd *const fTKnd::T_UNDERSCORE = createInstance("_", fTTagE::UNDERSCORE, T_UNDERSCORE_E);
 	const fTKnd *const fTKnd::T_FAT_ARROW = createInstance("=>", fTTagE::OPERATOR, T_FAT_ARROW_E);
 	const fTKnd *const fTKnd::T_IN = createInstance("<-", fTTagE::OPERATOR, T_IN_E);
 	const fTKnd *const fTKnd::T_DOT = createInstance(".", fTTagE::OPERATOR, T_DOT_E);

@@ -2,7 +2,7 @@
 
 namespace zebra::lex::kind {
 	enum class fTTagE {
-		NAME_VAL,  STRING, NUMERIC, KEYWORD, OPERATOR, INTERN
+		NAME_VAL,  STRING, NUMERIC, KEYWORD, OPERATOR, INTERN,UNDERSCORE
 	};
 
 	constexpr const char* fTTagE_Tostring(fTTagE tag) {
@@ -13,6 +13,7 @@ namespace zebra::lex::kind {
 			case fTTagE::KEYWORD:  return "KEYWORD";
 			case fTTagE::OPERATOR:  return "OPERATOR";
 			case fTTagE::INTERN:  return "INTERN";
+			case fTTagE::UNDERSCORE:  return "UNDERSCORE";
 		}
 	}
 }
