@@ -336,14 +336,18 @@ namespace zebra::ast::node {
 
 	void fLangAstVisitor::visit(sp<fParamType> n ) {
 		std::cout << "Visiting Parameter Type" << std::endl;
-		n->getType()->accept(shared_from_this());
+		if (n->getType()) {
+			n->getType()->accept(shared_from_this());
+		}
 	}
 
 	void fLangAstVisitor::visit(sp<fParamTypes> n ) {
 		std::cout << "Visiting Parameter Types" << std::endl;
 
-		for (auto ptp : *n->getParamTypes().get()) {
-			ptp->accept(shared_from_this());
+		if (n->getParamTypes()) {
+			for (auto ptp : *n->getParamTypes().get()) {
+				ptp->accept(shared_from_this());
+			}
 		}
 	}
 
@@ -383,7 +387,9 @@ namespace zebra::ast::node {
 
 	void fLangAstVisitor::visit(sp<fThrow> n) {
 		std::cout << "Visiting Throw" << std::endl;
-		n->getThrowExpr()->accept(shared_from_this());
+		if (n->getThrowExpr()) {
+			n->getThrowExpr()->accept(shared_from_this());
+		}
 	}
 
 	void fLangAstVisitor::visit(sp<fTraitDef> n) {
