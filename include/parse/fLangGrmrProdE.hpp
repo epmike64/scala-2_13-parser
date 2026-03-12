@@ -22,6 +22,8 @@ namespace zebra::parse {
 		PATTERNS,
 		PATTERN,
 		PATTERN_1,
+		PATTERN_2,
+		PATTERN_3,
 		BLOCK,
 		COMPILATION_UNIT,
 		POSTFIX_EXPR
@@ -47,6 +49,8 @@ namespace zebra::parse {
 			case fLangGrmrProdE::PATTERNS: return "PATTERNS";
 			case fLangGrmrProdE::PATTERN: return "PATTERN";
 			case fLangGrmrProdE::PATTERN_1: return "PATTERN_1";
+			case fLangGrmrProdE::PATTERN_2: return "PATTERN_2";
+			case fLangGrmrProdE::PATTERN_3: return "PATTERN_3";
 			case fLangGrmrProdE::BLOCK: return "BLOCK";
 			case fLangGrmrProdE::COMPILATION_UNIT: return "COMPILATION_UNIT";
 			case fLangGrmrProdE::POSTFIX_EXPR: return "POSTFIX_EXPR";

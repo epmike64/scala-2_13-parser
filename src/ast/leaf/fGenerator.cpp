@@ -69,6 +69,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fGenerator::toString() const {
-		return "AccessModifier()";
+		return "fGenerator()";
 	}
 }

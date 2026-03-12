@@ -12,6 +12,8 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fValueDecl::toString() const {
-		return "fValueDecl";
+		std::ostringstream oss;
+		oss << "fValueDecl(" + fValueDecl::toString() + ")";
+		return oss.str();
 	}
 }

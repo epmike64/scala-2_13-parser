@@ -1098,7 +1098,7 @@ namespace zebra::parse {
 			case fTKnd::T_TRUE_E: case fTKnd::T_FALSE_E: case fTKnd::T_NULL_E:
 			case fTKnd::T_THIS_E: case fTKnd::T_SUPER_E: case fTKnd::T_LPAREN_E: {
 				a->setRight(pattern3());
-				return ms<fAstProdSubTreeN>(fLangGrmrProdE::SUBTREE, std::move(a->astRootOpr()));
+				return ms<fAstProdSubTreeN>(fLangGrmrProdE::PATTERN_2, std::move(a->astRootOpr()));
 			}
 			default:
 				throw std::runtime_error("Pattern in unexpected place: " + h.getToken()->toString());
@@ -1165,7 +1165,7 @@ namespace zebra::parse {
 			}
 		}
 		whl_bottom:
-		return ms<fAstProdSubTreeN>(fLangGrmrProdE::SUBTREE, std::move(a->astRootOpr()));
+		return ms<fAstProdSubTreeN>(fLangGrmrProdE::PATTERN_3, std::move(a->astRootOpr()));
 	}
 
 	void fParser::pattern3Id(sp<fAst> a) {
@@ -1663,7 +1663,7 @@ namespace zebra::parse {
 		parents->setConstr(classConstr(isTrait));
 		while (h.isTkWith()) {
 			h.next();
-			parents->addWithType(simpleType());
+			parents->setWithType(simpleType());
 		}
 		return parents;
 	}

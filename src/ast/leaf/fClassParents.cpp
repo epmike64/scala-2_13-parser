@@ -12,18 +12,18 @@ namespace zebra::ast::leaf {
 		this->constr_ = std::move(constr);
 	}
 
-	void fClassParents::addWithType(sp<fParamType> &&withType) {
+	void fClassParents::setWithType(sp<fParamType> &&withType) {
 		if (withType == nullptr) {
 			throw std::invalid_argument("With type cannot be null");
 		}
-		this->withTypes_.push_back(std::move(withType));
+		this->withTypes_ = std::move(withType);
 	}
 
 	sp<fClassConstr> fClassParents::getConstr() const {
 		return constr_;
 	}
 
-	std::vector<sp<fParamType>> fClassParents::getWithTypes() const {
+	sp<fParamType> fClassParents::getWithTypes() const {
 		return withTypes_;
 	}
 

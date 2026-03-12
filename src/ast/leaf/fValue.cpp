@@ -3,6 +3,9 @@
 
 #include <string>
 
+#include "ast/leaf/fModifiers.hpp"
+#include "ast/leaf/fType.hpp"
+
 namespace zebra::ast::leaf {
 
 	fValue::fValue(sp<fModifiers> &&modifiers) : modifiers_(std::move(modifiers)) {
@@ -42,6 +45,17 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fValue::toString() const {
-		return "AccessModifier()";
+		std::ostringstream oss;
+		if (modifiers_) {
+			oss << "modifiers: " << modifiers_->toString() << ", ";
+		}
+		oss << "var|val name is given as vector<AstProdSubTreeN>";
+		if (type_) {
+			oss << ", type: " << type_->toString();
+		}
+		if (assignExpr_) {
+			oss << ", assignExpr: " << assignExpr_->toString();
+		}
+		return oss.str();
 	}
 }

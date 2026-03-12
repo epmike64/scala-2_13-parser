@@ -41,6 +41,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fFor::toString() const {
-		return "AccessModifier()";
+		return "fFor()";
 	}
 }

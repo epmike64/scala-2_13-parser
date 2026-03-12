@@ -20,6 +20,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fCaseClauses::toString() const {
-		return "AccessModifier()";
+		return "fCaseClauses()";
 	}
 }

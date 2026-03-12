@@ -11,18 +11,18 @@ namespace zebra::ast::leaf {
 
 	class fClassParents: public fAstOprndNod {
 		sp<fClassConstr> constr_;
-		std::vector<sp<fParamType>> withTypes_;
+		sp<fParamType> withTypes_;
 	public:
 
 		fClassParents() = default;
 
 		 void setConstr(sp<fClassConstr> &&constr) ;
 
-		 void addWithType(sp<fParamType> &&withType);
+		 void setWithType(sp<fParamType> &&withType);
 
 		 sp<fClassConstr> getConstr() const;
 
-		 std::vector<sp<fParamType>> getWithTypes() const;
+		 sp<fParamType> getWithTypes() const;
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor) override;
 		std::string toString() const override;

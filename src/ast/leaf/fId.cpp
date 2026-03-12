@@ -10,6 +10,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fId::toString() const {
-		return "AccessModifier()";
+		return "id(" + _id->toString() + ")";
 	}
 }

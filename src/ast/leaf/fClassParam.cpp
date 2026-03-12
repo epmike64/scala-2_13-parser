@@ -55,6 +55,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fClassParam::toString() const {
-		return "AccessModifier()";
+		return "fClassParam()";
 	}
 }

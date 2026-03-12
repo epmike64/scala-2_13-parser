@@ -28,6 +28,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fClassConstr::toString() const {
-		return "AccessModifier()";
+		return "fClassConstr()";
 	}
 }

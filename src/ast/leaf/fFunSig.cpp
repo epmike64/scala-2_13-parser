@@ -39,6 +39,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fFunSig::toString() const {
-		return "AccessModifier()";
+		return "fFunSig()";
 	}
 }

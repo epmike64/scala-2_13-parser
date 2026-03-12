@@ -33,6 +33,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fConstrBlock::toString() const {
-		return "AccessModifier()";
+		return "fConstrBlock";
 	}
 }

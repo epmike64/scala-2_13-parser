@@ -21,6 +21,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fClassTemplate::toString() const {
-		return "AccessModifier()";
+		return "fClassTemplate()";
 	}
 }

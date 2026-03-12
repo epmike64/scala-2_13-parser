@@ -80,9 +80,15 @@ namespace zebra::ast::node {
 		std::cout << node->toString() << std::endl;
 	}
 
-	void  fLangAstVisitor::visit(sp<leaf::fValueDef> node)  {
-		std::cout << "Visiting Value Decl: " << node->toString() << std::endl;
-		 sp<fAstProdSubTreeN> assignExpr = node->getAssignExpr();
+	void  fLangAstVisitor::visit(sp<fValueDef> n)  {
+		std::cout << "Visiting Value Decl: " << n->toString() << std::endl;
+
+		for (size_t i = 0; i < n->getNames().size(); i++) {
+			std::cout << "Visiting name " << i << " of value declaration" << std::endl;
+			n->getNames()[i]->accept(shared_from_this());
+		}
+
+		sp<fAstProdSubTreeN> assignExpr = n->getAssignExpr();
 		if (assignExpr != nullptr) {
 			std::cout << "Visiting assignment expression for value declaration" << std::endl;
 			assignExpr->accept(shared_from_this());
@@ -168,10 +174,11 @@ namespace zebra::ast::node {
 
 	void fLangAstVisitor::visit(sp<fClassParents> n) {
 		std::cout << "Visiting Class Parents" << std::endl;
-		auto constr = n->getConstr();
-		if (constr) {
-			std::cout << "Visiting Class Constructor in Class Parents" << std::endl;
-			constr->accept(shared_from_this());
+		if (n->getConstr()) {
+			n->getConstr()->accept(shared_from_this());
+		}
+		if (n->getWithTypes()) {
+			n->getWithTypes()->accept(shared_from_this());
 		}
 	}
 
