@@ -67,26 +67,16 @@ namespace zebra::ast::leaf {
 
 	std::string fStableId::toString() const {
 
-		if (tpairs_.empty()) {
-			return "";
-		}
-
-		std::string result;
-		std::string sep = isPath_ ? "." : "#";
-		if (isKwType_) {
-			sep += "type ";
-		} else {
-			sep += "term ";
-		}
-
-		for (const auto& tp : tpairs_) {
-			if (!result.empty()) {
-				result += sep;
+		std::stringstream ss;
+		ss << "StableId(";
+		for (std::size_t i = 0; i < tpairs_.size(); i++) {
+			ss << tpairs_[i]->toString();
+			if (i < tpairs_.size() - 1) {
+				ss << ".";
 			}
-			result += tp->toString();
 		}
-
-		return result;
+		ss << ")";
+		return ss.str();
 	}
 
 }
