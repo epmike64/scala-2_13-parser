@@ -79,7 +79,6 @@ namespace zebra::ast::node {
 	class fAstNodVisitor {
 	public:
 		~fAstNodVisitor() = default;
-
 		virtual  void visit() = 0; // Entry point for visiting the AST
 		virtual void visit(sp<fAstOptrNod>) = 0;
 		virtual void visit(sp<fAstOprndNod>) = 0;

@@ -38,13 +38,14 @@ namespace zebra::ast::node {
 
 	class fLangAstVisitor : public fAstNodVisitor, public std::enable_shared_from_this<fLangAstVisitor> {
 	protected:
-		sp<fCompileUnit> cu;
-	public:
-		explicit fLangAstVisitor(sp<fCompileUnit> cu) : cu(cu){}
-
+		sp<fCompileUnit> compileUnit_;
 		sp<fAstNod> getAstPSTreeRightN(sp<fAstProdSubTreeN> subTree);
 
+	public:
+		explicit fLangAstVisitor(sp<fCompileUnit> cu) : compileUnit_(cu){}
 		void visit() override;
+		void visit(sp<fCompileUnit>) override;
+		//
 		void visit(sp<fAstOptrNod>) override;
 		void visit(sp<fAstOprndNod>) override;
 		void visit(sp<fAstProdSubTreeN>) override;
@@ -60,7 +61,6 @@ namespace zebra::ast::node {
 		 void visit(sp<fClassParamClauses>) override;
 		 void visit(sp<fClassParents>) override;
 		 void visit(sp<fClassTemplate>) override;
-		 void visit(sp<fCompileUnit>) override;
 		 void visit(sp<fConstrBlock>) override;
 		 void visit(sp<fFor>) override;
 		 void visit(sp<fFun>) override;

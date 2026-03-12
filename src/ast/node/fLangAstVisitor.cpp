@@ -35,7 +35,7 @@ namespace zebra::ast::node {
 
 	void fLangAstVisitor::visit() {
 		std::cout << "Visitor starts" << std::endl;
-		cu->accept(shared_from_this());
+		compileUnit_->accept(shared_from_this());
 	}
 
 	void fLangAstVisitor::visit(sp<fCompileUnit> n)  {
