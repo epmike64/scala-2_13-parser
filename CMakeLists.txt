@@ -133,6 +133,8 @@ add_executable(zebra-4-backend
 		include/ast/leaf/fVariantTypeParam.hpp
 		include/ast/leaf/fId.hpp
 		include/ast/leaf/fIds.hpp
+		include/ztree/ZTree.hpp
+
 		src/ast/leaf/fAccessQualifier.cpp
 		src/ast/leaf/fCaseClause.cpp
 		src/ast/leaf/fCaseClauses.cpp
@@ -170,6 +172,8 @@ add_executable(zebra-4-backend
 		src/ast/leaf/fParam.cpp
 		include/lex/kind/fLangPseudoOperatorKindE.hpp
 		src/lex/kind/fLangPseudoOperatorKindE.cpp
+		include/ztree/ZLangAstVisitor.hpp
+
 
 )
 

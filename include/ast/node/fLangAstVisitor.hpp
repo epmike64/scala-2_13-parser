@@ -37,10 +37,10 @@ namespace zebra::ast::node {
 	using namespace ast::leaf;
 
 	class fLangAstVisitor : public fAstNodVisitor, public std::enable_shared_from_this<fLangAstVisitor> {
-	private:
-		std::shared_ptr<fCompileUnit> cu;
+	protected:
+		sp<fCompileUnit> cu;
 	public:
-		explicit fLangAstVisitor(std::shared_ptr<fCompileUnit> cu) : cu(cu){}
+		explicit fLangAstVisitor(sp<fCompileUnit> cu) : cu(cu){}
 
 		sp<fAstNod> getAstPSTreeRightN(sp<fAstProdSubTreeN> subTree);
 
