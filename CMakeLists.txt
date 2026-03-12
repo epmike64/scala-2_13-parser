@@ -173,6 +173,7 @@ add_executable(zebra-4-backend
 		src/lex/kind/fLangPseudoOperatorKindE.cpp
 		src/ast/tree/fLangAstVisitor.cpp
 		include/ast/tree/fLangAstTree.hpp
+		src/ast/tree/fLangAstTree.cpp
 
 
 )
