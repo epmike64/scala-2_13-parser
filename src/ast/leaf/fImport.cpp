@@ -57,7 +57,7 @@ namespace zebra::ast::leaf {
 
 	std::string fImport::toString() const {
 		std::stringstream ss;
-		for (std::size_t i; i < importExprs_.size(); i++) {
+		for (std::size_t i = 0; i < importExprs_.size(); i++) {
 			ss << importExprs_[i]->toString();
 			if (i < importExprs_.size() - 1) {
 				ss << ", ";
