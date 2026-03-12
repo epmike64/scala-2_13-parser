@@ -1,5 +1,6 @@
 
 #pragma once
+
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstProdSubTreeN.hpp"
 #include "util/fCommon.hpp"
@@ -19,7 +20,7 @@ namespace zebra::ast::tree {
 	class fBinary: public fLangAstTree {
 		sp<fAstOprndNod> left_;
 		sp<fAstOprndNod> right_;
-		sp<node::fAstOptrNod> optr_;
+		sp<fAstOptrNod> optr_;
 	public:
 
 		void setLeft(sp<fAstOprndNod> left);
@@ -35,5 +36,4 @@ namespace zebra::ast::tree {
 
 		std::string toString() const override;
 	};
-
 }

@@ -33,6 +33,8 @@
 
 namespace zebra::ast::tree {
 
+
+
 	void fLangAstVisitor::visit() {
 		std::cout << "Visitor starts" << std::endl;
 		compileUnit_->accept(shared_from_this());
@@ -519,7 +521,6 @@ namespace zebra::ast::tree {
 			return;
 		}
 		ss.push(ms<fAstStackItem>(psubT));
-		// ss.push(ms<fAstStackItem>(getAstPSTreeRightN(subTr)));
 
 		while (!ss.empty()) {
 			sp<fAstStackItem> currItem = ss.top();
@@ -536,7 +537,7 @@ namespace zebra::ast::tree {
 						if (pst) {
 							ss.push(ms<fAstStackItem>(pst));
 						}
-						// ss.push(ms<fAstStackItem>(getAstPSTreeRightN(leftSubTr)));
+
 					} else {
 						ss.push(ms<fAstStackItem>(currNode->getAstLeftN()));
 					}
@@ -553,7 +554,7 @@ namespace zebra::ast::tree {
 						if (pst) {
 							ss.push(ms<fAstStackItem>(pst));
 						}
-						// ss.push(ms<fAstStackItem>(getAstPSTreeRightN(rightSubTr)));
+
 					} else {
 						ss.push(ms<fAstStackItem>(currNode->getAstRightN()));
 					}
@@ -563,6 +564,10 @@ namespace zebra::ast::tree {
 
 			ss.pop();
 			currNode->accept(shared_from_this());
+			sp<fAstOprndNod> oprn = std::dynamic_pointer_cast<fAstOprndNod>(currNode);
+			if (oprn) {
+
+			}
 		}
 	}
 

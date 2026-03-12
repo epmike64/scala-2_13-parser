@@ -7,6 +7,7 @@
 #include "../node/fAstNodKndE.hpp"
 
 #include <memory>
+#include <stack>
 #include <stdexcept>
 #include <typeinfo>
 
