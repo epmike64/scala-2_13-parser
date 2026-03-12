@@ -15,6 +15,7 @@ namespace zebra::ast::leaf {
 	public:
 		fTPair(const fToken *id, const fTKnd *const kind);
 		fTKnd *getKnd() const ;
+		const fToken *getId() const ;
 		std::string toString() const ;
 	};
 

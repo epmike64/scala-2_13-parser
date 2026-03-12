@@ -26,30 +26,14 @@ namespace zebra::lex::token {
 		static constexpr const char* KEYWORD = "_KEYWORD_";
 		static constexpr const char* INTERN = "_INTERN_";
 
-		fToken(const fTKnd*  kind,  int pos, int endPos, const std::string& tsval):
-			pos_(pos), endPos_(endPos), kind_(kind), strVal_(tsval) {
-		}
+		fToken(const fTKnd*  kind,  int pos, int endPos, const std::string& tsval);
 
+		const std::string& getTStrVal() const ;
+		const fTKnd* getTKind() const ;
 
-		const std::string& getTStrVal() const {
-			return strVal_;
-		}
-		const fTKnd* getTKind() const {
-			return kind_;
-		}
+		virtual int radix() const ;
 
-		virtual int radix() const {
-			throw std::runtime_error("UnsupportedOperationException: radix() not supported for this token type");
-		}
-
-		std::string toString() const {
-			std::ostringstream oss;
-			oss << "fToken{kind=" << (kind_ ? kind_->toString() : "null")
-				<< ", pos=" << pos_
-				<< ", endPos=" << endPos_
-				<< ", strVal='" << strVal_ << "'}";
-			return oss.str();
-		}
+		std::string toString() const ;
 	};
 
 

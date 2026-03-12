@@ -13,6 +13,10 @@ namespace zebra::ast::leaf {
 		return const_cast<fTKnd *>(kind_);
 	}
 
+	const fToken* fTPair::getId() const {
+		return id_;
+	}
+
 	std::string fTPair::toString() const {
 		return id_->toString() + ":" + kind_->toString();
 	}
@@ -70,7 +74,7 @@ namespace zebra::ast::leaf {
 		std::stringstream ss;
 		ss << "StableId(";
 		for (std::size_t i = 0; i < tpairs_.size(); i++) {
-			ss << tpairs_[i]->toString();
+			ss << tpairs_[i]->getId()->toString();
 			if (i < tpairs_.size() - 1) {
 				ss << ".";
 			}
