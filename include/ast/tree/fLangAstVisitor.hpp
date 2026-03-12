@@ -32,8 +32,9 @@
 #include "ast/leaf/fTypeArgs.hpp"
 
 
-namespace zebra::ast::node {
+namespace zebra::ast::tree {
 
+	using namespace ast::node;
 	using namespace ast::leaf;
 
 	class fLangAstVisitor : public fAstNodVisitor, public std::enable_shared_from_this<fLangAstVisitor> {

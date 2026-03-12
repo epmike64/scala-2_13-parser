@@ -32,7 +32,7 @@ void run_compiler(const std::string& filepath) {
 	zebra::parse::fParser parser(lexImpl);
 	zebra::util::sp<zebra::ast::leaf::fCompileUnit> cu = parser.compileUnit();
 
-	using zebra::ast::node::fLangAstVisitor;
+	using zebra::ast::tree::fLangAstVisitor;
 
 	zebra::util::sp<fLangAstVisitor> visitor = zebra::util::ms<fLangAstVisitor>(cu);
 	visitor->visit();

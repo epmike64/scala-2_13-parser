@@ -31,7 +31,7 @@
 #include "ast/leaf/fValueDecl.hpp"
 #include "ast/leaf/fVariantTypeParam.hpp"
 
-namespace zebra::ast::node {
+namespace zebra::ast::tree {
 
 	void fLangAstVisitor::visit() {
 		std::cout << "Visitor starts" << std::endl;
