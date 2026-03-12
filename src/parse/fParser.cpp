@@ -1765,10 +1765,10 @@ namespace zebra::parse {
 		return ms<fPackage>(qualIds());
 	}
 
-	std::vector<sp<fImportSelector>> fParser::ImportSelectors() {
+	sp<vector<sp<fImportSelector>>> fParser::ImportSelectors() {
 
 		h.accept(fTKnd::T_LCURL);
-		std::vector<sp<fImportSelector>> selectors;
+		sp<std::vector<sp<fImportSelector>>> selectors = ms<std::vector<sp<fImportSelector>>>();
 		while (true) {
 			const fToken* from = h.accept(fTKnd::T_ID);
 			const fToken* to =from;
@@ -1776,7 +1776,7 @@ namespace zebra::parse {
 				h.next();
 				to = h.accept(fTKnd::T_ID);
 			}
-			selectors.push_back(ms<fImportSelector>(from, to));
+			selectors->push_back(ms<fImportSelector>(from, to));
 			if (h.isTkComma()) {
 				h.next(); continue;
 			}
@@ -1795,7 +1795,7 @@ namespace zebra::parse {
 				h.next();
 				switch (*h.tKnd()) {
 					case fTKnd::T_UNDERSCORE_E:
-						h.next();
+						ie->setUnderscore(h.next());
 						break;
 					case fTKnd::T_LCURL_E: {
 						ie->setSelectors(ImportSelectors());

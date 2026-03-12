@@ -9,7 +9,21 @@ namespace zebra::ast::leaf {
 	fImportExpr::fImportExpr(sp<fStableId> &&sid) : sid_(std::move(sid)) {
 	}
 
-	void fImportExpr::setSelectors(std::vector<sp<fImportSelector> > &&selectors) {
+	void fImportExpr::setUnderscore(const fToken *underscore) {
+		if (selectors_) {
+			throw std::runtime_error("Cannot mark an import expression as underscore when it already has selectors");
+		}
+		this->underscore_ = underscore;
+	}
+
+	const fToken *fImportExpr::getUnderscore() const {
+		return underscore_;
+	}
+
+	void fImportExpr::setSelectors(sp<std::vector<sp<fImportSelector>>> &&selectors) {
+		if (this->getUnderscore() != nullptr) {
+			throw std::runtime_error("Cannot set selectors for an import expression that is already marked as underscore");
+		}
 		this->selectors_ = std::move(selectors);
 	}
 
@@ -17,7 +31,7 @@ namespace zebra::ast::leaf {
 		return sid_;
 	}
 
-	std::vector<sp<fImportSelector> > fImportExpr::getSelectors() {
+	sp<std::vector<sp<fImportSelector>>> fImportExpr::getSelectors() {
 		return selectors_;
 	}
 
@@ -36,17 +50,20 @@ namespace zebra::ast::leaf {
 	std::string fImportExpr::toString() const {
 		std::stringstream ss;
 		ss << "ImportExpr(" << sid_->toString();
-		if (!selectors_.empty()) {
+		if (selectors_) {
 			ss << " with selectors: [";
-			for (std::size_t i = 0; i < selectors_.size(); i++) {
-				ss << selectors_[i]->toString();
-				if (i < selectors_.size() - 1) {
+			for (std::size_t i = 0; i < selectors_->size(); i++) {
+				ss << selectors_->at(i)->toString();
+				if (i < selectors_->size() - 1) {
 					ss << ", ";
 				}
 			}
 			ss << "]";
+		} else if (getUnderscore() != nullptr) {
+			ss << " with underscore: " << getUnderscore()->toString();
 		}
 		ss << ")";
+
 		return ss.str();
 	}
 

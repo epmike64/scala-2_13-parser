@@ -40,7 +40,8 @@ namespace zebra::parse {
 		sp<fAccessModifier> accessModifier();
 		sp<fLocalModifier> localModifier();
 		sp<fModifiers> modifiers();
-		std::vector<sp<fImportSelector>> ImportSelectors();
+
+		sp<vector<sp<fImportSelector>>> ImportSelectors();
 		sp<fImport> importClause();
 		std::vector<const fToken*> qualIds();
 		sp<fPackage> packageClause();

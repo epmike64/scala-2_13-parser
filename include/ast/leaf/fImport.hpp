@@ -27,15 +27,20 @@ namespace zebra::ast::leaf {
 
 	class fImportExpr {
 		const sp<fStableId> sid_;
-		std::vector<sp<fImportSelector>> selectors_;
+		sp<std::vector<sp<fImportSelector>>> selectors_;
+		const fToken* underscore_;
 	public:
 		fImportExpr(sp<fStableId> &&sid) ;
 
-		void setSelectors(std::vector<sp<fImportSelector>> &&selectors) ;
+		void setUnderscore(const fToken *underscore);
+
+		const fToken *getUnderscore() const;
+
+		void setSelectors(sp<std::vector<sp<fImportSelector>>> &&selectors) ;
 
 		sp<fStableId> getId() const ;
 
-		std::vector<sp<fImportSelector>> getSelectors() ;
+		sp<std::vector<sp<fImportSelector>>> getSelectors() ;
 
 		std::string toString() const ;
 	};
