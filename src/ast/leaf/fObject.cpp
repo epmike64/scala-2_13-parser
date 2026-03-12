@@ -9,9 +9,6 @@ namespace zebra::ast::leaf {
 		if (this->objectName_ == nullptr) {
 			throw std::invalid_argument("Object name token cannot be null");
 		}
-		if (this->modifiers_ == nullptr) {
-			throw std::invalid_argument("Modifiers cannot be null");
-		}
 	}
 
 	bool fObject::isCaseClass() const {

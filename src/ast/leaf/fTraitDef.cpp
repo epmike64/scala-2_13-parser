@@ -9,9 +9,6 @@ namespace zebra::ast::leaf {
 		if (this->traitName_ == nullptr) {
 			throw std::invalid_argument("Trait name token cannot be null");
 		}
-		if (this->modifiers_ == nullptr) {
-			throw std::invalid_argument("Modifiers cannot be null");
-		}
 	}
 
 	const fToken* fTraitDef::getName() const {

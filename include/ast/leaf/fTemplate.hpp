@@ -8,14 +8,14 @@ namespace zebra::ast::leaf {
 	using namespace ast::node;
 
 	class fTemplate : public fAstOprndNod {
-		const sp<fTemplateBody> body_;
+		const sp<fTemplateBody> templateBody_;
 		const bool amExtender_;
 		public:
 
 		fTemplate(sp<fTemplateBody> &&body, bool amExtender);
 
 		sp<fTemplateBody> getTemplateBody() const {
-			return body_;
+			return templateBody_;
 		}
 
 		bool amExtender() const {

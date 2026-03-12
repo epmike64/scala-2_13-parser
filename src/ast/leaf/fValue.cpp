@@ -6,9 +6,6 @@
 namespace zebra::ast::leaf {
 
 	fValue::fValue(sp<fModifiers> &&modifiers) : modifiers_(std::move(modifiers)) {
-		if (this->modifiers_ == nullptr) {
-			throw std::invalid_argument("Modifiers cannot be null");
-		}
 	}
 
 	sp<fModifiers> fValue::getModifiers() const {

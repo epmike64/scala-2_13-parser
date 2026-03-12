@@ -5,8 +5,8 @@
 
 namespace zebra::ast::leaf {
 
-	fTemplate::fTemplate(sp<fTemplateBody> &&body, bool amExtender) : body_(std::move(body)), amExtender_(amExtender) {
-		if (this->body_ == nullptr) {
+	fTemplate::fTemplate(sp<fTemplateBody> &&body, bool amExtender) : templateBody_(std::move(body)), amExtender_(amExtender) {
+		if (this->templateBody_ == nullptr) {
 			throw std::invalid_argument("Template body cannot be null");
 		}
 	}

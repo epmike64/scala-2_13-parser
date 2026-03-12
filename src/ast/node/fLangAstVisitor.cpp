@@ -177,10 +177,13 @@ namespace zebra::ast::node {
 
 	void fLangAstVisitor::visit(sp<fClassTemplate> n) {
 		std::cout << "Visiting Class Template" << std::endl;
-		n->getClassParents()->accept(shared_from_this());
-		n->getTemplateBody()->accept(shared_from_this());
+		if (n->getClassParents()) {
+			n->getClassParents()->accept(shared_from_this());
+		}
+		if (n->getTemplateBody()) {
+			n->getTemplateBody()->accept(shared_from_this());
+		}
 	}
-
 
 	void fLangAstVisitor::visit(sp<fConstrBlock> n) {
 		std::cout << "Visiting Constructor Block" << std::endl;
@@ -292,8 +295,17 @@ namespace zebra::ast::node {
 	}
 
 	void fLangAstVisitor::visit(sp<fObject> n) {
-		std::cout << "Visiting Object: " << n->getObjectName()->toString() << std::endl;
-		n->getExtendsTemplate()->accept(shared_from_this());
+		if (n->isCaseClass()) {
+			std::cout << "Visiting Case Class: " << n->getObjectName()->toString()  << std::endl;
+		} else {
+			std::cout << "Visiting Class: " << n->getObjectName()->toString() << std::endl;
+		}
+		if (n->getModifiers()) {
+			n->getModifiers()->accept(shared_from_this());
+		}
+		if (n->getExtendsTemplate()) {
+			n->getExtendsTemplate()->accept(shared_from_this());
+		}
 	}
 
 	void fLangAstVisitor::visit(sp<fOverrideModifier> n) {
