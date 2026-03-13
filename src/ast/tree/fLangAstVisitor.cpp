@@ -343,9 +343,16 @@ namespace zebra::ast::tree {
 	void fLangAstVisitor::visit(sp<fNamedFun> n, esc prnSc) {
 		std::cout << "Visiting Named Function: " << n->getFunSig()->getFunName()->toString() << std::endl;
 		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::NAMED_FUN);
-		n->getFunSig()->accept(shared_from_this(), s);
+		if (n->getModifiers()) {
+			n->getModifiers()->accept(shared_from_this(), s);
+		}
+		if (n->getFunSig()) {
+			n->getFunSig()->accept(shared_from_this(), s);
+		}
 		std::cout << "Visiting Named Function Body" << std::endl;
-		n->getFunBody()->accept(shared_from_this(), s);
+		if (n->getFunBody()) {
+			n->getFunBody()->accept(shared_from_this(), s);
+		}
 	}
 
 	void fLangAstVisitor::visit(sp<fObject> n, esc prnSc) {
