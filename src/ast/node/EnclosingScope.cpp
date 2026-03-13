@@ -13,12 +13,11 @@ namespace zebra::ast::node {
 		return parentScope_;
 	}
 
-	void EnclosingScope::setLbrSS(sp<std::stack<sp<fLangTrBranch>>>&& lbrSS) {
-		this->lbrSS_ = std::move(lbrSS);
+	void EnclosingScope::setPolishCalcStack(sp<std::stack<sp<fAstNod>>>&& astRPN) {
+		this->polishCalcSS = std::move(astRPN);
 	}
 
-	sp<std::stack<sp<fLangTrBranch>>> EnclosingScope::getLbrSS() const {
-		return lbrSS_;
+	sp<std::stack<sp<fAstNod>>> EnclosingScope::getPolishCalcStack() const {
+		return polishCalcSS;
 	}
-
 }

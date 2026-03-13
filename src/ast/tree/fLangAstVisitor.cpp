@@ -553,11 +553,10 @@ namespace zebra::ast::tree {
 		sp<fAstNod> getNode() const { return node; }
 	};
 
-	// static sp<std::stack<sp<fLangTrBranch>>> lbrSS_;
+
 
 	void fLangAstVisitor::visit(sp<fAstProdSubTreeN> subTr,  esc prnSc) {
 
-		prnSc->setLbrSS(nullptr);
 
 		std::cout << subTr->toString() << std::endl;
 		std::stack<sp<fAstStackItem>> ss;
@@ -566,6 +565,7 @@ namespace zebra::ast::tree {
 			return;
 		}
 
+		sp<std::stack<sp<fAstNod>>> polishCalcSS = ms<std::stack<sp<fAstNod>>>();
 		ss.push(ms<fAstStackItem>(psubT));
 
 		while (!ss.empty()) {
@@ -610,27 +610,9 @@ namespace zebra::ast::tree {
 
 			ss.pop();
 			currNode->accept(shared_from_this(), prnSc);
-			sp<fAstOprndNod> oprn = std::dynamic_pointer_cast<fAstOprndNod>(currNode);
-			if (oprn) {
-				if (!prnSc->getLbrSS()) {
-					prnSc->setLbrSS(ms<std::stack<sp<fLangTrBranch>>>());
-					prnSc->getLbrSS()->push(ms<fLangTrBranch>(oprn));
-				} else {
-					prnSc->getLbrSS()->top()->setRight(oprn);
-				}
-			}
-			else {
-				if (prnSc->getLbrSS().get()->size() == 0) {
-					throw std::runtime_error("Operator node expected to have a parent operator node in AST traversal");
-				}
-				sp<fLangTrBranch> top = prnSc->getLbrSS()->top();
-				top->setOptr(std::dynamic_pointer_cast<fAstOptrNod>(currNode));
-				if (prnSc->getLbrSS()->size() > 1) {
-					prnSc->getLbrSS()->pop();
-					prnSc->getLbrSS()->top()->setRight(top);
-				}
-			}
+			polishCalcSS->push(currNode);
 		}
+		prnSc->setPolishCalcStack(std::move(polishCalcSS));
 		std::cout << subTr->toString() + " END" << std::endl;
 	}
 
