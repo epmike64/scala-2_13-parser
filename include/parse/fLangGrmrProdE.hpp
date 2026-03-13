@@ -8,7 +8,7 @@ namespace zebra::parse {
 		WHILE,
 		CASE_CLAUSE,
 		CASE_CLAUSES,
-		VALUE_DECL, TYPE_DEF, TYPE_ARGS, TRY, TRAIT_DEF, THIS_FUN, TEMPLATE, RETURN, PARAM_CLAUSES,
+		VALUE_DECL, VALUE_DEF,TYPE_DEF, TYPE_ARGS, TRY, TRAIT_DEF, THIS_FUN, TEMPLATE, RETURN, PARAM_CLAUSES,
 		PARAM, OBJECT, NAMED_FUN, GENERATOR, FUN_SIG, FFUN, CONSTR_BLOCK, CLASS_CONSTR, CLASS_PARAM,
 		FOR, CLASS_PARENTS, CLASS_PARAM_CLAUSES,
 		EXPR,
@@ -47,6 +47,7 @@ namespace zebra::parse {
 			case fLangGrmrProdE::CONSTR_BLOCK: return "CONSTR_BLOCK";
 			case fLangGrmrProdE::CASE_CLAUSES: return "CASE_CLAUSES";
 			case fLangGrmrProdE::VALUE_DECL: return "VALUE_DECL";
+			case fLangGrmrProdE::VALUE_DEF: return "VALUE_DEF";
 			case fLangGrmrProdE::TYPE_DEF: return "TYPE_DEF";
 			case fLangGrmrProdE::TYPE_ARGS: return "TYPE_ARGS";
 			case fLangGrmrProdE::TRY: return "TRY";
