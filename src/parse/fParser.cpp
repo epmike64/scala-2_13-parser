@@ -901,6 +901,7 @@ namespace zebra::parse {
 					h.next();
 					int sz = h.pushNLEnabled(true);
 					h.accept(fTKnd::T_LCURL);
+					h.insertPseudoOperator(a, fLangPseudoOperatorKindE::O_MATCH, h.getToken());
 					a->setRight(caseClauses());
 					h.popNLEnabled(sz, true);
 					h.accept(fTKnd::T_RCURL);

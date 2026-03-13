@@ -7,7 +7,10 @@ namespace zebra::parse {
 		using namespace zebra::util;
 
 		void fAst::setRight(sp<fAstNod> v) {
-			assert(astLast_->isOperator() && "astRightN must be an operator");
+			//assert(astLast_->isOperator() && "astRightN must be an operator");
+			if (!astLast_->isOperator()) {
+				throw std::logic_error("astRightN must be an operator");
+			}
 			astLast_->setAstRightN(v);
 			astLast_ = v;
 		}

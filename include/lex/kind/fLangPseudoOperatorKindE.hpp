@@ -15,7 +15,8 @@ namespace zebra::lex::kind {
 		O_CURLY_BRACES,
 		O_AT,
 		O_PIPE,
-		O_PARENS
+		O_PARENS,
+		O_MATCH
 	};
 
 	class fLangPseudoOperator {
