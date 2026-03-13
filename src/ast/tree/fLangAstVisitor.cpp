@@ -592,6 +592,7 @@ namespace zebra::ast::tree {
 				}
 			}
 		}
+		std::cout << subTr->toString() + " END" << std::endl;
 	}
 
 
