@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stack>
+#include <vector>
 
 #include "EnclsScopeFwd.hpp"
 #include "fAstProdSubTreeN.hpp"
@@ -14,16 +14,16 @@ namespace zebra::ast::node {
 	class EnclosingScope {
 		const esc parentScope_;
 		const fLangGrmrProdE parentScopeGrmrProd_;
-		sp<std::stack<sp<fAstNod>>> polishCalcSS;  //Reverse Polish notation (RPN)
+		sp<std::vector<sp<fAstNod>>> polishCalcSS;  //Reverse Polish notation (RPN)
 	public:
 		EnclosingScope(esc parentScope, fLangGrmrProdE parentScopeGrmrProd);
 		esc getParentScope() const;
 
 		fLangGrmrProdE getParentScopeGrmrProd() const;
 
-		void setPolishCalcStack(sp<std::stack<sp<fAstNod>>>&& astRPN) ;
+		void setPolishCalcStack(sp<std::vector<sp<fAstNod>>>&& astRPN) ;
 
-		sp<std::stack<sp<fAstNod>>> getPolishCalcStack() const;
+		sp<std::vector<sp<fAstNod>>> getPolishCalcStack() const;
 	};
 
 

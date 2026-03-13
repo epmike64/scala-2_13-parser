@@ -565,7 +565,7 @@ namespace zebra::ast::tree {
 			return;
 		}
 
-		sp<std::stack<sp<fAstNod>>> polishCalcSS = ms<std::stack<sp<fAstNod>>>();
+		sp<std::vector<sp<fAstNod>>> polishCalcSS = ms<std::vector<sp<fAstNod>>>();
 		ss.push(ms<fAstStackItem>(psubT));
 
 		while (!ss.empty()) {
@@ -610,7 +610,7 @@ namespace zebra::ast::tree {
 
 			ss.pop();
 			currNode->accept(shared_from_this(), prnSc);
-			polishCalcSS->push(currNode);
+			polishCalcSS->push_back(currNode);
 		}
 		prnSc->setPolishCalcStack(std::move(polishCalcSS));
 		std::cout << subTr->toString() + " END" << std::endl;
