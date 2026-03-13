@@ -9,8 +9,12 @@ namespace zebra::ast::leaf {
 			std::move(modifiers)), isCaseClass_(isCaseClass) {
 	}
 
-	void fClassDef::setConstructorAccessModifier(sp<fAccessModifier> &&constructorAccessModifier) {
-		this->constructorAccessModifier_ = std::move(constructorAccessModifier);
+	void fClassDef::setConstrAccessModifier(sp<fAccessModifier> &&constrAccessModifier) {
+		this->constrAccessModifier_ = std::move(constrAccessModifier);
+	}
+
+	sp<fAccessModifier> fClassDef::getConstrAccessModifier() {
+		return constrAccessModifier_;
 	}
 
 	void fClassDef::setClassParamClauses(sp<fClassParamClauses> &&classParamClauses) {

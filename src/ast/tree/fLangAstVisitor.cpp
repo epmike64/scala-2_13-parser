@@ -43,448 +43,453 @@ namespace zebra::ast::tree {
 		compileUnit_->accept(shared_from_this(), s);
 	}
 
-	void fLangAstVisitor::visit(sp<fCompileUnit> n, esc s)  {
+	void fLangAstVisitor::visit(sp<fCompileUnit> n, esc prnSc)  {
 		std::cout << "Visiting Compile Unit" << std::endl;
 		if (n->getPackages().size() > 0) {
 			std::cout << "Visiting Packages in Compile Unit" << std::endl;
 			for (const auto& pkg : n->getPackages()) {
-				pkg->accept(shared_from_this(), s);
+				pkg->accept(shared_from_this(), prnSc);
 			}
 		}
 		if (n->getImports().size() > 0) {
 			std::cout << "Visiting Imports in Compile Unit" << std::endl;
 			for (const auto& imp : n->getImports()) {
-				imp->accept(shared_from_this(), s);
+				imp->accept(shared_from_this(), prnSc);
 			}
 		}
 		if (n->getStmts().size() > 0) {
 			std::cout << "Visiting Statements in Compile Unit" << std::endl;
 			for (const auto& stmt : n->getStmts()) {
-				stmt->accept(shared_from_this(), s);
+				stmt->accept(shared_from_this(), prnSc);
 			}
 		}
 	}
 
-	void  fLangAstVisitor::visit(sp<fClassDef> cls, esc s){
+	void  fLangAstVisitor::visit(sp<fClassDef> cls, esc prnSc){
 		std::cout << "Visiting Class Definition: " << cls->getName()->toString() << std::endl;
+		esc chs = ms<EnclosingScope>(prnSc, fLangGrmrProdE::CLASS_TEMPLATE);
+		if (cls->getConstrAccessModifier()) {
+			cls->getConstrAccessModifier()->accept(shared_from_this(), chs);
+		}
+		
 		if (cls->getExtendsTemplate()) {
 			std::cout << "Visiting extends template of class definition" << std::endl;
-			cls->getExtendsTemplate()->accept(shared_from_this(), s);
+			cls->getExtendsTemplate()->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void  fLangAstVisitor::visit(sp<fLiteral> n, esc s)  {
+	void  fLangAstVisitor::visit(sp<fLiteral> n, esc prnSc)  {
 		std::cout << "Visiting Literal: " << n->toString() << std::endl;
 	}
 
-	void  fLangAstVisitor::visit(sp<fStableId>n, esc s)  {
+	void  fLangAstVisitor::visit(sp<fStableId>n, esc prnSc)  {
 		std::cout << "Visiting StableId: " << n->toString() << std::endl;
 	}
 
-	void  fLangAstVisitor::visit(sp<fType> n, esc s)  {
+	void  fLangAstVisitor::visit(sp<fType> n, esc prnSc)  {
 		std::cout << n->toString() << std::endl;
 	}
 
-	void  fLangAstVisitor::visit(sp<fValueDef> n, esc s)  {
+	void  fLangAstVisitor::visit(sp<fValueDef> n, esc prnSc)  {
 		std::cout << "Visiting Value Decl: " << n->toString() << std::endl;
 
 		for (size_t i = 0; i < n->getNames().size(); i++) {
 			std::cout << "Visiting name " << i << " of value declaration" << std::endl;
-			n->getNames()[i]->accept(shared_from_this(), s);
+			n->getNames()[i]->accept(shared_from_this(), prnSc);
 		}
 
 		sp<fAstProdSubTreeN> assignExpr = n->getAssignExpr();
 		if (assignExpr != nullptr) {
 			std::cout << "Visiting assignment expression for value declaration" << std::endl;
-			assignExpr->accept(shared_from_this(), s);
+			assignExpr->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fIf> n, esc s) {
+	void fLangAstVisitor::visit(sp<fIf> n, esc prnSc) {
 		std::cout << "-- IF Cond Expr" << std::endl;
-		n->getCondExpr()->accept(shared_from_this(), s);
+		n->getCondExpr()->accept(shared_from_this(), prnSc);
 		std::cout << "-- IF Body Exp" << std::endl;
-		n->getIfBody()->accept(shared_from_this(), s);
+		n->getIfBody()->accept(shared_from_this(), prnSc);
 		if (n->getElseBody()) {
 			std::cout << "-- IF_ELSE Body Exp" << std::endl;
-			n->getElseBody()->accept(shared_from_this(), s);
+			n->getElseBody()->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fWhile > n, esc s) {
+	void fLangAstVisitor::visit(sp<fWhile > n, esc prnSc) {
 		std::cout << "-- WHILE Cond Expr" << std::endl;
-		n->getCondExpr()->accept(shared_from_this(), s);
+		n->getCondExpr()->accept(shared_from_this(), prnSc);
 		std::cout << "-- WHILE Body Exp" << std::endl;
-		n->getBody()->accept(shared_from_this(), s);
+		n->getBody()->accept(shared_from_this(), prnSc);
 	}
 
-	void fLangAstVisitor::visit(sp<fAccessModifier> n, esc s) {
+	void fLangAstVisitor::visit(sp<fAccessModifier> n, esc prnSc) {
 		std::cout << "Visiting Access Modifier: " << n->toString() << std::endl;
 	}
-	void fLangAstVisitor::visit(sp<fAccessQualifier> n, esc s) {
+	void fLangAstVisitor::visit(sp<fAccessQualifier> n, esc prnSc) {
 		std::cout << "Visiting Access Qualifier: " << n->toString() << std::endl;
 	}
-	void fLangAstVisitor::visit(sp<fBlock> n, esc s) {
+	void fLangAstVisitor::visit(sp<fBlock> n, esc prnSc) {
 		std::cout << "Visiting Block" << std::endl;
 		for (const auto& stmt : n->getStmts()) {
-			stmt->accept(shared_from_this(), s);
+			stmt->accept(shared_from_this(), prnSc);
 		}
 	}
-	void fLangAstVisitor::visit(sp<fCaseClause> n, esc s) {
+	void fLangAstVisitor::visit(sp<fCaseClause> n, esc prnSc) {
 		std::cout << "Visiting Case Clause" << std::endl;
-		n->getPattern()->accept(shared_from_this(), s);
+		n->getPattern()->accept(shared_from_this(), prnSc);
 		if (n->getGuard()) {
 			std::cout << "Visiting Case Guard" << std::endl;
-			n->getGuard()->accept(shared_from_this(), s);
+			n->getGuard()->accept(shared_from_this(), prnSc);
 		}
 		std::cout << "Visiting Case Body" << std::endl;
-		n->getBlock()->accept(shared_from_this(), s);
+		n->getBlock()->accept(shared_from_this(), prnSc);
 	}
 
-	void fLangAstVisitor::visit(sp<fCaseClauses> n, esc s) {
+	void fLangAstVisitor::visit(sp<fCaseClauses> n, esc prnSc) {
 		std::cout << "Visiting Case Clauses" << std::endl;
 		for (const auto& clause : n->getCaseClauses()) {
-			clause->accept(shared_from_this(), s);
+			clause->accept(shared_from_this(), prnSc);
 		}
 	}
-	void fLangAstVisitor::visit(sp<fClassConstr> n, esc s) {
+	void fLangAstVisitor::visit(sp<fClassConstr> n, esc prnSc) {
 		std::cout << "Visiting Class Constructor" << std::endl;
-		n->getPrimaryCtorParamType()->accept(shared_from_this(), s);
+		n->getPrimaryCtorParamType()->accept(shared_from_this(), prnSc);
 		if (n->getArgs()) {
 			std::cout << "Visiting Class Constructor Arguments" << std::endl;
-			n->getArgs()->accept(shared_from_this(), s);
+			n->getArgs()->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fClassParam> n, esc s) {
+	void fLangAstVisitor::visit(sp<fClassParam> n, esc prnSc) {
 		std::cout << "Visiting Class Parameter: " << n->getIdentifier()->toString() << std::endl;
-		n->getParamType()->accept(shared_from_this(), s);
+		n->getParamType()->accept(shared_from_this(), prnSc);
 
 		sp<fAstProdSubTreeN> assignExpr = n->getDefaultValueExpr();
 		if (assignExpr != nullptr) {
 			std::cout << "Visiting assignment expression for class parameter" << std::endl;
-			assignExpr->accept(shared_from_this(), s);
+			assignExpr->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fClassParamClauses> n, esc s) {
+	void fLangAstVisitor::visit(sp<fClassParamClauses> n, esc prnSc) {
 		std::cout << "Visiting Class Parameter Clauses" << std::endl;
 		for (const auto& paramClauseList : n->getClassParams()) {
 			for (auto & paramClause : paramClauseList) {
 				std::cout << "Visiting Class Parameter Clause" << std::endl;
-				paramClause->accept(shared_from_this(), s);
+				paramClause->accept(shared_from_this(), prnSc);
 			}
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fClassParents> n, esc s) {
+	void fLangAstVisitor::visit(sp<fClassParents> n, esc prnSc) {
 		std::cout << "Visiting Class Parents" << std::endl;
 		if (n->getConstr()) {
-			n->getConstr()->accept(shared_from_this(), s);
+			n->getConstr()->accept(shared_from_this(), prnSc);
 		}
 		if (n->getWithTypes()) {
-			n->getWithTypes()->accept(shared_from_this(), s);
+			n->getWithTypes()->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fClassTemplate> n, esc s) {
+	void fLangAstVisitor::visit(sp<fClassTemplate> n, esc prnSc) {
 		std::cout << "Visiting Class Template" << std::endl;
 		if (n->getClassParents()) {
-			n->getClassParents()->accept(shared_from_this(), s);
+			n->getClassParents()->accept(shared_from_this(), prnSc);
 		}
 		if (n->getTemplateBody()) {
-			n->getTemplateBody()->accept(shared_from_this(), s);
+			n->getTemplateBody()->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fConstrBlock> n, esc s) {
+	void fLangAstVisitor::visit(sp<fConstrBlock> n, esc prnSc) {
 		std::cout << "Visiting Constructor Block" << std::endl;
 		if (n->getArgExprs()) {
 			std::cout << "Visiting Constructor Block Argument Expressions" << std::endl;
-			n->getArgExprs()->accept(shared_from_this(), s);
+			n->getArgExprs()->accept(shared_from_this(), prnSc);
 		}
 		std::cout << "Visiting Constructor Block Statements" << std::endl;
 		for (const auto& stmt : n->getBlockStmts()) {
-			stmt->accept(shared_from_this(), s);
+			stmt->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fFor> n, esc s) {
+	void fLangAstVisitor::visit(sp<fFor> n, esc prnSc) {
 		std::cout << "Visiting For Loop" << std::endl;
 		for (auto gen: n->getGenerators()) {
-			gen->accept(shared_from_this(), s);
+			gen->accept(shared_from_this(), prnSc);
 		}
 
 		if (n->getYieldExpr()) {
 			std::cout << "Visiting For Loop Yield Expression" << std::endl;
-			n->getYieldExpr()->accept(shared_from_this(), s);
+			n->getYieldExpr()->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fFun> n, esc s) {
+	void fLangAstVisitor::visit(sp<fFun> n, esc prnSc) {
 		std::cout << "Visiting fFun" << std::endl;
-		n->getModifiers()->accept(shared_from_this(), s);
+		n->getModifiers()->accept(shared_from_this(), prnSc);
 	}
 
-	void fLangAstVisitor::visit(sp<fFunSig> n, esc s) {
+	void fLangAstVisitor::visit(sp<fFunSig> n, esc prnSc) {
 		std::cout << "Visiting Function Signature: " << n->getFunName()->toString() << std::endl;
 		if (n->getParamClauses()) {
 			std::cout << "Visiting Function Parameter Clauses" << std::endl;
-			n->getParamClauses()->accept(shared_from_this(), s);
+			n->getParamClauses()->accept(shared_from_this(), prnSc);
 		}
 		if (n->getTypeParam()) {
 			std::cout << "Visiting Function Type Parameters" << std::endl;
 			auto typeParams = *n->getTypeParam().get();
 			for (auto tpp : typeParams) {
-					tpp->accept(shared_from_this(), s);
+					tpp->accept(shared_from_this(), prnSc);
 			}
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fGenerator> n, esc s) {
+	void fLangAstVisitor::visit(sp<fGenerator> n, esc prnSc) {
 		std::cout << "Visiting Generator" << std::endl;
 		if (n->isCaseGenerator()) {
 			std::cout << "Visiting Case Pattern" << std::endl;
-			n->getCasePattern1()->accept(shared_from_this(), s);
+			n->getCasePattern1()->accept(shared_from_this(), prnSc);
 		}
 		for (const auto& guard : n->getGuards()) {
 			std::cout << "Visiting Generator Guard" << std::endl;
-			guard->accept(shared_from_this(), s);
+			guard->accept(shared_from_this(), prnSc);
 		}
 		if (n->getInExpr()) {
 			std::cout << "Visiting Generator In Expression" << std::endl;
-			n->getInExpr()->accept(shared_from_this(), s);
+			n->getInExpr()->accept(shared_from_this(), prnSc);
 		}
 		for (const auto& endingPattern : n->getEndingPattern1s()) {
 			std::cout << "Visiting Generator Ending Pattern" << std::endl;
-			endingPattern->accept(shared_from_this(), s);
+			endingPattern->accept(shared_from_this(), prnSc);
 		}
 		for (const auto& endingExpr : n->getEndingExprs()) {
 			std::cout << "Visiting Generator Ending Expression" << std::endl;
-			endingExpr->accept(shared_from_this(), s);
+			endingExpr->accept(shared_from_this(), prnSc);
 		}
 	}
-	void fLangAstVisitor::visit(sp<fId> n, esc s) {
+	void fLangAstVisitor::visit(sp<fId> n, esc prnSc) {
 		std::cout << "Visiting Identifier: " << n->toString() << std::endl;
 	}
-	void fLangAstVisitor::visit(sp<fIds> n, esc s) {
+	void fLangAstVisitor::visit(sp<fIds> n, esc prnSc) {
 		std::cout << "Visiting Identifiers" << std::endl;
 		for (const auto& id : n->getIds()) {
-			id->accept(shared_from_this(), s);
+			id->accept(shared_from_this(), prnSc);
 		}
 	}
-	// void fLangAstVisitor::visit(sp<fIf> n, esc s) {}
-	void fLangAstVisitor::visit(sp<fImport> n, esc s) {
+	// void fLangAstVisitor::visit(sp<fIf> n, esc prnSc) {}
+	void fLangAstVisitor::visit(sp<fImport> n, esc prnSc) {
 		std::cout << "Visiting Import: " << n->toString() << std::endl;
 	}
-	// void fLangAstVisitor::visit(sp<fLiteral> n, esc s) {}
-	void fLangAstVisitor::visit(sp<fLocalModifier> n, esc s) {
+	// void fLangAstVisitor::visit(sp<fLiteral> n, esc prnSc) {}
+	void fLangAstVisitor::visit(sp<fLocalModifier> n, esc prnSc) {
 		std::cout << "Visiting Local Modifier: " << n->toString() << std::endl;
 	}
-	void fLangAstVisitor::visit(sp<fModifier> n, esc s) {
+	void fLangAstVisitor::visit(sp<fModifier> n, esc prnSc) {
 		std::cout << "Visiting Modifier: " << n->toString() << std::endl;
 	}
-	void fLangAstVisitor::visit(sp<fModifiers> n, esc s) {
+	void fLangAstVisitor::visit(sp<fModifiers> n, esc prnSc) {
 		std::cout << "Visiting Modifiers" << std::endl;
 		if (n->getAccessModifier()) {
 			std::cout << "Visiting Access Modifier in Modifiers" << std::endl;
-			n->getAccessModifier()->accept(shared_from_this(), s);
+			n->getAccessModifier()->accept(shared_from_this(), prnSc);
 		}
 		if (n->getOverrideModifier()) {
 			std::cout << "Visiting Override Modifier in Modifiers" << std::endl;
-			n->getOverrideModifier()->accept(shared_from_this(), s);
+			n->getOverrideModifier()->accept(shared_from_this(), prnSc);
 		}
 		if (n->getLocalModifier()) {
 			std::cout << "Visiting Local Modifier in Modifiers" << std::endl;
-			n->getLocalModifier()->accept(shared_from_this(), s);
+			n->getLocalModifier()->accept(shared_from_this(), prnSc);
 		}
 	}
-	void fLangAstVisitor::visit(sp<fNamedFun> n, esc s) {
+	void fLangAstVisitor::visit(sp<fNamedFun> n, esc prnSc) {
 		std::cout << "Visiting Named Function: " << n->getFunSig()->getFunName()->toString() << std::endl;
-		n->getFunSig()->accept(shared_from_this(), s);
+		n->getFunSig()->accept(shared_from_this(), prnSc);
 		std::cout << "Visiting Named Function Body" << std::endl;
-		n->getFunBody()->accept(shared_from_this(), s);
+		n->getFunBody()->accept(shared_from_this(), prnSc);
 	}
 
-	void fLangAstVisitor::visit(sp<fObject> n, esc s) {
+	void fLangAstVisitor::visit(sp<fObject> n, esc prnSc) {
 		if (n->isCaseClass()) {
 			std::cout << "Visiting Case Class: " << n->getObjectName()->toString()  << std::endl;
 		} else {
 			std::cout << "Visiting Class: " << n->getObjectName()->toString() << std::endl;
 		}
 		if (n->getModifiers()) {
-			n->getModifiers()->accept(shared_from_this(), s);
+			n->getModifiers()->accept(shared_from_this(), prnSc);
 		}
 		if (n->getExtendsTemplate()) {
-			n->getExtendsTemplate()->accept(shared_from_this(), s);
+			n->getExtendsTemplate()->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fOverrideModifier> n, esc s) {
+	void fLangAstVisitor::visit(sp<fOverrideModifier> n, esc prnSc) {
 		std::cout << "Visiting Override Modifier: " << n->toString() << std::endl;
 	}
 
-	void fLangAstVisitor::visit(sp<fPackage> n, esc s) {
+	void fLangAstVisitor::visit(sp<fPackage> n, esc prnSc) {
 		std::cout << "Visiting Package: " << n->toString() << std::endl;
 	}
 
-	void fLangAstVisitor::visit(sp<fParam> n, esc s) {
+	void fLangAstVisitor::visit(sp<fParam> n, esc prnSc) {
 		std::cout << "Visiting Parameter: " << n->getIdentifier()->toString() << std::endl;
 		 sp<fAstProdSubTreeN> assignExpr = n->getDefaultValue();
 		if (assignExpr != nullptr) {
 			std::cout << "Visiting assignment expression for parameter" << std::endl;
-			assignExpr->accept(shared_from_this(), s);
+			assignExpr->accept(shared_from_this(), prnSc);
 		}
 	}
-	void fLangAstVisitor::visit(sp<fParamClauses> n, esc s) {
+	void fLangAstVisitor::visit(sp<fParamClauses> n, esc prnSc) {
 		std::cout << "Visiting Parameter Clauses" << std::endl;
 		for (auto paramV : n->getParams()) {
 			for (auto param : paramV) {
 				std::cout << "Visiting Parameter Clause" << std::endl;
-				param->accept(shared_from_this(), s);
+				param->accept(shared_from_this(), prnSc);
 			}
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fParamType> n, esc s) {
+	void fLangAstVisitor::visit(sp<fParamType> n, esc prnSc) {
 		std::cout << "Visiting Parameter Type" << std::endl;
 		if (n->getType()) {
-			n->getType()->accept(shared_from_this(), s);
+			n->getType()->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fParamTypes> n, esc s) {
+	void fLangAstVisitor::visit(sp<fParamTypes> n, esc prnSc) {
 		std::cout << "Visiting Parameter Types" << std::endl;
 
 		if (n->getParamTypes()) {
 			for (auto ptp : *n->getParamTypes().get()) {
-				ptp->accept(shared_from_this(), s);
+				ptp->accept(shared_from_this(), prnSc);
 			}
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fReturn> n, esc s) {
+	void fLangAstVisitor::visit(sp<fReturn> n, esc prnSc) {
 		std::cout << "Visiting Return Statement" << std::endl;
 		if (n->getReturnExpr()) {
 			std::cout << "Visiting Return Expression" << std::endl;
-			n->getReturnExpr()->accept(shared_from_this(), s);
+			n->getReturnExpr()->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fTemplate> n, esc s) {
+	void fLangAstVisitor::visit(sp<fTemplate> n, esc prnSc) {
 		std::cout << "Visiting Template" << std::endl;
 		if (n->getTemplateBody()) {
 			std::cout << "Visiting Template Body of Template" << std::endl;
-			 n->getTemplateBody()->accept(shared_from_this(), s);
+			 n->getTemplateBody()->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fTemplateBody> n, esc s) {
+	void fLangAstVisitor::visit(sp<fTemplateBody> n, esc prnSc) {
 		std::cout << "Visiting Template Body" << std::endl;
 		for (const auto& stmt : n->getStmts()) {
-			stmt->accept(shared_from_this(), s);
+			stmt->accept(shared_from_this(), prnSc);
 		}
 	}
-	void fLangAstVisitor::visit(sp<fThisFun> n, esc s) {
+	void fLangAstVisitor::visit(sp<fThisFun> n, esc prnSc) {
 		std::cout << "Visiting This Function" << std::endl;
 		if (n->getParamClauses()) {
 			std::cout << "Visiting Parameter Clauses of This Function" << std::endl;
-			n->getParamClauses()->accept(shared_from_this(), s);
+			n->getParamClauses()->accept(shared_from_this(), prnSc);
 		}
 		if (n->getConstrBlock()) {
 			std::cout << "Visiting Constructor Block of This Function" << std::endl;
-			n->getConstrBlock()->accept(shared_from_this(), s);
+			n->getConstrBlock()->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fThrow> n, esc s) {
+	void fLangAstVisitor::visit(sp<fThrow> n, esc prnSc) {
 		std::cout << "Visiting Throw" << std::endl;
 		if (n->getThrowExpr()) {
-			n->getThrowExpr()->accept(shared_from_this(), s);
+			n->getThrowExpr()->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fTraitDef> n, esc s) {
+	void fLangAstVisitor::visit(sp<fTraitDef> n, esc prnSc) {
 		std::cout << "Visiting Trait Definition: " << n->getName()->toString() << std::endl;
 		if (n->getExtendsTemplate()) {
 			std::cout << "Visiting extends template of trait definition" << std::endl;
-			n->getExtendsTemplate()->accept(shared_from_this(), s);
+			n->getExtendsTemplate()->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fTry> n, esc s) {
+	void fLangAstVisitor::visit(sp<fTry> n, esc prnSc) {
 		std::cout << "Visiting Try Block" << std::endl;
-		n->getTryBlock()->accept(shared_from_this(), s);
+		n->getTryBlock()->accept(shared_from_this(), prnSc);
 		// for (const auto& catchClause : n->getCatchClauses()) {
 		// 	std::cout << "Visiting Catch Clause" << std::endl;
-		// 	catchClause->accept(shared_from_this(), s);
+		// 	catchClause->accept(shared_from_this(), prnSc);
 		// }
 		if (n->getFinallyBlock()) {
 			std::cout << "Visiting Finally Block" << std::endl;
-			n->getFinallyBlock()->accept(shared_from_this(), s);
+			n->getFinallyBlock()->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fTypeArgs> n, esc s) {
+	void fLangAstVisitor::visit(sp<fTypeArgs> n, esc prnSc) {
 		std::cout << "Visiting Type Arguments" << std::endl;
 		for (const auto& typeArg : n->getTypeArgs()) {
-			typeArg->accept(shared_from_this(), s);
+			typeArg->accept(shared_from_this(), prnSc);
 		}
 	}
-	void fLangAstVisitor::visit(sp<fTypeDef> n, esc s) {
+	void fLangAstVisitor::visit(sp<fTypeDef> n, esc prnSc) {
 		std::cout << "Visiting Type Definition: " << n->getTypeDefName()->toString() << std::endl;
 		if (n->getAssignedType()) {
 			std::cout << "Visiting Assigned Type of Type Definition" << std::endl;
-			 n->getAssignedType()->accept(shared_from_this(), s);
+			 n->getAssignedType()->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fTypeParam> n, esc s) {
+	void fLangAstVisitor::visit(sp<fTypeParam> n, esc prnSc) {
 		std::cout << "Visiting Type Parameter: " << n->getTypeParamName()->toString() << std::endl;
 		// if (n->getTypeBound()) {
 		// 	std::cout << "Visiting Type Bound for Type Parameter" << std::endl;
-		// 	n->getTypeBound()->accept(shared_from_this(), s);
+		// 	n->getTypeBound()->accept(shared_from_this(), prnSc);
 		// }
 	}
 
-	void fLangAstVisitor::visit(sp<fUnderscore> n, esc s) {
+	void fLangAstVisitor::visit(sp<fUnderscore> n, esc prnSc) {
 		std::cout << "Visiting Underscore" << std::endl;
 	}
 
-	void fLangAstVisitor::visit(sp<fValue> n, esc s) {
+	void fLangAstVisitor::visit(sp<fValue> n, esc prnSc) {
 		// std::cout << "Visiting Value: " << n->getName()->toString() << std::endl;
 		 sp<fAstProdSubTreeN> assignExpr = n->getAssignExpr();
 		if (assignExpr != nullptr) {
 			std::cout << "Visiting assignment expression for value" << std::endl;
-			assignExpr->accept(shared_from_this(), s);
+			assignExpr->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fValueDecl> n, esc s) {
+	void fLangAstVisitor::visit(sp<fValueDecl> n, esc prnSc) {
 		std::cout << "Visiting Value Declaration: " << std::endl;
 
 		for (auto name: n->getNames()) {
 			std::cout << "Visiting name of value declaration" << std::endl;
-			name->accept(shared_from_this(), s);
+			name->accept(shared_from_this(), prnSc);
 		}
 
 		if (n->getType()) {
 			std::cout << "Visiting Type of Value Declaration" << std::endl;
-			n->getType()->accept(shared_from_this(), s);
+			n->getType()->accept(shared_from_this(), prnSc);
 		}
 
 		 sp<fAstProdSubTreeN> assignExpr = n->getAssignExpr();
 		if (assignExpr != nullptr) {
 			std::cout << "Visiting assignment expression for value declaration" << std::endl;
-			assignExpr->accept(shared_from_this(), s);
+			assignExpr->accept(shared_from_this(), prnSc);
 		}
 	}
 
-	void fLangAstVisitor::visit(sp<fVariantTypeParam> n, esc s) {
+	void fLangAstVisitor::visit(sp<fVariantTypeParam> n, esc prnSc) {
 		std::cout << "Visiting Variant Type Parameter: " << n->getTypeParamName()->toString() << std::endl;
 		// if (n->getTypeBound()) {
 		// 	std::cout << "Visiting Type Bound for Variant Type Parameter" << std::endl;
-		// 	n->getTypeBound()->accept(shared_from_this(), s);
+		// 	n->getTypeBound()->accept(shared_from_this(), prnSc);
 		// }
 	}
 
@@ -518,9 +523,9 @@ namespace zebra::ast::tree {
 
 	// static sp<std::stack<sp<fLangTrBranch>>> lbrSS_;
 
-	void fLangAstVisitor::visit(sp<fAstProdSubTreeN> subTr,  esc s) {
+	void fLangAstVisitor::visit(sp<fAstProdSubTreeN> subTr,  esc prnSc) {
 
-		s->setLbrSS(nullptr);
+		prnSc->setLbrSS(nullptr);
 
 		std::cout << subTr->toString() << std::endl;
 		std::stack<sp<fAstStackItem>> ss;
@@ -572,25 +577,25 @@ namespace zebra::ast::tree {
 			}
 
 			ss.pop();
-			currNode->accept(shared_from_this(), s);
+			currNode->accept(shared_from_this(), prnSc);
 			sp<fAstOprndNod> oprn = std::dynamic_pointer_cast<fAstOprndNod>(currNode);
 			if (oprn) {
-				if (!s->getLbrSS()) {
-					s->setLbrSS(ms<std::stack<sp<fLangTrBranch>>>());
-					s->getLbrSS()->push(ms<fLangTrBranch>(oprn));
+				if (!prnSc->getLbrSS()) {
+					prnSc->setLbrSS(ms<std::stack<sp<fLangTrBranch>>>());
+					prnSc->getLbrSS()->push(ms<fLangTrBranch>(oprn));
 				} else {
-					s->getLbrSS()->top()->setRight(oprn);
+					prnSc->getLbrSS()->top()->setRight(oprn);
 				}
 			}
 			else {
-				if (s->getLbrSS().get()->size() == 0) {
+				if (prnSc->getLbrSS().get()->size() == 0) {
 					throw std::runtime_error("Operator node expected to have a parent operator node in AST traversal");
 				}
-				sp<fLangTrBranch> top = s->getLbrSS()->top();
+				sp<fLangTrBranch> top = prnSc->getLbrSS()->top();
 				top->setOptr(std::dynamic_pointer_cast<fAstOptrNod>(currNode));
-				if (s->getLbrSS()->size() > 1) {
-					s->getLbrSS()->pop();
-					s->getLbrSS()->top()->setRight(top);
+				if (prnSc->getLbrSS()->size() > 1) {
+					prnSc->getLbrSS()->pop();
+					prnSc->getLbrSS()->top()->setRight(top);
 				}
 			}
 		}
@@ -598,12 +603,12 @@ namespace zebra::ast::tree {
 	}
 
 
-	void  fLangAstVisitor::visit(sp<fAstOptrNod> n, esc s)  {
+	void  fLangAstVisitor::visit(sp<fAstOptrNod> n, esc prnSc)  {
 		assert(n != nullptr);
 		std::cout << "Operator: " << n->toString() << std::endl;
 	}
 
-	void  fLangAstVisitor::visit(sp<fAstOprndNod> n, esc s)  {
+	void  fLangAstVisitor::visit(sp<fAstOprndNod> n, esc prnSc)  {
 		assert(n != nullptr && n->getAstLeftN() == nullptr && n->getAstRightN() == nullptr);
 		std::cout << "Operand: " << n->toString() << std::endl;
 	}

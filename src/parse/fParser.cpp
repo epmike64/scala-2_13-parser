@@ -1561,7 +1561,7 @@ namespace zebra::parse {
 		}
 		switch(*h.tKnd()){
 			case fTKnd::T_PRIVATE_E: case fTKnd::T_PROTECTED_E: {
-				cls->setConstructorAccessModifier(accessModifier());
+				cls->setConstrAccessModifier(accessModifier());
 				break;
 			}
 			default:

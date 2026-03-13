@@ -15,12 +15,14 @@ namespace zebra::ast::leaf {
 	class fClassDef : public fTraitDef {
 		const bool isCaseClass_;
 		sp<fClassParamClauses> classParamClauses_;
-		sp<fAccessModifier> constructorAccessModifier_;
+		sp<fAccessModifier> constrAccessModifier_;
 
 	public:
 		fClassDef(const fToken *className, sp<fModifiers> &&modifiers, bool isCaseClass) ;
 
-		void setConstructorAccessModifier(sp<fAccessModifier> &&constructorAccessModifier);
+		void setConstrAccessModifier(sp<fAccessModifier> &&constrAccessModifier);
+
+		sp<fAccessModifier> getConstrAccessModifier();
 
 		void setClassParamClauses(sp<fClassParamClauses> &&classParamClauses);
 
