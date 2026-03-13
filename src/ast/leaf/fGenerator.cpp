@@ -64,8 +64,8 @@ namespace zebra::ast::leaf {
 	}
 
 
-	void fGenerator::accept(std::shared_ptr<fAstNodVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<fGenerator>(shared_from_this()));
+	void fGenerator::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+		visitor->visit(std::static_pointer_cast<fGenerator>(shared_from_this()), s);
 	}
 
 	std::string fGenerator::toString() const {

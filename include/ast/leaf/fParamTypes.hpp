@@ -16,7 +16,7 @@ namespace zebra::ast::leaf {
 		fParamTypes(sp<std::vector<sp<fParamType>>> &&paramTypes);
 		 sp<std::vector<sp<fParamType>>> getParamTypes() const ;
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, EnclsScope s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
 	};
 }

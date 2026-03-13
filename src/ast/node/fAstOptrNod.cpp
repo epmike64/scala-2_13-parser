@@ -33,8 +33,8 @@ namespace zebra::ast::node {
 		astRightN->setAstParentN(shared_from_this());
 	}
 
-	void fAstOptrNod::accept(std::shared_ptr<fAstNodVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<fAstOptrNod>(shared_from_this()));
+	void fAstOptrNod::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+		visitor->visit(std::static_pointer_cast<fAstOptrNod>(shared_from_this()), s);
 	}
 
 	std::string fAstOptrNod::toString() const {

@@ -28,7 +28,7 @@ namespace zebra::ast::leaf {
 		sp<fAstProdSubTreeN> getYieldExpr() const;
 
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, EnclsScope s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 
 		std::string toString() const override;
 	};

@@ -6,8 +6,8 @@ namespace zebra::ast::leaf {
 	fValueDef::fValueDef(sp<fModifiers> &&modifiers) : fValue(std::move(modifiers)) {}
 
 
-	void fValueDef::accept(std::shared_ptr<fAstNodVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<fValueDef>(shared_from_this()));
+	void fValueDef::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+		visitor->visit(std::static_pointer_cast<fValueDef>(shared_from_this()), s);
 	}
 
 	std::string fValueDef::toString() const {

@@ -13,7 +13,7 @@ namespace zebra::ast::leaf {
 
 		fValueDecl(sp<fModifiers> &&modifiers) ;
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
 	};
 }

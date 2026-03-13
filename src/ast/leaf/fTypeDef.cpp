@@ -32,8 +32,8 @@ namespace zebra::ast::leaf {
 	}
 
 
-	void fTypeDef::accept(std::shared_ptr<fAstNodVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<fTypeDef>(shared_from_this()));
+	void fTypeDef::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+		visitor->visit(std::static_pointer_cast<fTypeDef>(shared_from_this()), s);
 	}
 
 	std::string fTypeDef::toString() const {

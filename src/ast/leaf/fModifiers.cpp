@@ -28,8 +28,8 @@ namespace zebra::ast::leaf {
 		return localModifier_;
 	}
 
-	void fModifiers::accept(std::shared_ptr<fAstNodVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<fModifiers>(shared_from_this()));
+	void fModifiers::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+		visitor->visit(std::static_pointer_cast<fModifiers>(shared_from_this()), s);
 	}
 
 	std::string fModifiers::toString() const {

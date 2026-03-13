@@ -22,8 +22,8 @@ namespace zebra::ast::leaf {
 	}
 
 
-	void fWhile::accept(std::shared_ptr<fAstNodVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<fWhile>(shared_from_this()));
+	void fWhile::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+		visitor->visit(std::static_pointer_cast<fWhile>(shared_from_this()), s);
 	}
 
 	std::string fWhile::toString() const {

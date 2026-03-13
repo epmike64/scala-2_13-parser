@@ -4,7 +4,7 @@
 #include "fAstNodKndE.hpp"
 #include <memory>
 
-#include "EnclsScope.hpp"
+#include "esc.hpp"
 #include "fAstProdSubTreeN.hpp"
 #include "ast/leaf/fIf.hpp"
 #include "util/fCommon.hpp"
@@ -82,62 +82,62 @@ namespace zebra::ast::node {
 	public:
 		~fAstNodVisitor() = default;
 		virtual  void visit() = 0; // Entry point for visiting the AST
-		virtual void visit(sp<fAstOptrNod>, EnclsScope) = 0;
-		virtual void visit(sp<fAstOprndNod>, EnclsScope)  = 0;
-		virtual void visit(sp<fAstProdSubTreeN>, EnclsScope)  = 0;
+		virtual void visit(sp<fAstOptrNod>, esc)= 0;
+		virtual void visit(sp<fAstOprndNod>, esc) = 0;
+		virtual void visit(sp<fAstProdSubTreeN>, esc) = 0;
 
 		// Leaf node visit methods
 
-		virtual void visit(sp<fAccessModifier>, EnclsScope)  = 0;
-		virtual void visit(sp<fAccessQualifier>, EnclsScope)  = 0;
-		virtual void visit(sp<fBlock>, EnclsScope)  = 0;
-		virtual void visit(sp<fCaseClause>, EnclsScope)  = 0;
-		virtual void visit(sp<fCaseClauses>, EnclsScope)  = 0;
-		virtual void visit(sp<fClassConstr>, EnclsScope)  = 0;
-		virtual void visit(sp<fClassDef>, EnclsScope)  = 0;
-		virtual void visit(sp<fClassParam>, EnclsScope)  = 0;
-		virtual void visit(sp<fClassParamClauses>, EnclsScope)  = 0;
-		virtual void visit(sp<fClassParents>, EnclsScope)  = 0;
-		virtual void visit(sp<fClassTemplate>, EnclsScope)  = 0;
-		virtual void visit(sp<fCompileUnit>, EnclsScope)  = 0;
-		virtual void visit(sp<fConstrBlock>, EnclsScope)  = 0;
-		virtual void visit(sp<fFor>, EnclsScope)  = 0;
-		virtual void visit(sp<fFun>, EnclsScope)  = 0;
-		virtual void visit(sp<fFunSig>, EnclsScope)  = 0;
-		virtual void visit(sp<fGenerator>, EnclsScope)  = 0;
-		virtual void visit(sp<fId>, EnclsScope)  = 0;
-		virtual void visit(sp<fIds>, EnclsScope)  = 0;
-		virtual void visit(sp<fIf>, EnclsScope)  = 0;
-		virtual void visit(sp<fImport>, EnclsScope)  = 0;
-		virtual void visit(sp<fLiteral>, EnclsScope)  = 0;
-		virtual void visit(sp<fLocalModifier>, EnclsScope)  = 0;
-		virtual void visit(sp<fModifier>, EnclsScope)  = 0;
-		virtual void visit(sp<fModifiers>, EnclsScope)  = 0;
-		virtual void visit(sp<fNamedFun>, EnclsScope)  = 0;
-		virtual void visit(sp<fObject>, EnclsScope)  = 0;
-		virtual void visit(sp<fOverrideModifier>, EnclsScope)  = 0;
-		virtual void visit(sp<fPackage>, EnclsScope)  = 0;
-		virtual void visit(sp<fParam>, EnclsScope)  = 0;
-		virtual void visit(sp<fParamClauses>, EnclsScope)  = 0;
-		virtual void visit(sp<fParamType>, EnclsScope)  = 0;
-		virtual void visit(sp<fParamTypes>, EnclsScope)  = 0;
-		virtual void visit(sp<fReturn>, EnclsScope)  = 0;
-		virtual void visit(sp<fStableId>, EnclsScope)  = 0;
-		virtual void visit(sp<fTemplate>, EnclsScope)  = 0;
-		virtual void visit(sp<fTemplateBody>, EnclsScope)  = 0;
-		virtual void visit(sp<fThisFun>, EnclsScope)  = 0;
-		virtual void visit(sp<fThrow>, EnclsScope)  = 0;
-		virtual void visit(sp<fTraitDef>, EnclsScope)  = 0;
-		virtual void visit(sp<fTry>, EnclsScope)  = 0;
-		virtual void visit(sp<fType>, EnclsScope)  = 0;
-		virtual void visit(sp<fTypeArgs>, EnclsScope)  = 0;
-		virtual void visit(sp<fTypeDef>, EnclsScope)  = 0;
-		virtual void visit(sp<fTypeParam>, EnclsScope)  = 0;
-		virtual void visit(sp<fUnderscore>, EnclsScope)  = 0;
-		virtual void visit(sp<fValue>, EnclsScope)  = 0;
-		virtual void visit(sp<fValueDecl>, EnclsScope)  = 0;
-		virtual void visit(sp<fValueDef>, EnclsScope)  = 0;
-		virtual void visit(sp<fVariantTypeParam>, EnclsScope)  = 0;
-		virtual void visit(sp<fWhile>, EnclsScope)  = 0;
+		virtual void visit(sp<fAccessModifier>, esc) = 0;
+		virtual void visit(sp<fAccessQualifier>, esc) = 0;
+		virtual void visit(sp<fBlock>, esc) = 0;
+		virtual void visit(sp<fCaseClause>, esc) = 0;
+		virtual void visit(sp<fCaseClauses>, esc) = 0;
+		virtual void visit(sp<fClassConstr>, esc) = 0;
+		virtual void visit(sp<fClassDef>, esc) = 0;
+		virtual void visit(sp<fClassParam>, esc) = 0;
+		virtual void visit(sp<fClassParamClauses>, esc) = 0;
+		virtual void visit(sp<fClassParents>, esc) = 0;
+		virtual void visit(sp<fClassTemplate>, esc) = 0;
+		virtual void visit(sp<fCompileUnit>, esc) = 0;
+		virtual void visit(sp<fConstrBlock>, esc) = 0;
+		virtual void visit(sp<fFor>, esc) = 0;
+		virtual void visit(sp<fFun>, esc) = 0;
+		virtual void visit(sp<fFunSig>, esc) = 0;
+		virtual void visit(sp<fGenerator>, esc) = 0;
+		virtual void visit(sp<fId>, esc) = 0;
+		virtual void visit(sp<fIds>, esc) = 0;
+		virtual void visit(sp<fIf>, esc) = 0;
+		virtual void visit(sp<fImport>, esc) = 0;
+		virtual void visit(sp<fLiteral>, esc) = 0;
+		virtual void visit(sp<fLocalModifier>, esc) = 0;
+		virtual void visit(sp<fModifier>, esc) = 0;
+		virtual void visit(sp<fModifiers>, esc) = 0;
+		virtual void visit(sp<fNamedFun>, esc) = 0;
+		virtual void visit(sp<fObject>, esc) = 0;
+		virtual void visit(sp<fOverrideModifier>, esc) = 0;
+		virtual void visit(sp<fPackage>, esc) = 0;
+		virtual void visit(sp<fParam>, esc) = 0;
+		virtual void visit(sp<fParamClauses>, esc) = 0;
+		virtual void visit(sp<fParamType>, esc) = 0;
+		virtual void visit(sp<fParamTypes>, esc) = 0;
+		virtual void visit(sp<fReturn>, esc) = 0;
+		virtual void visit(sp<fStableId>, esc) = 0;
+		virtual void visit(sp<fTemplate>, esc) = 0;
+		virtual void visit(sp<fTemplateBody>, esc) = 0;
+		virtual void visit(sp<fThisFun>, esc) = 0;
+		virtual void visit(sp<fThrow>, esc) = 0;
+		virtual void visit(sp<fTraitDef>, esc) = 0;
+		virtual void visit(sp<fTry>, esc) = 0;
+		virtual void visit(sp<fType>, esc) = 0;
+		virtual void visit(sp<fTypeArgs>, esc) = 0;
+		virtual void visit(sp<fTypeDef>, esc) = 0;
+		virtual void visit(sp<fTypeParam>, esc) = 0;
+		virtual void visit(sp<fUnderscore>, esc) = 0;
+		virtual void visit(sp<fValue>, esc) = 0;
+		virtual void visit(sp<fValueDecl>, esc) = 0;
+		virtual void visit(sp<fValueDef>, esc) = 0;
+		virtual void visit(sp<fVariantTypeParam>, esc) = 0;
+		virtual void visit(sp<fWhile>, esc) = 0;
 	};
 }

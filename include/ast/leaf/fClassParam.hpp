@@ -35,7 +35,7 @@ namespace zebra::ast::leaf {
 		sp<fAstProdSubTreeN> getDefaultValueExpr() const;
 		sp<fModifiers> getModifiers() const;
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, EnclsScope s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 
 		std::string toString() const override;
 	};

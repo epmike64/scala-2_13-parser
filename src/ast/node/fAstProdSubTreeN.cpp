@@ -3,8 +3,8 @@
 
 namespace zebra::ast::node {
 
-	void fAstProdSubTreeN::accept(sp<fAstNodVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<fAstProdSubTreeN>(shared_from_this()));
+	void fAstProdSubTreeN::accept(sp<fAstNodVisitor> visitor, esc s) {
+		visitor->visit(std::static_pointer_cast<fAstProdSubTreeN>(shared_from_this()), s);
 	}
 
 	std::string fAstProdSubTreeN::toString() const

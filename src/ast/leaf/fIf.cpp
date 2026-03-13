@@ -16,8 +16,8 @@ namespace zebra::ast::leaf {
 	}
 
 
-	void fIf::accept(std::shared_ptr<fAstNodVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<fIf>(shared_from_this()));
+	void fIf::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+		visitor->visit(std::static_pointer_cast<fIf>(shared_from_this()), s);
 	}
 
 	std::string fIf::toString() const {

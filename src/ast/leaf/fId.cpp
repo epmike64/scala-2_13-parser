@@ -5,8 +5,8 @@
 
 namespace zebra::ast::leaf {
 	
-	void fId::accept(std::shared_ptr<fAstNodVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<fId>(shared_from_this()));
+	void fId::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s), esc s) {
+		visitor->visit(std::static_pointer_cast<fId>(shared_from_this()), s);
 	}
 
 	std::string fId::toString() const {

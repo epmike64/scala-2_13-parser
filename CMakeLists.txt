@@ -174,7 +174,6 @@ add_executable(zebra-4-backend
 		src/ast/tree/fLangAstVisitor.cpp
 		include/ast/tree/fLangTree.hpp
 		src/ast/tree/fLangTree.cpp
-		include/ast/node/EnclsScope.hpp
 
 
 )

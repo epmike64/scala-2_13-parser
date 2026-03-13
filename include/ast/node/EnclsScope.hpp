@@ -1,10 +1,18 @@
 #pragma once
 
+#include <memory>
+
 namespace zebra::ast::node {
 
-	class EnclsScope {
+
+	class EnclosingScope {
 		public:
-		EnclsScope() {}
-		~EnclsScope() {}
+		EnclosingScope() = default;
+		virtual ~EnclosingScope() = default;
 	};
+
+	using esc = std::shared_ptr<EnclosingScope>;
+
+
+	//esc
 }

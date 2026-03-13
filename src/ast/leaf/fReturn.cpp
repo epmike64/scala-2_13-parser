@@ -13,8 +13,8 @@ namespace zebra::ast::leaf {
 		return returnExpr_;
 	}
 
-	void fReturn::accept(std::shared_ptr<fAstNodVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<fReturn>(shared_from_this()));
+	void fReturn::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+		visitor->visit(std::static_pointer_cast<fReturn>(shared_from_this()), s);
 	}
 
 	std::string fReturn::toString() const {

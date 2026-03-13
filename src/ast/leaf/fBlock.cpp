@@ -14,8 +14,8 @@ namespace zebra::ast::leaf {
 
 	std::vector<sp<fAstNod>>& fBlock::getStmts() { return _stmts; }
 
-	void fBlock::accept(std::shared_ptr<fAstNodVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<fBlock>(shared_from_this()));
+	void fBlock::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+		visitor->visit(std::static_pointer_cast<fBlock>(shared_from_this()), s);
 	}
 
 	std::string fBlock::toString() const {

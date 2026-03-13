@@ -7,8 +7,8 @@ namespace zebra::ast::leaf {
 
 	fOverrideModifier::fOverrideModifier() : fModifier(lex::kind::fLangModifierTypeE::OVERRIDE) {}
 
-	void fOverrideModifier::accept(std::shared_ptr<fAstNodVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<fOverrideModifier>(shared_from_this()));
+	void fOverrideModifier::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+		visitor->visit(std::static_pointer_cast<fOverrideModifier>(shared_from_this()), s);
 	}
 
 	std::string fOverrideModifier::toString() const {

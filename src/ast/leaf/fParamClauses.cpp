@@ -21,8 +21,8 @@ namespace zebra::ast::leaf {
 		return implicitParams_;
 	}
 
-	void fParamClauses::accept(std::shared_ptr<fAstNodVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<fParamClauses>(shared_from_this()));
+	void fParamClauses::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+		visitor->visit(std::static_pointer_cast<fParamClauses>(shared_from_this()), s);
 	}
 
 	std::string fParamClauses::toString() const {

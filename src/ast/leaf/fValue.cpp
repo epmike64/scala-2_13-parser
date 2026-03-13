@@ -40,8 +40,8 @@ namespace zebra::ast::leaf {
 	}
 
 
-	void fValue::accept(std::shared_ptr<fAstNodVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<fValue>(shared_from_this()));
+	void fValue::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+		visitor->visit(std::static_pointer_cast<fValue>(shared_from_this()), s);
 	}
 
 	std::string fValue::toString() const {
