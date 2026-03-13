@@ -39,7 +39,7 @@ namespace zebra::ast::tree {
 
 	void fLangAstVisitor::visit() {
 		std::cout << "Visitor starts" << std::endl;
-		esc s = ms<EnclosingScope>();
+		esc s = ms<EnclosingScope>(nullptr, fLangGrmrProdE::COMPILATION_UNIT);
 		compileUnit_->accept(shared_from_this(), s);
 	}
 

@@ -12,14 +12,15 @@ namespace zebra::ast::node {
 
 
 	class EnclosingScope {
-		esc parentScope_;
+		const esc parentScope_;
+		const fLangGrmrProdE parentScopeGrmrProd_;
 		sp<std::stack<util::sp<fLangTrBranch>>> lbrSS_;
-		public:
-		EnclosingScope() = default;
-		virtual ~EnclosingScope() = default;
+	public:
+		EnclosingScope(esc parentScope, fLangGrmrProdE parentScopeGrmrProd);
+		esc getParentScope() const;
 
-		void setParentScope(esc parentScope);
-		esc getParentScope();
+		fLangGrmrProdE getParentScopeGrmrProd() const;
+
 		void setLbrSS(sp<std::stack<sp<fLangTrBranch>>>&& lbrSS) ;
 		sp<std::stack<sp<fLangTrBranch>>> getLbrSS() const ;
 

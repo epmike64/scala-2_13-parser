@@ -2,10 +2,14 @@
 
 namespace zebra::ast::node {
 
-	void EnclosingScope::setParentScope(esc parentScope) {
-		parentScope_ = parentScope;
+	EnclosingScope::EnclosingScope(esc parentScope, fLangGrmrProdE parentScopeGrmrProd)
+	: parentScope_(std::move(parentScope)), parentScopeGrmrProd_(parentScopeGrmrProd) {}
+
+	fLangGrmrProdE EnclosingScope::getParentScopeGrmrProd() const {
+		return parentScopeGrmrProd_;
 	}
-	esc EnclosingScope::getParentScope() {
+
+	esc EnclosingScope::getParentScope() const {
 		return parentScope_;
 	}
 
