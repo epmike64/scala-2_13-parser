@@ -1,7 +1,7 @@
 #pragma once
 
 #include "fModifier.hpp"
-#include "ast/node/EnclsScope.hpp"
+#include "ast/node/EnclosingScope.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"

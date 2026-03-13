@@ -19,6 +19,7 @@ add_executable(zebra-4-backend
 		include/ast/node/fAstOptrNod.hpp
 		include/ast/node/fAstProdSubTreeN.hpp
 		include/ast/node/fAstRootOptrNod.hpp
+		include/ast/node/EnclosingScope.hpp
 
 		include/lex/util/fUtil.hpp
 		include/lex/util/fTBuffer.hpp
@@ -174,6 +175,7 @@ add_executable(zebra-4-backend
 		src/ast/tree/fLangAstVisitor.cpp
 		include/ast/tree/fLangTree.hpp
 		src/ast/tree/fLangTree.cpp
+		src/ast/node/EnclosingScope.cpp
 
 
 )
