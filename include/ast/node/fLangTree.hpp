@@ -6,9 +6,7 @@
 #include "util/fCommon.hpp"
 
 
-namespace zebra::ast::tree {
-
-	using namespace ast::node;
+namespace zebra::ast::node {
 
 	class fLangTree {
 	public:

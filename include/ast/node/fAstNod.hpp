@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 
-#include "EnclosingScope.hpp"
+#include "EnclsScopeFwd.hpp"
 
 #include "ast/node/fAstNodKndE.hpp"
 

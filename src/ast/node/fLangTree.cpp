@@ -1,6 +1,6 @@
-#include "ast/tree/fLangTree.hpp"
+#include "ast/node/fLangTree.hpp"
 
-namespace zebra::ast::tree {
+namespace zebra::ast::node {
 
 	fLangTrBranch::fLangTrBranch(const sp<fAstOprndNod> &left){
 		if (left == nullptr) {

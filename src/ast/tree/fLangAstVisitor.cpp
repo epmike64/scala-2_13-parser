@@ -31,7 +31,7 @@
 #include "ast/leaf/fTypeParam.hpp"
 #include "ast/leaf/fValueDecl.hpp"
 #include "ast/leaf/fVariantTypeParam.hpp"
-#include "ast/tree/fLangTree.hpp"
+#include "ast/node/fLangTree.hpp"
 
 namespace zebra::ast::tree {
 

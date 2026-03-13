@@ -9,4 +9,12 @@ namespace zebra::ast::node {
 		return parentScope_;
 	}
 
+	void EnclosingScope::setLbrSS(sp<std::stack<sp<fLangTrBranch>>>&& lbrSS) {
+		this->lbrSS_ = std::move(lbrSS);
+	}
+
+	sp<std::stack<sp<fLangTrBranch>>> EnclosingScope::getLbrSS() const {
+		return lbrSS_;
+	}
+
 }
