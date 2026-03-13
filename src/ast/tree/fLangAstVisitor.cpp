@@ -1,6 +1,7 @@
 
 #include "ast/tree/fLangAstVisitor.hpp"
 
+#include <iostream>
 #include <stack>
 
 #include "ast/leaf/fAccessQualifier.hpp"

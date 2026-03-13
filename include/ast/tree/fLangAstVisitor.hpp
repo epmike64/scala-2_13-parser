@@ -1,15 +1,9 @@
 
 #pragma once
 
-#include <iostream>
-
 #include "../node/fAstNod.hpp"
-#include "../node/fAstNodKndE.hpp"
 
 #include <memory>
-#include <stack>
-#include <stdexcept>
-#include <typeinfo>
 
 #include "../node/fAstNodVisitor.hpp"
 #include "ast/leaf/fCompileUnit.hpp"
@@ -44,7 +38,7 @@ namespace zebra::ast::tree {
 		sp<fAstNod> getAstPSTreeRightN(sp<fAstProdSubTreeN> subTree);
 
 	public:
-		explicit fLangAstVisitor(sp<fCompileUnit> cu, esc) : compileUnit_(cu){}
+		explicit fLangAstVisitor(sp<fCompileUnit> cu) : compileUnit_(cu){}
 		void visit() override;
 		void visit(sp<fCompileUnit>, esc) override;
 		//
