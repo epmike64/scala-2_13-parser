@@ -177,8 +177,6 @@ add_executable(zebra-4-backend
 		src/ast/node/fLangTree.cpp
 		src/ast/node/EnclosingScope.cpp
 		include/ast/node/EnclsScopeFwd.hpp
-
-
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE
