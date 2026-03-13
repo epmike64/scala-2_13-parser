@@ -1966,7 +1966,7 @@ namespace zebra::parse {
 				switch (*h.tKnd()) {
 					case fTKnd::T_CASE_E: case fTKnd::T_CLASS_E: case fTKnd::T_OBJECT_E: case fTKnd::T_TRAIT_E: {
 						cu->addStmt(tmplDef(mods));
-						continue;
+						break;
 					}
 					case fTKnd::T_EOF_E:
 						goto out_while;
