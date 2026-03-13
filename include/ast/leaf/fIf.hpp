@@ -25,7 +25,7 @@ namespace zebra::ast::leaf {
 
 		void setElseBody(sp<fAstProdSubTreeN> &&elseBody);
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, EnclsScope s) override;
 
 		sp<fAstProdSubTreeN> getCondExpr() const {
 			return condExpr;

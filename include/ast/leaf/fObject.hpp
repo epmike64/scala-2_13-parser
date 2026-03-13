@@ -30,7 +30,7 @@ namespace zebra::ast::leaf {
 		 sp<fTemplate> getExtendsTemplate() const ;
 		const fToken* getObjectName() const ;
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, EnclsScope s) override;
 
 		std::string toString() const override;
 	};

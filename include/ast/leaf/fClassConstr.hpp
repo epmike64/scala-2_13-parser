@@ -21,7 +21,7 @@ namespace zebra::ast::leaf {
 		sp<fAstProdSubTreeN> getArgs() const ;
 
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, EnclsScope s) override;
 		std::string toString() const override;
 	};
 }

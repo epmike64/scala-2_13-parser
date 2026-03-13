@@ -15,7 +15,7 @@ namespace zebra::ast::leaf {
 		~fFun() = default;
 		 sp<fModifiers> getModifiers() const ;
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, EnclsScope s) override;
 		std::string toString() const override;
 	};
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "ast/node/EnclsScope.hpp"
 #include "lex/token/fToken.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstProdSubTreeN.hpp"
@@ -14,7 +15,7 @@ namespace zebra::ast::leaf {
 
 		const sp<fAstProdSubTreeN> &getType() const;
 
-		 void accept(std::shared_ptr<fAstNodVisitor> visitor) override;
+		 void accept(std::shared_ptr<fAstNodVisitor> visitor, EnclsScope s) override;
 
 		std::string toString() const override;
 

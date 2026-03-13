@@ -8,6 +8,8 @@
 #include <stdexcept>
 #include <typeinfo>
 
+#include "EnclsScope.hpp"
+
 namespace zebra::ast::node { class fAstNodVisitor; }
 
 namespace zebra::ast::node {
@@ -30,7 +32,7 @@ namespace zebra::ast::node {
 			throw std::runtime_error("Cannot set right operand for " + std::string(typeid(*this).name()));
 		}
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, EnclsScope s) override;
 		 std::string toString() const override;
 	};
 

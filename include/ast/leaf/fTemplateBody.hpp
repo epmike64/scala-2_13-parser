@@ -19,7 +19,7 @@ namespace zebra::ast::leaf {
 
 		 std::vector<sp<fAstNod>>& getStmts() ;
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, EnclsScope s) override;
 		std::string toString() const override;
 	};
 }

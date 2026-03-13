@@ -1,5 +1,7 @@
 #pragma once
 #include <memory>
+
+#include "EnclsScope.hpp"
 #include "ast/node/fAstNodKndE.hpp"
 
 namespace zebra::ast::node {
@@ -27,7 +29,7 @@ namespace zebra::ast::node {
 
 	 	virtual bool isOperator()  = 0;
 	 	virtual fAstNodKndE astNKndE()  = 0;
-		virtual void accept(std::shared_ptr<fAstNodVisitor> visitor) = 0;
+		virtual void accept(std::shared_ptr<fAstNodVisitor> visitor, EnclsScope s) = 0;
 		virtual void setAstParentN(std::shared_ptr<fAstNod> p);
 
 		virtual std::string toString() const = 0;

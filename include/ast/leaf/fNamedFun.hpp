@@ -26,7 +26,7 @@ namespace zebra::ast::leaf {
 
 		 void setFunBody(sp<fAstOprndNod> &&funBody) ;
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, EnclsScope s) override;
 		std::string toString() const override;
 	};
 }
