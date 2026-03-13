@@ -32,12 +32,8 @@ namespace zebra::ast::node {
 
 		sp<std::vector<sp<fAstNod>>> getPolishCalcStack() const;
 
-		void addValueDeclr(const std::string& name, sp<fLangValueDeclr> declr) {
-			if (valueDeclrMap_ == nullptr) {
-				valueDeclrMap_ = util::ms<std::unordered_map<std::string, sp<fLangValueDeclr>>>();
-			}
-			(*valueDeclrMap_)[name] = declr;
-		}
+		void addValueDeclr(const std::string& name, sp<fLangValueDeclr> declr);
+		sp<fLangValueDeclr> getValueDeclr(const std::string& name) const;
 	};
 
 

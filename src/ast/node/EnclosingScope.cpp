@@ -20,4 +20,23 @@ namespace zebra::ast::node {
 	sp<std::vector<sp<fAstNod>>> EnclosingScope::getPolishCalcStack() const {
 		return polishCalcSS;
 	}
+
+	void EnclosingScope::addValueDeclr(const std::string& name, sp<fLangValueDeclr> declr) {
+		if (valueDeclrMap_ == nullptr) {
+			valueDeclrMap_ = util::ms<std::unordered_map<std::string, sp<fLangValueDeclr>>>();
+		}
+		(*valueDeclrMap_)[name] = declr;
+	}
+
+	sp<fLangValueDeclr> EnclosingScope::getValueDeclr(const std::string& name) const {
+		if (valueDeclrMap_ == nullptr) {
+			return nullptr;
+		}
+		auto it = valueDeclrMap_->find(name);
+		if (it != valueDeclrMap_->end()) {
+			return it->second;
+		}
+		return nullptr;
+	}
+
 }
