@@ -100,6 +100,10 @@ namespace zebra::ast::tree {
 		for (size_t i = 0; i < n->getNames().size(); i++) {
 			std::cout << "Visiting name " << i << " of value declaration" << std::endl;
 			n->getNames()[i]->accept(shared_from_this(), prnSc);
+
+			prnSc->getPolishSS();
+
+
 		}
 
 		if (n->getModifiers()) {
@@ -621,7 +625,7 @@ namespace zebra::ast::tree {
 			currNode->accept(shared_from_this(), prnSc);
 			polishCalcSS->push_back(currNode);
 		}
-		prnSc->setPolishCalcStack(std::move(polishCalcSS));
+		prnSc->setPolishSS(std::move(polishCalcSS));
 		std::cout << subTr->toString() + " END" << std::endl;
 	}
 

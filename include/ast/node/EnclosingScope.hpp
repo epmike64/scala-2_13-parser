@@ -20,7 +20,7 @@ namespace zebra::ast::node {
 	class EnclosingScope {
 		const esc parentScope_;
 		const fLangGrmrProdE parentScopeGrmrProd_;
-		sp<std::vector<sp<fAstNod>>> polishCalcSS;
+		sp<std::vector<sp<fAstNod>>> polishCalcStack; //RPN - reverse polish notation
 		sp<std::unordered_map<std::string, sp<fLangValueDeclr>>> valueDeclrMap_;
 	public:
 		EnclosingScope(esc parentScope, fLangGrmrProdE parentScopeGrmrProd);
@@ -28,9 +28,9 @@ namespace zebra::ast::node {
 
 		fLangGrmrProdE getParentScopeGrmrProd() const;
 
-		void setPolishCalcStack(sp<std::vector<sp<fAstNod>>>&& astRPN) ;
+		void setPolishSS(sp<std::vector<sp<fAstNod>>>&& astRPN) ;
 
-		sp<std::vector<sp<fAstNod>>> getPolishCalcStack() const;
+		sp<std::vector<sp<fAstNod>>> getPolishSS() const;
 
 		void addValueDeclr(const std::string& name, sp<fLangValueDeclr> declr);
 		sp<fLangValueDeclr> getValueDeclr(const std::string& name) const;
