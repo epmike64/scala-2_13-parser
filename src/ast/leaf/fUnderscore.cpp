@@ -20,6 +20,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fUnderscore::toString() const {
-		return "AccessModifier()";
+		return "Underscore(" + _underscoreToken->toString() + ")";
 	}
 }

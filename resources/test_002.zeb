@@ -11,6 +11,7 @@ object AuthenticationClient extends ZIOAppDefault {
 
   val loginUrl = URL.decode(s"${url}/login").toOption.get
   val greetUrl = URL.decode(s"${url}/profile/me").toOption.get
+  val count = 10 * ( a + "number" - _) / 20
 
   val program = for {
     client   <- ZIO.service[Client]

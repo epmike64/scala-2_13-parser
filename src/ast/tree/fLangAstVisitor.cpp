@@ -29,6 +29,7 @@
 #include "ast/leaf/fTry.hpp"
 #include "ast/leaf/fTypeDef.hpp"
 #include "ast/leaf/fTypeParam.hpp"
+#include "ast/leaf/fUnderscore.hpp"
 #include "ast/leaf/fValueDecl.hpp"
 #include "ast/leaf/fVariantTypeParam.hpp"
 #include "ast/node/fLangTree.hpp"
@@ -485,7 +486,7 @@ namespace zebra::ast::tree {
 	}
 
 	void fLangAstVisitor::visit(sp<fUnderscore> n, esc prnSc) {
-		std::cout << "Visiting Underscore" << std::endl;
+		std::cout << "Visiting Underscore: " <<n ->toString() << std::endl;
 	}
 
 	void fLangAstVisitor::visit(sp<fValue> n, esc prnSc) {
