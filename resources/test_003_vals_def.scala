@@ -9,8 +9,6 @@ trait Foo {
 object Main {
 
 
-  final val MaxSize = 1024   // inlined by compiler, no boxing
-
   def main(args: Array[String]): Unit = {
 
 

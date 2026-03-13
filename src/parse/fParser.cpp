@@ -1715,7 +1715,13 @@ namespace zebra::parse {
 
 	sp<fTemplate> fParser::classExtends(bool isTrait) {
 		switch (*h.tKnd()) {
-			case fTKnd::T_NL_E: case fTKnd::T_LCURL_E: {
+			case fTKnd::T_NL_E: {
+				if (!h.isLa(1, fTKnd::T_LCURL)) {
+					return nullptr;
+				}
+				// fall through
+			}
+			case fTKnd::T_LCURL_E: {
 				return ms<fTemplate>(templateBody(), false);
 			}
 			case fTKnd::T_EXTENDS_E: {
@@ -1724,7 +1730,13 @@ namespace zebra::parse {
 					case fTKnd::T_ID_E: case fTKnd::T_THIS_E: case fTKnd::T_SUPER_E: case fTKnd::T_LPAREN_E: {
 						return classTemplate(true, isTrait);
 					}
-					case fTKnd::T_NL_E: case fTKnd::T_LCURL_E: {
+					case fTKnd::T_NL_E: {
+						if (!h.isLa(1, fTKnd::T_LCURL)) {
+							return nullptr;
+						}
+						// fall through
+					}
+					case fTKnd::T_LCURL_E: {
 						return ms<fTemplate>(templateBody(), true);
 					}
 					default:
