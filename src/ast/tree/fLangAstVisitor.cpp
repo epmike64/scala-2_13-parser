@@ -96,10 +96,18 @@ namespace zebra::ast::tree {
 
 	void  fLangAstVisitor::visit(sp<fValueDef> n, esc prnSc)  {
 		std::cout << "Visiting Value Decl: " << n->toString() << std::endl;
-
+		assert(n->getNames().size() > 0);
 		for (size_t i = 0; i < n->getNames().size(); i++) {
 			std::cout << "Visiting name " << i << " of value declaration" << std::endl;
 			n->getNames()[i]->accept(shared_from_this(), prnSc);
+		}
+
+		if (n->getModifiers()) {
+			n->getModifiers()->accept(shared_from_this(), prnSc);
+		}
+
+		if (n->getType()) {
+			n->getType()->accept(shared_from_this(), prnSc);
 		}
 
 		sp<fAstProdSubTreeN> assignExpr = n->getAssignExpr();
