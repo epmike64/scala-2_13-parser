@@ -10,20 +10,17 @@ namespace zebra::ast::tree {
 
 	using namespace ast::node;
 
-	class fLangAstTree {
+	class fLangTree {
 	public:
-		fLangAstTree() = default;
-		~fLangAstTree() = default;
+		fLangTree() = default;
+		~fLangTree() = default;
 		virtual std::string toString() const = 0;
 	};
 
-	class fBinary: public fLangAstTree {
-		sp<fAstOprndNod> left_;
-		sp<fAstOprndNod> right_;
-		sp<fAstOptrNod> optr_;
-	public:
 
-		void setLeft(sp<fAstOprndNod> left);
+	class fLangTrBranch: public fAstOprndNod {
+	public:
+		fLangTrBranch(const sp<fAstOprndNod> &left);
 
 		void setRight(sp<fAstOprndNod> right) ;
 		void setOptr(sp<fAstOptrNod> optr) ;
@@ -32,7 +29,7 @@ namespace zebra::ast::tree {
 
 		sp<fAstOprndNod> getLeft() const;
 
-		sp<fAstOprndNod> getRight() const ;
+		sp<fAstOprndNod> getRight() const;
 
 		std::string toString() const override;
 	};

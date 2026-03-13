@@ -30,6 +30,7 @@
 #include "ast/leaf/fTypeParam.hpp"
 #include "ast/leaf/fValueDecl.hpp"
 #include "ast/leaf/fVariantTypeParam.hpp"
+#include "ast/tree/fLangTree.hpp"
 
 namespace zebra::ast::tree {
 
@@ -513,13 +514,19 @@ namespace zebra::ast::tree {
 		sp<fAstNod> getNode() const { return node; }
 	};
 
+	static sp<std::stack<sp<fLangTrBranch>>> lbrSS_;
+
 	void fLangAstVisitor::visit(sp<fAstProdSubTreeN> subTr) {
+
+		lbrSS_ = nullptr;
+
 		std::cout << subTr->toString() << std::endl;
 		std::stack<sp<fAstStackItem>> ss;
 		sp<fAstNod> psubT = getAstPSTreeRightN(subTr);
 		if (!psubT) {
 			return;
 		}
+
 		ss.push(ms<fAstStackItem>(psubT));
 
 		while (!ss.empty()) {
@@ -566,7 +573,23 @@ namespace zebra::ast::tree {
 			currNode->accept(shared_from_this());
 			sp<fAstOprndNod> oprn = std::dynamic_pointer_cast<fAstOprndNod>(currNode);
 			if (oprn) {
-
+				if (!lbrSS_) {
+					lbrSS_ = ms<std::stack<sp<fLangTrBranch>>>();
+					lbrSS_->push(ms<fLangTrBranch>(oprn));
+				} else {
+					lbrSS_->top()->setRight(oprn);
+				}
+			}
+			else {
+				if (lbrSS_.get()->size() == 0) {
+					throw std::runtime_error("Operator node expected to have a parent operator node in AST traversal");
+				}
+				sp<fLangTrBranch> top = lbrSS_->top();
+				top->setOptr(std::dynamic_pointer_cast<fAstOptrNod>(currNode));
+				if (lbrSS_->size() > 1) {
+					lbrSS_->pop();
+					lbrSS_->top()->setRight(top);
+				}
 			}
 		}
 	}

@@ -18,9 +18,9 @@ namespace zebra::ast::node {
 
 		virtual ~fAstNod() = default;
 
-	 	std::shared_ptr<fAstNod> getAstLeftN() {return astLeftN_;}
-	 	std::shared_ptr<fAstNod> getAstRightN() {return astRightN_;}
-	 	std::shared_ptr<fAstNod> getAstParentN() {return astParentN_;}
+	 	std::shared_ptr<fAstNod> getAstLeftN() const {return astLeftN_;}
+	 	std::shared_ptr<fAstNod> getAstRightN() const {return astRightN_;}
+	 	std::shared_ptr<fAstNod> getAstParentN() const {return astParentN_;}
 
 	 	virtual void setAstLeftN(std::shared_ptr<fAstNod> astLeftN) = 0;
 	 	virtual void setAstRightN(std::shared_ptr<fAstNod> astRightN) = 0;
