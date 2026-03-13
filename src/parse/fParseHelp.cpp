@@ -125,7 +125,7 @@ namespace zebra::parse {
 
     const fToken* fParseHelp::accept(const fTKnd* kind) {
         if (token_->getTKind() != kind) {
-            throw std::runtime_error("Expected ");// + kind->toString() + " but found " + token->getTKind()->toString());
+            throw std::runtime_error("Expected " + kind->toString() + " but found " + token_->getTKind()->toString());
         }
         return next();
     }
