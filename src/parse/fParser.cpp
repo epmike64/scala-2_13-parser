@@ -1088,7 +1088,7 @@ namespace zebra::parse {
 		switch (*h.tKnd()) {
 			case fTKnd::T_ID_E: {
 				if (h.isLa(1, fTKnd::T_AT)) {
-					a->setRight(ms<fStableId>(false));
+					a->setRight(stableId(false));
 					h.insertPseudoOperator(a, fLangPseudoOperatorKindE::O_AT, h.next());
 					a->setRight(pattern3());
 					return ms<fAstProdSubTreeN>(fLangGrmrProdE::SUBTREE, std::move(a->astRootOpr()));
@@ -1238,7 +1238,7 @@ namespace zebra::parse {
 
 	sp<fTemplate> fParser::classTemplate(bool amExtender, bool isTrait) {
 		sp<fClassParents> cp = classParents(isTrait);
-		if (h.isTkLCurl()) {
+		if (h.isTkLCurl() || (h.isTkNL() && h.isLa(1, fTKnd::T_LCURL))) {
 			return ms<fClassTemplate>(templateBody(), amExtender, std::move(cp));
 		}
 		return ms<fClassTemplate>(nullptr, amExtender, std::move(cp));

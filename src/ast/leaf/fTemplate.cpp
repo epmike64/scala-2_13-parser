@@ -6,9 +6,6 @@
 namespace zebra::ast::leaf {
 
 	fTemplate::fTemplate(sp<fTemplateBody> &&body, bool amExtender) : templateBody_(std::move(body)), amExtender_(amExtender) {
-		if (this->templateBody_ == nullptr) {
-			throw std::invalid_argument("Template body cannot be null");
-		}
 	}
 
 	void fTemplate::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
