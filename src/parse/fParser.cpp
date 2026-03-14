@@ -1890,7 +1890,7 @@ namespace zebra::parse {
 
 		while (true) {
 			switch (*h.tKnd()) {
-				case fTKnd::T_ABSTRACT_E: case fTKnd::T_FINAL_E: case fTKnd::T_IMPLICIT_E: case fTKnd::T_LAZY_E: {
+				case fTKnd::T_ABSTRACT_E: case fTKnd::T_FINAL_E: case fTKnd::T_SEALED_E: case fTKnd::T_IMPLICIT_E: case fTKnd::T_LAZY_E: {
 					if (mods == nullptr) {
 						mods = ms<fModifiers>();
 					} else {
