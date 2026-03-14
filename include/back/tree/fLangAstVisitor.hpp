@@ -1,11 +1,11 @@
 
 #pragma once
 
-#include "../node/fAstNod.hpp"
+#include "ast/node/fAstNod.hpp"
 
 #include <memory>
 
-#include "../node/fAstNodVisitor.hpp"
+#include "ast/node/fAstNodVisitor.hpp"
 #include "ast/leaf/fCompileUnit.hpp"
 #include "ast/leaf/fClassDef.hpp"
 #include "ast/leaf/fIf.hpp"
@@ -27,10 +27,11 @@
 #include "ast/leaf/fTypeArgs.hpp"
 
 
-namespace zebra::ast::tree {
+namespace zebra::back::tree {
 
 	using namespace ast::node;
 	using namespace ast::leaf;
+	using namespace util;
 
 	class fLangAstVisitor : public fAstNodVisitor, public std::enable_shared_from_this<fLangAstVisitor> {
 	protected:

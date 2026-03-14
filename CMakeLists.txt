@@ -42,7 +42,7 @@ add_executable(zebra-4-backend
 		include/ast/leaf/fStableId.hpp
 
 		include/ast/node/fAstNodVisitor.hpp
-		include/ast/tree/fLangAstVisitor.hpp
+		include/back/tree/fLangAstVisitor.hpp
 
 
 		include/ast/leaf/fObject.hpp
@@ -76,7 +76,7 @@ add_executable(zebra-4-backend
 		src/ast/node/fAstOptrNod.cpp
 		src/ast/node/fAstProdSubTreeN.cpp
 		src/ast/node/fAstNod.cpp
-		src/ast/tree/fLangAstVisitor.cpp
+		src/back/tree/fLangAstVisitor.cpp
 
 		src/lex/kind/fLangOperatorKind.cpp
 		src/lex/kind/fTKnd.cpp
@@ -172,7 +172,6 @@ add_executable(zebra-4-backend
 		src/ast/leaf/fParam.cpp
 		include/lex/kind/fLangPseudoOperatorKindE.hpp
 		src/lex/kind/fLangPseudoOperatorKindE.cpp
-		src/ast/tree/fLangAstVisitor.cpp
 		include/ast/node/fLangTree.hpp
 		src/ast/node/fLangTree.cpp
 		src/ast/node/EnclosingScope.cpp
