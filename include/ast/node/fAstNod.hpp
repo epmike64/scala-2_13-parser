@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 
-#include "../symbol/ZEnclsScopeFwd.hpp"
+#include "../symbol/ZEnclosingScopeFwd.hpp"
 
 #include "ast/node/fAstNodKndE.hpp"
 

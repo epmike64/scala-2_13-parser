@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "ZEnclsScopeFwd.hpp"
+#include "ZEnclosingScopeFwd.hpp"
 #include "../node/fAstProdSubTreeN.hpp"
 #include "util/fCommon.hpp"
 
@@ -14,11 +14,11 @@ namespace zebra::ast::symbol {
 
 	using namespace zebra::ast::node;
 
-	class ZSymbolNameQualifier {
+	class ZNameQualifier {
 		std::vector<std::string> qualifiers_;
 	public:
 
-		ZSymbolNameQualifier(std::vector<std::string> qualifiers) : qualifiers_(qualifiers) {}
+		ZNameQualifier(std::vector<std::string> qualifiers) : qualifiers_(qualifiers) {}
 
 		std::string getSimpleName() {
 			return qualifiers_.empty() ? "" : qualifiers_.back();
@@ -30,14 +30,19 @@ namespace zebra::ast::symbol {
 	};
 
 	class ZSymbol {
-		sp<ZSymbolNameQualifier> qualifier_;
+		sp<ZNameQualifier> qualifier_;
 
 	public:
 		virtual ~ZSymbol() = default;
 		virtual std::string toString() const = 0;
 	};
 
-	class ZClassSymbol : public ZSymbol {
+
+	class ZTypeParam : public ZSymbol {
+
+	};
+
+	class ZClass : public ZSymbol {
 
 		public:
 	};

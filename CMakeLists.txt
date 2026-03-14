@@ -173,7 +173,7 @@ add_executable(zebra-4-backend
 		include/lex/kind/fLangPseudoOperatorKindE.hpp
 		src/lex/kind/fLangPseudoOperatorKindE.cpp
 		src/ast/symbol/ZEnclosingScope.cpp
-		include/ast/symbol/ZEnclsScopeFwd.hpp
+		include/ast/symbol/ZEnclosingScopeFwd.hpp
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE
