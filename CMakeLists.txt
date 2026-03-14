@@ -172,8 +172,6 @@ add_executable(zebra-4-backend
 		src/ast/leaf/fParam.cpp
 		include/lex/kind/fLangPseudoOperatorKindE.hpp
 		src/lex/kind/fLangPseudoOperatorKindE.cpp
-		include/ast/node/fLangTree.hpp
-		src/ast/node/fLangTree.cpp
 		src/ast/symbol/ZEnclosingScope.cpp
 		include/ast/symbol/ZEnclsScopeFwd.hpp
 )

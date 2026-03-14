@@ -32,7 +32,6 @@
 #include "ast/leaf/fUnderscore.hpp"
 #include "ast/leaf/fValueDecl.hpp"
 #include "ast/leaf/fVariantTypeParam.hpp"
-#include "ast/node/fLangTree.hpp"
 
 namespace zebra::back::tree {
 
