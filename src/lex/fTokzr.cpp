@@ -41,7 +41,7 @@ namespace zebra::lex {
                     tKnd_ = fTKnd::T_NL;
                     goto exit_loop;
                 }
-                case 's': {
+                case 'f': case 's': {
                     if (reader_.peekChar() == '"') {
                         reader_.scanChar();
                         scanLiteralString();
@@ -56,7 +56,7 @@ namespace zebra::lex {
                 case 'U': case 'V': case 'W': case 'X': case 'Y':
                 case 'Z':
                 case 'a': case 'b': case 'c': case 'd': case 'e':
-                case 'f': case 'g': case 'h': case 'i': case 'j':
+                case 'g': case 'h': case 'i': case 'j':
                 case 'k': case 'l': case 'm': case 'n': case 'o':
                 case 'p': case 'q': case 'r': case 't':
                 case 'u': case 'v': case 'w': case 'x': case 'y':
