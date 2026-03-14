@@ -8,6 +8,7 @@
 
 namespace zebra::ast::leaf {
 	using namespace ast::node;
+	using namespace ast::symbol;
 
 	class fVariantTypeParam : public fTypeParam {
 		lex::kind::fVarianceE variance_ = lex::kind::fVarianceE::NONE;

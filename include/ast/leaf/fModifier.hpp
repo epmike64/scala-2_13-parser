@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ast/node/EnclosingScope.hpp"
+#include "../symbol/ZEnclosingScope.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"
@@ -8,6 +8,7 @@
 
 namespace zebra::ast::leaf {
 	using namespace ast::node;
+	using namespace zebra::ast::symbol;
 
 	class fModifier : public fAstOprndNod {
 		const lex::kind::fLangModifierTypeE _modType;

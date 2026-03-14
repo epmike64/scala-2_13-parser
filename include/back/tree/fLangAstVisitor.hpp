@@ -30,6 +30,7 @@
 namespace zebra::back::tree {
 
 	using namespace ast::node;
+	using namespace ast::symbol;
 	using namespace ast::leaf;
 	using namespace util;
 

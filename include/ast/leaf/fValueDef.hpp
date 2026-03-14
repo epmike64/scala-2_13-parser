@@ -8,6 +8,7 @@
 
 namespace zebra::ast::leaf {
 	using namespace zebra::ast::node;
+	using namespace ast::symbol;
 
 	class fValueDef : public fValue {
 	public:

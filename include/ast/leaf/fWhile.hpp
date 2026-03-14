@@ -7,6 +7,7 @@
 
 namespace zebra::ast::leaf {
 	using namespace zebra::ast::node;
+	using namespace ast::symbol;
 
 	class fWhile  : public fAstOprndNod {
 		sp<fAstProdSubTreeN> condExpr;

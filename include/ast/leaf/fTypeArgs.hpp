@@ -9,6 +9,7 @@
 
 namespace zebra::ast::leaf {
 	using namespace ast::node;
+	using namespace ast::symbol;
 
 	class fTypeArgs : public fAstOprndNod {
 		const std::vector<sp<fType>> typeArgs_;

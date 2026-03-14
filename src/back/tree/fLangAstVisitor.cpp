@@ -40,7 +40,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit() {
 		std::cout << "Visitor starts" << std::endl;
-		esc s = ms<EnclosingScope>(nullptr, fLangGrmrProdE::COMPILATION_UNIT);
+		esc s = ms<ZEnclosingScope>(nullptr, fLangGrmrProdE::COMPILATION_UNIT);
 		compileUnit_->accept(shared_from_this(), s);
 	}
 
@@ -68,7 +68,7 @@ namespace zebra::back::tree {
 
 	void  fLangAstVisitor::visit(sp<fClassDef> cls, esc prnSc){
 		std::cout << "Visiting Class Definition: " << cls->getName()->toString() << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::CLASS_TEMPLATE);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::CLASS_TEMPLATE);
 		if (cls->getConstrAccessModifier()) {
 			cls->getConstrAccessModifier()->accept(shared_from_this(), s);
 		}
@@ -98,12 +98,12 @@ namespace zebra::back::tree {
 		std::cout << "Visiting Value Decl: " << n->toString() << std::endl;
 		assert(n->getNames().size() > 0);
 
-		std::vector<sp<EnclosingScope>> esVec;// = ms<std::vector<EnclosingScope>>(prnSc, fLangGrmrProdE::VALUE_DEF);
+		std::vector<sp<ZEnclosingScope>> esVec;// = ms<std::vector<EnclosingScope>>(prnSc, fLangGrmrProdE::VALUE_DEF);
 
 		for (size_t i = 0; i < n->getNames().size(); i++) {
 			std::cout << "Visiting name " << i << " of value declaration" << std::endl;
 
-			esVec.push_back(ms<EnclosingScope>(prnSc, fLangGrmrProdE::VALUE_DEF));
+			esVec.push_back(ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::VALUE_DEF));
 			n->getNames()[i]->accept(shared_from_this(), esVec[i]);
 
 			//prnSc->getPolishSS();
@@ -126,7 +126,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fIf> n, esc prnSc) {
 		std::cout << "-- IF Cond Expr" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::IF);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::IF);
 
 		n->getCondExpr()->accept(shared_from_this(), s);
 		std::cout << "-- IF Body Exp" << std::endl;
@@ -139,7 +139,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fWhile > n, esc prnSc) {
 		std::cout << "-- WHILE Cond Expr" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::WHILE);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::WHILE);
 
 		n->getCondExpr()->accept(shared_from_this(), s);
 		std::cout << "-- WHILE Body Exp" << std::endl;
@@ -160,7 +160,7 @@ namespace zebra::back::tree {
 	}
 	void fLangAstVisitor::visit(sp<fCaseClause> n, esc prnSc) {
 		std::cout << "Visiting Case Clause" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::CASE_CLAUSE);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::CASE_CLAUSE);
 
 		n->getPattern()->accept(shared_from_this(), s);
 		if (n->getGuard()) {
@@ -173,14 +173,14 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fCaseClauses> n, esc prnSc) {
 		std::cout << "Visiting Case Clauses" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::CASE_CLAUSES);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::CASE_CLAUSES);
 		for (const auto& clause : n->getCaseClauses()) {
 			clause->accept(shared_from_this(), prnSc);
 		}
 	}
 	void fLangAstVisitor::visit(sp<fClassConstr> n, esc prnSc) {
 		std::cout << "Visiting Class Constructor" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::CLASS_CONSTR);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::CLASS_CONSTR);
 		n->getPrimaryCtorParamType()->accept(shared_from_this(), s);
 		if (n->getArgs()) {
 			std::cout << "Visiting Class Constructor Arguments" << std::endl;
@@ -190,7 +190,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fClassParam> n, esc prnSc) {
 		std::cout << "Visiting Class Parameter: " << n->getIdentifier()->toString() << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::CLASS_PARAM);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::CLASS_PARAM);
 		n->getParamType()->accept(shared_from_this(), s);
 
 		sp<fAstProdSubTreeN> assignExpr = n->getDefaultValueExpr();
@@ -202,7 +202,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fClassParamClauses> n, esc prnSc) {
 		std::cout << "Visiting Class Parameter Clauses" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::CLASS_PARAM_CLAUSES);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::CLASS_PARAM_CLAUSES);
 		for (const auto& paramClauseList : n->getClassParams()) {
 			for (auto & paramClause : paramClauseList) {
 				std::cout << "Visiting Class Parameter Clause" << std::endl;
@@ -213,7 +213,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fClassParents> n, esc prnSc) {
 		std::cout << "Visiting Class Parents" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::CLASS_PARENTS);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::CLASS_PARENTS);
 		if (n->getConstr()) {
 			n->getConstr()->accept(shared_from_this(), s);
 		}
@@ -224,7 +224,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fClassTemplate> n, esc prnSc) {
 		std::cout << "Visiting Class Template" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::CLASS_TEMPLATE);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::CLASS_TEMPLATE);
 		if (n->getClassParents()) {
 			n->getClassParents()->accept(shared_from_this(), s);
 		}
@@ -235,7 +235,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fConstrBlock> n, esc prnSc) {
 		std::cout << "Visiting Constructor Block" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::CONSTR_BLOCK);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::CONSTR_BLOCK);
 		if (n->getArgExprs()) {
 			std::cout << "Visiting Constructor Block Argument Expressions" << std::endl;
 			n->getArgExprs()->accept(shared_from_this(), s);
@@ -248,7 +248,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fFor> n, esc prnSc) {
 		std::cout << "Visiting For Loop" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::FOR);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::FOR);
 		for (auto gen: n->getGenerators()) {
 			gen->accept(shared_from_this(), s);
 		}
@@ -261,13 +261,13 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fFun> n, esc prnSc) {
 		std::cout << "Visiting fFun" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::FFUN);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::FFUN);
 		n->getModifiers()->accept(shared_from_this(), s);
 	}
 
 	void fLangAstVisitor::visit(sp<fFunSig> n, esc prnSc) {
 		std::cout << "Visiting Function Signature: " << n->getFunName()->toString() << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::FUN_SIG);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::FUN_SIG);
 		if (n->getParamClauses()) {
 			std::cout << "Visiting Function Parameter Clauses" << std::endl;
 			n->getParamClauses()->accept(shared_from_this(), s);
@@ -283,7 +283,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fGenerator> n, esc prnSc) {
 		std::cout << "Visiting Generator" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::GENERATOR);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::GENERATOR);
 		if (n->isCaseGenerator()) {
 			std::cout << "Visiting Case Pattern" << std::endl;
 			n->getCasePattern1()->accept(shared_from_this(), s);
@@ -344,7 +344,7 @@ namespace zebra::back::tree {
 	}
 	void fLangAstVisitor::visit(sp<fNamedFun> n, esc prnSc) {
 		std::cout << "Visiting Named Function: " << n->getFunSig()->getFunName()->toString() << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::NAMED_FUN);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::NAMED_FUN);
 		if (n->getModifiers()) {
 			n->getModifiers()->accept(shared_from_this(), s);
 		}
@@ -363,7 +363,7 @@ namespace zebra::back::tree {
 		} else {
 			std::cout << "Visiting Class: " << n->getObjectName()->toString() << std::endl;
 		}
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::OBJECT);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::OBJECT);
 		if (n->getModifiers()) {
 			n->getModifiers()->accept(shared_from_this(), s);
 		}
@@ -382,7 +382,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fParam> n, esc prnSc) {
 		std::cout << "Visiting Parameter: " << n->getIdentifier()->toString() << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::PARAM);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::PARAM);
 		 sp<fAstProdSubTreeN> assignExpr = n->getDefaultValue();
 		if (assignExpr != nullptr) {
 			std::cout << "Visiting assignment expression for parameter" << std::endl;
@@ -391,7 +391,7 @@ namespace zebra::back::tree {
 	}
 	void fLangAstVisitor::visit(sp<fParamClauses> n, esc prnSc) {
 		std::cout << "Visiting Parameter Clauses" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::PARAM_CLAUSES);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::PARAM_CLAUSES);
 		for (auto paramV : n->getParams()) {
 			for (auto param : paramV) {
 				std::cout << "Visiting Parameter Clause" << std::endl;
@@ -409,7 +409,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fParamTypes> n, esc prnSc) {
 		std::cout << "Visiting Parameter Types" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::PARAM_TYPES);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::PARAM_TYPES);
 		if (n->getParamTypes()) {
 			for (auto ptp : *n->getParamTypes().get()) {
 				ptp->accept(shared_from_this(), s);
@@ -419,7 +419,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fReturn> n, esc prnSc) {
 		std::cout << "Visiting Return Statement" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::RETURN);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::RETURN);
 		if (n->getReturnExpr()) {
 			std::cout << "Visiting Return Expression" << std::endl;
 			n->getReturnExpr()->accept(shared_from_this(), s);
@@ -428,7 +428,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fTemplate> n, esc prnSc) {
 		std::cout << "Visiting Template" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::TEMPLATE);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::TEMPLATE);
 		if (n->getTemplateBody()) {
 			std::cout << "Visiting Template Body of Template" << std::endl;
 			 n->getTemplateBody()->accept(shared_from_this(), s);
@@ -437,14 +437,14 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fTemplateBody> n, esc prnSc) {
 		std::cout << "Visiting Template Body" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::TEMPLATE_BODY);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::TEMPLATE_BODY);
 		for (const auto& stmt : n->getStmts()) {
 			stmt->accept(shared_from_this(), s);
 		}
 	}
 	void fLangAstVisitor::visit(sp<fThisFun> n, esc prnSc) {
 		std::cout << "Visiting This Function" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::THIS_FUN);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::THIS_FUN);
 		if (n->getParamClauses()) {
 			std::cout << "Visiting Parameter Clauses of This Function" << std::endl;
 			n->getParamClauses()->accept(shared_from_this(), s);
@@ -464,7 +464,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fTraitDef> n, esc prnSc) {
 		std::cout << "Visiting Trait Definition: " << n->getName()->toString() << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::TRAIT_DEF);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::TRAIT_DEF);
 		if (n->getExtendsTemplate()) {
 			std::cout << "Visiting extends template of trait definition" << std::endl;
 			n->getExtendsTemplate()->accept(shared_from_this(), s);
@@ -473,7 +473,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fTry> n, esc prnSc) {
 		std::cout << "Visiting Try Block" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::TRY);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::TRY);
 		n->getTryBlock()->accept(shared_from_this(), s);
 		// for (const auto& catchClause : n->getCatchClauses()) {
 		// 	std::cout << "Visiting Catch Clause" << std::endl;
@@ -487,14 +487,14 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fTypeArgs> n, esc prnSc) {
 		std::cout << "Visiting Type Arguments" << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::TYPE_ARGS);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::TYPE_ARGS);
 		for (const auto& typeArg : n->getTypeArgs()) {
 			typeArg->accept(shared_from_this(), s);
 		}
 	}
 	void fLangAstVisitor::visit(sp<fTypeDef> n, esc prnSc) {
 		std::cout << "Visiting Type Definition: " << n->getTypeDefName()->toString() << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::TYPE_DEF);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::TYPE_DEF);
 		if (n->getAssignedType()) {
 			std::cout << "Visiting Assigned Type of Type Definition" << std::endl;
 			 n->getAssignedType()->accept(shared_from_this(), s);
@@ -524,7 +524,7 @@ namespace zebra::back::tree {
 
 	void fLangAstVisitor::visit(sp<fValueDecl> n, esc prnSc) {
 		std::cout << "Visiting Value Declaration: " << std::endl;
-		esc s = ms<EnclosingScope>(prnSc, fLangGrmrProdE::VALUE_DECL);
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::VALUE_DECL);
 		for (auto name: n->getNames()) {
 			std::cout << "Visiting name of value declaration" << std::endl;
 			name->accept(shared_from_this(), s);

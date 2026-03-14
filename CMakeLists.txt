@@ -19,7 +19,7 @@ add_executable(zebra-4-backend
 		include/ast/node/fAstOptrNod.hpp
 		include/ast/node/fAstProdSubTreeN.hpp
 		include/ast/node/fAstRootOptrNod.hpp
-		include/ast/node/EnclosingScope.hpp
+		include/ast/symbol/ZEnclosingScope.hpp
 
 		include/lex/util/fUtil.hpp
 		include/lex/util/fTBuffer.hpp
@@ -174,8 +174,8 @@ add_executable(zebra-4-backend
 		src/lex/kind/fLangPseudoOperatorKindE.cpp
 		include/ast/node/fLangTree.hpp
 		src/ast/node/fLangTree.cpp
-		src/ast/node/EnclosingScope.cpp
-		include/ast/node/EnclsScopeFwd.hpp
+		src/ast/symbol/ZEnclosingScope.cpp
+		include/ast/symbol/ZEnclsScopeFwd.hpp
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE

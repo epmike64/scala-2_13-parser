@@ -74,7 +74,7 @@ namespace zebra::ast::node {
 	using namespace ast::leaf;
 	using namespace ast::node;
 	using namespace util;
-
+	using namespace ast::symbol;
 
 	class fAstNodVisitor {
 	public:

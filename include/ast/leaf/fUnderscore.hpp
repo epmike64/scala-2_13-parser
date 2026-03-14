@@ -6,6 +6,7 @@
 
 namespace zebra::ast::leaf {
 	using namespace ast::node;
+	using namespace ast::symbol;
 
 	class fUnderscore : public fAstOprndNod {
 		const fToken* _underscoreToken;

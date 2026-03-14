@@ -8,6 +8,7 @@
 
 namespace zebra::ast::leaf {
 	using namespace ast::node;
+	using namespace ast::symbol;
 
 	class fTypeParam : public fAstOprndNod {
 		const fToken* typeParamName_;

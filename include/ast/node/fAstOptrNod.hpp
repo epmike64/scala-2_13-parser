@@ -29,7 +29,7 @@ namespace zebra::ast::node {
 
 		void setAstRightN(std::shared_ptr<fAstNod> astRightN) override;
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, symbol::esc s) override;
 
 		 std::string toString() const override;
 	};

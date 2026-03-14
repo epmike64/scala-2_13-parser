@@ -10,7 +10,7 @@
 
 namespace zebra::ast::node {
 
-	using zebra::parse::fLangGrmrProdE;
+	using parse::fLangGrmrProdE;
 	using util::sp;
 
 	class fAstProdSubTreeN : public fAstOprndNod {
@@ -32,7 +32,7 @@ namespace zebra::ast::node {
 			return gp;
 		}
 		
-		void accept(sp<fAstNodVisitor> visitor, esc s) override;
+		void accept(sp<fAstNodVisitor> visitor, symbol::esc s) override;
 
 		std::string toString() const override;
 	};

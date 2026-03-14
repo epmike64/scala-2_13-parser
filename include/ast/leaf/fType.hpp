@@ -6,6 +6,7 @@
 
 namespace zebra::ast::leaf {
 	using namespace zebra::ast::node;
+	using namespace zebra::ast::symbol;
 	using namespace zebra::lex::token;
 
 	class fType : public fAstOprndNod {

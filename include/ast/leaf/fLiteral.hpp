@@ -8,7 +8,7 @@ namespace zebra::ast::leaf {
 	using lex::kind::fTKnd;
 	using namespace lex::token;
 	using namespace zebra::ast::node;
-
+	using namespace zebra::ast::symbol;
 
 
 	class fLiteral: public fAstOprndNod {

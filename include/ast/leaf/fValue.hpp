@@ -8,6 +8,7 @@
 
 namespace zebra::ast::leaf {
 	using namespace ast::node;
+	using namespace ast::symbol;
 
 	class fValue : public fAstOprndNod {
 		const sp<fModifiers> modifiers_;
