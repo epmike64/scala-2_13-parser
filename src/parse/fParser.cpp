@@ -1893,10 +1893,8 @@ namespace zebra::parse {
 				case fTKnd::T_ABSTRACT_E: case fTKnd::T_FINAL_E: case fTKnd::T_SEALED_E: case fTKnd::T_IMPLICIT_E: case fTKnd::T_LAZY_E: {
 					if (mods == nullptr) {
 						mods = ms<fModifiers>();
-					} else {
-						assert(mods->getLocalModifier() == nullptr && "Multiple local modifiers are not allowed");
 					}
-					mods->setLocalModifier(localModifier());
+					mods->addLocalModifier(localModifier());
 					continue;
 				}
 				case fTKnd::T_PRIVATE_E: case fTKnd::T_PROTECTED_E: {

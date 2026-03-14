@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"
@@ -11,7 +13,7 @@ namespace zebra::ast::leaf {
 	class fModifiers : public fAstOprndNod {
 		sp<fAccessModifier> accessModifier_;
 		sp<fOverrideModifier> overrideModifier_;
-		sp<fLocalModifier> localModifier_;
+		sp<std::vector<sp<fLocalModifier>>> localModifiers_;
 	public:
 		fModifiers() = default;
 
@@ -19,13 +21,13 @@ namespace zebra::ast::leaf {
 
 		void setOverrideModifier(sp<fOverrideModifier> &&overrideModifier);
 
-		void setLocalModifier(sp<fLocalModifier> &&localModifier);
+		void addLocalModifier(sp<fLocalModifier> &&localModifier);
 
 		sp<fAccessModifier> getAccessModifier() const;
 
 		sp<fOverrideModifier> getOverrideModifier() const;
 
-		sp<fLocalModifier> getLocalModifier() const;
+		sp<std::vector<sp<fLocalModifier>>> getLocalModifiers() const;
 
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;

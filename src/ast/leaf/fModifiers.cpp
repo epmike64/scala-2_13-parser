@@ -12,8 +12,11 @@ namespace zebra::ast::leaf {
 		this->overrideModifier_ = std::move(overrideModifier);
 	}
 
-	void fModifiers::setLocalModifier(sp<fLocalModifier> &&localModifier) {
-		this->localModifier_ = std::move(localModifier);
+	void fModifiers::addLocalModifier(sp<fLocalModifier> &&localModifier) {
+		if (localModifiers_ == nullptr) {
+			localModifiers_ = ms<std::vector<sp<fLocalModifier>>>();
+		}
+		localModifiers_->push_back(std::move(localModifier));
 	}
 
 	sp<fAccessModifier> fModifiers::getAccessModifier() const {
@@ -24,8 +27,8 @@ namespace zebra::ast::leaf {
 		return overrideModifier_;
 	}
 
-	sp<fLocalModifier> fModifiers::getLocalModifier() const {
-		return localModifier_;
+	sp<std::vector<sp<fLocalModifier>>> fModifiers::getLocalModifiers() const {
+		return localModifiers_;
 	}
 
 	void fModifiers::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {

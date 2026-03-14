@@ -335,9 +335,11 @@ namespace zebra::ast::tree {
 			std::cout << "Visiting Override Modifier in Modifiers" << std::endl;
 			n->getOverrideModifier()->accept(shared_from_this(), prnSc);
 		}
-		if (n->getLocalModifier()) {
+		if (n->getLocalModifiers()) {
 			std::cout << "Visiting Local Modifier in Modifiers" << std::endl;
-			n->getLocalModifier()->accept(shared_from_this(), prnSc);
+			for (auto m : *(n->getLocalModifiers())) {
+				m->accept(shared_from_this(), prnSc);
+			}
 		}
 	}
 	void fLangAstVisitor::visit(sp<fNamedFun> n, esc prnSc) {
