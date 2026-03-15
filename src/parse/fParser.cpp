@@ -1789,7 +1789,7 @@ namespace zebra::parse {
 			default:
 				break;
 		}
-		throw std::runtime_error("Expected 'extends', '{' or newline but found: " + h.getToken()->toString());
+		return nullptr;
 	}
 
 
