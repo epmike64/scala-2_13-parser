@@ -188,7 +188,7 @@ namespace zebra::back::tree {
 	}
 
 	void fLangAstVisitor::visit(sp<fClassParam> n, esc prnSc) {
-		std::cout << "Visiting Class Parameter: " << n->getIdentifier()->toString() << std::endl;
+		std::cout << "Visiting Class Parameter: " << n->toString() << std::endl;
 		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::CLASS_PARAM);
 		n->getParamType()->accept(shared_from_this(), s);
 
