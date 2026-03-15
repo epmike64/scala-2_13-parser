@@ -1600,7 +1600,7 @@ namespace zebra::parse {
 					h.next();
 					continue;
 				}
-				case fTKnd::T_ID_E :T_VAL_E: case fTKnd::T_VAR_E: case fTKnd::T_PROTECTED_E: case fTKnd::T_PRIVATE_E: case fTKnd::T_OVERRIDE_E:{
+				case fTKnd::T_ID_E: case fTKnd::T_VAL_E: case fTKnd::T_VAR_E: case fTKnd::T_PROTECTED_E: case fTKnd::T_PRIVATE_E: case fTKnd::T_OVERRIDE_E:{
 					cpcs->addParams(classParamClause());
 					h.accept(fTKnd::T_RPAREN);
 					continue;
