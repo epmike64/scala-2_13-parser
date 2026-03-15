@@ -24,6 +24,7 @@ namespace zebra::ast::leaf {
 		const bool isPath_;
 		bool isKwType_ = false;
 		std::vector<sp<fTPair>> tpairs_;
+		bool isSingletonType_ = false;  // SimpleType '.' 'type'
 		public:
 
 		explicit fStableId(bool isPath) ;
@@ -31,6 +32,9 @@ namespace zebra::ast::leaf {
 		void addTId(const fToken *tId) ;
 
 		 std::vector<sp<fTPair>>& getTPairs() ;
+
+		void setSingletonType(const bool isSingletonType) ;
+		bool isSingletonType() const ;
 
 		 bool isPath() const;
 

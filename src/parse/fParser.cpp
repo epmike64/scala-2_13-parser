@@ -514,8 +514,12 @@ namespace zebra::parse {
 				}
 					// fall through
 				case fTKnd::T_SUPER_E: case fTKnd::T_THIS_E: {
-					a->setRight(path());
-					//if dot -> type
+					sp<fStableId> sid = path();
+					a->setRight(sid);
+					if (h.isTkDot() && h.isLa(1, fTKnd::T_TYPE)) {
+						h.next(); h.next();
+						sid->setSingletonType(true);
+					}
 					continue;
 				}
 				case fTKnd::T_LPAREN_E: {

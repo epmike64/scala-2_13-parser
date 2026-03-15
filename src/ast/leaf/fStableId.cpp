@@ -69,6 +69,15 @@ namespace zebra::ast::leaf {
 		visitor->visit(std::static_pointer_cast<fStableId>(shared_from_this()), s);
 	}
 
+
+	void fStableId::setSingletonType(const bool isSingletonType) {
+		isSingletonType_ = isSingletonType;
+	}
+
+	bool fStableId::isSingletonType() const {
+		return isSingletonType_;
+	}
+
 	std::string fStableId::toString() const {
 
 		std::stringstream ss;
