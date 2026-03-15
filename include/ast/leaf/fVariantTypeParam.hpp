@@ -11,11 +11,9 @@ namespace zebra::ast::leaf {
 	using namespace ast::symbol;
 
 	class fVariantTypeParam : public fTypeParam {
-		lex::kind::fVarianceE variance_ = lex::kind::fVarianceE::NONE;
-		public:
-
-		fVariantTypeParam(const fToken* identifier) ;
-
+		lex::kind::fVarianceE variance_ = lex::kind::fVarianceE::INVARIANT;
+	public:
+		fVariantTypeParam() = default;
 		 void setVariance(lex::kind::fVarianceE variance) ;
 
 		 lex::kind::fVarianceE getVariance() const ;

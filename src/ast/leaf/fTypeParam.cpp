@@ -3,12 +3,13 @@
 
 #include <string>
 
+#include "ast/leaf/fType.hpp"
+
 namespace zebra::ast::leaf {
 
-	fTypeParam::fTypeParam(const fToken* name) : typeParamName_(name) {
-		if (this->typeParamName_ == nullptr) {
-			throw std::invalid_argument("Type parameter name token cannot be null");
-		}
+
+	void fTypeParam::setTypeParamName(const fToken* typeParamName) {
+		this->typeParamName_ = typeParamName;
 	}
 
 	const fToken* fTypeParam::getTypeParamName() const {
@@ -28,14 +29,33 @@ namespace zebra::ast::leaf {
     }
 
 
+	void fTypeParam::addType(sp<fType> &&types) {
+        if (!types) {
+            throw std::invalid_argument("Type added to type parameter cannot be null");
+        }
+        if (!types_) {
+            types_ = std::make_shared<std::vector<sp<fType>>>();
+        }
+        this->types_->push_back(std::move(types));
+    }
 
-	void fTypeParam::setType(sp<fType> &&type) {
-		this->type_ = std::move(type);
-	}
+	sp<std::vector<sp<fType>>> fTypeParam::getTypes() const {
+        return types_;
+    }
 
-	sp<fType> fTypeParam::getType() const {
-		return type_;
-	}
+	void fTypeParam::addContextBound(sp<fType> &&contextBound) {
+        if (!contextBound) {
+            throw std::invalid_argument("Context bound added to type parameter cannot be null");
+        }
+        if (!contextBounds_) {
+            contextBounds_ = std::make_shared<std::vector<sp<fType>>>();
+        }
+        this->contextBounds_->push_back(std::move(contextBound));
+    }
+
+	sp<std::vector<sp<fType>>> fTypeParam::getContextBounds() const {
+        return contextBounds_;
+    }
 
 	void fTypeParam::setUpperBound(sp<fType> &&upperBound) {
 		this->upperBound_ = std::move(upperBound);
@@ -59,6 +79,11 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fTypeParam::toString() const {
-		return "AccessModifier()";
+		return "TypeParam(name=" + (typeParamName_ ? typeParamName_->toString() : "null") +
+		       ", variantTypeParams=" + (variantTypeParam_ ? std::to_string(variantTypeParam_->size()) : "null") +
+		       ", upperBound=" + (upperBound_ ? upperBound_->toString() : "null") +
+		       ", lowerBound=" + (lowerBound_ ? lowerBound_->toString() : "null") +
+		       ", types=" + (types_ ? std::to_string(types_->size()) : "null") +
+		       ", contextBounds=" + (contextBounds_ ? std::to_string(contextBounds_->size()) : "null") + ")";
 	}
 }

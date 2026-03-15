@@ -1305,23 +1305,23 @@ namespace zebra::parse {
 		return value;
 	}
 
-	sp<fTypeParam> fParser::typeParam() {
-		sp<fTypeParam> p = ms<fTypeParam>(h.next());
-		if (h.isTkLBracket()) {
-			p->setVariantTypeParams(variantTypeParams());
-		}
-		if (h.isTkLowerBound()) {
-			p->setLowerBound(type());
-		}
-		if (h.isTkUpperBound()) {
-			p->setUpperBound(type());
-		}
-		if (h.isTkColon()) {
-			p->setType(type());
-		}
-
-		return p;
-	}
+	// sp<fTypeParam> fParser::typeParam() {
+	// 	sp<fTypeParam> p = ms<fTypeParam>(h.next());
+	// 	if (h.isTkLBracket()) {
+	// 		p->setVariantTypeParams(variantTypeParams());
+	// 	}
+	// 	if (h.isTkLowerBound()) {
+	// 		p->setLowerBound(type());
+	// 	}
+	// 	if (h.isTkUpperBound()) {
+	// 		p->setUpperBound(type());
+	// 	}
+	// 	if (h.isTkColon()) {
+	// 		p->setType(type());
+	// 	}
+	//
+	// 	return p;
+	// }
 
 	std::vector<sp<fTypeParam>> fParser::funTypeParams() {
 		std::vector<sp<fTypeParam>> params;
@@ -1677,25 +1677,46 @@ namespace zebra::parse {
 		return cc;
 	}
 
-	sp<fVariantTypeParam> fParser::variantTypeParam() {
-		sp<fVariantTypeParam> p = ms<fVariantTypeParam>(h.next());
-		if (h.isTkPlus()) {
-			h.next();
-			p->setVariance(fVarianceE::VARIANT);
-		} else if (h.isTkMinus()) {
-			h.next();
-			p->setVariance(fVarianceE::INVARIANT);
+	sp<fTypeParam> fParser::typeParam() {
+		return typeParam2(ms<fTypeParam>());
+	}
+
+	sp<fTypeParam> fParser::typeParam2(sp<fTypeParam> p) {
+
+		p->setTypeParamName(h.acceptOneOf({fTKnd::T_ID, fTKnd::T_UNDERSCORE}));
+		if (h.isTkLBracket()) {
+			p->setVariantTypeParams(variantTypeParams());
 		}
 		if (h.isTkLowerBound()) {
+			h.next();
 			p->setLowerBound(type());
 		}
 		if (h.isTkUpperBound()) {
+			h.next();
 			p->setUpperBound(type());
 		}
-		if (h.isTkColon()) {
-			p->setType(type());
+		while (h.isTkContextBound()) {
+			h.next();
+			p->addContextBound(type());
+		}
+		while(h.isTkColon()) {
+			p->addType(type());
 		}
 
+		return p;
+	}
+
+	sp<fVariantTypeParam> fParser::variantTypeParam() {
+		fVarianceE variance = fVarianceE::INVARIANT;
+		if (h.isTkPlus()) {
+			h.next();
+			variance = fVarianceE::COVARIANT;
+		} else if (h.isTkMinus()) {
+			h.next();
+			variance = fVarianceE::CONTRAVARIANT;
+		}
+		sp<fVariantTypeParam> p = ms<fVariantTypeParam>(variance);
+		typeParam2(std::dynamic_pointer_cast<fTypeParam>(p));
 		return p;
 	}
 

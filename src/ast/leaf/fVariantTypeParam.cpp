@@ -5,8 +5,6 @@
 
 namespace zebra::ast::leaf {
 
-	fVariantTypeParam::fVariantTypeParam(const fToken* identifier) : fTypeParam(identifier) {}
-
 	void fVariantTypeParam::setVariance(lex::kind::fVarianceE variance) {
 		this->variance_ = variance;
 	}
@@ -20,6 +18,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fVariantTypeParam::toString() const {
-		return "AccessModifier()";
+		return "VariantTypeParam(variance=" + std::to_string(static_cast<int>(variance_)) + ")";
 	}
 }

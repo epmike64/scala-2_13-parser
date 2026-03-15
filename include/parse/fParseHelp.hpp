@@ -97,6 +97,8 @@ public:
 
     const fTKnd* tKnd() const;
 
+    const fToken* acceptOneOf(std::initializer_list<const fTKnd*> types) ;
+
     const fToken* accept(const fTKnd* kind) ;
 
     const fToken* lookAhead(int n)  ;

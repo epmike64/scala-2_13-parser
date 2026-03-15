@@ -42,8 +42,12 @@ namespace zebra::ast::symbol {
 
 	};
 
-	class ZClass : public ZSymbol {
+	class ZTrait: public ZSymbol {};
 
+	class ZClass : public ZSymbol {
+		sp<ZClass> parentClass_;
+		sp<std::vector<sp<ZTrait>>> traits_;
+		std::vector<sp<ZTypeParam>> typeParams_;
 		public:
 	};
 
