@@ -185,6 +185,9 @@ namespace zebra::parse {
 
 		sp<fObject> objectDef(bool isCase, sp<fModifiers> mods);
 		sp<fClassDef> classDef(bool isCase, sp<fModifiers> mods);
+
+		void classParamClauses2(sp<fClassParamClauses> cpcs);
+
 		sp<fAstProdSubTreeN> expr(sp<fAst>);
 	public:
 		sp<fCompileUnit> compileUnit();

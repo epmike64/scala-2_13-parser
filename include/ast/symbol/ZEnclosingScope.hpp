@@ -7,39 +7,56 @@
 
 #include "ZEnclosingScopeFwd.hpp"
 #include "../node/fAstProdSubTreeN.hpp"
+#include "ast/leaf/fType.hpp"
+#include "lex/kind/fVarianceE.hpp"
 #include "util/fCommon.hpp"
 
 
 namespace zebra::ast::symbol {
 
 	using namespace zebra::ast::node;
+	using namespace zebra::ast::leaf;
+	using namespace zebra::lex::kind;
+	using namespace zebra::util;
 
-	class ZNameQualifier {
-		std::vector<std::string> qualifiers_;
+	class ZFullyQualifiedName {
+		std::vector<std::string> simpleNames;
 	public:
 
-		ZNameQualifier(std::vector<std::string> qualifiers) : qualifiers_(qualifiers) {}
+		ZFullyQualifiedName(std::vector<std::string> qualifiers) : simpleNames(qualifiers) {}
 
 		std::string getSimpleName() {
-			return qualifiers_.empty() ? "" : qualifiers_.back();
+			return simpleNames.empty() ? "" : simpleNames.back();
 		}
 
-		std::vector<std::string> getQualifiedName() const {
-			return qualifiers_;
+		std::vector<std::string> getFullyQualifiedName() const {
+			return simpleNames;
 		}
 	};
 
 	class ZSymbol {
-		sp<ZNameQualifier> qualifier_;
+		sp<ZFullyQualifiedName> qualifiedName_;
 
 	public:
 		virtual ~ZSymbol() = default;
-		virtual std::string toString() const = 0;
+		// virtual std::string toString() const = 0;
 	};
 
+	class ZVariantTypeParam;
 
-	class ZTypeParam : public ZSymbol {
+	class ZTypeParam {
+	protected:
+		const fToken* id_;
+		std::vector<sp<ZVariantTypeParam>> variantTypeParams_;
+		sp<fType> upperBound_, lowerBound_;
+		sp<std::vector<sp<fType>>> contextBounds_;
+		sp<fType> theType_;
+	public:
+		~ZTypeParam() = default;
+	};
 
+	class ZVariantTypeParam : public ZTypeParam {
+		fVarianceE variance_;
 	};
 
 	class ZTrait: public ZSymbol {};
@@ -47,7 +64,7 @@ namespace zebra::ast::symbol {
 	class ZClass : public ZSymbol {
 		sp<ZClass> parentClass_;
 		sp<std::vector<sp<ZTrait>>> traits_;
-		std::vector<sp<ZTypeParam>> typeParams_;
+		std::vector<sp<ZVariantTypeParam>> variantTypeParams_;
 		public:
 	};
 

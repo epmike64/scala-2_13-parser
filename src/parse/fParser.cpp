@@ -1577,15 +1577,31 @@ namespace zebra::parse {
 		return cls;
 	}
 
+	void fParser::classParamClauses2(sp<fClassParamClauses> cpcs) {
+		if (h.isLa(1, fTKnd::T_IMPLICIT)) {
+			cpcs->setImplicitParams(classParamClause(true));
+		} else {
+			while (true){
+				cpcs->setImplicitParams(classParamClause(false));
+				if (h.isTkNL() && h.isLa(1, fTKnd::T_LPAREN)) {
+					h.accept(fTKnd::T_NL);
+				} else if (!h.isTkLParen()) {
+					break;
+				}
+			}
+		}
+	}
+
 	sp<fClassParamClauses> fParser::classParamClauses() {
 		sp<fClassParamClauses> cpcs = ms<fClassParamClauses>();
-		h.skipNL();
-		while (h.isTkLParen()) {
-			if (h.isLa(1, fTKnd::T_IMPLICIT)) {
-				cpcs->setImplicitParams(classParamClause(true));
-				break;
+
+		if (h.isTkNL() ) {
+			if (h.isLa(1, fTKnd::T_LPAREN)) {
+				h.next();
+				classParamClauses2(cpcs);
 			}
-			cpcs->addParams(classParamClause(false));
+		} else if (h.isTkLParen()) {
+			classParamClauses2(cpcs);
 		}
 		return cpcs;
 	}
