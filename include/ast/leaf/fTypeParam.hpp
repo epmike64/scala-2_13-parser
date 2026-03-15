@@ -11,7 +11,7 @@ namespace zebra::ast::leaf {
 	using namespace ast::symbol;
 
 	class fTypeParam : public fAstOprndNod {
-		const fToken* typeParamName_;
+		const fToken* typeParamName_ = nullptr;
 		sp<std::vector<sp<fVariantTypeParam>>> variantTypeParam_;
 		sp<fType> upperBound_, lowerBound_;
 		sp<std::vector<sp<fType>>> types_;
@@ -19,7 +19,7 @@ namespace zebra::ast::leaf {
 
 	public:
 		fTypeParam() = default;
-		virtual ~fTypeParam();
+		~fTypeParam() override = default;
 
 		void setTypeParamName(const fToken* typeParamName);
 

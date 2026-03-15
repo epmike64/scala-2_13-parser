@@ -14,6 +14,7 @@ namespace zebra::ast::leaf {
 		lex::kind::fVarianceE variance_ = lex::kind::fVarianceE::INVARIANT;
 	public:
 		fVariantTypeParam() = default;
+		explicit fVariantTypeParam(lex::kind::fVarianceE variance) : variance_(variance) {}
 		 void setVariance(lex::kind::fVarianceE variance) ;
 
 		 lex::kind::fVarianceE getVariance() const ;
