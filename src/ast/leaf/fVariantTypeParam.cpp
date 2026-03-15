@@ -5,10 +5,6 @@
 
 namespace zebra::ast::leaf {
 
-	void fVariantTypeParam::setVariance(lex::kind::fVarianceE variance) {
-		this->variance_ = variance;
-	}
-
 	lex::kind::fVarianceE fVariantTypeParam::getVariance() const {
 		return variance_;
 	}

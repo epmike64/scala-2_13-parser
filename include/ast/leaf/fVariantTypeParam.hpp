@@ -12,14 +12,16 @@ namespace zebra::ast::leaf {
 
 	class fVariantTypeParam : public fTypeParam {
 		lex::kind::fVarianceE variance_ = lex::kind::fVarianceE::INVARIANT;
-	public:
-		fVariantTypeParam() = default;
-		explicit fVariantTypeParam(lex::kind::fVarianceE variance) : variance_(variance) {}
-		 void setVariance(lex::kind::fVarianceE variance) ;
 
-		 lex::kind::fVarianceE getVariance() const ;
+	public:
+		explicit fVariantTypeParam(lex::kind::fVarianceE variance) : variance_(variance) {
+		}
+
+
+		lex::kind::fVarianceE getVariance() const;
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
+
 		std::string toString() const override;
 	};
 }
