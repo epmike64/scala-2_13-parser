@@ -1603,6 +1603,9 @@ namespace zebra::parse {
 		} else if (h.isTkLParen()) {
 			classParamClauses2(cpcs);
 		}
+		if (cpcs->getImplicitParams().empty() && cpcs->getClassParams().empty()) {
+			return nullptr;
+		}
 		return cpcs;
 	}
 
