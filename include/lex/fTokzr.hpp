@@ -32,6 +32,10 @@ public:
 
     void scanLiteralString();
 
+    void scanStringFinish();
+
+    void scanInterpLiteralString();
+
     void scanIdent(int pos);
 
     void scanLitChar();

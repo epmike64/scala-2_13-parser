@@ -44,7 +44,7 @@ namespace zebra::lex {
                 case 'f': case 's': {
                     if (reader_.peekChar() == '"') {
                         reader_.scanChar();
-                        scanLiteralString();
+                        scanInterpLiteralString();
                         goto exit_loop;
                     }
                     [[fallthrough]];
@@ -221,6 +221,32 @@ namespace zebra::lex {
         }
     }
 
+    void fTokzr::scanInterpLiteralString() {
+        assert(reader_.ch() == '"');
+        reader_.scanChar();
+
+        bool isInterp = false;
+
+        while (reader_.ch() != CR && reader_.ch() != LF && reader_.bp() < reader_.bufLen()) {
+            if (reader_.ch() == '"' && !isInterp) {
+                break;
+            }
+            if (reader_.ch() == '$') {
+                reader_.scanChar();
+                if (reader_.ch() == '{') {
+                    reader_.scanChar();
+                    isInterp = true;
+                }
+            }
+            else if (isInterp && reader_.ch() == '}') {
+                reader_.scanChar();
+                isInterp = false;
+            } else {
+                scanLitChar();
+            }
+        }
+        scanStringFinish();
+    }
 
     void fTokzr::scanLiteralString() {
         assert(reader_.ch() == '"');
@@ -228,6 +254,10 @@ namespace zebra::lex {
         while (reader_.ch() != '"' && reader_.ch() != CR && reader_.ch() != LF && reader_.bp() < reader_.bufLen()) {
             scanLitChar();
         }
+       scanStringFinish();
+    }
+
+    void fTokzr::scanStringFinish() {
         if (reader_.ch() == '"') {
             tKnd_ = fTKnd::T_STRING_LIT;
             reader_.scanChar();
