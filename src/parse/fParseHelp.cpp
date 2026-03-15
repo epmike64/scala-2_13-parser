@@ -123,6 +123,20 @@ namespace zebra::parse {
         return token_->getTKind();
     }
 
+    const fToken* fParseHelp::acceptOneOf(std::initializer_list<const fTKnd*> types) {
+	    for (const auto& type : types) {
+	        if (token_->getTKind() == type) {
+	            return next();
+	        }
+	    }
+        std::string expected;
+        for (const auto& type : types) {
+            if (!expected.empty()) expected += ", ";
+            expected += type->toString();
+        }
+        throw std::runtime_error("Expected any of [" + expected + "] but found " + token_->getTKind()->toString());
+    }
+
     const fToken* fParseHelp::accept(const fTKnd* kind) {
         if (token_->getTKind() != kind) {
             throw std::runtime_error("Expected " + kind->toString() + " but found " + token_->getTKind()->toString());
