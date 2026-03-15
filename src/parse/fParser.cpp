@@ -1578,56 +1578,61 @@ namespace zebra::parse {
 	}
 
 	void fParser::classParamClauses2(sp<fClassParamClauses> cpcs) {
-		if (h.isLa(1, fTKnd::T_IMPLICIT)) {
-			cpcs->setImplicitParams(classParamClause(true));
-		} else {
-			while (true){
-				cpcs->setImplicitParams(classParamClause(false));
-				if (h.isTkNL() && h.isLa(1, fTKnd::T_LPAREN)) {
-					h.accept(fTKnd::T_NL);
-				} else if (!h.isTkLParen()) {
-					break;
+
+		while (true) {
+
+			if (h.isTkNL() && h.isLa(1, fTKnd::T_LPAREN)) {
+				h.next(); h.next();
+			} else if (h.isTkLParen()) {
+				h.next();
+			} else {
+				goto out_wlp;
+			}
+
+			switch (*h.tKnd()) {
+				case fTKnd::T_IMPLICIT_E: {
+					h.next();
+					cpcs->setImplicitParams(classParamClause());
+					h.accept(fTKnd::T_RPAREN);
+					goto out_wlp;
 				}
+				case fTKnd::T_RPAREN_E: {
+					h.next();
+					continue;
+				}
+				case fTKnd::T_ID_E :T_VAL_E: case fTKnd::T_VAR_E: case fTKnd::T_PROTECTED_E: case fTKnd::T_PRIVATE_E: case fTKnd::T_OVERRIDE_E:{
+					cpcs->addParams(classParamClause());
+					h.accept(fTKnd::T_RPAREN);
+					continue;
+				}
+				default:
+					throw std::runtime_error("Expected 'implicit' or ')' or class parameter but found: " + h.getToken()->toString());
 			}
 		}
+		out_wlp:
 	}
 
 	sp<fClassParamClauses> fParser::classParamClauses() {
 		sp<fClassParamClauses> cpcs = ms<fClassParamClauses>();
-
-		if (h.isTkNL() ) {
-			if (h.isLa(1, fTKnd::T_LPAREN)) {
-				h.next();
-				classParamClauses2(cpcs);
-			}
-		} else if (h.isTkLParen()) {
-			classParamClauses2(cpcs);
-		}
+		classParamClauses2(cpcs);
 		if (cpcs->getImplicitParams().empty() && cpcs->getClassParams().empty()) {
 			return nullptr;
 		}
 		return cpcs;
 	}
 
-	std::vector<sp<fClassParam>> fParser::classParamClause(bool isImplicit) {
+	std::vector<sp<fClassParam>> fParser::classParamClause() {
 		std::vector<sp<fClassParam>> params;
 		int sz = h.pushNLEnabled(false);
-		h.accept(fTKnd::T_LPAREN);
-		if (isImplicit) {
-			h.accept(fTKnd::T_IMPLICIT);
-		}
-		if (!h.isTkRParen()) {
-			while (true) {
-				params.push_back(classParam());
-				if (h.isTkComma()) {
-					h.next();
-					continue;
-				}
-				break;
+		while (true) {
+			params.push_back(classParam());
+			if (h.isTkComma()) {
+				h.next();
+				continue;
 			}
+			break;
 		}
 		h.popNLEnabled(sz, false);
-		h.accept(fTKnd::T_RPAREN);
 		return params;
 	}
 

@@ -167,7 +167,7 @@ namespace zebra::parse {
 
 		sp<fClassParamClauses> classParamClauses();
 
-		std::vector<sp<fClassParam>> classParamClause(bool isImplicit);
+		std::vector<sp<fClassParam>> classParamClause();
 
 		sp<fParamType> paramType(bool isSimpleType);
 

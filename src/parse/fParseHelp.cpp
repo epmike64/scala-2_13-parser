@@ -163,10 +163,6 @@ namespace zebra::parse {
         return laToken->getTKind() == type;
     }
 
-    // const fLangOperatorKind* fParseHelp::getOprKnd(const fToken* token) const {
-    //     return fLangOperatorKind::getOptrKnd(token);
-    // }
-
     void fParseHelp::skipNL() {
         if (isTkNL()) next();
     }
