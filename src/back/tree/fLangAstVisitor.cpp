@@ -202,6 +202,10 @@ namespace zebra::back::tree {
 	void fLangAstVisitor::visit(sp<fClassParamClauses> n, esc prnSc) {
 		std::cout << "Visiting Class Parameter Clauses" << std::endl;
 		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::CLASS_PARAM_CLAUSES);
+		for (const auto& implicitParam : n->getImplicitParams()) {
+			std::cout << "Visiting Implicit Class Parameter" << std::endl;
+			implicitParam->accept(shared_from_this(), s);
+		}
 		for (const auto& paramClauseList : n->getClassParams()) {
 			for (auto & paramClause : paramClauseList) {
 				std::cout << "Visiting Class Parameter Clause" << std::endl;

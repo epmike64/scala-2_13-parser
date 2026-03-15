@@ -18,7 +18,9 @@ namespace zebra::ast::leaf {
 	}
 
 	void fClassDef::setClassParamClauses(sp<fClassParamClauses> &&classParamClauses) {
-		this->classParamClauses_ = std::move(classParamClauses);
+		if (classParamClauses != nullptr) {
+			this->classParamClauses_ = std::move(classParamClauses);
+		}
 	}
 
 
