@@ -14,6 +14,8 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fParamType::toString() const {
-		return "AccessModifier()";
+		return "fParamType(type=" + (getType() ? getType()->toString() : "null") +
+			   ", isFatArrow=" + (isFatArrow ? "true" : "false") +
+			   ", isStar=" + (isStar ? "true" : "false") + ")";
 	}
 }

@@ -3,6 +3,9 @@
 
 #include <string>
 
+#include "ast/leaf/fModifiers.hpp"
+#include "ast/leaf/fParamType.hpp"
+
 namespace zebra::ast::leaf {
 
 	const fToken* fClassParam::getIdentifier() const {
@@ -55,6 +58,11 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fClassParam::toString() const {
-		return "fClassParam()";
+		return "fClassParam(identifier=" + (identifier_ ? identifier_->toString() : "null") +
+		       ", mutability=" + (mutability_ == lex::kind::fVariableMutabilityTypeE::VAL ? "val" :
+		                          mutability_ == lex::kind::fVariableMutabilityTypeE::VAR ? "var" : "none") +
+		       ", paramType=" + (paramType_ ? paramType_->toString() : "null") +
+		       ", defaultValueExpr=" + (defaultValueExpr_ ? defaultValueExpr_->toString() : "null") +
+		       ", modifiers=" + (modifiers_ ? modifiers_->toString() : "null") + ")";
 	}
 }
