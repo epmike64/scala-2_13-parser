@@ -1700,6 +1700,7 @@ namespace zebra::parse {
 			p->addContextBound(type());
 		}
 		while(h.isTkColon()) {
+			h.next();
 			p->addType(type());
 		}
 
