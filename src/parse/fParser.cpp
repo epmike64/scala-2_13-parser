@@ -913,7 +913,7 @@ namespace zebra::parse {
 				}
 				case fTKnd::T_LBRACKET_E: {
 					exprLBracket(a); //typeArgs
-					goto out_wlp;
+					continue;
 				}
 				case fTKnd::T_LPAREN_E: {// function() ArgumentExprs
 					exprLParen(a);
@@ -1469,7 +1469,9 @@ namespace zebra::parse {
 	sp<fFun> fParser::funDef(sp<fModifiers> mods) {
 		h.accept(fTKnd::T_DEF);
 		switch (*h.tKnd()) {
-			case fTKnd::T_ID_E: {
+			case fTKnd::T_ID_E: case fTKnd::T_PLUS_E: case fTKnd::T_MINUS_E: case fTKnd::T_STAR_E: case fTKnd::T_FORWARD_SLASH_E: case fTKnd::T_PERCENT_E:
+			case fTKnd::T_TILDE_E: case fTKnd::T_EXCLAMATION_E: case fTKnd::T_POUND_E: case fTKnd::T_AMPERSAND_E: case fTKnd::T_PIPE_E: case fTKnd::T_LT_E: case fTKnd::T_GT_E:
+			case fTKnd::T_CARET_E: case fTKnd::T_QUESTION_E:{
 				return namedFun(mods);
 			}
 			case fTKnd::T_THIS_E: {
