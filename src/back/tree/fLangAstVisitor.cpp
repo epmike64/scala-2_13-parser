@@ -564,11 +564,7 @@ namespace zebra::back::tree {
 	}
 
 	void fLangAstVisitor::visit(sp<fVariantTypeParam> n, esc prnSc) {
-		std::cout << "Visiting Variant Type Parameter: " << n->getTypeParamName()->toString() << std::endl;
-		// if (n->getTypeBound()) {
-		// 	std::cout << "Visiting Type Bound for Variant Type Parameter" << std::endl;
-		// 	n->getTypeBound()->accept(shared_from_this(), prnSc);
-		// }
+		std::cout << "Visiting Variant Type Parameter: " << n->toString() << std::endl;
 	}
 
 

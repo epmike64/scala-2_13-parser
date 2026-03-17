@@ -18,12 +18,12 @@ namespace zebra::ast::leaf {
 		return _typeDefName;
 	}
 
-	void fTypeDef::setTypeParams(const sp<std::vector<sp<fVariantTypeParam>>>& typeParams) {
-        this->typeParams_ = typeParams;
+	void fTypeDef::setTypeParams(sp<fTypeParamClause> typeParams) {
+        this->typeParamClause_ = typeParams;
     }
 
-	sp<std::vector<sp<fVariantTypeParam>>> fTypeDef::getTypeParams() const {
-		return typeParams_;
+	sp<fTypeParamClause> fTypeDef::getTypeParams() const {
+		return typeParamClause_;
 	}
 
 	void fTypeDef::setAssignedType(sp<fType> &&assignedType) {
@@ -40,15 +40,8 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fTypeDef::toString() const {
-		std::string typeParamsStr;
-		if (typeParams_) {
-			for (const auto &tp: *typeParams_) {
-				if (!typeParamsStr.empty()) typeParamsStr += ", ";
-				typeParamsStr += tp->toString();
-			}
-		}
 		return "TypeDef(name=" + getTypeDefName()->toString() +
-		       ", typeParams=[" + (typeParams_? "" : typeParamsStr) +
+		       ", typeParams=[" + ((typeParamClause_? "" : typeParamClause_->toString())) +
 		       ", assignedType=" + (assignedType_ ? assignedType_->toString() : "null") + ")";
 	}
 }

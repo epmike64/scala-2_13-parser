@@ -179,7 +179,7 @@ namespace zebra::parse {
 
 		sp<fVariantTypeParam> variantTypeParam();
 
-		sp<vector<sp<fVariantTypeParam>>> variantTypeParams();
+		sp<fTypeParamClause> typeParamClause();
 
 		sp<fTemplate> classExtends(bool isTrait);
 

@@ -5,15 +5,20 @@
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"
+#include "fTypeParamClause.hpp"
 
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 	using namespace ast::symbol;
 
+	// Forward declarations — only sp<T> used, no full definition needed
+	class fTypeParamClause;
+	class fType;
+
 	class fTypeParam : public fAstOprndNod {
 	protected:
 		const fToken* typeParamName_ = nullptr;
-		sp<std::vector<sp<fVariantTypeParam>>> variantTypeParams_;
+		sp<fTypeParamClause> typeParamClause_;
 		sp<fType> upperBound_, lowerBound_;
 		sp<std::vector<sp<fType>>> types_;
 		sp<std::vector<sp<fType>>> contextBounds_;
@@ -26,12 +31,10 @@ namespace zebra::ast::leaf {
 
 		 const fToken* getTypeParamName() const ;
 
-		void setVariantTypeParam(std::vector<sp<fVariantTypeParam>> &&variantTypeParam);
+		void setTypeParamClause(const sp<fTypeParamClause> &typeParamClause);
 
 
-		void setVariantTypeParams(const sp<std::vector<sp<fVariantTypeParam>>> &variantTypeParams) ;
-
-		sp<std::vector<sp<fVariantTypeParam>>> getVariantTypeParam() const;
+		sp<fTypeParamClause> getTypeParamClause() const;
 
 		 void addType(sp<fType> &&types) ;
 

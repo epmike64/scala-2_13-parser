@@ -5,6 +5,7 @@
 
 #include "fAstProdSubTreeN.hpp"
 #include "ast/leaf/fIf.hpp"
+#include "ast/leaf/fTypeParamClause.hpp"
 #include "util/fCommon.hpp"
 
 // Forward declarations only — leaf headers include fAstNod.hpp which would
@@ -54,6 +55,7 @@ namespace zebra::ast::leaf {
 	class fTypeArgs;
 	class fTypeDef;
 	class fTypeParam;
+	class fTypeParamClause;
 	class fUnderscore;
 	class fValue;
 	class fValueDecl;
@@ -135,6 +137,7 @@ namespace zebra::ast::node {
 		virtual void visit(sp<fValue>, esc) = 0;
 		virtual void visit(sp<fValueDecl>, esc) = 0;
 		virtual void visit(sp<fValueDef>, esc) = 0;
+		virtual void visit(sp<fTypeParamClause> n, esc)  = 0;
 		virtual void visit(sp<fVariantTypeParam>, esc) = 0;
 		virtual void visit(sp<fWhile>, esc) = 0;
 	};

@@ -5,7 +5,7 @@
 
 namespace zebra::ast::leaf {
 
-	fTypeParamClause::fTypeParamClause(sp<std::vector<sp<fVariantTypeParam>>> variantTypeParams) : variantTypeParams_(std::move(variantTypeParams)) {
+	fTypeParamClause::fTypeParamClause(const sp<std::vector<sp<fVariantTypeParam>>>& variantTypeParams) : variantTypeParams_(variantTypeParams) {
 		if (this->variantTypeParams_ == nullptr) {
 			throw std::invalid_argument("Variant type parameters cannot be null");
 		}

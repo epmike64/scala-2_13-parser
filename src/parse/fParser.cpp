@@ -1486,7 +1486,7 @@ namespace zebra::parse {
 		h.accept(fTKnd::T_TYPE);
 		sp<fTypeDef> t = ms<fTypeDef>(h.next());
 		if (h.isTkLBracket()) {
-			t->setTypeParams(variantTypeParams());
+			t->setTypeParams(typeParamClause());
 		}
 		h.accept(fTKnd::T_ASSIGN);
 		t->setAssignedType(type());
@@ -1564,7 +1564,7 @@ namespace zebra::parse {
 		h.accept(fTKnd::T_CLASS);
 		auto cls = std::make_shared<fClassDef>(h.next(), std::move(mods), isCase);
 		if (h.isTkLBracket()) {
-			cls->setTypeParamClause(ms<fTypeParamClause>(variantTypeParams()));
+			cls->setTypeParamClause(ms<fTypeParamClause>(typeParamClause()));
 		}
 		switch(*h.tKnd()){
 			case fTKnd::T_PRIVATE_E: case fTKnd::T_PROTECTED_E: {
@@ -1715,7 +1715,7 @@ namespace zebra::parse {
 
 		p->setTypeParamName(h.acceptOneOf({fTKnd::T_ID, fTKnd::T_UNDERSCORE}));
 		if (h.isTkLBracket()) {
-			p->setVariantTypeParams(variantTypeParams());
+			p->setTypeParamClause(typeParamClause());
 		}
 		if (h.isTkLowerBound()) {
 			h.next();
@@ -1751,7 +1751,7 @@ namespace zebra::parse {
 		return p;
 	}
 
-	sp<vector<sp<fVariantTypeParam>>> fParser::variantTypeParams() {
+	sp<fTypeParamClause> fParser::typeParamClause() {
 		std::vector<sp<fVariantTypeParam>> params;
 		h.accept(fTKnd::T_LBRACKET);
 		while (true) {
@@ -1764,7 +1764,7 @@ namespace zebra::parse {
 		}
 		h.accept(fTKnd::T_RBRACKET);
 		if (params.size() > 0) {
-			return ms<std::vector<sp<fVariantTypeParam>>>(std::move(params));
+			return ms<fTypeParamClause>(std::move(params));
 		}
 		return nullptr;
 	}
@@ -1810,7 +1810,7 @@ namespace zebra::parse {
 		h.accept(fTKnd::T_TRAIT);
 		sp<fTraitDef> trait = ms<fTraitDef>(h.next(), std::move(mods));
 		if (h.isTkLBracket()) {
-			trait->setTypeParamClause(ms<fTypeParamClause>(variantTypeParams()));
+			trait->setTypeParamClause(ms<fTypeParamClause>(typeParamClause()));
 		}
 		trait->setExtendsTemplate(classExtends(true));
 		return trait;

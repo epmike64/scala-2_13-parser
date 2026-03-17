@@ -12,7 +12,7 @@ namespace zebra::ast::leaf {
 
 	class fTypeDef : public fAstOprndNod {
 		const fToken* _typeDefName;
-		sp<std::vector<sp<fVariantTypeParam>>> typeParams_;
+		sp<fTypeParamClause> typeParamClause_;
 		sp<fType> assignedType_;
 		public:
 
@@ -20,9 +20,9 @@ namespace zebra::ast::leaf {
 
 		 const fToken* getTypeDefName() const;
 
-		 void setTypeParams(const sp<std::vector<sp<fVariantTypeParam>>> &typeParams) ;
+		 void setTypeParams(sp<fTypeParamClause> typeParams) ;
 
-		sp<std::vector<sp<fVariantTypeParam>>> getTypeParams() const ;
+		sp<fTypeParamClause> getTypeParams() const ;
 
 		 void setAssignedType(sp<fType> &&assignedType);
 		 sp<fType> getAssignedType() const ;

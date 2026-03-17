@@ -15,7 +15,6 @@ namespace zebra::ast::leaf {
 	protected:
 		const fToken* traitName_;
 		const sp<fModifiers> modifiers_;
-		// sp<std::vector<sp<fVariantTypeParam>>> typeParams_;
 		sp<fTypeParamClause> typeParamClause_;
 		sp<fTemplate> extendsTemplate_;
 		public:
