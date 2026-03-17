@@ -174,6 +174,8 @@ add_executable(zebra-4-backend
 		src/lex/kind/fLangPseudoOperatorKindE.cpp
 		src/ast/symbol/ZEnclosingScope.cpp
 		include/ast/symbol/ZEnclosingScopeFwd.hpp
+		include/ast/leaf/fTypeParamClause.hpp
+		src/ast/leaf/fTypeParamClause.cpp
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE
