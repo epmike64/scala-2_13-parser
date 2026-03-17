@@ -555,6 +555,14 @@ namespace zebra::back::tree {
 		}
 	}
 
+	void fLangAstVisitor::visit(sp<fTypeParamClause> n, esc prnSc) {
+		std::cout << "Visiting Type Parameter Clause" << std::endl;
+		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::TYPE_PARAM_CLAUSE);
+		for (auto typeParam : *n->getVariantTypeParams()) {
+			typeParam->accept(shared_from_this(), s);
+		}
+	}
+
 	void fLangAstVisitor::visit(sp<fVariantTypeParam> n, esc prnSc) {
 		std::cout << "Visiting Variant Type Parameter: " << n->getTypeParamName()->toString() << std::endl;
 		// if (n->getTypeBound()) {

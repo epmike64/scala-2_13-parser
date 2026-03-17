@@ -95,7 +95,8 @@ namespace zebra::back::tree {
 		 void visit(sp<fUnderscore>, esc) override;
 		 void visit(sp<fValue>, esc) override;
 		 void visit(sp<fValueDecl>, esc) override;
-		 void visit(sp<fValueDef>, esc) override;
+		void visit(sp<fTypeParamClause> n, esc prnSc);
+		void visit(sp<fValueDef>, esc) override;
 		 void visit(sp<fVariantTypeParam>, esc) override;
 		 void visit(sp<fWhile>, esc) override;
 
