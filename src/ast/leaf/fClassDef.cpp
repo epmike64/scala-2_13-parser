@@ -9,7 +9,6 @@
 #include "ast/leaf/fTemplate.hpp"
 
 namespace zebra::ast::leaf {
-
 	fClassDef::fClassDef(const fToken *className, sp<fModifiers> &&modifiers, bool isCaseClass) : fTraitDef(className,
 			std::move(modifiers)), isCaseClass_(isCaseClass) {
 	}
@@ -36,16 +35,20 @@ namespace zebra::ast::leaf {
 	std::string fClassDef::toString() const {
 		std::stringstream out;
 		out << "ClassDef(name=" + getName()->toString() + ", isCaseClass=" + (isCaseClass_ ? "true" : "false");
-			out << (constrAccessModifier_ ? ", constrAccessModifier=" + constrAccessModifier_->toString() : "");
-			out << (classParamClauses_ ? ", classParamClauses=" + classParamClauses_->toString() : "");
-			out << (" , modifiers=" + (getModifiers() ? getModifiers()->toString() : "null"));
-			std::string typeParamsStr;
-			for (const auto& tp : getTypeParams()) {
-				if (!typeParamsStr.empty()) typeParamsStr += ", ";
-				typeParamsStr += tp->toString();
-			}
-			out << (" , typeParams=[" + typeParamsStr + "]");
-			out << (" , extendsTemplate=" + (getExtendsTemplate() ? getExtendsTemplate()->toString() : "null") + ")\n");
+		out << (constrAccessModifier_ ? ", constrAccessModifier=" + constrAccessModifier_->toString() : "");
+
+		std::string typeParamsStr;
+		for (const auto &tp: typeParams_) {
+			if (!typeParamsStr.empty()) typeParamsStr += ", ";
+			typeParamsStr += tp->toString();
+		};
+
+		out << (classParamClauses_ ? ", classParamClauses=" + classParamClauses_->toString() : "");
+		out << (" , modifiers=" + (getModifiers() ? getModifiers()->toString() : "null"));
+
+
+		out << (" , typeParams=[" + typeParamsStr + "]");
+		out << (" , extendsTemplate=" + (getExtendsTemplate() ? getExtendsTemplate()->toString() : "null") + ")\n");
 		return out.str();
 	}
 }

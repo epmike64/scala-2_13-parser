@@ -14,6 +14,9 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fVariantTypeParam::toString() const {
-		return "VariantTypeParam(variance=" + std::to_string(static_cast<int>(variance_)) + ")";
+		const std::string varianceStr = variance_ == lex::kind::fVarianceE::INVARIANT  ? "invariant" :
+		                                variance_ == lex::kind::fVarianceE::COVARIANT   ? "covariant" : "contravariant";
+		return "fVariantTypeParam(variance=" + varianceStr +
+		       ", base=" + fTypeParam::toString() + ")";
 	}
 }

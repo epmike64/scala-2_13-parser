@@ -11,6 +11,7 @@ namespace zebra::ast::leaf {
 	using namespace ast::node;
 
 	class fTraitDef : public fAstOprndNod {
+	protected:
 		const fToken* traitName_;
 		const sp<fModifiers> modifiers_;
 		std::vector<sp<fVariantTypeParam>> typeParams_;

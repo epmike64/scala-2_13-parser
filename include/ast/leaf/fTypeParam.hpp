@@ -11,6 +11,7 @@ namespace zebra::ast::leaf {
 	using namespace ast::symbol;
 
 	class fTypeParam : public fAstOprndNod {
+	protected:
 		const fToken* typeParamName_ = nullptr;
 		sp<std::vector<sp<fVariantTypeParam>>> variantTypeParam_;
 		sp<fType> upperBound_, lowerBound_;
