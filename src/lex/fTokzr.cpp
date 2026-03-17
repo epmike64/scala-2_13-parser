@@ -203,19 +203,19 @@ namespace zebra::lex {
 
         switch (tKnd_->getTTag()) {
             case fTTagE::OPERATOR:
-                return tokBuf_.addToken(fToken(tKnd_, pos_, endPos_, fToken::OPERATOR));
+                return tokBuf_.addToken(new fToken(tKnd_, pos_, endPos_, fToken::OPERATOR));
             case fTTagE::KEYWORD:
-                return tokBuf_.addToken(fToken(tKnd_, pos_, endPos_, fToken::KEYWORD));
+                return tokBuf_.addToken(new fToken(tKnd_, pos_, endPos_, fToken::KEYWORD));
             case fTTagE::INTERN:
-                return tokBuf_.addToken(fToken(tKnd_, pos_, endPos_, fToken::INTERN));
+                return tokBuf_.addToken(new fToken(tKnd_, pos_, endPos_, fToken::INTERN));
             case fTTagE::NAME_VAL:
-                return tokBuf_.addToken(fToken(tKnd_, pos_, endPos_, tokStrVal_));
+                return tokBuf_.addToken(new fToken(tKnd_, pos_, endPos_, tokStrVal_));
             case fTTagE::STRING:
-                return tokBuf_.addToken(fToken(tKnd_, pos_, endPos_, tokStrVal_));
+                return tokBuf_.addToken(new fToken(tKnd_, pos_, endPos_, tokStrVal_));
             case fTTagE::NUMERIC:
-                return tokBuf_.addToken(fNumToken(tKnd_, pos_, endPos_, tokStrVal_, radix_));
+                return tokBuf_.addToken(new fNumToken(tKnd_, pos_, endPos_, tokStrVal_, radix_));
             case fTTagE::UNDERSCORE:
-                return tokBuf_.addToken(fToken(tKnd_, pos_, endPos_, tokStrVal_));
+                return tokBuf_.addToken(new fToken(tKnd_, pos_, endPos_, tokStrVal_));
             default:
                 throw std::runtime_error("Unknown token tag");
         }

@@ -179,3 +179,6 @@ add_executable(zebra-4-backend
 target_compile_definitions(zebra-4-backend PRIVATE
 		PROJECT_ROOT="${CMAKE_SOURCE_DIR}"
 )
+
+target_compile_options(zebra-4-backend PUBLIC -g -O0
+)
