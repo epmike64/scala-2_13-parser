@@ -23,11 +23,11 @@ namespace zebra::ast::leaf {
 		return modifiers_;
 	}
 
-	void fTraitDef::setTypeParams(const sp<std::vector<sp<fVariantTypeParam>>>& typeParams) {
-		this->typeParams_ = typeParams;
+	void fTraitDef::setVariantTypeParams(const sp<std::vector<sp<fVariantTypeParam>>>& typeParams) {
+		this->typeParams_ = ms<fTypeParamClause>(typeParams);
 	}
 
-	sp<vector<sp<fVariantTypeParam>>> fTraitDef::getTypeParams() const {
+	sp<fTypeParamClause> fTraitDef::getVariantTypeParams() const {
 		return typeParams_;
 	}
 
@@ -47,10 +47,11 @@ namespace zebra::ast::leaf {
 	std::string fTraitDef::toString() const {
 		std::string typeParamsStr;
 		if (typeParams_) {
-			for (const auto &tp: *typeParams_) {
-				if (!typeParamsStr.empty()) typeParamsStr += ", ";
-				typeParamsStr += tp->toString();
-			}
+			// for (const auto &tp: *typeParams_) {
+			// 	if (!typeParamsStr.empty()) typeParamsStr += ", ";
+			// 	typeParamsStr += tp->toString();
+			// }
+			typeParamsStr = typeParams_->toString();
 		}
 		return "TraitDef(name=" + getName()->toString() +
 		       ", modifiers=" + (modifiers_ ? modifiers_->toString() : "null") +

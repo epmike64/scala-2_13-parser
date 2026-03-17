@@ -11,20 +11,22 @@ namespace zebra::ast::leaf {
 	using std::vector;
 
 	class fClassParamClauses : public fAstOprndNod {
-		vector<sp<fClassParam>> implicitParams_;
-		vector<vector<sp<fClassParam>>> classParams_;
-		public:
+		vector<sp<fClassParam> > implicitParams_;
+		vector<vector<sp<fClassParam> > > classParams_;
 
+	public:
 		fClassParamClauses() = default;
 
-		void setImplicitParams(vector<sp<fClassParam>> &&implicitParams) ;
+		void setImplicitParams(vector<sp<fClassParam> > &&implicitParams);
 
-		void addParams(vector<sp<fClassParam>> &&params);
+		void addParams(vector<sp<fClassParam> > &&params);
 
-		 vector<sp<fClassParam>> getImplicitParams() const ;
-		 vector<vector<sp<fClassParam>>> getClassParams() const ;
+		vector<sp<fClassParam> > getImplicitParams() const;
+
+		vector<vector<sp<fClassParam> > > getClassParams() const;
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
+
 		std::string toString() const override;
 	};
 }

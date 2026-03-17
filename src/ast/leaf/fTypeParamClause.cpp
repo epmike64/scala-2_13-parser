@@ -21,8 +21,10 @@ namespace zebra::ast::leaf {
 
 	std::string fTypeParamClause::toString() const {
 		std::string result = "fTypeParamClause(variantTypeParams=[";
-		for (const auto& param : *variantTypeParams_) {
-			result += (param ? param->toString() : "null") + ", ";
+		if (variantTypeParams_ != nullptr) {
+			for (const auto& param : *variantTypeParams_) {
+				result += param->toString() + ", ";
+			}
 		}
 		result += "])";
 		return result;
