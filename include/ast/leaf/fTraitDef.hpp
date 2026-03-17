@@ -26,9 +26,9 @@ namespace zebra::ast::leaf {
 
 		 sp<fModifiers> getModifiers() const;
 
-		 void setVariantTypeParams(const sp<vector<sp<fVariantTypeParam>>> &typeParams);
+		 void setTypeParamClause(const sp<fTypeParamClause> &typeParams);
 
-		sp<fTypeParamClause> getVariantTypeParams() const;
+		sp<fTypeParamClause> getTypeParamClause() const;
 
 		 void setExtendsTemplate(sp<fTemplate> &&extendsTemplate);
 

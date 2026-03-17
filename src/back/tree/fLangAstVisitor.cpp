@@ -77,8 +77,8 @@ namespace zebra::back::tree {
 			cls->getConstrAccessModifier()->accept(shared_from_this(), s);
 		}
 
-		if (cls->getVariantTypeParams()) {
-			cls->getVariantTypeParams()->accept(shared_from_this(), s);
+		if (cls->getTypeParamClause()) {
+			cls->getTypeParamClause()->accept(shared_from_this(), s);
 		}
 
 		if (cls->getClassParamClauses()) {

@@ -23,11 +23,11 @@ namespace zebra::ast::leaf {
 		return modifiers_;
 	}
 
-	void fTraitDef::setVariantTypeParams(const sp<std::vector<sp<fVariantTypeParam>>>& typeParams) {
-		this->typeParams_ = ms<fTypeParamClause>(typeParams);
+	void fTraitDef::setTypeParamClause(const sp<fTypeParamClause>& typeParams) {
+		this->typeParams_ =typeParams;
 	}
 
-	sp<fTypeParamClause> fTraitDef::getVariantTypeParams() const {
+	sp<fTypeParamClause> fTraitDef::getTypeParamClause() const {
 		return typeParams_;
 	}
 
