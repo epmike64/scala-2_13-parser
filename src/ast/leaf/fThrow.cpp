@@ -16,6 +16,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fThrow::toString() const {
-		return "AccessModifier()";
+		return "fThrow(throwExpr=" + (throwExpr_ ? throwExpr_->toString() : "null") + ")";
 	}
 }

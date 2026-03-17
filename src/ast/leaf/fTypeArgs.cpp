@@ -20,6 +20,12 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fTypeArgs::toString() const {
-		return "AccessModifier()";
+		return "TypeArgs(typeArgs=[" + [&]() {
+			std::string result;
+			for (const auto& typeArg : typeArgs_) {
+				result += (typeArg ? typeArg->toString() : "null") + ", ";
+			}
+			return result;
+		}() + "])";
 	}
 }

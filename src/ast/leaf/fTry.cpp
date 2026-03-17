@@ -36,6 +36,8 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fTry::toString() const {
-		return "AccessModifier()";
+		return "fTry(tryBlock=" + (tryBlock_ ? tryBlock_->toString() : "null") +
+		       ", catchBlock=" + (catchBlock_ ? catchBlock_->toString() : "null") +
+		       ", finallyBlock=" + (finallyBlock_ ? finallyBlock_->toString() : "null") + ")";
 	}
 }

@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "ast/leaf/fType.hpp"
+
 namespace zebra::ast::leaf {
 
 	fTypeDef::fTypeDef(const fToken* typeDefName) : _typeDefName(typeDefName) {
@@ -37,6 +39,8 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fTypeDef::toString() const {
-		return "AccessModifier()";
+		return "TypeDef(name=" + getTypeDefName()->toString() +
+		       ", typeParams=[" + (typeParams_.empty() ? "" : "") +
+		       ", assignedType=" + (assignedType_ ? assignedType_->toString() : "null") + ")";
 	}
 }
