@@ -10,6 +10,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string  fAccessQualifier::toString() const {
-		return "AccessQualifier()";
+		return "AccessQualifier(name=" +( _id->toString()) + ")";
 	}
 }

@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "ast/leaf/fModifiers.hpp"
+
 namespace zebra::ast::leaf {
 
 	fFun::fFun(sp<fModifiers> &&modifiers) : modifiers_(std::move(modifiers)) {
@@ -18,6 +20,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fFun::toString() const {
-		return "fFun()";
+		return "Fun(modifiers=" + (modifiers_ ? modifiers_->toString() : "null") + ")";
 	}
 }

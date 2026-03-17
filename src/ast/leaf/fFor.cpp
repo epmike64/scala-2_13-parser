@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "ast/leaf/fGenerator.hpp"
+
 namespace zebra::ast::leaf {
 
 
@@ -41,6 +43,13 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fFor::toString() const {
-		return "fFor()";
+		return "For(generators=[" + [&]() {
+			std::string result;
+			for (const auto& gen : generators_) {
+				result += (gen ? gen->toString() : "null") + ", ";
+			}
+			return result;
+		}() + "], isYield=" + std::string(isYield_ ? "true" : "false") +
+		       ", yieldExpr=" + (yieldExpr_ ? yieldExpr_->toString() : "null") + ")";
 	}
 }

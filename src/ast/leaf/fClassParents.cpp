@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "ast/leaf/fClassConstr.hpp"
+
 namespace zebra::ast::leaf {
 
 	void fClassParents::setConstr(sp<fClassConstr> &&constr) {
@@ -32,6 +34,7 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fClassParents::toString() const {
-		return "AccessModifier()";
+		return "ClassParents(constr=" + (constr_ ? constr_->toString() : "null") +
+		       ", withTypes=" + (withTypes_ ? withTypes_->toString() : "null") + ")";
 	}
 }

@@ -3,6 +3,9 @@
 
 #include <string>
 
+#include "ast/leaf/fClassParents.hpp"
+#include "ast/leaf/fTemplateBody.hpp"
+
 namespace zebra::ast::leaf {
 
 	fClassTemplate::fClassTemplate(sp<fTemplateBody> &&body, bool amExtender, sp<fClassParents> &&parents) : fTemplate(std::move(body), amExtender), parents_(std::move(parents)) {
@@ -21,6 +24,8 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fClassTemplate::toString() const {
-		return "fClassTemplate()";
+		return "ClassTemplate(amExtender=" + std::string(amExtender() ? "true" : "false") +
+		       ", templateBody=" + (getTemplateBody() ? getTemplateBody()->toString() : "null") +
+		       ", classParents=" + (parents_ ? parents_->toString() : "null") + ")";
 	}
 }

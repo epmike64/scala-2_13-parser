@@ -28,6 +28,7 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fClassConstr::toString() const {
-		return "fClassConstr()";
+		return "fClassConstr(paramType=" + (paramType ? paramType->toString() : "null") +
+		       ", args=" + (args_ ? args_->toString() : "null") + ")";
 	}
 }

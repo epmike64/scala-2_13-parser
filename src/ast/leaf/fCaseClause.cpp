@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "ast/leaf/fBlock.hpp"
+
 namespace zebra::ast::leaf {
 
 
@@ -39,6 +41,8 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fCaseClause::toString() const {
-		return "fCaseClause()";
+		return "CaseClause(pattern=" + (pattern ? pattern->toString() : "null") +
+		       ", guard=" + (guard ? guard->toString() : "null") +
+		       ", block=" + (block ? block->toString() : "null") + ")";
 	}
 }

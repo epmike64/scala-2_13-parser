@@ -19,7 +19,12 @@ namespace zebra::ast::leaf {
 		visitor->visit(std::static_pointer_cast<fCaseClauses>(shared_from_this()), s);
 	}
 
-	std::string fCaseClauses::toString() const {
-		return "fCaseClauses()";
-	}
+ std::string fCaseClauses::toString() const {
+		std::string clausesStr;
+		for (const auto& clause : _caseClauses) {
+			if (!clausesStr.empty()) clausesStr += ", ";
+			clausesStr += clause->toString();
+		}
+		return "CaseClauses(clauses=[" + clausesStr + "])";
+ }
 }
