@@ -118,6 +118,7 @@ abstract class MethodSignatures {
   class Vec(val x: Double, val y: Double) {
     def +(other: Vec): Vec = Vec(x + other.x, y + other.y)
     def *(scalar: Double): Vec = Vec(x * scalar, y * scalar)
+    def unary_- : Vec = Vec(-x, -y)
   }
 
 
