@@ -14,7 +14,7 @@ namespace zebra::ast::leaf {
 	class fTypeParamClause : public fAstOprndNod {
 		sp<std::vector<sp<fVariantTypeParam>>> variantTypeParams_;
 	public:
-		fTypeParamClause(const sp<std::vector<sp<fVariantTypeParam>>>& variantTypeParams);
+		fTypeParamClause(sp<std::vector<sp<fVariantTypeParam>>> variantTypeParams);
 		sp<std::vector<sp<fVariantTypeParam>>> getVariantTypeParams() const;
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
