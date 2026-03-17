@@ -3,13 +3,17 @@
 #include <vector>
 
 #include "ast/node/fAstOprndNod.hpp"
-#include "ast/node/fAstNodVisitor.hpp"
+#include "lex/token/fToken.hpp"
 #include "util/fCommon.hpp"
-#include "fTypeParamClause.hpp"
+
+// fAstNodVisitor is forward-declared by fAstOprndNod.hpp.
+// fTypeParamClause and fType are forward-declared in the namespace block below.
 
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 	using namespace ast::symbol;
+	using namespace util;
+	using zebra::lex::token::fToken;
 
 	// Forward declarations — only sp<T> used, no full definition needed
 	class fTypeParamClause;

@@ -2,11 +2,10 @@
 
 #include "fAstNod.hpp"
 
-
 #include "fAstProdSubTreeN.hpp"
-#include "ast/leaf/fIf.hpp"
-#include "ast/leaf/fTypeParamClause.hpp"
 #include "util/fCommon.hpp"
+
+// fIf and fTypeParamClause are forward-declared in the namespace block below;
 
 // Forward declarations only — leaf headers include fAstNod.hpp which would
 namespace zebra::ast::leaf {

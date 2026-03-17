@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "ast/node/fAstOprndNod.hpp"
-#include "ast/node/fAstNodVisitor.hpp"
+// fAstNodVisitor is forward-declared by fAstOprndNod.hpp
 #include "util/fCommon.hpp"
 #include "ast/leaf/fVariantTypeParam.hpp"
 

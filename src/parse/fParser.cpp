@@ -1564,7 +1564,7 @@ namespace zebra::parse {
 		h.accept(fTKnd::T_CLASS);
 		auto cls = std::make_shared<fClassDef>(h.next(), std::move(mods), isCase);
 		if (h.isTkLBracket()) {
-			cls->setTypeParamClause(ms<fTypeParamClause>(typeParamClause()));
+			cls->setTypeParamClause(typeParamClause());
 		}
 		switch(*h.tKnd()){
 			case fTKnd::T_PRIVATE_E: case fTKnd::T_PROTECTED_E: {
@@ -1764,7 +1764,7 @@ namespace zebra::parse {
 		}
 		h.accept(fTKnd::T_RBRACKET);
 		if (params.size() > 0) {
-			return ms<fTypeParamClause>(std::move(params));
+			return ms<fTypeParamClause>(ms<std::vector<sp<fVariantTypeParam>>>(std::move(params)));
 		}
 		return nullptr;
 	}
@@ -1810,7 +1810,7 @@ namespace zebra::parse {
 		h.accept(fTKnd::T_TRAIT);
 		sp<fTraitDef> trait = ms<fTraitDef>(h.next(), std::move(mods));
 		if (h.isTkLBracket()) {
-			trait->setTypeParamClause(ms<fTypeParamClause>(typeParamClause()));
+			trait->setTypeParamClause(typeParamClause());
 		}
 		trait->setExtendsTemplate(classExtends(true));
 		return trait;

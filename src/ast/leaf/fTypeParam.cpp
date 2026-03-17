@@ -1,5 +1,6 @@
 #include "ast/leaf/fTypeParam.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
+#include "ast/leaf/fTypeParamClause.hpp"
 
 #include <string>
 
