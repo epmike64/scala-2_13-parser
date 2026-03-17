@@ -17,15 +17,15 @@ namespace zebra::ast::leaf {
 	}
 
 	void fTypeParam::setVariantTypeParam(std::vector<sp<fVariantTypeParam>> &&variantTypeParam) {
-        this->variantTypeParam_  = std::make_shared<std::vector<sp<fVariantTypeParam>>>(std::move(variantTypeParam));
+        this->variantTypeParams_  = std::make_shared<std::vector<sp<fVariantTypeParam>>>(std::move(variantTypeParam));
     }
 
-	void fTypeParam::setVariantTypeParams(std::vector<sp<fVariantTypeParam>> &&variantTypeParams) {
-		this->variantTypeParam_ = std::make_shared<std::vector<sp<fVariantTypeParam>>>(std::move(variantTypeParams));
+	void fTypeParam::setVariantTypeParams(const sp<std::vector<sp<fVariantTypeParam>>>& variantTypeParams) {
+		this->variantTypeParams_ = variantTypeParams;
 	}
 
 	sp<std::vector<sp<fVariantTypeParam>>> fTypeParam::getVariantTypeParam() const {
-        return variantTypeParam_;
+        return variantTypeParams_;
     }
 
 
@@ -80,7 +80,7 @@ namespace zebra::ast::leaf {
 
 	std::string fTypeParam::toString() const {
 		return "TypeParam(name=" + (typeParamName_ ? typeParamName_->toString() : "null") +
-		       ", variantTypeParams=" + (variantTypeParam_ ? std::to_string(variantTypeParam_->size()) : "null") +
+		       ", variantTypeParams=" + (variantTypeParams_ ? std::to_string(variantTypeParams_->size()) : "null") +
 		       ", upperBound=" + (upperBound_ ? upperBound_->toString() : "null") +
 		       ", lowerBound=" + (lowerBound_ ? lowerBound_->toString() : "null") +
 		       ", types=" + (types_ ? std::to_string(types_->size()) : "null") +

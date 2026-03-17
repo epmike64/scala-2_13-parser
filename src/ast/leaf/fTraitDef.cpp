@@ -5,6 +5,7 @@
 
 #include "ast/leaf/fModifiers.hpp"
 #include "ast/leaf/fTemplate.hpp"
+#include "ast/leaf/fVariantTypeParam.hpp"
 
 namespace zebra::ast::leaf {
 
@@ -22,11 +23,11 @@ namespace zebra::ast::leaf {
 		return modifiers_;
 	}
 
-	void fTraitDef::setTypeParams(std::vector<sp<fVariantTypeParam>> &&typeParams) {
-		this->typeParams_ = std::move(typeParams);
+	void fTraitDef::setTypeParams(const sp<std::vector<sp<fVariantTypeParam>>>& typeParams) {
+		this->typeParams_ = typeParams;
 	}
 
-	std::vector<sp<fVariantTypeParam>> fTraitDef::getTypeParams() const {
+	sp<vector<sp<fVariantTypeParam>>> fTraitDef::getTypeParams() const {
 		return typeParams_;
 	}
 
@@ -44,9 +45,16 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fTraitDef::toString() const {
+		std::string typeParamsStr;
+		if (typeParams_) {
+			for (const auto &tp: *typeParams_) {
+				if (!typeParamsStr.empty()) typeParamsStr += ", ";
+				typeParamsStr += tp->toString();
+			}
+		}
 		return "TraitDef(name=" + getName()->toString() +
 		       ", modifiers=" + (modifiers_ ? modifiers_->toString() : "null") +
-		       ", typeParams=[" + (typeParams_.empty() ? "" : "") +
+		       ", typeParams=[" + typeParamsStr + "]" +
 		       ", extendsTemplate=" + (extendsTemplate_ ? extendsTemplate_->toString() : "null") + ")";
 	}
 }

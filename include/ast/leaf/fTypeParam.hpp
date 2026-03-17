@@ -13,7 +13,7 @@ namespace zebra::ast::leaf {
 	class fTypeParam : public fAstOprndNod {
 	protected:
 		const fToken* typeParamName_ = nullptr;
-		sp<std::vector<sp<fVariantTypeParam>>> variantTypeParam_;
+		sp<std::vector<sp<fVariantTypeParam>>> variantTypeParams_;
 		sp<fType> upperBound_, lowerBound_;
 		sp<std::vector<sp<fType>>> types_;
 		sp<std::vector<sp<fType>>> contextBounds_;
@@ -29,7 +29,7 @@ namespace zebra::ast::leaf {
 		void setVariantTypeParam(std::vector<sp<fVariantTypeParam>> &&variantTypeParam);
 
 
-		void setVariantTypeParams(std::vector<sp<fVariantTypeParam> > &&variantTypeParam) ;
+		void setVariantTypeParams(const sp<std::vector<sp<fVariantTypeParam>>> &variantTypeParams) ;
 
 		sp<std::vector<sp<fVariantTypeParam>>> getVariantTypeParam() const;
 

@@ -38,10 +38,12 @@ namespace zebra::ast::leaf {
 		out << (constrAccessModifier_ ? ", constrAccessModifier=" + constrAccessModifier_->toString() : "");
 
 		std::string typeParamsStr;
-		for (const auto &tp: typeParams_) {
-			if (!typeParamsStr.empty()) typeParamsStr += ", ";
-			typeParamsStr += tp->toString();
-		};
+		if (typeParams_) {
+			for (const auto &tp: *typeParams_) {
+				if (!typeParamsStr.empty()) typeParamsStr += ", ";
+				typeParamsStr += tp->toString();
+			}
+		}
 
 		out << (classParamClauses_ ? ", classParamClauses=" + classParamClauses_->toString() : "");
 		out << (" , modifiers=" + (getModifiers() ? getModifiers()->toString() : "null"));

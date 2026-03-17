@@ -4,6 +4,7 @@
 #include <string>
 
 #include "ast/leaf/fType.hpp"
+#include "ast/leaf/fVariantTypeParam.hpp"
 
 namespace zebra::ast::leaf {
 
@@ -17,11 +18,11 @@ namespace zebra::ast::leaf {
 		return _typeDefName;
 	}
 
-	void fTypeDef::setTypeParams(std::vector<sp<fVariantTypeParam>> &&typeParams) {
-        this->typeParams_ = std::move(typeParams);
+	void fTypeDef::setTypeParams(const sp<std::vector<sp<fVariantTypeParam>>>& typeParams) {
+        this->typeParams_ = typeParams;
     }
 
-	std::vector<sp<fVariantTypeParam>> fTypeDef::getTypeParams() const {
+	sp<std::vector<sp<fVariantTypeParam>>> fTypeDef::getTypeParams() const {
 		return typeParams_;
 	}
 
@@ -39,8 +40,15 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fTypeDef::toString() const {
+		std::string typeParamsStr;
+		if (typeParams_) {
+			for (const auto &tp: *typeParams_) {
+				if (!typeParamsStr.empty()) typeParamsStr += ", ";
+				typeParamsStr += tp->toString();
+			}
+		}
 		return "TypeDef(name=" + getTypeDefName()->toString() +
-		       ", typeParams=[" + (typeParams_.empty() ? "" : "") +
+		       ", typeParams=[" + (typeParams_? "" : typeParamsStr) +
 		       ", assignedType=" + (assignedType_ ? assignedType_->toString() : "null") + ")";
 	}
 }

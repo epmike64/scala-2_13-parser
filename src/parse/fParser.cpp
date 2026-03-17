@@ -1611,7 +1611,7 @@ namespace zebra::parse {
 					throw std::runtime_error("Expected 'implicit' or ')' or class parameter but found: " + h.getToken()->toString());
 			}
 		}
-		out_wlp:
+		out_wlp:;
 	}
 
 	sp<fClassParamClauses> fParser::classParamClauses() {
@@ -1751,7 +1751,7 @@ namespace zebra::parse {
 		return p;
 	}
 
-	std::vector<sp<fVariantTypeParam>> fParser::variantTypeParams() {
+	sp<vector<sp<fVariantTypeParam>>> fParser::variantTypeParams() {
 		std::vector<sp<fVariantTypeParam>> params;
 		h.accept(fTKnd::T_LBRACKET);
 		while (true) {
@@ -1763,7 +1763,10 @@ namespace zebra::parse {
 			break;
 		}
 		h.accept(fTKnd::T_RBRACKET);
-		return params;
+		if (params.size() > 0) {
+			return ms<std::vector<sp<fVariantTypeParam>>>(std::move(params));
+		}
+		return nullptr;
 	}
 
 	sp<fTemplate> fParser::classExtends(bool isTrait) {

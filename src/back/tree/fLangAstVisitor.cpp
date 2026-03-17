@@ -68,9 +68,21 @@ namespace zebra::back::tree {
 	void  fLangAstVisitor::visit(sp<fClassDef> cls, esc prnSc){
 		std::cout << "Visiting Class Definition: " << cls->toString() << std::endl;
 		esc s = ms<ZEnclosingScope>(prnSc, fLangGrmrProdE::CLASS_TEMPLATE);
+
+		if (cls->getModifiers()) {
+			cls->getModifiers()->accept(shared_from_this(), prnSc);
+		}
+
 		if (cls->getConstrAccessModifier()) {
 			cls->getConstrAccessModifier()->accept(shared_from_this(), s);
 		}
+
+		if (cls->getTypeParams()) {
+			for (const auto& typeParam : *cls->getTypeParams()) {
+				typeParam->accept(shared_from_this(), s);
+			}
+		}
+
 		if (cls->getClassParamClauses()) {
 			cls->getClassParamClauses()->accept(shared_from_this(), s);
 		}
