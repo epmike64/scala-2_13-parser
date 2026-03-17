@@ -22,6 +22,12 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fTemplateBody::toString() const {
-		return "AccessModifier()";
+		return "TemplateBody(stmts=[" + [&]() {
+			std::string result;
+			for (const auto& stmt : _stmts) {
+				result += (stmt ? stmt->toString() : "null") + ", ";
+			}
+			return result;
+		}() + "])";
 	}
 }

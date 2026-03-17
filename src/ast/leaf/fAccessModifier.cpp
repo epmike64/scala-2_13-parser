@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "ast/leaf/fAccessQualifier.hpp"
+
 namespace zebra::ast::leaf {
 
 	void fAccessModifier::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
@@ -17,6 +19,7 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fAccessModifier::toString() const {
-		return "AccessModifier()";
+		return "AccessModifier(modifierType=" + fLangModifierTypeEToString(getModifierType()) +
+		       ", qualifier=" + (qualifier_ ? qualifier_->toString() : "null") + ")";
 	}
 }

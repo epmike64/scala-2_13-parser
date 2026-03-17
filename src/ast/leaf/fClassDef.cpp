@@ -3,6 +3,11 @@
 
 #include <string>
 
+#include "ast/leaf/fAccessModifier.hpp"
+#include "ast/leaf/fModifiers.hpp"
+#include "ast/leaf/fVariantTypeParam.hpp"
+#include "ast/leaf/fTemplate.hpp"
+
 namespace zebra::ast::leaf {
 
 	fClassDef::fClassDef(const fToken *className, sp<fModifiers> &&modifiers, bool isCaseClass) : fTraitDef(className,
@@ -29,6 +34,18 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fClassDef::toString() const {
-		return "ClassDef(name=" + getName()->toString() + ", isCaseClass=" + (isCaseClass_ ? "true" : "false") + ")";
+		std::stringstream out;
+		out << "ClassDef(name=" + getName()->toString() + ", isCaseClass=" + (isCaseClass_ ? "true" : "false");
+			out << (constrAccessModifier_ ? ", constrAccessModifier=" + constrAccessModifier_->toString() : "");
+			out << (classParamClauses_ ? ", classParamClauses=" + classParamClauses_->toString() : "");
+			out << (" , modifiers=" + (getModifiers() ? getModifiers()->toString() : "null"));
+			std::string typeParamsStr;
+			for (const auto& tp : getTypeParams()) {
+				if (!typeParamsStr.empty()) typeParamsStr += ", ";
+				typeParamsStr += tp->toString();
+			}
+			out << (" , typeParams=[" + typeParamsStr + "]");
+			out << (" , extendsTemplate=" + (getExtendsTemplate() ? getExtendsTemplate()->toString() : "null") + ")\n");
+		return out.str();
 	}
 }

@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "ast/leaf/fClassParam.hpp"
+
 namespace zebra::ast::leaf {
 
 	void fClassParamClauses::setImplicitParams(vector<sp<fClassParam>> &&implicitParams) {
@@ -26,6 +28,20 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fClassParamClauses::toString() const {
-		return "fClassParamClauses()";
+		std::stringstream out;
+		out << "ClassParamClauses(implicitParams=[";
+		for (const auto& param : implicitParams_) {
+			out << (param ? param->toString() : "null") << ", ";
+		}
+		out << "], classParams=[";
+		for (const auto& paramClauseList : classParams_) {
+			out << "[";
+			for (const auto& param : paramClauseList) {
+				out << (param ? param->toString() : "null") << ", ";
+			}
+			out << "], ";
+		}
+		out << "])";
+		return out.str();
 	}
 }

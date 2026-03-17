@@ -3,6 +3,10 @@
 
 #include <string>
 
+#include "ast/leaf/fAccessModifier.hpp"
+#include "ast/leaf/fLocalModifier.hpp"
+#include "ast/leaf/fOverrideModifier.hpp"
+
 namespace zebra::ast::leaf {
 	void fModifiers::setAccessModifier(sp<fAccessModifier> &&accessModifier) {
 		this->accessModifier_ = std::move(accessModifier);
@@ -36,6 +40,14 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fModifiers::toString() const {
-		return "AccessModifier()";
+		return "Modifiers(accessModifier=" + (accessModifier_ ? accessModifier_->toString() : "null") +
+		       ", overrideModifier=" + (overrideModifier_ ? overrideModifier_->toString() : "null") +
+		       ", localModifiers=" + (localModifiers_ ? "[ " + [&]() {
+			       std::string result;
+			       for (const auto& m : *localModifiers_) {
+				       result += (m ? m->toString() : "null") + ", ";
+			       }
+			       return result;
+		       }() + "]" : "null") + ")";
 	}
 }

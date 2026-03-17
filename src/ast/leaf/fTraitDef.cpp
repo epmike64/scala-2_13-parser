@@ -3,6 +3,9 @@
 
 #include <string>
 
+#include "ast/leaf/fModifiers.hpp"
+#include "ast/leaf/fTemplate.hpp"
+
 namespace zebra::ast::leaf {
 
 	fTraitDef::fTraitDef(const fToken* traitName, sp<fModifiers> &&modifiers) : traitName_(traitName), modifiers_(std::move(modifiers)) {
@@ -41,6 +44,9 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fTraitDef::toString() const {
-		return "AccessModifier()";
+		return "TraitDef(name=" + getName()->toString() +
+		       ", modifiers=" + (modifiers_ ? modifiers_->toString() : "null") +
+		       ", typeParams=[" + (typeParams_.empty() ? "" : "") +
+		       ", extendsTemplate=" + (extendsTemplate_ ? extendsTemplate_->toString() : "null") + ")";
 	}
 }

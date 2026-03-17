@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "ast/leaf/fTemplateBody.hpp"
+
 namespace zebra::ast::leaf {
 
 	fTemplate::fTemplate(sp<fTemplateBody> &&body, bool amExtender) : templateBody_(std::move(body)), amExtender_(amExtender) {
@@ -13,6 +15,7 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fTemplate::toString() const {
-		return "AccessModifier()";
+		return "Template(amExtender=" + std::string(amExtender_ ? "true" : "false") +
+		       ", templateBody=" + (templateBody_ ? templateBody_->toString() : "null") + ")";
 	}
 }
