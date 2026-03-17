@@ -24,11 +24,11 @@ namespace zebra::ast::leaf {
 	}
 
 	void fTraitDef::setTypeParamClause(const sp<fTypeParamClause>& typeParams) {
-		this->typeParams_ =typeParams;
+		this->typeParamClause_ =typeParams;
 	}
 
 	sp<fTypeParamClause> fTraitDef::getTypeParamClause() const {
-		return typeParams_;
+		return typeParamClause_;
 	}
 
 	void fTraitDef::setExtendsTemplate(sp<fTemplate> &&extendsTemplate) {
@@ -46,12 +46,12 @@ namespace zebra::ast::leaf {
 
 	std::string fTraitDef::toString() const {
 		std::string typeParamsStr;
-		if (typeParams_) {
+		if (typeParamClause_) {
 			// for (const auto &tp: *typeParams_) {
 			// 	if (!typeParamsStr.empty()) typeParamsStr += ", ";
 			// 	typeParamsStr += tp->toString();
 			// }
-			typeParamsStr = typeParams_->toString();
+			typeParamsStr = typeParamClause_->toString();
 		}
 		return "TraitDef(name=" + getName()->toString() +
 		       ", modifiers=" + (modifiers_ ? modifiers_->toString() : "null") +
