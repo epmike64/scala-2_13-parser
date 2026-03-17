@@ -18,6 +18,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fReturn::toString() const {
-		return "AccessModifier()";
+		return "fReturn(returnExpr=" + (returnExpr_ ? returnExpr_->toString() : "null") + ")";
 	}
 }

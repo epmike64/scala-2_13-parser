@@ -69,6 +69,27 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fGenerator::toString() const {
-		return "fGenerator()";
+		return "Generator(casePattern1=" + (casePattern1_ ? casePattern1_->toString() : "null") +
+		       ", isCase=" + std::string(isCase ? "true" : "false") +
+		       ", guards=[" + [&]() {
+			std::string result;
+			for (const auto& guard : guards_) {
+				result += (guard ? guard->toString() : "null") + ", ";
+			}
+			return result;
+		}() + "], inExpr=" + (inExpr_ ? inExpr_->toString() : "null") +
+		       ", endingPattern1s=[" + [&]() {
+			std::string result;
+			for (const auto& ep : endingPattern1s_) {
+				result += (ep ? ep->toString() : "null") + ", ";
+			}
+			return result;
+		}() + "], endingExprs=[" + [&]() {
+			std::string result;
+			for (const auto& ee : endingExprs_) {
+				result += (ee ? ee->toString() : "null") + ", ";
+			}
+			return result;
+		}() + ")";
 	}
 }

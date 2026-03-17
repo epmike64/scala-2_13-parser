@@ -10,6 +10,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fModifier::toString() const {
-		return "AccessModifier()";
+		return "Modifier(modifierType=" + fLangModifierTypeEToString(getModifierType()) + ")";
 	}
 }

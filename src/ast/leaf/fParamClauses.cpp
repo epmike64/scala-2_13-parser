@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "ast/leaf/fParam.hpp"
+
 namespace zebra::ast::leaf {
 
 	void fParamClauses::addParams(vector<sp<fParam>> &&params) {
@@ -26,6 +28,24 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fParamClauses::toString() const {
-		return "AccessModifier()";
+		return "ParamClauses(params=" + [&]() {
+			std::string result = "[";
+			for (const auto& paramList : params_) {
+				result += "[";
+				for (const auto& param : paramList) {
+					result += (param ? param->toString() : "null") + ", ";
+				}
+				result += "], ";
+			}
+			result += "]";
+			return result;
+		}() + ", implicitParams=" + (implicitParams_ ? [&]() {
+			std::string result = "[";
+			for (const auto& param : *implicitParams_) {
+				result += (param ? param->toString() : "null") + ", ";
+			}
+			result += "]";
+			return result;
+		}() : "null") + ")";
 	}
 }

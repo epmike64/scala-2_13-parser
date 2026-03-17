@@ -3,6 +3,9 @@
 
 #include <string>
 
+#include "ast/leaf/fParamClauses.hpp"
+#include "ast/leaf/fTypeParam.hpp"
+
 namespace zebra::ast::leaf {
 
 	fFunSig::fFunSig(const fToken* funName) : funName_(funName) {
@@ -39,6 +42,15 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fFunSig::toString() const {
-		return "fFunSig()";
+		return "FunSig(name=" + funName_->toString() +
+		       ", paramClauses=" + (paramClauses_ ? paramClauses_->toString() : "null") +
+		       ", typeParam=" + (typeParam_ ? [&]() {
+			std::string result = "[";
+			for (const auto& tp : *typeParam_) {
+				result += (tp ? tp->toString() : "null") + ", ";
+			}
+			result += "]";
+			return result;
+		}() : "null") + ")";
 	}
 }

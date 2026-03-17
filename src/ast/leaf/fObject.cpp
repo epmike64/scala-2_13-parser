@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "ast/leaf/fTemplate.hpp"
+
 namespace zebra::ast::leaf {
 
 	fObject::fObject(const fToken* objectName, sp<fModifiers> &&modifiers, bool isCaseClass) : objectName_(objectName), modifiers_(std::move(modifiers)), isCaseClass_(isCaseClass) {
@@ -36,7 +38,10 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fObject::toString() const {
-		return "ObjectDef(	)";
+		return "ObjectDef(name=" + objectName_->toString() +
+		       ", isCaseClass=" + (isCaseClass_ ? "true" : "false") +
+		       ", modifiers=" + (modifiers_ ? modifiers_->toString() : "null") +
+		       ", extendsTemplate=" + (extendsTemplate_ ? extendsTemplate_->toString() : "null") + ")";
 	}
 
 }

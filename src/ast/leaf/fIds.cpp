@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "ast/leaf/fId.hpp"
+
 namespace zebra::ast::leaf {
 	
 	void fIds::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
@@ -10,6 +12,12 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fIds::toString() const {
-		return "AccessModifier()";
+		return "Ids(ids=[" + [&]() {
+			std::string result;
+			for (const auto& id : _ids) {
+				result += (id ? id->toString() : "null") + ", ";
+			}
+			return result;
+		}() + "])";
 	}
 }

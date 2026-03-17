@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "ast/leaf/fParamType.hpp"
+
 namespace zebra::ast::leaf {
 
 	fParamTypes::fParamTypes(sp<std::vector<sp<fParamType>>> &&paramTypes) : paramTypes_(std::move(paramTypes)) {
@@ -21,6 +23,13 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fParamTypes::toString() const {
-		return "AccessModifier()";
+		return "fParamTypes(paramTypes=" + [&]() {
+			std::string result = "[";
+			for (const auto& paramType : *paramTypes_) {
+				result += (paramType ? paramType->toString() : "null") + ", ";
+			}
+			result += "]";
+			return result;
+		}() + ")";
 	}
 }

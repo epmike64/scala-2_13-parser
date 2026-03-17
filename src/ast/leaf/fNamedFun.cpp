@@ -3,6 +3,10 @@
 
 #include <string>
 
+#include "ast/leaf/fFunSig.hpp"
+#include "ast/leaf/fModifiers.hpp"
+#include "ast/leaf/fType.hpp"
+
 namespace zebra::ast::leaf {
 
 	fNamedFun::fNamedFun(sp<fModifiers> &&modifiers, sp<fFunSig> &&funSig) : fFun(std::move(modifiers)), funSig_(std::move(funSig)) {
@@ -40,6 +44,9 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fNamedFun::toString() const {
-		return "AccessModifier()";
+		return "fNamedFun(modifiers=" + (getModifiers() ? getModifiers()->toString() : "null") +
+		       ", funSig=" + (funSig_ ? funSig_->toString() : "null") +
+		       ", returnType=" + (returnType_ ? returnType_->toString() : "null") +
+		       ", funBody=" + (funBody_ ? funBody_->toString() : "null") + ")";
 	}
 }

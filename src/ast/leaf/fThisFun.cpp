@@ -3,6 +3,10 @@
 
 #include <string>
 
+#include "ast/leaf/fConstrBlock.hpp"
+#include "ast/leaf/fModifiers.hpp"
+#include "ast/leaf/fParamClauses.hpp"
+
 namespace zebra::ast::leaf {
 
 	fThisFun::fThisFun(sp<fModifiers> &&modifiers) : fFun(std::move(modifiers)) {}
@@ -28,6 +32,8 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fThisFun::toString() const {
-		return "AccessModifier()";
+		return "fThisFun(modifiers=" + (getModifiers() ? getModifiers()->toString() : "null") +
+		       ", constrBlock=" + (constrBlock ? constrBlock->toString() : "null") +
+		       ", paramClauses=" + (clauses ? clauses->toString() : "null") + ")";
 	}
 }

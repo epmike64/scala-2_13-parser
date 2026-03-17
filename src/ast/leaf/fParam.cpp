@@ -5,6 +5,8 @@
 
 #include <string>
 
+#include "ast/leaf/fParamType.hpp"
+
 namespace zebra::ast::leaf {
 
 	fParam::fParam(const fToken* identifier) : identifier_(identifier) {
@@ -38,6 +40,8 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fParam::toString() const {
-		return "Parameter()";
+		return "fParam(identifier=" + (identifier_ ? identifier_->toString() : "null") +
+		       ", paramType=" + (paramType_ ? paramType_->toString() : "null") +
+		       ", defaultValue=" + (defaultValue_ ? defaultValue_->toString() : "null") + ")";
 	}
 }

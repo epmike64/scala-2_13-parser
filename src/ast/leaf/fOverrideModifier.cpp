@@ -12,6 +12,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fOverrideModifier::toString() const {
-		return "AccessModifier()";
+		return "OverrideModifier()";
 	}
 }
