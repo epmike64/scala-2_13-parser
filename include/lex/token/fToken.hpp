@@ -27,7 +27,7 @@ namespace zebra::lex::token {
 		static constexpr const char* INTERN = "_INTERN_";
 
 		fToken(const fTKnd*  kind,  int pos, int endPos, const std::string& tsval);
-
+		~fToken() = default;
 		const std::string& getTStrVal() const ;
 		const fTKnd* getTKind() const ;
 
