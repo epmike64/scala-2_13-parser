@@ -35,7 +35,7 @@ add_executable(zebra-4-backend
 
 		include/parse/fParser.hpp
 		include/parse/fParseHelp.hpp
-		include/parse/ZGrmrProdE.hpp
+		include/parse/fLangGrmrProdE.hpp
 
 		include/ast/leaf/fCompileUnit.hpp
 		include/ast/leaf/fLiteral.hpp

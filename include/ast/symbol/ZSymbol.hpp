@@ -22,6 +22,9 @@ namespace zebra::ast::symbol {
 	};
 
 	class ZVariantTypeParam: public ZTypeParam {
+		sp<fVariantTypeParam> n;
+		public:
+			ZVariantTypeParam(sp<fVariantTypeParam> n) ;
 	};
 
 

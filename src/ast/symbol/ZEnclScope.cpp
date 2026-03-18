@@ -1,11 +1,11 @@
 #include "ast/symbol/ZEnclScope.hpp"
 
 namespace zebra::ast::symbol {
-	ZEnclScope::ZEnclScope(esc parentScope, ZGrmrProdE parentScopeGrmrProd)
+	ZEnclScope::ZEnclScope(esc parentScope, fLangGrmrProdE parentScopeGrmrProd)
 		: parentScope_(std::move(parentScope)), parentScopeGrmrProd_(parentScopeGrmrProd) {
 	}
 
-	ZGrmrProdE ZEnclScope::getParentScopeGrmrProd() const {
+	fLangGrmrProdE ZEnclScope::getParentScopeGrmrProd() const {
 		return parentScopeGrmrProd_;
 	}
 
