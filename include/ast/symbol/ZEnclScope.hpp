@@ -44,14 +44,14 @@ namespace zebra::ast::symbol {
 	 */
 	class ZEnclScope {
 		const esc parentScope_;
-		const fLangGrmrProdE parentScopeGrmrProd_;
+		const ZLangConstruct scopeLangConstruct;
 		PVecP<fAstNod> polishCalcStack; //RPN - reverse polish notation
 		StrPVecPMap<ZSymbol> symbolMap_;
 	public:
-		ZEnclScope(esc parentScope, fLangGrmrProdE parentScopeGrmrProd);
+		ZEnclScope(esc parentScope, ZLangConstruct lc);
 		esc getParentScope() const;
 
-		fLangGrmrProdE getParentScopeGrmrProd() const;
+		ZLangConstruct getLangConstruct() const;
 
 		void setPolishSS(PVecP<fAstNod>&& astRPN) ;
 
