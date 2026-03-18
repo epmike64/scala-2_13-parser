@@ -157,7 +157,7 @@ namespace zebra::parse {
 		} else {
 			a->setRight(pattern2());
 		}
-		return ms<fAstProdSubTreeN>(fLangGrmrProdE::PATTERN_1, std::move(a->astRootOpr()));
+		return ms<fAstProdSubTreeN>(ZGrmrProdE::PATTERN_1, std::move(a->astRootOpr()));
 	}
 
 	std::vector<sp<fGenerator>> fParser::generators() {
@@ -452,7 +452,7 @@ namespace zebra::parse {
 			assert(prevLParSz > lparSz && "Unclosed right parentheses");
 			prevLParSz = lparSz;
 			if(lparSz == 0) {
-				return ms<fAstProdSubTreeN>(fLangGrmrProdE::EXPRS_OR_BINDINGS, std::move(box->astRootOpr()));
+				return ms<fAstProdSubTreeN>(ZGrmrProdE::EXPRS_OR_BINDINGS, std::move(box->astRootOpr()));
 			}
 			curr = box;
 			box = ms<fAst>();
@@ -496,7 +496,7 @@ namespace zebra::parse {
 	sp<fParamType> fParser::simpleType() {
 		sp<fAst> a = ms<fAst>();
 		simpleType_2(a);
-		return ms<fParamType>(ms<fType>(ms<fAstProdSubTreeN>(fLangGrmrProdE::SIMPLE_TYPE, std::move(a->astRootOpr()))), false, false);
+		return ms<fParamType>(ms<fType>(ms<fAstProdSubTreeN>(ZGrmrProdE::SIMPLE_TYPE, std::move(a->astRootOpr()))), false, false);
 	}
 
 	void fParser::simpleType_2(sp<fAst> a) {
@@ -727,7 +727,7 @@ namespace zebra::parse {
 			}
 		}
 		out_wlp:
-		return ms<fAstProdSubTreeN>(fLangGrmrProdE::POSTFIX_EXPR, std::move(a->astRootOpr()));
+		return ms<fAstProdSubTreeN>(ZGrmrProdE::POSTFIX_EXPR, std::move(a->astRootOpr()));
 	}
 
 	void fParser::exprDot(sp<fAst> a) {
@@ -1032,7 +1032,7 @@ namespace zebra::parse {
 			}
 		}
 		out_wlp:
-		return ms<fAstProdSubTreeN>(fLangGrmrProdE::EXPR, std::move(a->astRootOpr()));
+		return ms<fAstProdSubTreeN>(ZGrmrProdE::EXPR, std::move(a->astRootOpr()));
 	}
 
 
@@ -1082,7 +1082,7 @@ namespace zebra::parse {
 			}
 		}
 		out_wlp:
-		return ms<fType>(ms<fAstProdSubTreeN>(fLangGrmrProdE::TYPE, std::move(a->astRootOpr())));
+		return ms<fType>(ms<fAstProdSubTreeN>(ZGrmrProdE::TYPE, std::move(a->astRootOpr())));
 	}
 
 
@@ -1095,7 +1095,7 @@ namespace zebra::parse {
 					a->setRight(stableId(false));
 					h.insertPseudoOperator(a, fLangPseudoOperatorKindE::O_AT, h.next());
 					a->setRight(pattern3());
-					return ms<fAstProdSubTreeN>(fLangGrmrProdE::SUBTREE, std::move(a->astRootOpr()));
+					return ms<fAstProdSubTreeN>(ZGrmrProdE::SUBTREE, std::move(a->astRootOpr()));
 				}
 				//fall through
 			}
@@ -1103,7 +1103,7 @@ namespace zebra::parse {
 			case fTKnd::T_TRUE_E: case fTKnd::T_FALSE_E: case fTKnd::T_NULL_E:
 			case fTKnd::T_THIS_E: case fTKnd::T_SUPER_E: case fTKnd::T_LPAREN_E: {
 				a->setRight(pattern3());
-				return ms<fAstProdSubTreeN>(fLangGrmrProdE::PATTERN_2, std::move(a->astRootOpr()));
+				return ms<fAstProdSubTreeN>(ZGrmrProdE::PATTERN_2, std::move(a->astRootOpr()));
 			}
 			default:
 				throw std::runtime_error("Pattern in unexpected place: " + h.getToken()->toString());
@@ -1120,7 +1120,7 @@ namespace zebra::parse {
 			}
 			break;
 		}
-		return ms<fAstProdSubTreeN>(fLangGrmrProdE::PATTERN, std::move(a->astRootOpr()));
+		return ms<fAstProdSubTreeN>(ZGrmrProdE::PATTERN, std::move(a->astRootOpr()));
 	}
 
 	sp<fAstProdSubTreeN> fParser::patterns() {
@@ -1133,7 +1133,7 @@ namespace zebra::parse {
 			}
 			break;
 		}
-		return ms<fAstProdSubTreeN>(fLangGrmrProdE::PATTERNS, std::move(a->astRootOpr()));
+		return ms<fAstProdSubTreeN>(ZGrmrProdE::PATTERNS, std::move(a->astRootOpr()));
 	}
 
 	sp<fAstProdSubTreeN> fParser::pattern3() {
@@ -1170,7 +1170,7 @@ namespace zebra::parse {
 			}
 		}
 		whl_bottom:
-		return ms<fAstProdSubTreeN>(fLangGrmrProdE::PATTERN_3, std::move(a->astRootOpr()));
+		return ms<fAstProdSubTreeN>(ZGrmrProdE::PATTERN_3, std::move(a->astRootOpr()));
 	}
 
 	void fParser::pattern3Id(sp<fAst> a) {

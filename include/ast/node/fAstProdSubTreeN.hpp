@@ -2,7 +2,7 @@
 
 #include "ast/node/fAstOprndNod.hpp"
 
-#include "parse/fLangGrmrProdE.hpp"
+#include "parse/ZGrmrProdE.hpp"
 #include "parse/fAst.hpp"
 #include "util/fCommon.hpp"
 
@@ -10,16 +10,16 @@
 
 namespace zebra::ast::node {
 
-	using parse::fLangGrmrProdE;
+	using parse::ZGrmrProdE;
 	using util::sp;
 
 	class fAstProdSubTreeN : public fAstOprndNod {
 	private:
-		fLangGrmrProdE gp;
+		ZGrmrProdE gp;
 		sp<fAstRootOptrNod> rootOpNod;
 
 	public:
-		fAstProdSubTreeN(fLangGrmrProdE gp, sp<fAstRootOptrNod>&& rootOp)
+		fAstProdSubTreeN(ZGrmrProdE gp, sp<fAstRootOptrNod>&& rootOp)
 			 : gp(gp), rootOpNod(std::move(rootOp)) {
 		}
 		virtual ~fAstProdSubTreeN() = default;
@@ -28,7 +28,7 @@ namespace zebra::ast::node {
 			return rootOpNod;
 		}
 
-		fLangGrmrProdE getGp() const {
+		ZGrmrProdE getGp() const {
 			return gp;
 		}
 		
