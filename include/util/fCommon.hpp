@@ -1,4 +1,5 @@
 #pragma once
+#include <list>
 #include <vector>
 #include <unordered_map>
 
@@ -12,6 +13,10 @@ namespace zebra::util {
 	template<typename T >
 	using sp = std::shared_ptr<T>;
 
+
+	template<typename T>
+	using PtrVec = sp<std::vector<std::shared_ptr<T>>>;
+
 	template<typename T >
-	using StrListMap = std::unordered_map<std::string, sp<std::vector<sp<T>>>>;
+	using StrVecMap = sp<std::unordered_map<std::string, PtrVec<T>>>;
 }
