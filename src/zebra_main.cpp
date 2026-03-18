@@ -8,7 +8,7 @@
 #include <fstream>
 #include <iterator>
 
-#include "back/tree/fLangAstVisitor.hpp"
+#include "back/tree/ZVisitor.hpp"
 #include "lex/fTokzr.hpp"
 #include "lex/fReader.hpp"
 #include "lex/fLexerImpl.hpp"
@@ -32,9 +32,9 @@ void run_compiler(const std::string& filepath) {
 	zebra::parse::fParser parser(lexImpl);
 	zebra::util::sp<zebra::ast::leaf::fCompileUnit> cu = parser.compileUnit();
 
-	using zebra::back::tree::fLangAstVisitor;
+	using zebra::back::tree::ZVisitor;
 
-	zebra::util::sp<fLangAstVisitor> visitor = zebra::util::ms<fLangAstVisitor>(cu);
+	zebra::util::sp<ZVisitor> visitor = zebra::util::ms<ZVisitor>(cu);
 	visitor->visit();
 }
 

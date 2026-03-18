@@ -34,13 +34,13 @@ namespace zebra::back::tree {
 	using namespace ast::leaf;
 	using namespace util;
 
-	class fLangAstVisitor : public fAstNodVisitor, public std::enable_shared_from_this<fLangAstVisitor> {
+	class ZVisitor : public fAstNodVisitor, public std::enable_shared_from_this<ZVisitor> {
 	protected:
 		sp<fCompileUnit> compileUnit_;
 		sp<fAstNod> getAstPSTreeRightN(sp<fAstProdSubTreeN> subTree);
 
 	public:
-		explicit fLangAstVisitor(sp<fCompileUnit> cu) : compileUnit_(cu){}
+		explicit ZVisitor(sp<fCompileUnit> cu) : compileUnit_(cu){}
 		void visit() override;
 		void visit(sp<fCompileUnit>, esc) override;
 		//
