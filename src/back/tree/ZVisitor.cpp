@@ -565,6 +565,7 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fVariantTypeParam> n, esc prnSc) {
 		std::cout << "Visiting Variant Type Parameter: " << n->toString() << std::endl;
+		prnSc->addSymbol(n->getTypeParamName()->toString(), ms<ZTypeParam>());
 	}
 
 

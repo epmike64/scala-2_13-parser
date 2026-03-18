@@ -1,16 +1,13 @@
 #pragma once
 
-#include <map>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
-#include "ZEnclosingScopeFwd.hpp"
+#include "ZEnclScopeFwd.hpp"
 #include "../node/fAstProdSubTreeN.hpp"
 #include "ast/leaf/fType.hpp"
-#include "ast/leaf/fVariantTypeParam.hpp"
-#include "lex/kind/fVarianceE.hpp"
 #include "util/fCommon.hpp"
+#include "ZSymbol.hpp"
 
 
 namespace zebra::ast::symbol {
@@ -19,12 +16,16 @@ namespace zebra::ast::symbol {
 	using namespace zebra::ast::leaf;
 	using namespace zebra::lex::kind;
 	using namespace zebra::util;
+	using symbol::ZSymbol;
 
-	class ZFullyQualifiedName {
+
+	class ZSymbol;
+
+	class ZFullyQualName {
 		std::vector<std::string> simpleNames;
 	public:
 
-		ZFullyQualifiedName(std::vector<std::string> qualifiers) : simpleNames(qualifiers) {}
+		ZFullyQualName(std::vector<std::string> qualifiers) : simpleNames(qualifiers) {}
 
 		std::string getSimpleName() {
 			return simpleNames.empty() ? "" : simpleNames.back();
@@ -35,44 +36,8 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZSymbol {
-		public:
-		~ZSymbol() = default;
-	};
-	//
-	// class ZSymbol {
-	// 	sp<ZFullyQualifiedName> qualifiedName_;
-	//
-	// public:
-	// 	virtual ~ZSymbol() = default;
-	// 	// virtual std::string toString() const = 0;
-	// };
 
-	// class ZVariantTypeParam;
 
-	// class ZVariantTypeParam: public ZSymbol {
-	// protected:
-	// 	sp<fVariantTypeParam> variantTypeParam_;
-	// public:
-	// 	explicit ZVariantTypeParam(sp<fVariantTypeParam> variantTypeParam) : variantTypeParam_(std::move(variantTypeParam)) {}
-	//
-	// 	sp<fVariantTypeParam> getVariantTypeParam() const {
-	// 		return variantTypeParam_;
-	// 	}
-	// };
-
-	// class ZTypeParam: public ZSymbol {
-	//
-	// };
-	//
-	// class ZTrait: public ZSymbol {};
-	//
-	// class ZClass : public ZSymbol {
-	// 	sp<ZClass> parentClass_;
-	// 	sp<std::vector<sp<ZTrait>>> traits_;
-	// 	// std::vector<sp<ZVariantTypeParam>> variantTypeParams_;
-	// 	public:
-	// };
 
 	/**
 	 *
@@ -81,7 +46,6 @@ namespace zebra::ast::symbol {
 		const esc parentScope_;
 		const ZGrmrProdE parentScopeGrmrProd_;
 		PVecP<fAstNod> polishCalcStack; //RPN - reverse polish notation
-		// StrPVecPMap<ZTypeParam> typeParamMap_;
 		StrPVecPMap<ZSymbol> symbolMap_;
 	public:
 		ZEnclScope(esc parentScope, ZGrmrProdE parentScopeGrmrProd);

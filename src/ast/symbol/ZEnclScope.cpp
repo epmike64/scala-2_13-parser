@@ -31,30 +31,4 @@ namespace zebra::ast::symbol {
 		}
 		(*symbolMap_)[name]->push_back(declr);
 	}
-
-	// void ZEnclScope::addTypeParamSymb(const std::string &name, sp<ZSymbol> typeParam) {
-	// 	if (typeParamMap_ == nullptr) {
-	// 		typeParamMap_ = ms<std::unordered_map<std::string, sp<std::vector<sp<ZSymbol> > > > >();
-	// 	}
-	// 	auto it = typeParamMap_->find(name);
-	// 	if (it == typeParamMap_->end()) {
-	// 		(*typeParamMap_)[name] = ms<std::vector<sp<ZSymbol> > >();
-	// 	}
-	// 	(*typeParamMap_)[name]->push_back(typeParam);
-	// }
-	//
-	// PVecP<ZSymbol> ZEnclScope::getSymbol(const std::string &name) const {
-	// 	if (symbolMap_ == nullptr) {
-	// 		return nullptr;
-	// 	}
-	// 	auto it = symbolMap_->find(name);
-	// 	if (it == symbolMap_->end()) {
-	// 		return nullptr;
-	// 	}
-	// 	return it->second;
-	// }
-	//
-	//
-	// PVecP<ZTypeParam> ZEnclScope::getTypeParamSymb(const std::string &name) const {
-	// }
 }

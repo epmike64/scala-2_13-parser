@@ -25,7 +25,7 @@
 #include "ast/leaf/fPackage.hpp"
 #include "ast/leaf/fParamType.hpp"
 #include "ast/leaf/fTypeArgs.hpp"
-
+#include "ast/symbol/ZSymbol.hpp"
 
 namespace zebra::back::tree {
 

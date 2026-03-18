@@ -6,6 +6,12 @@ namespace zebra::ast::symbol{
 
 	// Forward declaration only — avoids circular includes.
 	// Full definition is in EnclosingScope.hpp.
+
+	class ZSymbol;
+	class ZTypeParam;
+	class ZVariantTypeParam;
+	class ZTrait;
+	class ZClass;
 	class ZEnclScope;
 	using esc = std::shared_ptr<ZEnclScope>;
 
