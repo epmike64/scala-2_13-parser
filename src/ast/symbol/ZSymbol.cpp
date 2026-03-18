@@ -2,5 +2,5 @@
 
 namespace zebra::ast::symbol {
 
-	ZVariantTypeParam::ZVariantTypeParam(sp<fVariantTypeParam> n) : n(n) {}
+	ZVariantTypeParam::ZVariantTypeParam(sp<fVariantTypeParam> n) : n(std::move(n)) {}
 }

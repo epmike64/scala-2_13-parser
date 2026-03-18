@@ -178,6 +178,7 @@ add_executable(zebra-4-backend
 		src/ast/leaf/fTypeParamClause.cpp
 		include/ast/symbol/ZSymbol.hpp
 		src/ast/symbol/ZSymbol.cpp
+		include/ast/symbol/ZLangConstruct.hpp
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE
