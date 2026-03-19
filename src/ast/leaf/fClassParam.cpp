@@ -12,6 +12,13 @@ namespace zebra::ast::leaf {
 		return identifier_;
 	}
 
+	const std::string& fClassParam::getIdentifierName() const {
+		if (identifier_ == nullptr) {
+			throw std::runtime_error("Identifier token is null");
+		}
+		return identifier_->toString();
+	}
+
 	lex::kind::fVariableMutabilityTypeE fClassParam::getMutability() const {
 		return mutability_;
 	}

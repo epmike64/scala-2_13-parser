@@ -30,11 +30,12 @@ namespace zebra::ast::leaf {
 
 		const fToken* getIdentifier() const;
 
+		const std::string& getIdentifierName() const;
+
 		lex::kind::fVariableMutabilityTypeE getMutability() const;
 		sp<fParamType> getParamType() const;
 		sp<fAstProdSubTreeN> getDefaultValueExpr() const;
 		sp<fModifiers> getModifiers() const;
-
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 
 		std::string toString() const override;

@@ -65,6 +65,17 @@ namespace zebra::back::tree {
 		}
 	}
 
+	esc getWrapScope(esc prnSc,   ZLangConstruct lc) {
+		assert(prnSc != nullptr);
+		while (prnSc->getLangConstruct() != lc) {
+			prnSc = prnSc->getParentScope();
+			if (prnSc == nullptr) {
+				throw std::runtime_error("No enclosing scope found for language construct: " + std::to_string(lc));
+			}
+		}
+		return prnSc;
+	}
+
 	void  ZVisitor::visit(sp<fClassDef> cls, esc prnSc){
 		std::cout << "Visiting Class Definition: " << cls->toString() << std::endl;
 		esc s = ms<ZEnclScope>(prnSc, Z_CLASS);
@@ -198,8 +209,18 @@ namespace zebra::back::tree {
 		}
 	}
 
+
+
 	void ZVisitor::visit(sp<fClassParam> n, esc prnSc) {
 		std::cout << "Visiting Class Parameter: " << n->toString() << std::endl;
+
+		esc clsScp = getWrapScope(prnSc, Z_CLASS);//->addSymbol(n->getIdentifier()->toString(), ms<ZClassParam>());
+		if (clsScp->getSymbol(n->getIdentifierName()) == nullptr) {
+			clsScp->addSymbol(n->getIdentifier()->toString(), ms<ZClassParam>());
+		} else {
+			std::cerr << "Warning: Duplicate class parameter name: " << n->getIdentifier()->toString() << std::endl;
+		}
+
 		esc s = ms<ZEnclScope>(prnSc, Z_CLASS_PARAM);
 		n->getParamType()->accept(shared_from_this(), s);
 
