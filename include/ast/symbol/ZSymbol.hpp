@@ -43,10 +43,28 @@ namespace zebra::ast::symbol {
 		}
 	};
 
+	class ZDecl: public ZSymbol {
+		public:
+		ZLangConstruct langConstruct() override {
+			return Z_DECL;
+		}
+	};
+
+	class ZFunc: public ZSymbol {
+		public:
+		ZLangConstruct langConstruct() override {
+			return Z_FUNC;
+		}
+	};
+
 	class ZClass : public ZTrait {
-		// sp<ZClass> parentClass_;
-		// sp<std::vector<sp<ZTrait>>> traits_;
-		// std::vector<sp<ZVariantTypeParam>> variantTypeParams_;
+		sp<ZClass> parentClass_;
+		PVecP<ZTrait> traits_;
+		PVecP<ZVariantTypeParam> variantTypeParams_;
+		PVecP<ZTypeParam> typeParams_;
+		PVecP<ZDecl> decls_;
+		PVecP<ZFunc> funcs_;
+
 		public:
 		ZLangConstruct langConstruct() override {
 			return Z_CLASS;
