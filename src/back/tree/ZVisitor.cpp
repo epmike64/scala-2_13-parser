@@ -215,8 +215,8 @@ namespace zebra::back::tree {
 		std::cout << "Visiting Class Parameter: " << n->toString() << std::endl;
 
 		esc clsScp = getWrapScope(prnSc, Z_CLASS);//->addSymbol(n->getIdentifier()->toString(), ms<ZClassParam>());
-		if (clsScp->getSymbol(n->getIdentifierName()) == nullptr) {
-			clsScp->addSymbol(n->getIdentifier()->toString(), ms<ZClassParam>());
+		if (clsScp->getSymbol(n->getIdentName()) == nullptr) {
+			clsScp->addSymbol(n->getIdentName(), ms<ZClassParam>());
 		} else {
 			std::cerr << "Warning: Duplicate class parameter name: " << n->getIdentifier()->toString() << std::endl;
 		}

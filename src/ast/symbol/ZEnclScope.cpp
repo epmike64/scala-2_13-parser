@@ -31,4 +31,16 @@ namespace zebra::ast::symbol {
 		}
 		(*symbolMap_)[name]->push_back(declr);
 	}
+
+	sp<ZSymbol> ZEnclScope::getSymbol(const std::string &name) {
+		if (symbolMap_ == nullptr) {
+			return nullptr;
+		}
+		auto it = symbolMap_->find(name);
+		if (it == symbolMap_->end()) {
+			return nullptr;
+		}
+		return !it->second->empty() ? it->second->back() : nullptr;
+
+	}
 }

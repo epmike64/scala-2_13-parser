@@ -30,7 +30,7 @@ namespace zebra::ast::leaf {
 
 		const fToken* getIdentifier() const;
 
-		const std::string& getIdentifierName() const;
+		const std::string getIdentName() const;
 
 		lex::kind::fVariableMutabilityTypeE getMutability() const;
 		sp<fParamType> getParamType() const;

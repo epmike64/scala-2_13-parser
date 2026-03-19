@@ -58,7 +58,8 @@ namespace zebra::ast::symbol {
 		PVecP<fAstNod> getPolishSS() const;
 
 		void addSymbol(const std::string& name, sp<ZSymbol> declr);
-		PVecP<ZSymbol> getSymbol(const std::string& name) const;
+
+		sp<ZSymbol> getSymbol(const std::string& name);
 	};
 
 

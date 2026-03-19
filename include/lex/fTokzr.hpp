@@ -21,14 +21,19 @@ private:
     int radix_;
     std::string tokStrVal_;
     const fTKnd* tKnd_;  // Pointer to const fTokenKind
-    int _errPos;
+    int errPos_;
+    int lineno_, colno_;
 
 public:
     fTokzr(fReader& reader, fTBuffer& tokBuf)
-        : reader_(reader), tokBuf_(tokBuf), radix_(0), tKnd_(nullptr), _errPos(-1) {}
+        : reader_(reader), tokBuf_(tokBuf), radix_(0), tKnd_(nullptr), errPos_(-1), lineno_(0), colno_(0) {}
 
 
-   const fToken* readToken();
+    void readerScanChar();
+
+    void upLineNo();
+
+    const fToken* readToken();
 
     void scanLiteralString();
 

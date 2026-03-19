@@ -8,28 +8,38 @@ namespace zebra::lex {
     using namespace zebra::lex::kind;
     using namespace zebra::lex::util;
 
+    void fTokzr::readerScanChar() {
+        reader_.scanChar(); colno_++;
+    }
+
+    void fTokzr::upLineNo() {
+        lineno_++; colno_ = 0;
+    }
+
     const fToken* fTokzr::readToken() {
         reader_.setSp(0);
         tokStrVal_.clear();
         radix_ = 0;
 
         tKnd_ = nullptr;
-        int pos_ = 0;
-        int endPos_ = 0;
+        int pos = 0;
+        int endPos = 0;
 
         while (true) {
             assert(reader_.sp() == 0 && tokStrVal_.empty() && radix_ == 0);
-            pos_ = reader_.bp();
+            pos = reader_.bp();
 
             switch (reader_.ch()) {
                 case EOI: {
                     tKnd_ = fTKnd::T_EOF;
                     goto exit_loop;
                 }
-                case SP: case TAB: case FF: {
-                    do {
-                        reader_.scanChar();
-                    } while (reader_.ch() == SP || reader_.ch() == TAB || reader_.ch() == FF);
+                case FF: {
+                    reader_.scanChar();
+                    continue;
+                }
+                case SP: case TAB: {
+                    readerScanChar();
                     continue;
                 }
                 case CR: {
@@ -39,11 +49,11 @@ namespace zebra::lex {
                 case LF: {
                     reader_.scanChar();
                     tKnd_ = fTKnd::T_NL;
-                    goto exit_loop;
+                    upLineNo(); goto exit_loop;
                 }
                 case 'f': case 's': {
                     if (reader_.peekChar() == '"') {
-                        reader_.scanChar();
+                        readerScanChar();
                         scanInterpLiteralString();
                         goto exit_loop;
                     }
@@ -62,75 +72,75 @@ namespace zebra::lex {
                 case 'u': case 'v': case 'w': case 'x': case 'y':
                 case 'z':
                 case '$': case '_': {
-                    scanIdent(pos_);
+                    scanIdent(pos);
                     goto exit_loop;
                 }
                 case '0': {
-                    reader_.scanChar();
+                    readerScanChar();
                     if (reader_.ch() == 'x' || reader_.ch() == 'X') {
-                        reader_.scanChar();
-                        scanNumber(pos_, 16);
+                        readerScanChar();
+                        scanNumber(pos, 16);
                     } else if (reader_.ch() == 'b' || reader_.ch() == 'B') {
-                        reader_.scanChar();
-                        scanNumber(pos_, 2);
+                        readerScanChar();
+                        scanNumber(pos, 2);
                     } else {
                         reader_.putChar('0');
-                        scanNumber(pos_, 8);
+                        scanNumber(pos, 8);
                     }
                     goto exit_loop;
                 }
                 case '1': case '2': case '3': case '4':
                 case '5': case '6': case '7': case '8': case '9': {
-                    scanNumber(pos_, 10);
+                    scanNumber(pos, 10);
                     goto exit_loop;
                 }
                 case '.': {
-                    reader_.scanChar();
+                    readerScanChar();
                     if (reader_.digit(10) >= 0) {
                         reader_.putChar('.');
-                        scanFractionAndSuffix(pos_);
+                        scanFractionAndSuffix(pos);
                     } else {
                         tKnd_ = fTKnd::T_DOT;
                     }
                     goto exit_loop;
                 }
                 case ',': {
-                    reader_.scanChar();
+                    readerScanChar();
                     tKnd_ = fTKnd::T_COMMA;
                     goto exit_loop;
                 }
                 case ';': {
-                    reader_.scanChar();
+                    readerScanChar();
                     tKnd_ = fTKnd::T_SEMICOLON;
                     goto exit_loop;
                 }
                 case '(': {
-                    reader_.scanChar();
+                    readerScanChar();
                     tKnd_ = fTKnd::T_LPAREN;
                     goto exit_loop;
                 }
                 case ')': {
-                    reader_.scanChar();
+                    readerScanChar();
                     tKnd_ = fTKnd::T_RPAREN;
                     goto exit_loop;
                 }
                 case '[': {
-                    reader_.scanChar();
+                    readerScanChar();
                     tKnd_ = fTKnd::T_LBRACKET;
                     goto exit_loop;
                 }
                 case ']': {
-                    reader_.scanChar();
+                    readerScanChar();
                     tKnd_ = fTKnd::T_RBRACKET;
                     goto exit_loop;
                 }
                 case '{': {
-                    reader_.scanChar();
+                    readerScanChar();
                     tKnd_ = fTKnd::T_LCURL;
                     goto exit_loop;
                 }
                 case '}': {
-                    reader_.scanChar();
+                    readerScanChar();
                     tKnd_ = fTKnd::T_RCURL;
                     goto exit_loop;
                 }
@@ -138,47 +148,47 @@ namespace zebra::lex {
                     if (reader_.peekChar() == '/') {
                         // Single line comment
                         do {
-                            reader_.scanChar();
+                            readerScanChar();
                         } while (reader_.ch() != CR && reader_.ch() != LF && reader_.bp() < reader_.bufLen());
-                        continue;
+                        upLineNo(); continue;
                     }
 
                     if (reader_.peekChar() == '*') {
                         // Multi-line comment
                         reader_.skipChar();
-                        reader_.scanChar();
+                        readerScanChar();
                         while (reader_.bp() < reader_.bufLen()) {
                             if (reader_.ch() == '*') {
-                                reader_.scanChar();
+                                readerScanChar();
                                 if (reader_.ch() == '/') break;
                             } else {
-                                reader_.scanChar();
+                                readerScanChar();
                             }
                         }
                         if (reader_.ch() == '/') {
-                            reader_.scanChar();
+                            readerScanChar();
                             continue;
                         }
-                        lexError(pos_, "unclosed.comment");
+                        lexError(pos, "unclosed.comment");
                     }
 
-                    scanIdent(pos_);
+                    scanIdent(pos);
                     goto exit_loop;
                 }
                 case '\'': {
-                    reader_.scanChar();
+                    readerScanChar();
                     if (reader_.ch() == '\'') {
-                        lexError(pos_, "empty.char.lit");
-                        reader_.scanChar();
+                        lexError(pos, "empty.char.lit");
+                        readerScanChar();
                     } else {
                         if (reader_.ch() == CR || reader_.ch() == LF)
-                            lexError(pos_, "illegal.line.end.in.char.lit");
+                            lexError(pos, "illegal.line.end.in.char.lit");
                         scanLitChar();
                         if (reader_.ch() == '\'') {
-                            reader_.scanChar();
+                            readerScanChar();
                             tKnd_ = fTKnd::T_CHAR_LIT;
                         } else {
-                            lexError(pos_, "unclosed.char.lit");
+                            lexError(pos, "unclosed.char.lit");
                         }
                     }
                     goto exit_loop;
@@ -189,7 +199,7 @@ namespace zebra::lex {
                 }
                 default: {
                     if (isOpChar(reader_.ch())) {
-                        scanIdent(pos_);
+                        scanIdent(pos);
                         goto exit_loop;
                     }
                     throw std::runtime_error("illegal.char");
@@ -198,24 +208,24 @@ namespace zebra::lex {
         }
 
         exit_loop:
-        endPos_ = reader_.bp();
+        endPos = reader_.bp();
 
 
         switch (tKnd_->getTTag()) {
             case fTTagE::OPERATOR:
-                return tokBuf_.addToken(new fToken(tKnd_, pos_, endPos_, fToken::OPERATOR));
+                return tokBuf_.addToken(new fToken(tKnd_, pos, endPos, fToken::OPERATOR));
             case fTTagE::KEYWORD:
-                return tokBuf_.addToken(new fToken(tKnd_, pos_, endPos_, fToken::KEYWORD));
+                return tokBuf_.addToken(new fToken(tKnd_, pos, endPos, fToken::KEYWORD));
             case fTTagE::INTERN:
-                return tokBuf_.addToken(new fToken(tKnd_, pos_, endPos_, fToken::INTERN));
+                return tokBuf_.addToken(new fToken(tKnd_, pos, endPos, fToken::INTERN));
             case fTTagE::NAME_VAL:
-                return tokBuf_.addToken(new fToken(tKnd_, pos_, endPos_, tokStrVal_));
+                return tokBuf_.addToken(new fToken(tKnd_, pos, endPos, tokStrVal_));
             case fTTagE::STRING:
-                return tokBuf_.addToken(new fToken(tKnd_, pos_, endPos_, tokStrVal_));
+                return tokBuf_.addToken(new fToken(tKnd_, pos, endPos, tokStrVal_));
             case fTTagE::NUMERIC:
-                return tokBuf_.addToken(new fNumToken(tKnd_, pos_, endPos_, tokStrVal_, radix_));
+                return tokBuf_.addToken(new fNumToken(tKnd_, pos, endPos, tokStrVal_, radix_));
             case fTTagE::UNDERSCORE:
-                return tokBuf_.addToken(new fToken(tKnd_, pos_, endPos_, tokStrVal_));
+                return tokBuf_.addToken(new fToken(tKnd_, pos, endPos, tokStrVal_));
             default:
                 throw std::runtime_error("Unknown token tag");
         }
@@ -223,7 +233,7 @@ namespace zebra::lex {
 
     void fTokzr::scanInterpLiteralString() {
         assert(reader_.ch() == '"');
-        reader_.scanChar();
+        readerScanChar();
 
         bool isInterp = false;
 
@@ -232,14 +242,14 @@ namespace zebra::lex {
                 break;
             }
             if (reader_.ch() == '$') {
-                reader_.scanChar();
+                readerScanChar();
                 if (reader_.ch() == '{') {
-                    reader_.scanChar();
+                    readerScanChar();
                     isInterp = true;
                 }
             }
             else if (isInterp && reader_.ch() == '}') {
-                reader_.scanChar();
+                readerScanChar();
                 isInterp = false;
             } else {
                 scanLitChar();
@@ -250,7 +260,7 @@ namespace zebra::lex {
 
     void fTokzr::scanLiteralString() {
         assert(reader_.ch() == '"');
-        reader_.scanChar();
+        readerScanChar();
         while (reader_.ch() != '"' && reader_.ch() != CR && reader_.ch() != LF && reader_.bp() < reader_.bufLen()) {
             scanLitChar();
         }
@@ -260,7 +270,7 @@ namespace zebra::lex {
     void fTokzr::scanStringFinish() {
         if (reader_.ch() == '"') {
             tKnd_ = fTKnd::T_STRING_LIT;
-            reader_.scanChar();
+            readerScanChar();
             tokStrVal_ = reader_.tokStrValue();
         } else {
             lexError(-1, "unclosed.str.lit");
@@ -273,19 +283,19 @@ namespace zebra::lex {
                 reader_.skipChar();
                 reader_.putChar('\\', true);
             } else {
-                reader_.scanChar();
+                readerScanChar();
                 switch (reader_.ch()) {
                     case '0': case '1': case '2': case '3':
                     case '4': case '5': case '6': case '7': {
                         char leadch = reader_.ch();
                         int oct = reader_.digit(8);
-                        reader_.scanChar();
+                        readerScanChar();
                         if ('0' <= reader_.ch() && reader_.ch() <= '7') {
                             oct = oct * 8 + reader_.digit(8);
-                            reader_.scanChar();
+                            readerScanChar();
                             if (leadch <= '3' && '0' <= reader_.ch() && reader_.ch() <= '7') {
                                 oct = oct * 8 + reader_.digit(8);
-                                reader_.scanChar();
+                                readerScanChar();
                             }
                         }
                         reader_.putChar(static_cast<char>(oct));
@@ -494,7 +504,7 @@ namespace zebra::lex {
                         }
                         tokStrVal_ = reader_.tokStrValue();
                         if (reader_.ch() == 'l' || reader_.ch() == 'L') {
-                            reader_.scanChar();
+                            readerScanChar();
                             tKnd_ = fTKnd::T_INT_LIT;
                         } else {
                             tKnd_ = fTKnd::T_INT_LIT;
@@ -504,7 +514,7 @@ namespace zebra::lex {
 
     void fTokzr::lexError(int pos, const std::string& key) {
         tKnd_ = fTKnd::T_ERROR;
-        _errPos = pos;
+        errPos_ = pos;
         throw std::runtime_error("pos: " + std::to_string(pos) + ", key=" + key);
     }
 }
