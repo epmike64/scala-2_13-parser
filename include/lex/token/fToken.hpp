@@ -14,7 +14,8 @@ namespace zebra::lex::token {
 
 	class fToken {
 	protected:
-		int pos_, endPos_;
+		const int pos_, endPos_;
+		const int lineno_, colno_;
 		const fTKnd* kind_;
 		std::string strVal_;
 
@@ -26,7 +27,7 @@ namespace zebra::lex::token {
 		static constexpr const char* KEYWORD = "_KEYWORD_";
 		static constexpr const char* INTERN = "_INTERN_";
 
-		fToken(const fTKnd*  kind,  int pos, int endPos, const std::string& tsval);
+		fToken(const fTKnd*  kind,  int pos, int endPos, int lineno, int colno, const std::string& tsval);
 		~fToken() = default;
 		const std::string& getTStrVal() const ;
 		const fTKnd* getTKind() const ;

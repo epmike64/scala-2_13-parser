@@ -4,11 +4,11 @@
 
 namespace zebra::lex::token {;
 
-	const fToken  fToken::FILE_OFFSET(fTKnd::T_SOF, -1, -1, "<SOF>");
-	const fToken  fToken::ROOT_OPERATOR(fTKnd::T_SOF, -1, -1, "<ROOT_OPERATOR>");
+	const fToken  fToken::FILE_OFFSET(fTKnd::T_SOF, -1, -1, -1, -1,"<SOF>");
+	const fToken  fToken::ROOT_OPERATOR(fTKnd::T_SOF, -1, -1, -1, -1,"<ROOT_OPERATOR>");
 
-	fToken::fToken(const fTKnd*  kind,  int pos, int endPos, const std::string& tsval):
-			pos_(pos), endPos_(endPos), kind_(kind), strVal_(tsval) {
+	fToken::fToken(const fTKnd*  kind,  int pos, int endPos, int lineno, int colno, const std::string& tsval):
+			pos_(pos), endPos_(endPos), lineno_(lineno), colno_(colno), kind_(kind), strVal_(tsval) {
 	}
 
 	const std::string& fToken::getTStrVal() const {

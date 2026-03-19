@@ -16,8 +16,8 @@ namespace zebra::lex::token {
 
 	public:
 
-		fNumToken(const fTKnd* kind, int pos, int endPos, std::string& tsval, int radix)
-			 : fToken(kind, pos, endPos, tsval), _radix(radix) {
+		fNumToken(const fTKnd* kind, int pos, int endPos, int lineno, int colno, std::string& tsval, int radix)
+			 : fToken(kind, pos, endPos, lineno, colno, tsval), _radix(radix) {
 		}
 
 		int getRadix() const  {
