@@ -18,6 +18,13 @@ namespace zebra::lex::token {;
 		return kind_;
 	}
 
+	const int fToken::getLineNo() const {
+		return lineno_;
+	}
+	const int fToken::getColNo() const {
+		return colno_;
+	}
+
 	int fToken::radix() const {
 		throw std::runtime_error("UnsupportedOperationException: radix() not supported for this token type");
 	}

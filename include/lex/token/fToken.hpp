@@ -31,6 +31,8 @@ namespace zebra::lex::token {
 		~fToken() = default;
 		const std::string& getTStrVal() const ;
 		const fTKnd* getTKind() const ;
+		const int getLineNo() const ;
+		const int getColNo() const ;
 
 		virtual int radix() const ;
 
