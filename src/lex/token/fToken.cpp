@@ -8,7 +8,7 @@ namespace zebra::lex::token {;
 	const fToken  fToken::ROOT_OPERATOR(fTKnd::T_SOF, -1, -1, -1, -1,"<ROOT_OPERATOR>");
 
 	fToken::fToken(const fTKnd*  kind,  int pos, int endPos, int lineno, int colno, const std::string& tsval)
-		: location_(new fLocation(pos, endPos, lineno, colno)), kind_(kind), strVal_(tsval) {
+		: location_(new fTokenLocation(pos, endPos, lineno, colno)), kind_(kind), strVal_(tsval) {
 		if (kind_ == nullptr) {
 			throw std::invalid_argument("Token kind cannot be null");
 		}
@@ -21,7 +21,7 @@ namespace zebra::lex::token {;
 		return kind_;
 	}
 
-	const fLocation* fToken::getLocation() const {
+	const fTokenLocation* fToken::getLocation() const {
 		return location_;
 	}
 

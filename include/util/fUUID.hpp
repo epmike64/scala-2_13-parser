@@ -6,9 +6,7 @@
 #include <random>
 #include <string>
 
-/**
-
-#include <iostream>
+/** #include <iostream>
 
 int main() {
 	 for (int i = 0; i < 5; ++i) {
@@ -17,11 +15,10 @@ int main() {
 						<< "  (v" << static_cast<int>(id.version()) << ")\n";
 	 }
 }
+*/
 
-**/
+
 namespace zebra::util {
-
-
 	class UUID {
 	public:
 		// --- Construction ---------------------------------------------------
@@ -82,5 +79,20 @@ namespace zebra::util {
 
 	private:
 		std::array<uint8_t, 16> fBytes{};
+	};
+
+	/**
+	 * To use as an unordered_map key, add a std::hash specialization:
+	 */
+	template<>
+	struct std::hash<UUID> {
+		size_t operator()(const UUID &id) const noexcept {
+			const auto &b = id.bytes();
+			// XOR-fold the 128 bits into 64 bits
+			uint64_t hi{}, lo{};
+			for (int i = 0; i < 8; ++i) hi = (hi << 8) | b[i];
+			for (int i = 0; i < 8; ++i) lo = (lo << 8) | b[8 + i];
+			return std::hash<uint64_t>{}(hi) ^ (std::hash<uint64_t>{}(lo) << 1);
+		}
 	};
 }

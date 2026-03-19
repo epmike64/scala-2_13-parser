@@ -180,6 +180,7 @@ add_executable(zebra-4-backend
 		src/ast/symbol/ZSymbol.cpp
 		include/ast/symbol/ZLangConstruct.hpp
 		include/ast/symbol/ZError.hpp
+		include/util/fUUID.hpp
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE

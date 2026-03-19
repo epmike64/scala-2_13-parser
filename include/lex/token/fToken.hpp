@@ -12,17 +12,16 @@ namespace zebra::lex::token {
 
 	using namespace zebra::lex::kind;
 
-	class fLocation {
+	class fTokenLocation {
 		public:
 		const int pos_, endPos_;
 		const int lineno_, colno_;
-		fLocation(int pos, int endPos, int lineno, int colno) : pos_(pos), endPos_(endPos), lineno_(lineno), colno_(colno) {};
+		fTokenLocation(int pos, int endPos, int lineno, int colno) : pos_(pos), endPos_(endPos), lineno_(lineno), colno_(colno) {};
 	};
-
 
 	class fToken {
 	protected:
-		const fLocation* location_;
+		const fTokenLocation* location_;
 		const fTKnd* kind_;
 		std::string strVal_;
 
@@ -41,7 +40,7 @@ namespace zebra::lex::token {
 
 		const std::string& getTStrVal() const ;
 		const fTKnd* getTKind() const ;
-		const fLocation* getLocation() const ;
+		const fTokenLocation* getLocation() const ;
 
 		virtual int radix() const ;
 
