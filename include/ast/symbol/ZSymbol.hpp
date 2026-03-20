@@ -5,6 +5,8 @@
 #include "ast/leaf/fType.hpp"
 #include <functional>
 
+#include "ZSymbol.hpp"
+
 namespace zebra::ast::symbol {
 
 	using namespace zebra::ast::node;
@@ -39,15 +41,29 @@ namespace zebra::ast::symbol {
 		const ZId zId() const { return zId_; }
 	};
 
+	class ZUnit : public ZSymbol {
+	protected:
+		PVecP<ZUnit> subUnits_;
+		PVec<std::string> imports_;
+		PVec<std::string> qualName_;
+	public:
+		explicit ZUnit(ZId zId) : ZSymbol(std::move(zId)) {}
+		~ZUnit() override = default;
+		virtual void addSubUnit(sp<ZUnit> subUnit) = 0;
+		virtual void addImport(std::string import_) = 0;
+		virtual void addQualName(std::string qualName) = 0;
+	};
+
+
 	class ZTypeParam: public ZSymbol {
 	public:
 		ZTypeParam(ZId zId) : ZSymbol(std::move(zId)) {}
 		// ...existing code...
 	};
 
-	class ZTrait: public ZSymbol {
+	class ZTrait: public ZUnit {
 	public:
-		ZTrait(ZId zId) : ZSymbol(std::move(zId)) {}
+		ZTrait(ZId zId) : ZUnit(std::move(zId)) {}
 		// ...existing code...
 	};
 
@@ -83,24 +99,6 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZCompileUnit: public ZSymbol {
-	protected:
-		PVecP<ZClass> classes_;
-		std::vector<std::string> pkgQualName;
-	public:
-		ZCompileUnit(ZId zId) : ZSymbol(std::move(zId)) {
-			pkgQualName.emplace_back("_ROOT_PKG_");
-		}
-
-		void addSubPackage(std::string n) {
-			pkgQualName.emplace_back(std::move(n));
-		}
-
-		ZLangConstruct langConstruct() override {
-			return Z_COMPILATION_UNIT;
-		}
-	};
-
 	class ZClass : public ZTrait {
 		sp<ZClass> parentClass_;
 		PVecP<ZTrait> traits_;
@@ -114,6 +112,37 @@ namespace zebra::ast::symbol {
 			return Z_CLASS;
 		}
 	};
+
+
+	class ZCompileUnit: public ZUnit {
+	public:
+		ZCompileUnit(ZId zId) : ZUnit(std::move(zId)) {
+			qualName_ = std::make_shared<std::vector<std::string>>();
+			qualName_->emplace_back("_ROOT_PKG_");
+		}
+		void addSubUnit(sp<ZUnit> subUnit) override {
+			subUnits_->emplace_back(std::move(subUnit));
+		}
+		void addImport(std::string import_) override {
+			imports_->emplace_back(std::move(import_));
+		}
+		void addQualName(std::string qualName) override {
+			 qualName_->emplace_back(std::move(qualName));
+		}
+
+		void addSubPackage(std::string n) {
+			addQualName(n);
+		}
+
+		void addClass(sp<ZClass> cls) {
+			addSubUnit(cls);
+		}
+
+		ZLangConstruct langConstruct() override {
+			return Z_COMPILATION_UNIT;
+		}
+	};
+
 
 }
 

@@ -61,7 +61,7 @@ namespace zebra::back::tree {
 
 		if (n->getPackages().size() > 0) {
 			for (const auto& pkg : n->getPackages()) {
-				zcu->addSubPackage(pkg->getPackageName());
+				zcu->addSubPackage(pkg->getPackgQualName());
 			}
 		}
 

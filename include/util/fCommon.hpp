@@ -17,6 +17,9 @@ namespace zebra::util {
 	template<typename T>
 	using PVecP = sp<std::vector<std::shared_ptr<T>>>;
 
+	template<typename T>
+	using PVec = sp<std::vector<T>>;
+
 	template<typename T >
 	using StrPVecPMap = sp<std::unordered_map<std::string, PVecP<T>>>;
 }
