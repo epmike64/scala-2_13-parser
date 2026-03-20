@@ -93,8 +93,9 @@ namespace zebra::ast::symbol {
 
 	class ZTrait: public ZUnit {
 	public:
-		ZTrait(ZId zId) : ZUnit(std::move(zId), ZLangConstruct::Z_TRAIT) {}
-		// ...existing code...
+		ZTrait(ZId zId) : ZUnit(std::move(zId), Z_TRAIT) {}
+		ZTrait(ZId zId, ZLangConstruct c) : ZUnit(std::move(zId), c) {}
+
 	};
 
 	class ZDecl: public ZUnit {
@@ -108,26 +109,25 @@ namespace zebra::ast::symbol {
 		ZFunc(ZId zId) : ZUnit(std::move(zId), Z_FUNC) {}
 	};
 
-	// class ZClassParam: public ZUnit {
-	// protected:
-	// 	const bool isMutable_;
-	// 	public:
-	// 	ZClassParam(ZId zId, bool isMutable) : ZUnit(std::move(zId), Z_CLASS_PARAM), isMutable_(isMutable) {}
-	// };
+	class ZTreePostOrderSS {
+		PVecP<fAstNod> postOrderSS;
+	public:
+		ZTreePostOrderSS(PVecP<fAstNod> postOrderSS) : postOrderSS(std::move(postOrderSS)) {}
+	};
 
 	class ZProdSubTreeN: public ZUnit {
 	protected:
-		PVecP<fAstNod> polishCalcStack; //RPN - reverse polish notation
+		sp<ZTreePostOrderSS> postOrderSS_;
 		public:
 		ZProdSubTreeN(ZId zId) : ZUnit(std::move(zId), Z_PROD_SUB_TREE_NOD) {}
 		ZProdSubTreeN(ZId zId, ZLangConstruct c) : ZUnit(std::move(zId), c) {}
 
-		void setPolishSS(sp<std::vector<sp<fAstNod> > > &&astRPN) {
-			this->polishCalcStack = std::move(astRPN);
+		void setTreePostOrderSS(sp<ZTreePostOrderSS> ztp) {
+			postOrderSS_ = ztp;
 		}
 
-		sp<std::vector<sp<fAstNod> > > getPolishSS() const {
-			return polishCalcStack;
+		sp<ZTreePostOrderSS> getTreePostOrderSS() const {
+			return postOrderSS_;
 		}
 	};
 
@@ -136,20 +136,34 @@ namespace zebra::ast::symbol {
 		ZType(ZId zId) : ZProdSubTreeN(std::move(zId), Z_TYPE) {}
 		ZType(ZId zId, ZLangConstruct c) : ZProdSubTreeN(std::move(zId), c) {}
 
+		void setZType(sp<ZTreePostOrderSS> ss) {
+			postOrderSS_ = ss;
+		}
+
+		sp<ZTreePostOrderSS> getZType() const {
+			return postOrderSS_;
+		}
 	};
 
 	class ZParamType: public ZType {
 		public:
 		ZParamType(ZId zId) : ZType(std::move(zId), Z_PARAM_TYPE) {}
 		ZParamType(ZId zId, ZLangConstruct c) : ZType(std::move(zId), c) {}
+
 	};
 
 
 	class ZClassParam: public ZParamType {
 	protected:
 		const bool isMutable_;
+		sp<ZTreePostOrderSS> defaultExpr_;
 	public:
 		ZClassParam(ZId zId, bool isMutable) : ZParamType(std::move(zId), Z_CLASS_PARAM), isMutable_(isMutable) {}
+		ZClassParam(ZId zId, ZLangConstruct c, bool isMutable) : ZParamType(std::move(zId), c), isMutable_(isMutable) {}
+
+		void setDefaultExpr(sp<ZTreePostOrderSS> de) {
+			defaultExpr_ = de;
+		}
 	};
 
 	class ZClassConstr: public ZUnit {
@@ -167,7 +181,7 @@ namespace zebra::ast::symbol {
 		PVecP<ZDecl> decls_;
 		PVecP<ZFunc> funcs_;
 	public:
-		ZClass(ZId zId) : ZTrait(std::move(zId)) {}
+		ZClass(ZId zId) : ZTrait(std::move(zId), Z_CLASS) {}
 
 	};
 
