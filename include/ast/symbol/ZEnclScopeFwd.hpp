@@ -10,7 +10,7 @@ namespace zebra::ast::symbol{
 	class ZSymbol;
 	class ZTypeParam;
 	class ZTrait;
-	class ZClass;
+	class ZClassDef;
 	class ZEnclScope;
 	using esc = std::shared_ptr<ZEnclScope>;
 

@@ -108,10 +108,15 @@ namespace zebra::ast::symbol {
 	};
 
 
-	class ZFunc: public ZIdSymbol {
+	class ZRegFunc: public ZIdSymbol {
 	public:
-		explicit ZFunc(std::string sid) : ZIdSymbol(std::move(sid), Z_FUNC) {}
-		ZFunc(std::string sid, ZLangConstruct c) : ZIdSymbol(std::move(sid), c) {}
+		explicit ZRegFunc(std::string sid) : ZIdSymbol(std::move(sid), Z_REG_FUNC) {}
+		ZRegFunc(std::string sid, ZLangConstruct c) : ZIdSymbol(std::move(sid), c) {}
+	};
+
+	class ZThisFunc: public ZSymbol {
+	public:
+		ZThisFunc() : ZSymbol(Z_THIS_FUNC) {}
 	};
 
 	class ZTreePostOrderSS {
@@ -189,16 +194,22 @@ namespace zebra::ast::symbol {
 		ZClassConstr() : ZSymbol(Z_CLASS_CONSTR) {}
 	};
 
-	class ZClass : public ZTrait {
-		sp<ZClass> parentClass_;
+	class ZClassDef : public ZTrait {
+		sp<ZClassDef> parentClass_;
+		PVecP<ZClassParam> clsParams_;
 		PVecP<ZTrait> traits_;
 		PVecP<ZTypeParam> typeParams_;
 		PVecP<ZClassConstr> constrs_;
 		// PVecP<ZDecl> decls_;
-		PVecP<ZFunc> funcs_;
+		PVecP<ZRegFunc> funcs_;
 	public:
-		explicit ZClass(std::string zId) : ZTrait(std::move(zId), Z_CLASS) {}
-
+		explicit ZClassDef(std::string zId) : ZTrait(std::move(zId), Z_CLASS_DEF) {}
+		void addClassParam(sp<ZClassParam> clsParam) {
+			if (clsParams_ == nullptr) {
+				clsParams_ = ms<std::vector<std::shared_ptr<ZClassParam>>>();
+			}
+			clsParams_->push_back(clsParam);
+		}
 	};
 
 	class ZProgram: public ZSymbol {
@@ -218,7 +229,7 @@ namespace zebra::ast::symbol {
 
 	class ZCompileUnit: public ZIdSymbol {
 		std::string packgName_;
-		PVecP<ZClass> classes_;
+		PVecP<ZClassDef> classes_;
 	public:
 		explicit ZCompileUnit(std::string zId) : ZIdSymbol(std::move(zId), Z_COMPILATION_UNIT) {
 			packgName_ = "_ROOT_PKG_";
@@ -227,9 +238,9 @@ namespace zebra::ast::symbol {
 			packgName_ += "." + n;
 		}
 
-		void addClass(sp<ZClass> cls) {
+		void addClass(sp<ZClassDef> cls) {
 			if (classes_ == nullptr) {
-				classes_ = ms<std::vector<std::shared_ptr<ZClass>>>();
+				classes_ = ms<std::vector<std::shared_ptr<ZClassDef>>>();
 			}
 			classes_->push_back(cls);
 		}

@@ -18,7 +18,7 @@
 #include "ast/leaf/fAccessModifier.hpp"
 #include "ast/leaf/fClassConstr.hpp"
 #include "ast/leaf/fClassParam.hpp"
-#include "ast/leaf/fFun.hpp"
+#include "ast/leaf/fFunc.hpp"
 #include "ast/leaf/fFunSig.hpp"
 #include "ast/leaf/fImport.hpp"
 #include "ast/leaf/fModifier.hpp"
@@ -61,7 +61,7 @@ namespace zebra::back::tree {
 		 void visit(sp<fClassTemplate>, esc) override;
 		 void visit(sp<fConstrBlock>, esc) override;
 		 void visit(sp<fFor>, esc) override;
-		 void visit(sp<fFun>, esc) override;
+		 void visit(sp<fFunc>, esc) override;
 		 void visit(sp<fFunSig>, esc) override;
 		 void visit(sp<fGenerator>, esc) override;
 		 void visit(sp<fId>, esc) override;
@@ -72,7 +72,7 @@ namespace zebra::back::tree {
 		 void visit(sp<fLocalModifier>, esc) override;
 		 void visit(sp<fModifier>, esc) override;
 		 void visit(sp<fModifiers>, esc) override;
-		 void visit(sp<fNamedFun>, esc) override;
+		 void visit(sp<fRegFunc>, esc) override;
 		 void visit(sp<fObject>, esc) override;
 		 void visit(sp<fOverrideModifier>, esc) override;
 		 void visit(sp<fPackage>, esc) override;
@@ -84,7 +84,7 @@ namespace zebra::back::tree {
 		 void visit(sp<fStableId>, esc) override;
 		 void visit(sp<fTemplate>, esc) override;
 		 void visit(sp<fTemplateBody>, esc) override;
-		 void visit(sp<fThisFun>, esc) override;
+		 void visit(sp<fThisFunc>, esc) override;
 		 void visit(sp<fThrow>, esc) override;
 		 void visit(sp<fTraitDef>, esc) override;
 		 void visit(sp<fTry>, esc) override;

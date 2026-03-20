@@ -52,7 +52,7 @@ add_executable(zebra-4-backend
 		include/ast/leaf/fIf.hpp
 		include/ast/leaf/fWhile.hpp
 		include/ast/leaf/fFunSig.hpp
-		include/ast/leaf/fFun.hpp
+		include/ast/leaf/fFunc.hpp
 		include/ast/leaf/fClassConstr.hpp
 		include/ast/leaf/fBlock.hpp
 		include/ast/leaf/fClassParam.hpp
@@ -101,7 +101,7 @@ add_executable(zebra-4-backend
 		src/ast/leaf/fBlock.cpp
 		src/ast/leaf/fClassConstr.cpp
 		src/ast/leaf/fClassParam.cpp
-		src/ast/leaf/fFun.cpp
+		src/ast/leaf/fFunc.cpp
 		src/ast/leaf/fFunSig.cpp
 		src/ast/leaf/fImport.cpp
 		src/ast/leaf/fModifier.cpp
@@ -114,7 +114,7 @@ add_executable(zebra-4-backend
 		include/ast/leaf/fFor.hpp
 		include/ast/leaf/fGenerator.hpp
 		include/ast/leaf/fLocalModifier.hpp
-		include/ast/leaf/fNamedFun.hpp
+		include/ast/leaf/fRegFunc.hpp
 		include/ast/leaf/fOverrideModifier.hpp
 		include/ast/leaf/fParam.hpp
 		include/ast/leaf/fParamClauses.hpp
@@ -122,7 +122,7 @@ add_executable(zebra-4-backend
 		include/ast/leaf/fReturn.hpp
 		include/ast/leaf/fTemplate.hpp
 		include/ast/leaf/fTemplateBody.hpp
-		include/ast/leaf/fThisFun.hpp
+		include/ast/leaf/fThisFunc.hpp
 		include/ast/leaf/fThrow.hpp
 		include/ast/leaf/fTraitDef.hpp
 		include/ast/leaf/fTry.hpp
@@ -147,14 +147,14 @@ add_executable(zebra-4-backend
 		src/ast/leaf/fId.cpp
 		src/ast/leaf/fIds.cpp
 		src/ast/leaf/fLocalModifier.cpp
-		src/ast/leaf/fNamedFun.cpp
+		src/ast/leaf/fRegFunc.cpp
 		src/ast/leaf/fOverrideModifier.cpp
 		src/ast/leaf/fParamClauses.cpp
 		src/ast/leaf/fParamTypes.cpp
 		src/ast/leaf/fReturn.cpp
 		src/ast/leaf/fTemplate.cpp
 		src/ast/leaf/fTemplateBody.cpp
-		src/ast/leaf/fThisFun.cpp
+		src/ast/leaf/fThisFunc.cpp
 		src/ast/leaf/fThrow.cpp
 		src/ast/leaf/fTraitDef.cpp
 		src/ast/leaf/fTry.cpp

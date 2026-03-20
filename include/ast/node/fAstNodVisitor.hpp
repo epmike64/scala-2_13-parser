@@ -23,7 +23,7 @@ namespace zebra::ast::leaf {
 	class fCompileUnit;
 	class fConstrBlock;
 	class fFor;
-	class fFun;
+	class fFunc;
 	class fFunSig;
 	class fGenerator;
 	class fId;
@@ -34,7 +34,7 @@ namespace zebra::ast::leaf {
 	class fLocalModifier;
 	class fModifier;
 	class fModifiers;
-	class fNamedFun;
+	class fRegFunc;
 	class fObject;
 	class fOverrideModifier;
 	class fPackage;
@@ -46,7 +46,7 @@ namespace zebra::ast::leaf {
 	class fStableId;
 	class fTemplate;
 	class fTemplateBody;
-	class fThisFun;
+	class fThisFunc;
 	class fThrow;
 	class fTraitDef;
 	class fTry;
@@ -101,7 +101,7 @@ namespace zebra::ast::node {
 		virtual void visit(sp<fCompileUnit>, esc) = 0;
 		virtual void visit(sp<fConstrBlock>, esc) = 0;
 		virtual void visit(sp<fFor>, esc) = 0;
-		virtual void visit(sp<fFun>, esc) = 0;
+		virtual void visit(sp<fFunc>, esc) = 0;
 		virtual void visit(sp<fFunSig>, esc) = 0;
 		virtual void visit(sp<fGenerator>, esc) = 0;
 		virtual void visit(sp<fId>, esc) = 0;
@@ -112,7 +112,7 @@ namespace zebra::ast::node {
 		virtual void visit(sp<fLocalModifier>, esc) = 0;
 		virtual void visit(sp<fModifier>, esc) = 0;
 		virtual void visit(sp<fModifiers>, esc) = 0;
-		virtual void visit(sp<fNamedFun>, esc) = 0;
+		virtual void visit(sp<fRegFunc>, esc) = 0;
 		virtual void visit(sp<fObject>, esc) = 0;
 		virtual void visit(sp<fOverrideModifier>, esc) = 0;
 		virtual void visit(sp<fPackage>, esc) = 0;
@@ -124,7 +124,7 @@ namespace zebra::ast::node {
 		virtual void visit(sp<fStableId>, esc) = 0;
 		virtual void visit(sp<fTemplate>, esc) = 0;
 		virtual void visit(sp<fTemplateBody>, esc) = 0;
-		virtual void visit(sp<fThisFun>, esc) = 0;
+		virtual void visit(sp<fThisFunc>, esc) = 0;
 		virtual void visit(sp<fThrow>, esc) = 0;
 		virtual void visit(sp<fTraitDef>, esc) = 0;
 		virtual void visit(sp<fTry>, esc) = 0;

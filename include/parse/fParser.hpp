@@ -145,7 +145,7 @@ namespace zebra::parse {
 
 		sp<fFunSig> funSig();
 
-		sp<fNamedFun> namedFun(sp<fModifiers> mods);
+		sp<fRegFunc> namedFun(sp<fModifiers> mods);
 
 		sp<fParamClauses> paramClauses();
 
@@ -155,9 +155,9 @@ namespace zebra::parse {
 
 		sp<fConstrBlock> constrBlock();
 
-		sp<fThisFun> thisFun(sp<fModifiers> mods);
+		sp<fThisFunc> thisFun(sp<fModifiers> mods);
 
-		sp<fFun> funDef(sp<fModifiers> mods);
+		sp<fFunc> funDef(sp<fModifiers> mods);
 
 		sp<fTypeDef> typeDef();
 

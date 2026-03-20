@@ -7,12 +7,12 @@
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 
-	class fFun : public fAstOprndNod {
+	class fFunc : public fAstOprndNod {
 		const sp<fModifiers> modifiers_;
 	protected:
-		fFun(sp<fModifiers> &&modifiers);
+		fFunc(sp<fModifiers> &&modifiers);
 	public:
-		~fFun() = default;
+		~fFunc() = default;
 		 sp<fModifiers> getModifiers() const ;
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;

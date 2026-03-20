@@ -1,6 +1,6 @@
 #pragma once
 
-#include "fFun.hpp"
+#include "fFunc.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"
@@ -8,13 +8,13 @@
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 
-	class fNamedFun : public fFun {
+	class fRegFunc : public fFunc {
 		const sp<fFunSig> funSig_;
 		sp<fType> returnType_;
 		sp<fAstOprndNod> funBody_;
 		public:
 
-		fNamedFun(sp<fModifiers> &&modifiers, sp<fFunSig> &&funSig);
+		fRegFunc(sp<fModifiers> &&modifiers, sp<fFunSig> &&funSig);
 
 		 sp<fFunSig> getFunSig() const ;
 

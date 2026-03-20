@@ -18,7 +18,7 @@
 #include "ast/leaf/fImport.hpp"
 #include "ast/leaf/fLiteral.hpp"
 #include "ast/leaf/fLocalModifier.hpp"
-#include "ast/leaf/fNamedFun.hpp"
+#include "ast/leaf/fRegFunc.hpp"
 #include "ast/leaf/fOverrideModifier.hpp"
 #include "ast/leaf/fPackage.hpp"
 #include "ast/leaf/fParam.hpp"
@@ -27,7 +27,7 @@
 #include "ast/leaf/fReturn.hpp"
 #include "ast/leaf/fTemplate.hpp"
 #include "ast/leaf/fTemplateBody.hpp"
-#include "ast/leaf/fThisFun.hpp"
+#include "ast/leaf/fThisFunc.hpp"
 #include "ast/leaf/fThrow.hpp"
 #include "ast/leaf/fTry.hpp"
 #include "ast/leaf/fTypeArgs.hpp"
@@ -1358,8 +1358,8 @@ namespace zebra::parse {
 		return fs;
 	}
 
-	sp<fNamedFun> fParser::namedFun(sp<fModifiers> mods) {
-		sp<fNamedFun> fun = ms<fNamedFun>(std::move(mods), funSig());
+	sp<fRegFunc> fParser::namedFun(sp<fModifiers> mods) {
+		sp<fRegFunc> fun = ms<fRegFunc>(std::move(mods), funSig());
 		if (h.isTkColon()) {
 			h.next();
 			fun->setReturnType(type());
@@ -1440,9 +1440,9 @@ namespace zebra::parse {
 		return cb;
 	}
 
-	sp<fThisFun> fParser::thisFun(sp<fModifiers> mods) {
+	sp<fThisFunc> fParser::thisFun(sp<fModifiers> mods) {
 		h.accept(fTKnd::T_THIS);
-		sp<fThisFun> fun = ms<fThisFun>(std::move(mods));
+		sp<fThisFunc> fun = ms<fThisFunc>(std::move(mods));
 		fun->setParamClauses(paramClauses());
 		if (h.isTkAssign()) {
 			h.next();
@@ -1466,7 +1466,7 @@ namespace zebra::parse {
 	}
 
 
-	sp<fFun> fParser::funDef(sp<fModifiers> mods) {
+	sp<fFunc> fParser::funDef(sp<fModifiers> mods) {
 		h.accept(fTKnd::T_DEF);
 		switch (*h.tKnd()) {
 			case fTKnd::T_ID_E: case fTKnd::T_PLUS_E: case fTKnd::T_MINUS_E: case fTKnd::T_STAR_E: case fTKnd::T_FORWARD_SLASH_E: case fTKnd::T_PERCENT_E:
