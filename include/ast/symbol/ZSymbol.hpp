@@ -8,6 +8,7 @@
 #include "ZSymbol.hpp"
 
 namespace zebra::ast::symbol {
+	class ZParam;
 	class ZProdSubTreeN;
 
 	using namespace zebra::ast::node;
@@ -107,16 +108,28 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-
-	class ZRegFunc: public ZIdSymbol {
+	class ZFunc : public ZSymbol {
+	protected:
+		PVecP<ZParam> params_;
 	public:
-		explicit ZRegFunc(std::string sid) : ZIdSymbol(std::move(sid), Z_REG_FUNC) {}
-		ZRegFunc(std::string sid, ZLangConstruct c) : ZIdSymbol(std::move(sid), c) {}
+		ZFunc(ZLangConstruct c) : ZSymbol(c) {}
+		void addParam(sp<ZParam> p) {
+			if (params_ == nullptr) {
+				params_ = ms<std::vector<std::shared_ptr<ZParam>>>();
+			}
+			params_->push_back(p);
+		}
 	};
 
-	class ZThisFunc: public ZSymbol {
+	class ZRegFunc: public I_ZId, public ZFunc {
 	public:
-		ZThisFunc() : ZSymbol(Z_THIS_FUNC) {}
+		explicit ZRegFunc(std::string sid) : I_ZId(std::move(sid)), ZFunc(Z_REG_FUNC) {}
+		ZRegFunc(std::string sid, ZLangConstruct c) : I_ZId(std::move(sid)), ZFunc(c) {}
+	};
+
+	class ZThisFunc: public ZFunc{
+	public:
+		ZThisFunc() : ZFunc(Z_THIS_FUNC) {}
 	};
 
 	class ZTreePostOrderSS {

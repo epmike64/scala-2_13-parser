@@ -153,20 +153,23 @@ namespace zebra::back::tree {
 		std::cout << "Visiting Parameter: " << n->getIdentToken()->toString() << std::endl;
 
 		assert(prnSc->getLangConstruct() == Z_REG_FUNC || prnSc->getLangConstruct() == Z_THIS_FUNC);
-		sp<ZParam> z_par_p = ms<ZParam>(n->getIdentName());
+		sp<ZParam> zParam = ms<ZParam>(n->getIdentName());
 
-		esc z_par_s = ms<ZEnclScope>(prnSc,  z_par_p);
-		n->getParamType()->accept(shared_from_this(), z_par_s);
+		esc zParamScp = ms<ZEnclScope>(prnSc,  zParam);
+		n->getParamType()->accept(shared_from_this(), zParamScp);
 
 
 		sp<fAstProdSubTreeN> assignExpr = n->getDefaultValueExpr();
 		if (assignExpr != nullptr) {
-			sp<ZProdSubTreeN> z_tr_p = ms<ZProdSubTreeN>(Z_PARAM_DEFAULT_EXPR);
-			esc z_tr_s = ms<ZEnclScope>(prnSc,  z_tr_p);
+			sp<ZProdSubTreeN> zPSubTr = ms<ZProdSubTreeN>(Z_PARAM_DEFAULT_EXPR);
+			esc zPSubTrScp = ms<ZEnclScope>(prnSc,  zPSubTr);
 
-			assignExpr->accept(shared_from_this(), z_tr_s);
-			z_par_p->setDefaultValueExpr(z_tr_p->getTreePostOrderSS());
+			assignExpr->accept(shared_from_this(), zPSubTrScp);
+			zParam->setDefaultValueExpr(zPSubTr->getTreePostOrderSS());
 		}
+
+		sp<ZFunc> f = std::dynamic_pointer_cast<ZFunc>(prnSc->getZSymbol());
+		f->addParam(zParam);
 	}
 
 	void ZVisitor::visit(sp<fClassParam> fClsPar, esc prnSc) {
@@ -442,15 +445,15 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fRegFunc> n, esc prnSc) {
 		std::cout << "Visiting Named Function: " << n->getFunSig()->getIdentToken()->toString() << std::endl;
-		sp<ZRegFunc> z_fun = ms<ZRegFunc>(n->getFunSig()->getIdentName());
-		esc s = ms<ZEnclScope>(prnSc,  z_fun);
+		sp<ZRegFunc> zFunc = ms<ZRegFunc>(n->getFunSig()->getIdentName());
+		esc zFunScp = ms<ZEnclScope>(prnSc,  zFunc);
 
 		// esc s = ms<ZEnclScope>(prnSc, Z_NAMED_FUN);
 		// if (n->getModifiers()) {
 		// 	n->getModifiers()->accept(shared_from_this(), s);
 		// }
 
-		n->getFunSig()->accept(shared_from_this(), s);
+		n->getFunSig()->accept(shared_from_this(), zFunScp);
 
 		// std::cout << "Visiting Named Function Body" << std::endl;
 		// if (n->getFunBody()) {
