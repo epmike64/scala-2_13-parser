@@ -83,32 +83,14 @@ namespace zebra::back::tree {
 	}
 
 
-	void ZVisitor::visit(sp<fImport> n, esc prnSc) {
 
-		sp<std::vector<std::string>> imports_ = ms<std::vector<std::string>>();
-		for (sp<fImportExpr>& impExpr : n->getImportExprs()) {
-			std::string qualName = impExpr->getId()->getQualName();
-			if (impExpr->getUnderscore()) {
-				qualName += "._";
-				imports_->emplace_back(std::move(qualName));
-			} else if (impExpr->getSelectors()) {
-
-				for (size_t i = 0; i < impExpr->getSelectors()->size(); i++) {
-					std::string qualNameSel =  qualName + "." + impExpr->getSelectors()->at(i)->getFrom()->toString();
-					imports_->emplace_back(std::move(qualNameSel));
-				}
-			}
-		}
-		prnSc->getZUnit()->addImports(imports_);
-	}
 
 
 
 	void  ZVisitor::visit(sp<fClassDef> cls, esc prnSc){
-		std::cout << "Visiting Class Definition: " << cls->toString() << std::endl;
+
 		sp<ZClass> zcp = ms<ZClass>(ZId(cls->getIdentName()));
 		esc s = ms<ZEnclScope>(prnSc, zcp);
-		//s->addSymbol(cls->getName()->toString(), ms<ZClass>());
 
 		if (cls->getModifiers()) {
 			cls->getModifiers()->accept(shared_from_this(), prnSc);
@@ -132,12 +114,14 @@ namespace zebra::back::tree {
 		}
 	}
 
-	void  ZVisitor::visit(sp<fLiteral> n, esc prnSc)  {
-		std::cout << "Visiting Literal: " << n->toString() << std::endl;
-	}
-
-	void  ZVisitor::visit(sp<fStableId>n, esc prnSc)  {
-		std::cout << "Visiting StableId: " << n->toString() << std::endl;
+	void ZVisitor::visit(sp<fClassConstr> n, esc prnSc) {
+		// std::cout << "Visiting Class Constructor" << std::endl;
+		// esc s = ms<ZEnclScope>(prnSc, Z_CLASS_CONSTR);
+		// n->getPrimaryCtorParamType()->accept(shared_from_this(), s);
+		// if (n->getArgs()) {
+		// 	std::cout << "Visiting Class Constructor Arguments" << std::endl;
+		// 	n->getArgs()->accept(shared_from_this(), s);
+		// }
 	}
 
 	void  ZVisitor::visit(sp<fType> n, esc prnSc)  {
@@ -228,15 +212,7 @@ namespace zebra::back::tree {
 		// 	clause->accept(shared_from_this(), prnSc);
 		// }
 	}
-	void ZVisitor::visit(sp<fClassConstr> n, esc prnSc) {
-		// std::cout << "Visiting Class Constructor" << std::endl;
-		// esc s = ms<ZEnclScope>(prnSc, Z_CLASS_CONSTR);
-		// n->getPrimaryCtorParamType()->accept(shared_from_this(), s);
-		// if (n->getArgs()) {
-		// 	std::cout << "Visiting Class Constructor Arguments" << std::endl;
-		// 	n->getArgs()->accept(shared_from_this(), s);
-		// }
-	}
+
 
 
 
@@ -712,6 +688,38 @@ namespace zebra::back::tree {
 		std::cout << "Operand: " << n->toString() << std::endl;
 	}
 
+	/**
+	 *
+	 *  FOR LATER
+	 */
+	void  ZVisitor::visit(sp<fLiteral> n, esc prnSc)  {
+		std::cout << "Visiting Literal: " << n->toString() << std::endl;
+	}
+	void  ZVisitor::visit(sp<fStableId>n, esc prnSc)  {
+		std::cout << "Visiting StableId: " << n->toString() << std::endl;
+	}
 
+	/**
+	 *
+	 * DONE
+	 */
 	void ZVisitor::visit(sp<fPackage> n, esc prnSc) {}
+	void ZVisitor::visit(sp<fImport> n, esc prnSc) {
+
+		sp<std::vector<std::string>> imports_ = ms<std::vector<std::string>>();
+		for (sp<fImportExpr>& impExpr : n->getImportExprs()) {
+			std::string qualName = impExpr->getId()->getQualName();
+			if (impExpr->getUnderscore()) {
+				qualName += "._";
+				imports_->emplace_back(std::move(qualName));
+			} else if (impExpr->getSelectors()) {
+
+				for (size_t i = 0; i < impExpr->getSelectors()->size(); i++) {
+					std::string qualNameSel =  qualName + "." + impExpr->getSelectors()->at(i)->getFrom()->toString();
+					imports_->emplace_back(std::move(qualNameSel));
+				}
+			}
+		}
+		prnSc->getZUnit()->addImports(imports_);
+	}
 }
