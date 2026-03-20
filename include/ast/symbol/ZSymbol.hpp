@@ -65,15 +65,15 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class IHaveImport {
+	class I_Imports {
 	public:
-		virtual ~IHaveImport() = default;
+		virtual ~I_Imports() = default;
 		virtual sp<ZImport> getZImport() = 0;
 		virtual void addImport(std::string im) = 0;
 		virtual void addImports(sp<std::vector<std::string>> ims) = 0;
 	};
 
-	class ZTrait: public IHaveImport, public ZIdSymbol {
+	class ZTrait: public I_Imports, public ZIdSymbol {
 		sp<ZImport> Import_;
 	public:
 		ZTrait(ZId zId) : ZIdSymbol(std::move(zId), Z_TRAIT) {}
@@ -192,6 +192,16 @@ namespace zebra::ast::symbol {
 	class ZProgram: public ZSymbol {
 		public:
 		ZProgram() : ZSymbol(Z_PROGRAM) {}
+	};
+
+	class I_Stmts {
+	public:
+		virtual ~I_Stmts() = default;
+	};
+
+	class ZTemplateBody: I_Stmts, public ZSymbol {
+	public:
+		ZTemplateBody() : ZSymbol(Z_TEMPLATE_BODY) {}
 	};
 
 	class ZCompileUnit: public ZIdSymbol {

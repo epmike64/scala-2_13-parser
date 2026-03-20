@@ -100,16 +100,15 @@ namespace zebra::back::tree {
 			cls->getConstrAccessModifier()->accept(shared_from_this(), s);
 		}
 
-		if (cls->getTypeParamClause()) {
-			cls->getTypeParamClause()->accept(shared_from_this(), s);
-		}
+		// if (cls->getTypeParamClause()) {
+		// 	cls->getTypeParamClause()->accept(shared_from_this(), s);
+		// }
 
 		if (cls->getClassParamClauses()) {
 			cls->getClassParamClauses()->accept(shared_from_this(), s);
 		}
 
 		if (cls->getExtendsTemplate()) {
-			std::cout << "Visiting extends template of class definition" << std::endl;
 			cls->getExtendsTemplate()->accept(shared_from_this(), s);
 		}
 	}
@@ -126,6 +125,15 @@ namespace zebra::back::tree {
 		// 	std::cout << "Visiting Implicit Class Parameter" << std::endl;
 		// 	implicitParam->accept(shared_from_this(), s);
 		// }
+	}
+
+	void ZVisitor::visit(sp<fTemplateBody> n, esc prnSc) {
+
+		sp<ZTemplateBody> z_tb = ms<ZTemplateBody>();
+		esc s = ms<ZEnclScope>(prnSc,  z_tb);
+		for (const auto& stmt : n->getStmts()) {
+			stmt->accept(shared_from_this(), s);
+		}
 	}
 
 	void ZVisitor::visit(sp<fClassParam> n, esc prnSc) {
@@ -165,15 +173,13 @@ namespace zebra::back::tree {
 
 		for (auto typeParam : *n->getVariantTypeParams()) {
 
-			sp<ZVariantTypeParam> z_cp = ms<ZVariantTypeParam>();
-			esc s = ms<ZEnclScope>(prnSc,  z_cp);
+			sp<ZVariantTypeParam> z_vtp = ms<ZVariantTypeParam>();
+			esc s = ms<ZEnclScope>(prnSc,  z_vtp);
 			typeParam->accept(shared_from_this(), s);
 		}
 	}
 
 	void ZVisitor::visit(sp<fVariantTypeParam> n, esc prnSc) {
-		std::cout << "Visiting Variant Type Parameter: " << n->toString() << std::endl;
-		// prnSc->addSymbol(n->getTypeParamName()->toString(), ms<ZVariantTypeParam>(n));
 	}
 
 
@@ -190,7 +196,7 @@ namespace zebra::back::tree {
 
 
 	void  ZVisitor::visit(sp<fValueDef> n, esc prnSc)  {
-		// std::cout << "Visiting Value Decl: " << n->toString() << std::endl;
+		std::cout << "Visiting Value Decl: " << n->toString() << std::endl;
 		// assert(n->getNames().size() > 0);
 		//
 		// std::vector<sp<ZEnclScope>> esVec;// = ms<std::vector<EnclosingScope>>(prnSc, fLangGrmrProdE::VALUE_DEF);
@@ -220,7 +226,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fIf> n, esc prnSc) {
-		// std::cout << "-- IF Cond Expr" << std::endl;
+		std::cout << "-- IF Cond Expr" << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_IF);
 		//
 		// n->getCondExpr()->accept(shared_from_this(), s);
@@ -233,7 +239,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fWhile > n, esc prnSc) {
-	// 	std::cout << "-- WHILE Cond Expr" << std::endl;
+		std::cout << "-- WHILE Cond Expr" << std::endl;
 	// 	esc s = ms<ZEnclScope>(prnSc, Z_WHILE);
 	//
 	// 	n->getCondExpr()->accept(shared_from_this(), s);
@@ -254,7 +260,7 @@ namespace zebra::back::tree {
 		}
 	}
 	void ZVisitor::visit(sp<fCaseClause> n, esc prnSc) {
-		// std::cout << "Visiting Case Clause" << std::endl;
+		std::cout << "Visiting Case Clause" << std::endl;
 		// // esc s = ms<ZEnclScope>(prnSc, Z_CASE_CLAUSE);
 		//
 		// n->getPattern()->accept(shared_from_this(), s);
@@ -267,7 +273,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fCaseClauses> n, esc prnSc) {
-		// std::cout << "Visiting Case Clauses" << std::endl;
+		std::cout << "Visiting Case Clauses" << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_CASE_CLAUSES);
 		// for (const auto& clause : n->getCaseClauses()) {
 		// 	clause->accept(shared_from_this(), prnSc);
@@ -282,7 +288,7 @@ namespace zebra::back::tree {
 
 
 	void ZVisitor::visit(sp<fClassParents> n, esc prnSc) {
-		// std::cout << "Visiting Class Parents" << std::endl;
+		std::cout << "Visiting Class Parents" << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_CLASS_PARENTS);
 		// if (n->getConstr()) {
 		// 	n->getConstr()->accept(shared_from_this(), s);
@@ -293,7 +299,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fClassTemplate> n, esc prnSc) {
-		// std::cout << "Visiting Class Template" << std::endl;
+		std::cout << "Visiting Class Template" << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_CLASS_TEMPLATE);
 		// if (n->getClassParents()) {
 		// 	n->getClassParents()->accept(shared_from_this(), s);
@@ -304,7 +310,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fConstrBlock> n, esc prnSc) {
-		// std::cout << "Visiting Constructor Block" << std::endl;
+		std::cout << "Visiting Constructor Block" << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_CONSTR_BLOCK);
 		// if (n->getArgExprs()) {
 		// 	std::cout << "Visiting Constructor Block Argument Expressions" << std::endl;
@@ -317,7 +323,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fFor> n, esc prnSc) {
-		// std::cout << "Visiting For Loop" << std::endl;
+		std::cout << "Visiting For Loop" << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_FOR);
 		// for (auto gen: n->getGenerators()) {
 		// 	gen->accept(shared_from_this(), s);
@@ -330,13 +336,13 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fFun> n, esc prnSc) {
-		// std::cout << "Visiting fFun" << std::endl;
+		std::cout << "Visiting fFun" << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_FFUN);
 		// n->getModifiers()->accept(shared_from_this(), s);
 	}
 
 	void ZVisitor::visit(sp<fFunSig> n, esc prnSc) {
-		// std::cout << "Visiting Function Signature: " << n->getFunName()->toString() << std::endl;
+		std::cout << "Visiting Function Signature: " << n->getFunName()->toString() << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_FUN_SIG);
 		// if (n->getParamClauses()) {
 		// 	std::cout << "Visiting Function Parameter Clauses" << std::endl;
@@ -352,7 +358,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fGenerator> n, esc prnSc) {
-		// std::cout << "Visiting Generator" << std::endl;
+		std::cout << "Visiting Generator" << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_GENERATOR);
 		// if (n->isCaseGenerator()) {
 		// 	std::cout << "Visiting Case Pattern" << std::endl;
@@ -410,7 +416,7 @@ namespace zebra::back::tree {
 		}
 	}
 	void ZVisitor::visit(sp<fNamedFun> n, esc prnSc) {
-		// std::cout << "Visiting Named Function: " << n->getFunSig()->getFunName()->toString() << std::endl;
+		std::cout << "Visiting Named Function: " << n->getFunSig()->getFunName()->toString() << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_NAMED_FUN);
 		// if (n->getModifiers()) {
 		// 	n->getModifiers()->accept(shared_from_this(), s);
@@ -425,6 +431,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fObject> n, esc prnSc) {
+		std::cout << "Visiting Object" << std::endl;
 		// if (n->isCaseClass()) {
 		// 	std::cout << "Visiting Case Class: " << n->getObjectName()->toString()  << std::endl;
 		// } else {
@@ -446,7 +453,7 @@ namespace zebra::back::tree {
 
 
 	void ZVisitor::visit(sp<fParam> n, esc prnSc) {
-		// std::cout << "Visiting Parameter: " << n->getIdentifier()->toString() << std::endl;
+		std::cout << "Visiting Parameter: " << n->getIdentifier()->toString() << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_PARAM);
 		//  sp<fAstProdSubTreeN> assignExpr = n->getDefaultValue();
 		// if (assignExpr != nullptr) {
@@ -455,7 +462,7 @@ namespace zebra::back::tree {
 		// }
 	}
 	void ZVisitor::visit(sp<fParamClauses> n, esc prnSc) {
-		// std::cout << "Visiting Parameter Clauses" << std::endl;
+		std::cout << "Visiting Parameter Clauses" << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_PARAM_CLAUSES);
 		// for (auto paramV : n->getParams()) {
 		// 	for (auto param : paramV) {
@@ -468,7 +475,7 @@ namespace zebra::back::tree {
 
 
 	void ZVisitor::visit(sp<fParamTypes> n, esc prnSc) {
-		// std::cout << "Visiting Parameter Types" << std::endl;
+		std::cout << "Visiting Parameter Types" << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_PARAM_TYPES);
 		// if (n->getParamTypes()) {
 		// 	for (auto ptp : *n->getParamTypes().get()) {
@@ -478,7 +485,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fReturn> n, esc prnSc) {
-		// std::cout << "Visiting Return Statement" << std::endl;
+		std::cout << "Visiting Return Statement" << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_RETURN);
 		// if (n->getReturnExpr()) {
 		// 	std::cout << "Visiting Return Expression" << std::endl;
@@ -487,23 +494,17 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fTemplate> n, esc prnSc) {
-		// std::cout << "Visiting Template" << std::endl;
+		std::cout << "Visiting Template" << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_TEMPLATE);
-		// if (n->getTemplateBody()) {
-		// 	std::cout << "Visiting Template Body of Template" << std::endl;
-		// 	 n->getTemplateBody()->accept(shared_from_this(), s);
-		// }
+		if (n->getTemplateBody()) {
+
+			 n->getTemplateBody()->accept(shared_from_this(), prnSc);
+		}
 	}
 
-	void ZVisitor::visit(sp<fTemplateBody> n, esc prnSc) {
-		// std::cout << "Visiting Template Body" << std::endl;
-		// esc s = ms<ZEnclScope>(prnSc, Z_TEMPLATE_BODY);
-		// for (const auto& stmt : n->getStmts()) {
-		// 	stmt->accept(shared_from_this(), s);
-		// }
-	}
+
 	void ZVisitor::visit(sp<fThisFun> n, esc prnSc) {
-		// std::cout << "Visiting This Function" << std::endl;
+		std::cout << "Visiting This Function" << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_THIS_FUN);
 		// if (n->getParamClauses()) {
 		// 	std::cout << "Visiting Parameter Clauses of This Function" << std::endl;
@@ -523,7 +524,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fTraitDef> n, esc prnSc) {
-		// std::cout << "Visiting Trait Definition: " << n->getName()->toString() << std::endl;
+		std::cout << "Visiting Trait Definition: " << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_TRAIT_DEF);
 		// if (n->getExtendsTemplate()) {
 		// 	std::cout << "Visiting extends template of trait definition" << std::endl;
@@ -532,7 +533,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fTry> n, esc prnSc) {
-		// std::cout << "Visiting Try Block" << std::endl;
+		std::cout << "Visiting Try Block" << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_TRY);
 		// n->getTryBlock()->accept(shared_from_this(), s);
 		// // for (const auto& catchClause : n->getCatchClauses()) {
@@ -546,14 +547,14 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fTypeArgs> n, esc prnSc) {
-		// std::cout << "Visiting Type Arguments" << std::endl;
+		std::cout << "Visiting Type Arguments" << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_TYPE_ARGS);
 		// for (const auto& typeArg : n->getTypeArgs()) {
 		// 	typeArg->accept(shared_from_this(), s);
 		// }
 	}
 	void ZVisitor::visit(sp<fTypeDef> n, esc prnSc) {
-		// std::cout << "Visiting Type Definition: " << n->getTypeDefName()->toString() << std::endl;
+		std::cout << "Visiting Type Definition: " << n->getTypeDefName()->toString() << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_TYPE_DEF);
 		// if (n->getAssignedType()) {
 		// 	std::cout << "Visiting Assigned Type of Type Definition" << std::endl;
@@ -583,7 +584,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fValueDecl> n, esc prnSc) {
-		// std::cout << "Visiting Value Declaration: " << std::endl;
+		std::cout << "Visiting Value Declaration: " << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_VALUE_DECL);
 		// for (auto name: n->getNames()) {
 		// 	std::cout << "Visiting name of value declaration" << std::endl;
@@ -743,7 +744,7 @@ namespace zebra::back::tree {
 				}
 			}
 		}
-		sp<IHaveImport> im = std::dynamic_pointer_cast<IHaveImport>(prnSc->getZSymbol());
+		sp<I_Imports> im = std::dynamic_pointer_cast<I_Imports>(prnSc->getZSymbol());
 		im->addImports(imports_);
 	}
 }
