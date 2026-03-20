@@ -59,11 +59,12 @@ namespace zebra::back::tree {
 		sp<ZCompileUnit> zcu = ms<ZCompileUnit>("ZCompilationUnit_" + UUID::generate().toString());
 		esc s = ms<ZEnclScope>(nullptr, zcu);
 
-
 		if (n->getPackages().size() > 0) {
+			std::string packgName;
 			for (const auto& pkg : n->getPackages()) {
-				zcu->addSubPackage(pkg->getPackgQualName());
+				packgName += pkg->getPackgQualName();
 			}
+			zcu->setPackage(packgName);
 		}
 
 		if (n->getImports().size() > 0) {
@@ -84,21 +85,21 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fImport> n, esc prnSc) {
 
-		std::vector<std::string> imports_;
+		sp<std::vector<std::string>> imports_ = ms<std::vector<std::string>>();
 		for (sp<fImportExpr>& impExpr : n->getImportExprs()) {
 			std::string qualName = impExpr->getId()->getQualName();
 			if (impExpr->getUnderscore()) {
 				qualName += "._";
-				imports_.emplace_back(std::move(qualName));
+				imports_->emplace_back(std::move(qualName));
 			} else if (impExpr->getSelectors()) {
 
 				for (size_t i = 0; i < impExpr->getSelectors()->size(); i++) {
 					std::string qualNameSel =  qualName + "." + impExpr->getSelectors()->at(i)->getFrom()->toString();
-					imports_.emplace_back(std::move(qualNameSel));
+					imports_->emplace_back(std::move(qualNameSel));
 				}
 			}
 		}
-		prnSc->getZUnit()->addImport(imports_);
+		prnSc->getZUnit()->addImports(imports_);
 	}
 
 
@@ -242,13 +243,9 @@ namespace zebra::back::tree {
 		std::cout << "Visiting Class Parameter: " << n->toString() << std::endl;
 
 		esc clsScp = getWrapScope(prnSc, Z_CLASS);//->addSymbol(n->getIdentifier()->toString(), ms<ZClassParam>());
-		if (clsScp->getZUnit(n->getIdentName()) == nullptr) {
-			// clsScp->addSymbol(n->getIdentName(), ms<ZClassParam>());
-		} else {
-			std::cerr << "Warning: Duplicate class parameter name: " << n->getIdentifier()->toString() << std::endl;
-		}
 
-		esc s = ms<ZEnclScope>(prnSc, Z_CLASS_PARAM);
+		sp<ZClassParam> zcp = ms<ZClassParam>(ZId(n->getIdentName()));
+		esc s = ms<ZEnclScope>(prnSc,  zcp);
 		n->getParamType()->accept(shared_from_this(), s);
 
 		sp<fAstProdSubTreeN> assignExpr = n->getDefaultValueExpr();

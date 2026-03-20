@@ -37,7 +37,7 @@ namespace zebra::ast::symbol {
 	public:
 		ZSymbol(ZId zId) : zId_(std::move(zId)) {}
 		virtual ~ZSymbol() = default;
-		virtual  ZLangConstruct langConstruct() = 0;
+		virtual  ZLangConstruct getZLangConstruct() = 0;
 		const ZId zId() const { return zId_; }
 	};
 
@@ -45,7 +45,7 @@ namespace zebra::ast::symbol {
 	protected:
 		PVecP<ZUnit> subUnits_;
 		PVec<std::string> imports_;
-		PVec<std::string> qualName_;
+		std::string declName_;
 		const ZLangConstruct langConstruct_;
 
 	public:
@@ -58,12 +58,31 @@ namespace zebra::ast::symbol {
 		void addImport(std::string import_) {
 			imports_->emplace_back(std::move(import_));
 		}
-		void addQualName(std::string qualName) {
-			qualName_->emplace_back(std::move(qualName));
+		void addImports(sp<std::vector<std::string>> imports) {
+			for (auto it = imports_->begin(); it != imports_->end(); ++it) {
+				imports_->emplace_back(std::move(*it));
+			}
 		}
 
-		ZLangConstruct langConstruct() override {
+		void setDeclName(std::string n) {
+			declName_ =std::move(n);
+		}
+
+		const std::string& getDeclName() {
+			return declName_;
+		}
+
+		ZLangConstruct getZLangConstruct() override {
 			return langConstruct_;
+		}
+
+		bool containsImports(const std::string& s) {
+			for (auto it = imports_->begin(); it != imports_->end(); ++it) {
+				if (*it == s) {
+					return true;
+				}
+			}
+			return false;
 		}
 	};
 
@@ -89,9 +108,6 @@ namespace zebra::ast::symbol {
 	class ZFunc: public ZUnit {
 	public:
 		ZFunc(ZId zId) : ZUnit(std::move(zId), Z_FUNC) {}
-		ZLangConstruct langConstruct() override {
-			return Z_FUNC;
-		}
 	};
 
 	class ZClassParam: public ZUnit {
@@ -115,9 +131,7 @@ namespace zebra::ast::symbol {
 		PVecP<ZFunc> funcs_;
 	public:
 		ZClass(ZId zId) : ZTrait(std::move(zId)) {}
-		ZLangConstruct langConstruct() override {
-			return Z_CLASS;
-		}
+
 	};
 
 	class ZProgram: public ZUnit {
@@ -128,11 +142,10 @@ namespace zebra::ast::symbol {
 	class ZCompileUnit: public ZUnit {
 	public:
 		ZCompileUnit(ZId zId) : ZUnit(std::move(zId), Z_COMPILATION_UNIT) {
-			qualName_ = std::make_shared<std::vector<std::string>>();
-			qualName_->emplace_back("_ROOT_PKG_");
+			declName_ = "_ROOT_PKG_";
 		}
-		void addSubPackage(std::string n) {
-			addQualName(n);
+		void setPackage(std::string n) {
+			declName_ += "." + n;
 		}
 
 		void addClass(sp<ZClass> cls) {
