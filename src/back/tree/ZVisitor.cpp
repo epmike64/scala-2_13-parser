@@ -115,12 +115,6 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fClassParamClauses> n, esc prnSc) {
-
-
-		// for (const auto& implicitParam : n->getImplicitParams()) {
-		// 	std::cout << "Visiting Implicit Class Parameter" << std::endl;
-		// 	implicitParam->accept(shared_from_this(), s);
-		// }
 		for (const auto& paramClauseList : n->getClassParams()) {
 
 			for (auto & paramClause : paramClauseList) {
@@ -128,20 +122,24 @@ namespace zebra::back::tree {
 				paramClause->accept(shared_from_this(), prnSc);
 			}
 		}
+		// for (const auto& implicitParam : n->getImplicitParams()) {
+		// 	std::cout << "Visiting Implicit Class Parameter" << std::endl;
+		// 	implicitParam->accept(shared_from_this(), s);
+		// }
 	}
 
 	void ZVisitor::visit(sp<fClassParam> n, esc prnSc) {
 
 		esc clsScp = getWrapScope(prnSc, Z_CLASS);
 
-		sp<ZClassParam> z_cp = ms<ZClassParam>(ZId(n->getIdentName()), n->isMutable() );
+		sp<ZClassParam> z_cp = ms<ZClassParam>(n->isMutable() );
 		esc s = ms<ZEnclScope>(prnSc,  z_cp);
 		n->getParamType()->accept(shared_from_this(), s);
 		z_cp->setZType(z_cp->getZType());
 
 		sp<fAstProdSubTreeN> assignExpr = n->getDefaultValueExpr();
 		if (assignExpr != nullptr) {
-			sp<ZProdSubTreeN> z_cpde = ms<ZProdSubTreeN>(ZId(n->getIdentName()), Z_CLASS_PARAM_DEFAULT_EXPR);
+			sp<ZProdSubTreeN> z_cpde = ms<ZProdSubTreeN>(Z_CLASS_PARAM_DEFAULT_EXPR);
 			esc s = ms<ZEnclScope>(prnSc,  z_cpde);
 
 			assignExpr->accept(shared_from_this(), s);
@@ -150,23 +148,27 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fParamType> n, esc prnSc) {
-		sp<ZParamType> z_pt = ms<ZParamType>(ZId("ParamType_" + UUID::generate().toString()));
+		sp<ZParamType> z_pt = ms<ZParamType>();
 		esc s = ms<ZEnclScope>(prnSc,  z_pt);
 		n->getTypeTree()->accept(shared_from_this(), prnSc);
 	}
 
 	void  ZVisitor::visit(sp<fType> n, esc prnSc)  {
-		sp<ZType> zcp = ms<ZType>(ZId("Type_" + UUID::generate().toString()));
+		sp<ZType> zcp = ms<ZType>();
 		esc s = ms<ZEnclScope>(prnSc,  zcp);
 		n->getTypeTree()->accept(shared_from_this(), s);
 	}
 
 	void ZVisitor::visit(sp<fTypeParamClause> n, esc prnSc) {
-		// esc s = ms<ZEnclScope>(prnSc, Z_TYPE_PARAM_CLAUSE);
-		//
-		// for (auto typeParam : *n->getVariantTypeParams()) {
-		// 	typeParam->accept(shared_from_this(), s);
-		// }
+
+		esc clsScp = getWrapScope(prnSc, Z_CLASS);
+
+		for (auto typeParam : *n->getVariantTypeParams()) {
+
+			sp<ZVariantTypeParam> z_cp = ms<ZVariantTypeParam>();
+			esc s = ms<ZEnclScope>(prnSc,  z_cp);
+			typeParam->accept(shared_from_this(), s);
+		}
 	}
 
 	void ZVisitor::visit(sp<fVariantTypeParam> n, esc prnSc) {

@@ -114,12 +114,12 @@ namespace zebra::ast::symbol {
 		ZTreePostOrderSS(PVecP<fAstNod> postOrderSS) : postOrderSS(std::move(postOrderSS)) {}
 	};
 
-	class ZProdSubTreeN: public ZUnit {
+	class ZProdSubTreeN: public ZSymbol {
 	protected:
 		sp<ZTreePostOrderSS> postOrderSS_;
 		public:
-		ZProdSubTreeN(ZId zId) : ZUnit(std::move(zId), Z_PROD_SUB_TREE_NOD) {}
-		ZProdSubTreeN(ZId zId, ZLangConstruct c) : ZUnit(std::move(zId), c) {}
+		ZProdSubTreeN() : ZSymbol(Z_PROD_SUB_TREE_NOD) {}
+		ZProdSubTreeN(ZLangConstruct c) : ZSymbol(c) {}
 
 		void setTreePostOrderSS(sp<ZTreePostOrderSS> ztp) {
 			postOrderSS_ = ztp;
@@ -132,8 +132,8 @@ namespace zebra::ast::symbol {
 
 	class ZType : public ZProdSubTreeN {
 	public:
-		ZType(ZId zId) : ZProdSubTreeN(std::move(zId), Z_TYPE) {}
-		ZType(ZId zId, ZLangConstruct c) : ZProdSubTreeN(std::move(zId), c) {}
+		ZType(): ZProdSubTreeN( Z_TYPE) {}
+		ZType(ZLangConstruct c) : ZProdSubTreeN(c) {}
 
 		void setZType(sp<ZTreePostOrderSS> ss) {
 			postOrderSS_ = ss;
@@ -146,19 +146,24 @@ namespace zebra::ast::symbol {
 
 	class ZParamType: public ZType {
 		public:
-		ZParamType(ZId zId) : ZType(std::move(zId), Z_PARAM_TYPE) {}
-		ZParamType(ZId zId, ZLangConstruct c) : ZType(std::move(zId), c) {}
+		ZParamType() : ZType(Z_PARAM_TYPE) {}
+		ZParamType(ZLangConstruct c) : ZType(c) {}
 
 	};
 
+	class ZVariantTypeParam: public ZParamType {
+	public:
+		ZVariantTypeParam() : ZParamType( Z_VARIANT_TYPE_PARAM) {}
+		ZVariantTypeParam(ZLangConstruct c) : ZParamType(c) {}
+	};
 
 	class ZClassParam: public ZParamType {
 	protected:
 		const bool isMutable_;
 		sp<ZTreePostOrderSS> defaultExpr_;
 	public:
-		ZClassParam(ZId zId, bool isMutable) : ZParamType(std::move(zId), Z_CLASS_PARAM), isMutable_(isMutable) {}
-		ZClassParam(ZId zId, ZLangConstruct c, bool isMutable) : ZParamType(std::move(zId), c), isMutable_(isMutable) {}
+		ZClassParam(bool isMutable) : ZParamType(Z_CLASS_PARAM), isMutable_(isMutable) {}
+		ZClassParam(ZLangConstruct c, bool isMutable) : ZParamType(c), isMutable_(isMutable) {}
 
 		void setDefaultExpr(sp<ZTreePostOrderSS> de) {
 			defaultExpr_ = de;
