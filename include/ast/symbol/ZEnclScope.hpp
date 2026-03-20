@@ -46,15 +46,15 @@ namespace zebra::ast::symbol {
 		const esc parentScope_;
 
 	protected:
-		sp<ZUnit> zUnit = nullptr;
+		sp<ZSymbol> zSymbol = nullptr;
 	public:
 
-		ZEnclScope(esc parentScope, sp<ZUnit> zUnit);
+		ZEnclScope(esc parentScope, sp<ZSymbol> zUnit);
 		esc getParentScope() const;
 
 		ZLangConstruct getLangConstruct() const;
 
-		sp<ZUnit> getZUnit();
+		sp<ZSymbol> getZSymbol();
 	};
 
 

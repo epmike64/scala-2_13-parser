@@ -44,12 +44,12 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZUnit : public ZSymbol {
+	class ZIdSymbol : public ZSymbol {
 	protected:
 		const ZId zId_;
 	public:
-		ZUnit(ZId zId, ZLangConstruct c) : zId_(zId), ZSymbol(c)  {}
-		~ZUnit() override = default;
+		ZIdSymbol(ZId zId, ZLangConstruct c) : zId_(zId), ZSymbol(c)  {}
+		~ZIdSymbol() override = default;
 	};
 
 
@@ -73,11 +73,11 @@ namespace zebra::ast::symbol {
 		virtual void addImports(sp<std::vector<std::string>> ims) = 0;
 	};
 
-	class ZTrait: public IHaveImport, public ZUnit {
+	class ZTrait: public IHaveImport, public ZIdSymbol {
 		sp<ZImport> Import_;
 	public:
-		ZTrait(ZId zId) : ZUnit(std::move(zId), Z_TRAIT) {}
-		ZTrait(ZId zId, ZLangConstruct c) : ZUnit(std::move(zId), c) {}
+		ZTrait(ZId zId) : ZIdSymbol(std::move(zId), Z_TRAIT) {}
+		ZTrait(ZId zId, ZLangConstruct c) : ZIdSymbol(std::move(zId), c) {}
 		sp<ZImport> getZImport() override {
 			return Import_;
 		}
@@ -97,15 +97,15 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZDecl: public ZUnit {
+	class ZDecl: public ZIdSymbol {
 	public:
-		ZDecl(ZId zId) : ZUnit(std::move(zId), Z_DECL) {}
+		ZDecl(ZId zId) : ZIdSymbol(std::move(zId), Z_DECL) {}
 		// ...existing code...
 	};
 
-	class ZFunc: public ZUnit {
+	class ZFunc: public ZIdSymbol {
 	public:
-		ZFunc(ZId zId) : ZUnit(std::move(zId), Z_FUNC) {}
+		ZFunc(ZId zId) : ZIdSymbol(std::move(zId), Z_FUNC) {}
 	};
 
 	class ZTreePostOrderSS {
@@ -170,11 +170,11 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZClassConstr: public ZUnit {
+	class ZClassConstr: public ZIdSymbol {
 	protected:
 		PVecP<ZClassParam> clsParams_;
 	public:
-		ZClassConstr(ZId zId) : ZUnit(std::move(zId), Z_CLASS_CONSTR) {}
+		ZClassConstr(ZId zId) : ZIdSymbol(std::move(zId), Z_CLASS_CONSTR) {}
 	};
 
 	class ZClass : public ZTrait {
@@ -189,16 +189,16 @@ namespace zebra::ast::symbol {
 
 	};
 
-	class ZProgram: public ZUnit {
+	class ZProgram: public ZSymbol {
 		public:
-		ZProgram(ZId zId) : ZUnit(std::move(zId), Z_PROGRAM) {}
+		ZProgram() : ZSymbol(Z_PROGRAM) {}
 	};
 
-	class ZCompileUnit: public ZUnit {
+	class ZCompileUnit: public ZIdSymbol {
 		std::string packgName_;
 		PVecP<ZClass> classes_;
 	public:
-		ZCompileUnit(ZId zId) : ZUnit(std::move(zId), Z_COMPILATION_UNIT) {
+		ZCompileUnit(ZId zId) : ZIdSymbol(std::move(zId), Z_COMPILATION_UNIT) {
 			packgName_ = "_ROOT_PKG_";
 		}
 		void setPackage(std::string n) {

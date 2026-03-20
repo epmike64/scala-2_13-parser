@@ -1,12 +1,12 @@
 #include "ast/symbol/ZEnclScope.hpp"
 
 namespace zebra::ast::symbol {
-	ZEnclScope::ZEnclScope(esc parentScope, sp<ZUnit> zUnit)
-		: parentScope_(std::move(parentScope)), zUnit(std::move(zUnit)) {
+	ZEnclScope::ZEnclScope(esc parentScope, sp<ZSymbol> zUnit)
+		: parentScope_(std::move(parentScope)), zSymbol(std::move(zUnit)) {
 	}
 
 	ZLangConstruct ZEnclScope::getLangConstruct() const {
-		return zUnit->getZLangConstruct();
+		return zSymbol->getZLangConstruct();
 	}
 
 	esc ZEnclScope::getParentScope() const {
@@ -15,7 +15,7 @@ namespace zebra::ast::symbol {
 
 
 
-	sp<ZUnit> ZEnclScope::getZUnit() {
-		return zUnit;
+	sp<ZSymbol> ZEnclScope::getZSymbol() {
+		return zSymbol;
 	}
 }

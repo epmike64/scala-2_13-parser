@@ -50,13 +50,13 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit() {
 		std::cout << "--- Visitor starts ---" << std::endl;
-		esc s = ms<ZEnclScope>(nullptr, ms<ZProgram>("ZProgram_" + UUID::generate().toString()));
+		esc s = ms<ZEnclScope>(nullptr, ms<ZProgram>());
 		compileUnit_->accept(shared_from_this(), s);
 	}
 
 	void ZVisitor::visit(sp<fCompileUnit> n, esc prnSc)  {
 
-		sp<ZCompileUnit> zcu = ms<ZCompileUnit>("ZCompilationUnit_" + UUID::generate().toString());
+		sp<ZCompileUnit> zcu = ms<ZCompileUnit>("ZCompileUnit_" + UUID::generate().toString());
 		esc s = ms<ZEnclScope>(prnSc, zcu);
 
 		if (n->getPackages().size() > 0) {
@@ -694,7 +694,7 @@ namespace zebra::back::tree {
 			currNode->accept(shared_from_this(), prnSc);
 			postOrderSS->push_back(currNode);
 		}
-		sp<ZProdSubTreeN> zz = std::dynamic_pointer_cast<ZProdSubTreeN>(prnSc->getZUnit());
+		sp<ZProdSubTreeN> zz = std::dynamic_pointer_cast<ZProdSubTreeN>(prnSc->getZSymbol());
 		assert(zz != nullptr);
 		zz->setTreePostOrderSS(ms<ZTreePostOrderSS>(postOrderSS));
 		std::cout << subTr->toString() + " END" << std::endl;
@@ -743,7 +743,7 @@ namespace zebra::back::tree {
 				}
 			}
 		}
-		sp<IHaveImport> im = std::dynamic_pointer_cast<IHaveImport>(prnSc->getZUnit());
+		sp<IHaveImport> im = std::dynamic_pointer_cast<IHaveImport>(prnSc->getZSymbol());
 		im->addImports(imports_);
 	}
 }
