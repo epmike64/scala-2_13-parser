@@ -21,23 +21,23 @@ namespace zebra::ast::symbol {
 		return polishCalcStack;
 	}
 
-	void ZEnclScope::addSymbol(sp<ZSymbol> s) {
-		if (symbolMap_ == nullptr) {
-			symbolMap_ = ms<std::unordered_map<ZId, sp<ZSymbol>>>();
+	void ZEnclScope::addZUnit(sp<ZUnit> zu) {
+		if (zunitMap_ == nullptr) {
+			zunitMap_ = ms<std::unordered_map<ZId, sp<ZUnit>>>();
 		}
-		auto it = symbolMap_->find(s->zId());
-		if (it != symbolMap_->end()) {
-			throw std::runtime_error("Symbol with ID " + s->zId().qualId() + " already exists in the current scope");
+		auto it = zunitMap_->find(zu->zId());
+		if (it != zunitMap_->end()) {
+			throw std::runtime_error("Symbol with ID " + zu->zId().qualId() + " already exists in the current scope");
 		}
-		(*symbolMap_)[s->zId()] = s;
+		(*zunitMap_)[zu->zId()] = zu;
 	}
 
-	sp<ZSymbol> ZEnclScope::getSymbol(const ZId zid) {
-		if (symbolMap_ == nullptr) {
+	sp<ZUnit> ZEnclScope::getZUnit(const ZId zid) {
+		if (zunitMap_ == nullptr) {
 			return nullptr;
 		}
-		auto it = symbolMap_->find(zid);
-		if (it != symbolMap_->end()) {
+		auto it = zunitMap_->find(zid);
+		if (it != zunitMap_->end()) {
 			return it->second;
 		}
 		return nullptr;

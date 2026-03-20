@@ -50,6 +50,8 @@ namespace zebra::ast::leaf {
 
 		fTKnd *getLastTKind();
 
+		std::string getQualName();
+
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 
 		std::string toString() const override;

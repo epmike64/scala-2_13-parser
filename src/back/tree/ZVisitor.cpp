@@ -57,7 +57,7 @@ namespace zebra::back::tree {
 	void ZVisitor::visit(sp<fCompileUnit> n, esc prnSc)  {
 
 		sp<ZCompileUnit> zcu = ms<ZCompileUnit>(UUID::generate().toString());
-		prnSc->addSymbol(zcu);
+		prnSc->addZUnit(zcu);
 
 		if (n->getPackages().size() > 0) {
 			for (const auto& pkg : n->getPackages()) {
@@ -80,6 +80,25 @@ namespace zebra::back::tree {
 		}
 	}
 
+
+	void ZVisitor::visit(sp<fImport> n, esc prnSc) {
+
+		std::vector<std::string> imports_;
+		for (sp<fImportExpr>& impExpr : n->getImportExprs()) {
+			std::string qualName = impExpr->getId()->getQualName();
+			if (impExpr->getUnderscore()) {
+				qualName += "._";
+				imports_.emplace_back(std::move(qualName));
+			} else if (impExpr->getSelectors()) {
+
+				for (size_t i = 0; i < impExpr->getSelectors()->size(); i++) {
+					std::string qualNameSel =  qualName + "." + impExpr->getSelectors()->at(i)->getFrom()->toString();
+					imports_.emplace_back(std::move(qualNameSel));
+				}
+			}
+		}
+		prnSc->addImport(imports_);
+	}
 
 
 
@@ -222,7 +241,7 @@ namespace zebra::back::tree {
 		std::cout << "Visiting Class Parameter: " << n->toString() << std::endl;
 
 		esc clsScp = getWrapScope(prnSc, Z_CLASS);//->addSymbol(n->getIdentifier()->toString(), ms<ZClassParam>());
-		if (clsScp->getSymbol(n->getIdentName()) == nullptr) {
+		if (clsScp->getZUnit(n->getIdentName()) == nullptr) {
 			// clsScp->addSymbol(n->getIdentName(), ms<ZClassParam>());
 		} else {
 			std::cerr << "Warning: Duplicate class parameter name: " << n->getIdentifier()->toString() << std::endl;
@@ -356,10 +375,7 @@ namespace zebra::back::tree {
 			id->accept(shared_from_this(), prnSc);
 		}
 	}
-	// void fLangAstVisitor::visit(sp<fIf> n, esc prnSc) {}
-	void ZVisitor::visit(sp<fImport> n, esc prnSc) {
-		std::cout << "Visiting Import: " << n->toString() << std::endl;
-	}
+
 	// void fLangAstVisitor::visit(sp<fLiteral> n, esc prnSc) {}
 	void ZVisitor::visit(sp<fLocalModifier> n, esc prnSc) {
 		std::cout << "Visiting Local Modifier: " << n->toString() << std::endl;

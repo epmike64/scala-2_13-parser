@@ -78,6 +78,17 @@ namespace zebra::ast::leaf {
 		return isSingletonType_;
 	}
 
+	std::string fStableId::getQualName() {
+		std::string qualName;
+		for (int i = 0; i < tpairs_.size(); i++) {
+			qualName += tpairs_[i]->getId()->getTStrVal();
+			if (i < tpairs_.size() - 1) {
+				qualName += ".";
+			}
+		}
+		return qualName;
+	}
+
 	std::string fStableId::toString() const {
 
 		std::stringstream ss;
