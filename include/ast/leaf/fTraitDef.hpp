@@ -23,6 +23,8 @@ namespace zebra::ast::leaf {
 
 		 const fToken* getName() const ;
 
+		const std::string& getIdentName() const;
+
 		 sp<fModifiers> getModifiers() const;
 
 		 void setTypeParamClause(const sp<fTypeParamClause> &typeParams);

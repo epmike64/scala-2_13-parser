@@ -19,6 +19,10 @@ namespace zebra::ast::leaf {
 		return traitName_;
 	}
 
+	const std::string& fTraitDef::getIdentName() const {
+		return traitName_->getTStrVal();
+	}
+
 	sp<fModifiers> fTraitDef::getModifiers() const {
 		return modifiers_;
 	}
