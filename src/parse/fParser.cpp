@@ -1416,7 +1416,7 @@ namespace zebra::parse {
 		}
 		if (h.isTkAssign()) {
 			h.next();
-			p->setDefaultValue(expr(nullptr));
+			p->setDefaultValueExpr(expr(nullptr));
 		}
 		return p;
 	}
@@ -1617,7 +1617,7 @@ namespace zebra::parse {
 	sp<fClassParamClauses> fParser::classParamClauses() {
 		sp<fClassParamClauses> cpcs = ms<fClassParamClauses>();
 		classParamClauses2(cpcs);
-		if (cpcs->getImplicitParams().empty() && cpcs->getClassParams().empty()) {
+		if (cpcs->getImplicitClassParamList().empty() && cpcs->getClassParamLists().empty()) {
 			return nullptr;
 		}
 		return cpcs;

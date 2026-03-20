@@ -15,11 +15,11 @@ namespace zebra::ast::leaf {
 		this->implicitParams_ = std::make_shared<vector<sp<fParam>>>(std::move(implicitParams));
 	}
 
-	vector<vector<sp<fParam>>> fParamClauses::getParams() const {
+	vector<vector<sp<fParam>>> fParamClauses::getParamLists() const {
 		return params_;
 	}
 
-	sp<vector<sp<fParam>>> fParamClauses::getImplicitParams() const {
+	sp<vector<sp<fParam>>> fParamClauses::getImplicitParamList() const {
 		return implicitParams_;
 	}
 

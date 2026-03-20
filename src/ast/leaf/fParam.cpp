@@ -19,19 +19,23 @@ namespace zebra::ast::leaf {
 		this->paramType_ = std::move(paramType);
 	}
 
-	void fParam::setDefaultValue(sp<fAstProdSubTreeN> &&defaultValue) {
+	void fParam::setDefaultValueExpr(sp<fAstProdSubTreeN> &&defaultValue) {
 		this->defaultValue_ = std::move(defaultValue);
 	}
 
-	const fToken* fParam::getIdentifier() const {
+	const fToken* fParam::getIdentToken() const {
 		return identifier_;
+	}
+
+	const std::string fParam::getIdentName() const {
+		return identifier_->getTStrVal();
 	}
 
 	sp<fParamType> fParam::getParamType() const {
 		return paramType_;
 	}
 
-	sp<fAstProdSubTreeN> fParam::getDefaultValue() const {
+	sp<fAstProdSubTreeN> fParam::getDefaultValueExpr() const {
 		return defaultValue_;
 	}
 

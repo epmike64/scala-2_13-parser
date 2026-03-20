@@ -17,13 +17,14 @@ namespace zebra::ast::leaf {
 
 		void setParamType(sp<fParamType> &&paramType);
 
-		void setDefaultValue(sp<fAstProdSubTreeN> &&defaultValue);
+		void setDefaultValueExpr(sp<fAstProdSubTreeN> &&defaultValue);
 
-		const fToken* getIdentifier() const;
+		const fToken* getIdentToken() const;
+		const std::string getIdentName() const;
 
 		sp<fParamType> getParamType() const;
 
-		sp<fAstProdSubTreeN> getDefaultValue() const;
+		sp<fAstProdSubTreeN> getDefaultValueExpr() const;
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;

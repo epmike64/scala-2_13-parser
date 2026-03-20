@@ -8,8 +8,8 @@
 
 namespace zebra::ast::leaf {
 
-	fFunSig::fFunSig(const fToken* funName) : funName_(funName) {
-		if (this->funName_ == nullptr) {
+	fFunSig::fFunSig(const fToken* funName) : identName_(funName) {
+		if (this->identName_ == nullptr) {
 			throw std::invalid_argument("Function name cannot be null");
 		}
 	}
@@ -25,8 +25,12 @@ namespace zebra::ast::leaf {
 		this->typeParam_ = std::make_shared<std::vector<sp<fTypeParam>>>(std::move(typeParam));
 	}
 
-	const fToken* fFunSig::getFunName() const {
-		return funName_;
+	const fToken* fFunSig::getIdentToken() const {
+		return identName_;
+	}
+
+	std::string fFunSig::getIdentName() const {
+		return identName_->getTStrVal();
 	}
 
 	sp<fParamClauses> fFunSig::getParamClauses() const {
@@ -42,7 +46,7 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fFunSig::toString() const {
-		return "FunSig(name=" + funName_->toString() +
+		return "FunSig(name=" + identName_->toString() +
 		       ", paramClauses=" + (paramClauses_ ? paramClauses_->toString() : "null") +
 		       ", typeParam=" + (typeParam_ ? [&]() {
 			std::string result = "[";

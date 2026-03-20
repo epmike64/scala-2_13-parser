@@ -10,7 +10,7 @@ namespace zebra::ast::leaf {
 	using namespace ast::node;
 
 		class fFunSig : public fAstOprndNod {
-			const fToken* funName_;
+			const fToken* identName_;
 			sp<fParamClauses> paramClauses_;
 			sp<std::vector<sp<fTypeParam>>> typeParam_;
 		public:
@@ -19,7 +19,8 @@ namespace zebra::ast::leaf {
 
 			 void setTypeParams(std::vector<sp<fTypeParam>> &&typeParam);
 
-			 const fToken* getFunName() const;
+			 const fToken* getIdentToken() const;
+			 std::string getIdentName() const;
 
 			 sp<fParamClauses> getParamClauses() const ;
 

@@ -22,9 +22,9 @@ namespace zebra::ast::leaf {
 
 		 void setImplicitParams(std::vector<sp<fParam>> &&implicitParams);
 
-		 vector<vector<sp<fParam>>> getParams() const ;
+		 vector<vector<sp<fParam>>> getParamLists() const ;
 
-		sp<vector<sp<fParam>>> getImplicitParams() const ;
+		sp<vector<sp<fParam>>> getImplicitParamList() const ;
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;

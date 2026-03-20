@@ -15,11 +15,11 @@ namespace zebra::ast::leaf {
 		this->classParams_.push_back(std::move(params));
 	}
 
-	vector<sp<fClassParam>> fClassParamClauses::getImplicitParams() const {
+	vector<sp<fClassParam>> fClassParamClauses::getImplicitClassParamList() const {
 		return implicitParams_;
 	}
 
-	vector<vector<sp<fClassParam>>> fClassParamClauses::getClassParams() const {
+	vector<vector<sp<fClassParam>>> fClassParamClauses::getClassParamLists() const {
 		return classParams_;
 	}
 
