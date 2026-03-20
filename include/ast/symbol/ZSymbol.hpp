@@ -19,7 +19,7 @@ namespace zebra::ast::symbol {
 	protected:
 		std::string qualId_;
 	public:
-		ZId(std::string qId) : qualId_(std::move(qId)) {}
+		explicit ZId(std::string qId) : qualId_(std::move(qId)) {}
 		ZId(const ZId&) = default;
 		ZId(ZId&&) = default;
 		ZId& operator=(const ZId&) = default;
@@ -37,7 +37,7 @@ namespace zebra::ast::symbol {
 		const ZLangConstruct langConstruct_;
 
 	public:
-		ZSymbol(ZLangConstruct c) :  langConstruct_(c){}
+		explicit ZSymbol(ZLangConstruct c) :  langConstruct_(c){}
 		virtual ~ZSymbol() = default;
 		ZLangConstruct getZLangConstruct() {
 			return langConstruct_;
@@ -48,8 +48,8 @@ namespace zebra::ast::symbol {
 	protected:
 		const ZId zId_;
 		public:
-		I_ZId(ZId zId) : zId_(std::move(zId)) {}
-		I_ZId(std::string s): zId_(std::move(s)) {}
+		explicit I_ZId(ZId zId) : zId_(std::move(zId)) {}
+		explicit I_ZId(std::string s): zId_(std::move(ZId(std::move(s)))) {}
 		const ZId& getZId() const {
 			return zId_;
 		}
@@ -57,7 +57,7 @@ namespace zebra::ast::symbol {
 
 	class ZIdSymbol : public  I_ZId, public ZSymbol {
 	public:
-		ZIdSymbol(ZId zId, ZLangConstruct c) : I_ZId(std::move(zId)), ZSymbol(c)  {}
+		//ZIdSymbol(ZId zId, ZLangConstruct c) : I_ZId(std::move(zId)), ZSymbol(c)  {}
 		ZIdSymbol(std::string sid, ZLangConstruct c) : I_ZId(std::move(sid)), ZSymbol(c)  {}
 		~ZIdSymbol() override = default;
 	};
@@ -86,8 +86,8 @@ namespace zebra::ast::symbol {
 	class ZTrait: public I_Imports, public ZIdSymbol {
 		sp<ZImport> Import_;
 	public:
-		ZTrait(ZId zId) : ZIdSymbol(std::move(zId), Z_TRAIT) {}
-		ZTrait(ZId zId, ZLangConstruct c) : ZIdSymbol(std::move(zId), c) {}
+		explicit ZTrait(std::string sId) : ZIdSymbol(std::move(sId), Z_TRAIT) {}
+		ZTrait(std::string sId, ZLangConstruct c) : ZIdSymbol(std::move(sId), c) {}
 		sp<ZImport> getZImport() override {
 			return Import_;
 		}
@@ -110,14 +110,14 @@ namespace zebra::ast::symbol {
 
 	class ZFunc: public ZIdSymbol {
 	public:
-		ZFunc(std::string sid) : ZIdSymbol(std::move(sid), Z_FUNC) {}
+		explicit ZFunc(std::string sid) : ZIdSymbol(std::move(sid), Z_FUNC) {}
 		ZFunc(std::string sid, ZLangConstruct c) : ZIdSymbol(std::move(sid), c) {}
 	};
 
 	class ZTreePostOrderSS {
 		PVecP<fAstNod> postOrderSS;
 	public:
-		ZTreePostOrderSS(PVecP<fAstNod> postOrderSS) : postOrderSS(std::move(postOrderSS)) {}
+		explicit ZTreePostOrderSS(PVecP<fAstNod> postOrderSS) : postOrderSS(std::move(postOrderSS)) {}
 	};
 
 	class ZProdSubTreeN: public ZSymbol {
@@ -125,7 +125,7 @@ namespace zebra::ast::symbol {
 		sp<ZTreePostOrderSS> postOrderSS_;
 		public:
 		ZProdSubTreeN() : ZSymbol(Z_PROD_SUB_TREE_NOD) {}
-		ZProdSubTreeN(ZLangConstruct c) : ZSymbol(c) {}
+		explicit ZProdSubTreeN(ZLangConstruct c) : ZSymbol(c) {}
 
 		void setTreePostOrderSS(sp<ZTreePostOrderSS> ztp) {
 			postOrderSS_ = ztp;
@@ -139,7 +139,7 @@ namespace zebra::ast::symbol {
 	class ZType : public ZProdSubTreeN {
 	public:
 		ZType(): ZProdSubTreeN( Z_TYPE) {}
-		ZType(ZLangConstruct c) : ZProdSubTreeN(c) {}
+		explicit ZType(ZLangConstruct c) : ZProdSubTreeN(c) {}
 
 		void setZType(sp<ZTreePostOrderSS> ss) {
 			postOrderSS_ = ss;
@@ -153,20 +153,20 @@ namespace zebra::ast::symbol {
 	class ZParamType: public ZType {
 		public:
 		ZParamType() : ZType(Z_PARAM_TYPE) {}
-		ZParamType(ZLangConstruct c) : ZType(c) {}
+		explicit ZParamType(ZLangConstruct c) : ZType(c) {}
 
 	};
 
 	class ZVariantTypeParam: public ZParamType {
 	public:
 		ZVariantTypeParam() : ZParamType( Z_VARIANT_TYPE_PARAM) {}
-		ZVariantTypeParam(ZLangConstruct c) : ZParamType(c) {}
+		explicit ZVariantTypeParam(ZLangConstruct c) : ZParamType(c) {}
 	};
 
 	class ZParam : public I_ZId, public ZParamType {
 		sp<ZTreePostOrderSS> defaultExpr_;
 		public:
-		ZParam(std::string sid) : I_ZId(std::move(sid)), ZParamType(Z_PARAM) {}
+		explicit ZParam(std::string sid) : I_ZId(std::move(sid)), ZParamType(Z_PARAM) {}
 		ZParam(std::string sid, ZLangConstruct c) : I_ZId(std::move(sid)), ZParamType(c) {}
 		void setDefaultValueExpr(sp<ZTreePostOrderSS> de) {
 			defaultExpr_ = de;
@@ -182,11 +182,11 @@ namespace zebra::ast::symbol {
 		ZClassParam(std::string sid, ZLangConstruct c, bool isMutable) :ZParam(std::move(sid), c), isMutable_(isMutable){}
 	};
 
-	class ZClassConstr: public ZIdSymbol {
+	class ZClassConstr: public ZSymbol {
 	protected:
 		PVecP<ZClassParam> clsParams_;
 	public:
-		ZClassConstr(ZId zId) : ZIdSymbol(std::move(zId), Z_CLASS_CONSTR) {}
+		ZClassConstr() : ZSymbol(Z_CLASS_CONSTR) {}
 	};
 
 	class ZClass : public ZTrait {
@@ -197,7 +197,7 @@ namespace zebra::ast::symbol {
 		// PVecP<ZDecl> decls_;
 		PVecP<ZFunc> funcs_;
 	public:
-		ZClass(ZId zId) : ZTrait(std::move(zId), Z_CLASS) {}
+		explicit ZClass(std::string zId) : ZTrait(std::move(zId), Z_CLASS) {}
 
 	};
 
@@ -220,7 +220,7 @@ namespace zebra::ast::symbol {
 		std::string packgName_;
 		PVecP<ZClass> classes_;
 	public:
-		ZCompileUnit(ZId zId) : ZIdSymbol(std::move(zId), Z_COMPILATION_UNIT) {
+		explicit ZCompileUnit(std::string zId) : ZIdSymbol(std::move(zId), Z_COMPILATION_UNIT) {
 			packgName_ = "_ROOT_PKG_";
 		}
 		void setPackage(std::string n) {
