@@ -49,15 +49,16 @@ namespace zebra::back::tree {
 
 
 	void ZVisitor::visit() {
-		std::cout << "Visitor starts" << std::endl;
-		esc s = ms<ZEnclScope>(nullptr, Z_COMPILATION_UNIT);
+		std::cout << "--- Visitor starts ---" << std::endl;
+		esc s = ms<ZEnclScope>(nullptr, ms<ZProgram>("ZProgram_" + UUID::generate().toString()));
 		compileUnit_->accept(shared_from_this(), s);
 	}
 
 	void ZVisitor::visit(sp<fCompileUnit> n, esc prnSc)  {
 
-		sp<ZCompileUnit> zcu = ms<ZCompileUnit>(UUID::generate().toString());
-		prnSc->addZUnit(zcu);
+		sp<ZCompileUnit> zcu = ms<ZCompileUnit>("ZCompilationUnit_" + UUID::generate().toString());
+		esc s = ms<ZEnclScope>(nullptr, zcu);
+
 
 		if (n->getPackages().size() > 0) {
 			for (const auto& pkg : n->getPackages()) {
@@ -97,7 +98,7 @@ namespace zebra::back::tree {
 				}
 			}
 		}
-		prnSc->addImport(imports_);
+		prnSc->getZUnit()->addImport(imports_);
 	}
 
 

@@ -1,12 +1,12 @@
 #include "ast/symbol/ZEnclScope.hpp"
 
 namespace zebra::ast::symbol {
-	ZEnclScope::ZEnclScope(esc parentScope, ZLangConstruct lc)
-		: parentScope_(std::move(parentScope)), scopeLangConstruct(lc) {
+	ZEnclScope::ZEnclScope(esc parentScope, sp<ZUnit> zUnit)
+		: parentScope_(std::move(parentScope)), zUnit(std::move(zUnit)) {
 	}
 
 	ZLangConstruct ZEnclScope::getLangConstruct() const {
-		return scopeLangConstruct;
+		return zUnit->getZLangConstruct();
 	}
 
 	esc ZEnclScope::getParentScope() const {
@@ -21,25 +21,8 @@ namespace zebra::ast::symbol {
 		return polishCalcStack;
 	}
 
-	void ZEnclScope::addZUnit(sp<ZUnit> zu) {
-		if (zunitMap_ == nullptr) {
-			zunitMap_ = ms<std::unordered_map<ZId, sp<ZUnit>>>();
-		}
-		auto it = zunitMap_->find(zu->zId());
-		if (it != zunitMap_->end()) {
-			throw std::runtime_error("Symbol with ID " + zu->zId().qualId() + " already exists in the current scope");
-		}
-		(*zunitMap_)[zu->zId()] = zu;
-	}
 
-	sp<ZUnit> ZEnclScope::getZUnit(const ZId zid) {
-		if (zunitMap_ == nullptr) {
-			return nullptr;
-		}
-		auto it = zunitMap_->find(zid);
-		if (it != zunitMap_->end()) {
-			return it->second;
-		}
-		return nullptr;
+	sp<ZUnit> ZEnclScope::getZUnit() {
+		return zUnit;
 	}
 }

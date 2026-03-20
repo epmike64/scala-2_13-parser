@@ -46,12 +46,25 @@ namespace zebra::ast::symbol {
 		PVecP<ZUnit> subUnits_;
 		PVec<std::string> imports_;
 		PVec<std::string> qualName_;
+		const ZLangConstruct langConstruct_;
+
 	public:
-		explicit ZUnit(ZId zId) : ZSymbol(std::move(zId)) {}
+		explicit ZUnit(ZId zId, ZLangConstruct c) : ZSymbol(std::move(zId)),  langConstruct_(c) {}
 		~ZUnit() override = default;
-		virtual void addSubUnit(sp<ZUnit> subUnit) = 0;
-		virtual void addImport(std::string import_) = 0;
-		virtual void addQualName(std::string qualName) = 0;
+
+		void addSubUnit(sp<ZUnit> subUnit)  {
+			subUnits_->emplace_back(std::move(subUnit));
+		}
+		void addImport(std::string import_) {
+			imports_->emplace_back(std::move(import_));
+		}
+		void addQualName(std::string qualName) {
+			qualName_->emplace_back(std::move(qualName));
+		}
+
+		ZLangConstruct langConstruct() override {
+			return langConstruct_;
+		}
 	};
 
 
@@ -63,40 +76,34 @@ namespace zebra::ast::symbol {
 
 	class ZTrait: public ZUnit {
 	public:
-		ZTrait(ZId zId) : ZUnit(std::move(zId)) {}
+		ZTrait(ZId zId) : ZUnit(std::move(zId), ZLangConstruct::Z_TRAIT) {}
 		// ...existing code...
 	};
 
-	class ZDecl: public ZSymbol {
+	class ZDecl: public ZUnit {
 	public:
-		ZDecl(ZId zId) : ZSymbol(std::move(zId)) {}
+		ZDecl(ZId zId) : ZUnit(std::move(zId), Z_DECL) {}
 		// ...existing code...
 	};
 
-	class ZFunc: public ZSymbol {
+	class ZFunc: public ZUnit {
 	public:
-		ZFunc(ZId zId) : ZSymbol(std::move(zId)) {}
+		ZFunc(ZId zId) : ZUnit(std::move(zId), Z_FUNC) {}
 		ZLangConstruct langConstruct() override {
 			return Z_FUNC;
 		}
 	};
 
-	class ZClassParam: public ZSymbol {
+	class ZClassParam: public ZUnit {
 	public:
-		ZClassParam(ZId zId) : ZSymbol(std::move(zId)) {}
-		ZLangConstruct langConstruct() override {
-			return Z_CLASS_PARAM;
-		}
+		ZClassParam(ZId zId) : ZUnit(std::move(zId), Z_CLASS_PARAM) {}
 	};
 
-	class ZClassConstr: public ZSymbol {
+	class ZClassConstr: public ZUnit {
 	protected:
 		PVecP<ZClassParam> clsParams_;
 	public:
-		ZClassConstr(ZId zId) : ZSymbol(std::move(zId)) {}
-		ZLangConstruct langConstruct() override {
-			return Z_CLASS_CONSTR;
-		}
+		ZClassConstr(ZId zId) : ZUnit(std::move(zId), Z_CLASS_CONSTR) {}
 	};
 
 	class ZClass : public ZTrait {
@@ -113,33 +120,23 @@ namespace zebra::ast::symbol {
 		}
 	};
 
+	class ZProgram: public ZUnit {
+		public:
+		ZProgram(ZId zId) : ZUnit(std::move(zId), Z_PROGRAM) {}
+	};
 
 	class ZCompileUnit: public ZUnit {
 	public:
-		ZCompileUnit(ZId zId) : ZUnit(std::move(zId)) {
+		ZCompileUnit(ZId zId) : ZUnit(std::move(zId), Z_COMPILATION_UNIT) {
 			qualName_ = std::make_shared<std::vector<std::string>>();
 			qualName_->emplace_back("_ROOT_PKG_");
 		}
-		void addSubUnit(sp<ZUnit> subUnit) override {
-			subUnits_->emplace_back(std::move(subUnit));
-		}
-		void addImport(std::string import_) override {
-			imports_->emplace_back(std::move(import_));
-		}
-		void addQualName(std::string qualName) override {
-			 qualName_->emplace_back(std::move(qualName));
-		}
-
 		void addSubPackage(std::string n) {
 			addQualName(n);
 		}
 
 		void addClass(sp<ZClass> cls) {
 			addSubUnit(cls);
-		}
-
-		ZLangConstruct langConstruct() override {
-			return Z_COMPILATION_UNIT;
 		}
 	};
 

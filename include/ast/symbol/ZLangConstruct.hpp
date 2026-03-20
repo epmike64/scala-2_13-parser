@@ -6,6 +6,7 @@
 namespace zebra::ast::symbol {
 
 	enum ZLangConstruct {
+		Z_PROGRAM,
 		Z_COMPILATION_UNIT,
 		Z_TYPE_PARAM,
 		Z_VARIANT_TYPE_PARAM,

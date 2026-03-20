@@ -44,11 +44,13 @@ namespace zebra::ast::symbol {
 	 */
 	class ZEnclScope {
 		const esc parentScope_;
-		const ZLangConstruct scopeLangConstruct;
 		PVecP<fAstNod> polishCalcStack; //RPN - reverse polish notation
-		sp<std::unordered_map<ZId, sp<ZUnit>>> zunitMap_;
+
+	protected:
+		sp<ZUnit> zUnit = nullptr;
 	public:
-		ZEnclScope(esc parentScope, ZLangConstruct lc);
+
+		ZEnclScope(esc parentScope, sp<ZUnit> zUnit);
 		esc getParentScope() const;
 
 		ZLangConstruct getLangConstruct() const;
@@ -57,9 +59,7 @@ namespace zebra::ast::symbol {
 
 		PVecP<fAstNod> getPolishSS() const;
 
-		void addZUnit(sp<ZUnit> zu);
-
-		sp<ZUnit> getZUnit(const ZId zid);
+		sp<ZUnit> getZUnit();
 	};
 
 
