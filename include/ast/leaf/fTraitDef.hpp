@@ -13,7 +13,7 @@ namespace zebra::ast::leaf {
 
 	class fTraitDef : public fAstOprndNod {
 	protected:
-		const fToken* traitName_;
+		const fToken* identName_;
 		const sp<fModifiers> modifiers_;
 		sp<fTypeParamClause> typeParamClause_;
 		sp<fTemplate> extendsTemplate_;
@@ -21,7 +21,7 @@ namespace zebra::ast::leaf {
 
 		fTraitDef(const fToken* traitName, sp<fModifiers> &&modifiers);
 
-		 const fToken* getName() const ;
+		 const fToken* getIdentToken() const ;
 
 		const std::string& getIdentName() const;
 

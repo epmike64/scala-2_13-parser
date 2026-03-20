@@ -9,18 +9,18 @@
 
 namespace zebra::ast::leaf {
 
-	fTraitDef::fTraitDef(const fToken* traitName, sp<fModifiers> &&modifiers) : traitName_(traitName), modifiers_(std::move(modifiers)) {
-		if (this->traitName_ == nullptr) {
+	fTraitDef::fTraitDef(const fToken* traitName, sp<fModifiers> &&modifiers) : identName_(traitName), modifiers_(std::move(modifiers)) {
+		if (this->identName_ == nullptr) {
 			throw std::invalid_argument("Trait name token cannot be null");
 		}
 	}
 
-	const fToken* fTraitDef::getName() const {
-		return traitName_;
+	const fToken* fTraitDef::getIdentToken() const {
+		return identName_;
 	}
 
 	const std::string& fTraitDef::getIdentName() const {
-		return traitName_->getTStrVal();
+		return identName_->getTStrVal();
 	}
 
 	sp<fModifiers> fTraitDef::getModifiers() const {
@@ -57,7 +57,7 @@ namespace zebra::ast::leaf {
 			// }
 			typeParamsStr = typeParamClause_->toString();
 		}
-		return "TraitDef(name=" + getName()->toString() +
+		return "TraitDef(name=" + getIdentToken()->toString() +
 		       ", modifiers=" + (modifiers_ ? modifiers_->toString() : "null") +
 		       ", typeParams=[" + typeParamsStr + "]" +
 		       ", extendsTemplate=" + (extendsTemplate_ ? extendsTemplate_->toString() : "null") + ")";

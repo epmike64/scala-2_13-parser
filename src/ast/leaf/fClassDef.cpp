@@ -34,7 +34,7 @@ namespace zebra::ast::leaf {
 
 	std::string fClassDef::toString() const {
 		std::stringstream out;
-		out << "ClassDef(name=" + getName()->toString() + ", isCaseClass=" + (isCaseClass_ ? "true" : "false");
+		out << "ClassDef(name=" + getIdentToken()->toString() + ", isCaseClass=" + (isCaseClass_ ? "true" : "false");
 		out << (constrAccessModifier_ ? ", constrAccessModifier=" + constrAccessModifier_->toString() : "");
 
 		std::string typeParamsStr;
