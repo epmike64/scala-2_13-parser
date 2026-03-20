@@ -9,7 +9,6 @@ namespace zebra::ast::symbol{
 
 	class ZSymbol;
 	class ZTypeParam;
-	class ZVariantTypeParam;
 	class ZTrait;
 	class ZClass;
 	class ZEnclScope;

@@ -96,6 +96,9 @@ namespace zebra::ast::symbol {
 			pkgQualName.emplace_back(std::move(n));
 		}
 
+		ZLangConstruct langConstruct() override {
+			return Z_COMPILATION_UNIT;
+		}
 	};
 
 	class ZClass : public ZTrait {

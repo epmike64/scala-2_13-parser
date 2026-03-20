@@ -80,17 +80,13 @@ namespace zebra::back::tree {
 		}
 	}
 
-	void ZVisitor::visit(sp<fPackage> n, esc prnSc) {
-		// std::cout << "Visiting Package: " << n->toString() << std::endl;
-		// ZId i
-		// // getWrapScope(prnSc, Z_COMPILATION_UNIT)->addSymbol(Zn->getPackageName());
-	}
+
 
 
 	void  ZVisitor::visit(sp<fClassDef> cls, esc prnSc){
 		std::cout << "Visiting Class Definition: " << cls->toString() << std::endl;
 		esc s = ms<ZEnclScope>(prnSc, Z_CLASS);
-		s->addSymbol(cls->getName()->toString(), ms<ZClass>());
+		//s->addSymbol(cls->getName()->toString(), ms<ZClass>());
 
 		if (cls->getModifiers()) {
 			cls->getModifiers()->accept(shared_from_this(), prnSc);
@@ -227,7 +223,7 @@ namespace zebra::back::tree {
 
 		esc clsScp = getWrapScope(prnSc, Z_CLASS);//->addSymbol(n->getIdentifier()->toString(), ms<ZClassParam>());
 		if (clsScp->getSymbol(n->getIdentName()) == nullptr) {
-			clsScp->addSymbol(n->getIdentName(), ms<ZClassParam>());
+			// clsScp->addSymbol(n->getIdentName(), ms<ZClassParam>());
 		} else {
 			std::cerr << "Warning: Duplicate class parameter name: " << n->getIdentifier()->toString() << std::endl;
 		}
@@ -596,7 +592,7 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fVariantTypeParam> n, esc prnSc) {
 		std::cout << "Visiting Variant Type Parameter: " << n->toString() << std::endl;
-		prnSc->addSymbol(n->getTypeParamName()->toString(), ms<ZVariantTypeParam>(n));
+		// prnSc->addSymbol(n->getTypeParamName()->toString(), ms<ZVariantTypeParam>(n));
 	}
 
 
@@ -702,5 +698,5 @@ namespace zebra::back::tree {
 	}
 
 
-
+	void ZVisitor::visit(sp<fPackage> n, esc prnSc) {}
 }

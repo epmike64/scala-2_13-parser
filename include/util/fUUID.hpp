@@ -80,13 +80,15 @@ namespace zebra::util {
 	private:
 		std::array<uint8_t, 16> fBytes{};
 	};
+}
 
+namespace std {
 	/**
 	 * To use as an unordered_map key, add a std::hash specialization:
 	 */
 	template<>
-	struct std::hash<UUID> {
-		size_t operator()(const UUID &id) const noexcept {
+	struct std::hash<zebra::util::UUID> {
+		size_t operator()(const zebra::util::UUID &id) const noexcept {
 			const auto &b = id.bytes();
 			// XOR-fold the 128 bits into 64 bits
 			uint64_t hi{}, lo{};
