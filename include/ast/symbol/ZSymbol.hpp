@@ -34,68 +34,67 @@ namespace zebra::ast::symbol {
 
 	class ZSymbol {
 	protected:
-		const ZId zId_;
+		const ZLangConstruct langConstruct_;
+
 	public:
-		ZSymbol(ZId zId) : zId_(std::move(zId)) {}
+		ZSymbol(ZLangConstruct c) :  langConstruct_(c){}
 		virtual ~ZSymbol() = default;
-		virtual  ZLangConstruct getZLangConstruct() = 0;
-		const ZId zId() const { return zId_; }
+		ZLangConstruct getZLangConstruct() {
+			return langConstruct_;
+		}
 	};
 
 	class ZUnit : public ZSymbol {
 	protected:
-		PVecP<ZUnit> subUnits_;
-		PVec<std::string> imports_;
-		std::string declName_;
-		const ZLangConstruct langConstruct_;
-		sp<ZProdSubTreeN> zcpt_;
+		const ZId zId_;
 	public:
-		explicit ZUnit(ZId zId, ZLangConstruct c) : ZSymbol(std::move(zId)),  langConstruct_(c) {}
+		ZUnit(ZId zId, ZLangConstruct c) : zId_(zId), ZSymbol(c)  {}
 		~ZUnit() override = default;
-
-		void addSubUnit(sp<ZUnit> subUnit)  {
-			subUnits_->emplace_back(std::move(subUnit));
-		}
-		void addImport(std::string import_) {
-			imports_->emplace_back(std::move(import_));
-		}
-		void addImports(sp<std::vector<std::string>> imports) {
-			for (auto it = imports_->begin(); it != imports_->end(); ++it) {
-				imports_->emplace_back(std::move(*it));
-			}
-		}
-
-		void setDeclName(std::string n) {
-			declName_ =std::move(n);
-		}
-
-		const std::string& getDeclName() {
-			return declName_;
-		}
-
-		ZLangConstruct getZLangConstruct() override {
-			return langConstruct_;
-		}
-
-		bool containsImports(const std::string& s) {
-			for (auto it = imports_->begin(); it != imports_->end(); ++it) {
-				if (*it == s) {
-					return true;
-				}
-			}
-			return false;
-		}
-		 void setProdSubTreeN(sp<ZProdSubTreeN> zcpt) {
-			this->zcpt_ = std::move(zcpt);
-		}
 	};
 
 
-	class ZTrait: public ZUnit {
+	class ZImport : public ZSymbol {
+		PVec<std::string> imports_;
+	public:
+		ZImport() : ZSymbol(Z_IMPORT) {}
+		void addImport(std::string im) {
+			if (imports_ == nullptr) {
+				imports_ = ms<std::vector<std::string>>();
+			}
+			imports_->push_back(std::move(im));
+		}
+	};
+
+	class IHaveImport {
+	public:
+		virtual ~IHaveImport() = default;
+		virtual sp<ZImport> getZImport() = 0;
+		virtual void addImport(std::string im) = 0;
+		virtual void addImports(sp<std::vector<std::string>> ims) = 0;
+	};
+
+	class ZTrait: public IHaveImport, public ZUnit {
+		sp<ZImport> Import_;
 	public:
 		ZTrait(ZId zId) : ZUnit(std::move(zId), Z_TRAIT) {}
 		ZTrait(ZId zId, ZLangConstruct c) : ZUnit(std::move(zId), c) {}
-
+		sp<ZImport> getZImport() override {
+			return Import_;
+		}
+		void addImport(std::string im) override{
+			if (Import_ == nullptr) {
+				Import_ = ms<ZImport>();
+			}
+			Import_->addImport(std::move(im));
+		}
+		void addImports(sp<std::vector<std::string>> ims) override {
+			if (Import_ == nullptr) {
+				Import_ = ms<ZImport>();
+			}
+			for (const auto& im : *ims) {
+				Import_->addImport(im);
+			}
+		}
 	};
 
 	class ZDecl: public ZUnit {
@@ -191,16 +190,21 @@ namespace zebra::ast::symbol {
 	};
 
 	class ZCompileUnit: public ZUnit {
+		std::string packgName_;
+		PVecP<ZClass> classes_;
 	public:
 		ZCompileUnit(ZId zId) : ZUnit(std::move(zId), Z_COMPILATION_UNIT) {
-			declName_ = "_ROOT_PKG_";
+			packgName_ = "_ROOT_PKG_";
 		}
 		void setPackage(std::string n) {
-			declName_ += "." + n;
+			packgName_ += "." + n;
 		}
 
 		void addClass(sp<ZClass> cls) {
-			addSubUnit(cls);
+			if (classes_ == nullptr) {
+				classes_ = ms<std::vector<std::shared_ptr<ZClass>>>();
+			}
+			classes_->push_back(cls);
 		}
 	};
 

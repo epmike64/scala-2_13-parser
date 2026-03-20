@@ -11,6 +11,7 @@ namespace zebra::ast::symbol {
 		Z_TYPE_PARAM,
 		Z_VARIANT_TYPE_PARAM,
 		Z_TRAIT,
+		Z_IMPORT,
 		Z_CLASS_PARAM_DEFAULT_EXPR,
 		Z_CLASS,
 		Z_TYPE, Z_PARAM_TYPE,

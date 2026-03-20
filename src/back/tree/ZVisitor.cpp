@@ -640,10 +640,10 @@ namespace zebra::back::tree {
 		if (!psubT) {
 			return;
 		}
-		std::string zid = to_gr_prod_string(subTr->getGp()) + "_" + UUID::generate().toString();
-		sp<ZProdSubTreeN> zcp = ms<ZProdSubTreeN>(ZId(zid));
-		esc s = ms<ZEnclScope>(prnSc, zcp);
-		prnSc->getZUnit()->setProdSubTreeN(zcp);
+		// std::string zid = to_gr_prod_string(subTr->getGp()) + "_" + UUID::generate().toString();
+		// sp<ZProdSubTreeN> zcp = ms<ZProdSubTreeN>(ZId(zid));
+		// esc s = ms<ZEnclScope>(prnSc, zcp);
+		// prnSc->getZUnit()->setProdSubTreeN(zcp);
 
 		sp<std::vector<sp<fAstNod>>> postOrderSS = ms<std::vector<sp<fAstNod>>>();
 		ss.push(ms<fAstStackItem>(psubT));
@@ -692,7 +692,9 @@ namespace zebra::back::tree {
 			currNode->accept(shared_from_this(), prnSc);
 			postOrderSS->push_back(currNode);
 		}
-		zcp->setTreePostOrderSS(ms<ZTreePostOrderSS>(postOrderSS));
+		sp<ZProdSubTreeN> zz = std::dynamic_pointer_cast<ZProdSubTreeN>(prnSc->getZUnit());
+		assert(zz != nullptr);
+		zz->setTreePostOrderSS(ms<ZTreePostOrderSS>(postOrderSS));
 		std::cout << subTr->toString() + " END" << std::endl;
 	}
 
@@ -739,6 +741,7 @@ namespace zebra::back::tree {
 				}
 			}
 		}
-		prnSc->getZUnit()->addImports(imports_);
+		sp<IHaveImport> im = std::dynamic_pointer_cast<IHaveImport>(prnSc->getZUnit());
+		im->addImports(imports_);
 	}
 }
