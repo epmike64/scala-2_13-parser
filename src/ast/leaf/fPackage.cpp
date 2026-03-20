@@ -24,6 +24,18 @@ namespace zebra::ast::leaf {
 		visitor->visit(std::static_pointer_cast<fPackage>(shared_from_this()), s);
 	}
 
+	std::string fPackage::getPackageName() const {
+		std::string packageName;
+		for (size_t i = 0; i < ids_.size(); ++i) {
+			packageName += ids_[i]->getTStrVal();
+			if (i < ids_.size() - 1) {
+				packageName += ".";
+			}
+		}
+		return packageName;
+	}
+
+
 	std::string fPackage::toString() const {
 		std::stringstream ss;
 		ss << "Package(";

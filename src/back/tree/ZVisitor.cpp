@@ -32,38 +32,9 @@
 #include "ast/leaf/fUnderscore.hpp"
 #include "ast/leaf/fValueDecl.hpp"
 #include "ast/leaf/fVariantTypeParam.hpp"
+#include "util/fUUID.hpp"
 
 namespace zebra::back::tree {
-
-
-
-	void ZVisitor::visit() {
-		std::cout << "Visitor starts" << std::endl;
-		esc s = ms<ZEnclScope>(nullptr, Z_COMPILATION_UNIT);
-		compileUnit_->accept(shared_from_this(), s);
-	}
-
-	void ZVisitor::visit(sp<fCompileUnit> n, esc prnSc)  {
-		std::cout << "Visiting Compile Unit" << std::endl;
-		if (n->getPackages().size() > 0) {
-			std::cout << "Visiting Packages in Compile Unit" << std::endl;
-			for (const auto& pkg : n->getPackages()) {
-				pkg->accept(shared_from_this(), prnSc);
-			}
-		}
-		if (n->getImports().size() > 0) {
-			std::cout << "Visiting Imports in Compile Unit" << std::endl;
-			for (const auto& imp : n->getImports()) {
-				imp->accept(shared_from_this(), prnSc);
-			}
-		}
-		if (n->getStmts().size() > 0) {
-			std::cout << "Visiting Statements in Compile Unit" << std::endl;
-			for (const auto& stmt : n->getStmts()) {
-				stmt->accept(shared_from_this(), prnSc);
-			}
-		}
-	}
 
 	esc getWrapScope(esc prnSc,   ZLangConstruct lc) {
 		assert(prnSc != nullptr);
@@ -75,6 +46,46 @@ namespace zebra::back::tree {
 		}
 		return prnSc;
 	}
+
+
+	void ZVisitor::visit() {
+		std::cout << "Visitor starts" << std::endl;
+		esc s = ms<ZEnclScope>(nullptr, Z_COMPILATION_UNIT);
+		compileUnit_->accept(shared_from_this(), s);
+	}
+
+	void ZVisitor::visit(sp<fCompileUnit> n, esc prnSc)  {
+
+		sp<ZCompileUnit> zcu = ms<ZCompileUnit>(UUID::generate().toString());
+		prnSc->addSymbol(zcu);
+
+		if (n->getPackages().size() > 0) {
+			for (const auto& pkg : n->getPackages()) {
+				zcu->addSubPackage(pkg->getPackageName());
+			}
+		}
+
+		if (n->getImports().size() > 0) {
+			std::cout << "Visiting Imports in Compile Unit" << std::endl;
+			for (const auto& imp : n->getImports()) {
+				imp->accept(shared_from_this(), prnSc);
+			}
+		}
+
+		if (n->getStmts().size() > 0) {
+			std::cout << "Visiting Statements in Compile Unit" << std::endl;
+			for (const auto& stmt : n->getStmts()) {
+				stmt->accept(shared_from_this(), prnSc);
+			}
+		}
+	}
+
+	void ZVisitor::visit(sp<fPackage> n, esc prnSc) {
+		// std::cout << "Visiting Package: " << n->toString() << std::endl;
+		// ZId i
+		// // getWrapScope(prnSc, Z_COMPILATION_UNIT)->addSymbol(Zn->getPackageName());
+	}
+
 
 	void  ZVisitor::visit(sp<fClassDef> cls, esc prnSc){
 		std::cout << "Visiting Class Definition: " << cls->toString() << std::endl;
@@ -411,9 +422,7 @@ namespace zebra::back::tree {
 		std::cout << "Visiting Override Modifier: " << n->toString() << std::endl;
 	}
 
-	void ZVisitor::visit(sp<fPackage> n, esc prnSc) {
-		std::cout << "Visiting Package: " << n->toString() << std::endl;
-	}
+
 
 	void ZVisitor::visit(sp<fParam> n, esc prnSc) {
 		std::cout << "Visiting Parameter: " << n->getIdentifier()->toString() << std::endl;

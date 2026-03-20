@@ -86,9 +86,16 @@ namespace zebra::ast::symbol {
 	class ZCompileUnit: public ZSymbol {
 	protected:
 		PVecP<ZClass> classes_;
-		std::vector<std::string> pkgName_;
+		std::vector<std::string> pkgQualName;
 	public:
-		ZCompileUnit(ZId zId) : ZSymbol(std::move(zId)) {}
+		ZCompileUnit(ZId zId) : ZSymbol(std::move(zId)) {
+			pkgQualName.emplace_back("_ROOT_PKG_");
+		}
+
+		void addSubPackage(std::string n) {
+			pkgQualName.emplace_back(std::move(n));
+		}
+
 	};
 
 	class ZClass : public ZTrait {

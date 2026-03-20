@@ -14,7 +14,8 @@ namespace zebra::ast::leaf {
 		public:
 			fPackage(std::vector<const fToken*> &&ids) ;
 
-			 std::vector<const fToken*> getIds() const;
+		std::vector<const fToken*> getIds() const;
+		std::string getPackageName() const ;
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
