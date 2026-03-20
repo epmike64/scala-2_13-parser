@@ -8,7 +8,7 @@
 
 namespace zebra::ast::leaf {
 
-	const fToken* fClassParam::getIdentifier() const {
+	const fToken* fClassParam::getIdentToken() const {
 		return identifier_;
 	}
 
@@ -22,6 +22,11 @@ namespace zebra::ast::leaf {
 	lex::kind::fVariableMutabilityTypeE fClassParam::getMutability() const {
 		return mutability_;
 	}
+
+	bool fClassParam::isMutable() {
+		return mutability_ == lex::kind::fVariableMutabilityTypeE::VAR;
+	}
+
 	sp<fParamType> fClassParam::getParamType() const {
 		return paramType_;
 	}

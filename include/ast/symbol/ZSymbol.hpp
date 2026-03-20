@@ -8,6 +8,7 @@
 #include "ZSymbol.hpp"
 
 namespace zebra::ast::symbol {
+	class ZProdSubTreeN;
 
 	using namespace zebra::ast::node;
 	using namespace zebra::ast::leaf;
@@ -47,7 +48,7 @@ namespace zebra::ast::symbol {
 		PVec<std::string> imports_;
 		std::string declName_;
 		const ZLangConstruct langConstruct_;
-
+		sp<ZProdSubTreeN> zcpt_;
 	public:
 		explicit ZUnit(ZId zId, ZLangConstruct c) : ZSymbol(std::move(zId)),  langConstruct_(c) {}
 		~ZUnit() override = default;
@@ -84,14 +85,11 @@ namespace zebra::ast::symbol {
 			}
 			return false;
 		}
+		 void setProdSubTreeN(sp<ZProdSubTreeN> zcpt) {
+			this->zcpt_ = std::move(zcpt);
+		}
 	};
 
-
-	class ZTypeParam: public ZSymbol {
-	public:
-		ZTypeParam(ZId zId) : ZSymbol(std::move(zId)) {}
-		// ...existing code...
-	};
 
 	class ZTrait: public ZUnit {
 	public:
@@ -110,9 +108,48 @@ namespace zebra::ast::symbol {
 		ZFunc(ZId zId) : ZUnit(std::move(zId), Z_FUNC) {}
 	};
 
-	class ZClassParam: public ZUnit {
+	// class ZClassParam: public ZUnit {
+	// protected:
+	// 	const bool isMutable_;
+	// 	public:
+	// 	ZClassParam(ZId zId, bool isMutable) : ZUnit(std::move(zId), Z_CLASS_PARAM), isMutable_(isMutable) {}
+	// };
+
+	class ZProdSubTreeN: public ZUnit {
+	protected:
+		PVecP<fAstNod> polishCalcStack; //RPN - reverse polish notation
+		public:
+		ZProdSubTreeN(ZId zId) : ZUnit(std::move(zId), Z_PROD_SUB_TREE_NOD) {}
+		ZProdSubTreeN(ZId zId, ZLangConstruct c) : ZUnit(std::move(zId), c) {}
+
+		void setPolishSS(sp<std::vector<sp<fAstNod> > > &&astRPN) {
+			this->polishCalcStack = std::move(astRPN);
+		}
+
+		sp<std::vector<sp<fAstNod> > > getPolishSS() const {
+			return polishCalcStack;
+		}
+	};
+
+	class ZType : public ZProdSubTreeN {
 	public:
-		ZClassParam(ZId zId) : ZUnit(std::move(zId), Z_CLASS_PARAM) {}
+		ZType(ZId zId) : ZProdSubTreeN(std::move(zId), Z_TYPE) {}
+		ZType(ZId zId, ZLangConstruct c) : ZProdSubTreeN(std::move(zId), c) {}
+
+	};
+
+	class ZParamType: public ZType {
+		public:
+		ZParamType(ZId zId) : ZType(std::move(zId), Z_PARAM_TYPE) {}
+		ZParamType(ZId zId, ZLangConstruct c) : ZType(std::move(zId), c) {}
+	};
+
+
+	class ZClassParam: public ZParamType {
+	protected:
+		const bool isMutable_;
+	public:
+		ZClassParam(ZId zId, bool isMutable) : ZParamType(std::move(zId), Z_CLASS_PARAM), isMutable_(isMutable) {}
 	};
 
 	class ZClassConstr: public ZUnit {

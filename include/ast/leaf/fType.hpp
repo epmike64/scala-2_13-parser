@@ -10,11 +10,11 @@ namespace zebra::ast::leaf {
 	using namespace zebra::lex::token;
 
 	class fType : public fAstOprndNod {
-		const sp<fAstProdSubTreeN> _typeTree;
+		const sp<fAstProdSubTreeN> typeTree_;
 	public:
 		fType(sp<fAstProdSubTreeN> &&typeTree);
 
-		const sp<fAstProdSubTreeN> &getType() const;
+		const sp<fAstProdSubTreeN> &getTypeTree() const;
 
 		 void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 

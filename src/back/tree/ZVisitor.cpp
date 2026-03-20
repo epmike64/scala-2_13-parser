@@ -114,6 +114,48 @@ namespace zebra::back::tree {
 		}
 	}
 
+	void ZVisitor::visit(sp<fClassParamClauses> n, esc prnSc) {
+
+
+		// for (const auto& implicitParam : n->getImplicitParams()) {
+		// 	std::cout << "Visiting Implicit Class Parameter" << std::endl;
+		// 	implicitParam->accept(shared_from_this(), s);
+		// }
+		// for (const auto& paramClauseList : n->getClassParams()) {
+		// 	for (auto & paramClause : paramClauseList) {
+		// 		std::cout << "Visiting Class Parameter Clause" << std::endl;
+		// 		paramClause->accept(shared_from_this(), s);
+		// 	}
+		// }
+	}
+
+	void ZVisitor::visit(sp<fClassParam> n, esc prnSc) {
+
+		esc clsScp = getWrapScope(prnSc, Z_CLASS);
+
+		sp<ZClassParam> zcp = ms<ZClassParam>(ZId(n->getIdentName()), n->isMutable() );
+		esc s = ms<ZEnclScope>(prnSc,  zcp);
+		n->getParamType()->accept(shared_from_this(), s);
+
+		sp<fAstProdSubTreeN> assignExpr = n->getDefaultValueExpr();
+		if (assignExpr != nullptr) {
+			std::cout << "Visiting assignment expression for class parameter" << std::endl;
+			assignExpr->accept(shared_from_this(), s);
+		}
+	}
+
+	void ZVisitor::visit(sp<fParamType> n, esc prnSc) {
+		sp<ZParamType> zcp = ms<ZParamType>(ZId("ParamType_" + UUID::generate().toString()));
+		esc s = ms<ZEnclScope>(prnSc,  zcp);
+		n->getTypeTree()->accept(shared_from_this(), prnSc);
+	}
+
+	void  ZVisitor::visit(sp<fType> n, esc prnSc)  {
+		sp<ZType> zcp = ms<ZType>(ZId("Type_" + UUID::generate().toString()));
+		esc s = ms<ZEnclScope>(prnSc,  zcp);
+		n->getTypeTree()->accept(shared_from_this(), s);
+	}
+
 	void ZVisitor::visit(sp<fClassConstr> n, esc prnSc) {
 		// std::cout << "Visiting Class Constructor" << std::endl;
 		// esc s = ms<ZEnclScope>(prnSc, Z_CLASS_CONSTR);
@@ -124,9 +166,7 @@ namespace zebra::back::tree {
 		// }
 	}
 
-	void  ZVisitor::visit(sp<fType> n, esc prnSc)  {
-		std::cout << n->toString() << std::endl;
-	}
+
 
 	void  ZVisitor::visit(sp<fValueDef> n, esc prnSc)  {
 		// std::cout << "Visiting Value Decl: " << n->toString() << std::endl;
@@ -216,36 +256,9 @@ namespace zebra::back::tree {
 
 
 
-	void ZVisitor::visit(sp<fClassParam> n, esc prnSc) {
-		// std::cout << "Visiting Class Parameter: " << n->toString() << std::endl;
-		//
-		// esc clsScp = getWrapScope(prnSc, Z_CLASS);//->addSymbol(n->getIdentifier()->toString(), ms<ZClassParam>());
-		//
-		// sp<ZClassParam> zcp = ms<ZClassParam>(ZId(n->getIdentName()));
-		// esc s = ms<ZEnclScope>(prnSc,  zcp);
-		// n->getParamType()->accept(shared_from_this(), s);
-		//
-		// sp<fAstProdSubTreeN> assignExpr = n->getDefaultValueExpr();
-		// if (assignExpr != nullptr) {
-		// 	std::cout << "Visiting assignment expression for class parameter" << std::endl;
-		// 	assignExpr->accept(shared_from_this(), s);
-		// }
-	}
 
-	void ZVisitor::visit(sp<fClassParamClauses> n, esc prnSc) {
-		// std::cout << "Visiting Class Parameter Clauses" << std::endl;
-		// esc s = ms<ZEnclScope>(prnSc, Z_CLASS_PARAM_CLAUSES);
-		// for (const auto& implicitParam : n->getImplicitParams()) {
-		// 	std::cout << "Visiting Implicit Class Parameter" << std::endl;
-		// 	implicitParam->accept(shared_from_this(), s);
-		// }
-		// for (const auto& paramClauseList : n->getClassParams()) {
-		// 	for (auto & paramClause : paramClauseList) {
-		// 		std::cout << "Visiting Class Parameter Clause" << std::endl;
-		// 		paramClause->accept(shared_from_this(), s);
-		// 	}
-		// }
-	}
+
+
 
 	void ZVisitor::visit(sp<fClassParents> n, esc prnSc) {
 		// std::cout << "Visiting Class Parents" << std::endl;
@@ -431,12 +444,7 @@ namespace zebra::back::tree {
 		// }
 	}
 
-	void ZVisitor::visit(sp<fParamType> n, esc prnSc) {
-		std::cout << "Visiting Parameter Type" << std::endl;
-		if (n->getType()) {
-			n->getType()->accept(shared_from_this(), prnSc);
-		}
-	}
+
 
 	void ZVisitor::visit(sp<fParamTypes> n, esc prnSc) {
 		// std::cout << "Visiting Parameter Types" << std::endl;
@@ -625,6 +633,10 @@ namespace zebra::back::tree {
 		if (!psubT) {
 			return;
 		}
+		std::string zid = to_gr_prod_string(subTr->getGp()) + "_" + UUID::generate().toString();
+		sp<ZProdSubTreeN> zcp = ms<ZProdSubTreeN>(ZId(zid));
+		esc s = ms<ZEnclScope>(prnSc, zcp);
+		prnSc->getZUnit()->setProdSubTreeN(zcp);
 
 		sp<std::vector<sp<fAstNod>>> polishCalcSS = ms<std::vector<sp<fAstNod>>>();
 		ss.push(ms<fAstStackItem>(psubT));
@@ -673,7 +685,7 @@ namespace zebra::back::tree {
 			currNode->accept(shared_from_this(), prnSc);
 			polishCalcSS->push_back(currNode);
 		}
-		prnSc->setPolishSS(std::move(polishCalcSS));
+		zcp->setPolishSS(std::move(polishCalcSS));
 		std::cout << subTr->toString() + " END" << std::endl;
 	}
 

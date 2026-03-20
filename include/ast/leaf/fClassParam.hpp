@@ -22,13 +22,15 @@ namespace zebra::ast::leaf {
 
 		void setMutability(lex::kind::fVariableMutabilityTypeE mutability) ;
 
+		bool isMutable();
+
 		void setParamType(sp<fParamType> &&paramType) ;
 
 		void setDefaultValueExpr(sp<fAstProdSubTreeN> &&defaultValue);
 
 		void setModifiers(sp<fModifiers> &&modifiers) ;
 
-		const fToken* getIdentifier() const;
+		const fToken* getIdentToken() const;
 
 		const std::string getIdentName() const;
 

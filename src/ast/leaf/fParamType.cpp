@@ -6,7 +6,7 @@
 namespace zebra::ast::leaf {
 
 	fParamType::fParamType(sp<fType> &&type, bool isFatArrow, bool isStar)
-		: fType(sp<fAstProdSubTreeN>(type->getType())), isFatArrow(isFatArrow), isStar(isStar) {}
+		: fType(sp<fAstProdSubTreeN>(type->getTypeTree())), isFatArrow(isFatArrow), isStar(isStar) {}
 
 
 	void fParamType::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
@@ -14,7 +14,7 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fParamType::toString() const {
-		return "fParamType(type=" + (getType() ? getType()->toString() : "null") +
+		return "fParamType(type=" + (getTypeTree() ? getTypeTree()->toString() : "null") +
 			   ", isFatArrow=" + (isFatArrow ? "true" : "false") +
 			   ", isStar=" + (isStar ? "true" : "false") + ")";
 	}

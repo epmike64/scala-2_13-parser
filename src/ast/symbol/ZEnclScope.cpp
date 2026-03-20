@@ -13,13 +13,6 @@ namespace zebra::ast::symbol {
 		return parentScope_;
 	}
 
-	void ZEnclScope::setPolishSS(sp<std::vector<sp<fAstNod> > > &&astRPN) {
-		this->polishCalcStack = std::move(astRPN);
-	}
-
-	sp<std::vector<sp<fAstNod> > > ZEnclScope::getPolishSS() const {
-		return polishCalcStack;
-	}
 
 
 	sp<ZUnit> ZEnclScope::getZUnit() {

@@ -5,14 +5,14 @@
 
 namespace zebra::ast::leaf {
 
-	fType::fType(sp<fAstProdSubTreeN> &&typeTree) : _typeTree(std::move(typeTree)) {
-		if (this->_typeTree == nullptr) {
+	fType::fType(sp<fAstProdSubTreeN> &&typeTree) : typeTree_(std::move(typeTree)) {
+		if (this->typeTree_ == nullptr) {
 			throw std::invalid_argument("Type tree cannot be null");
 		}
 	}
 
-	const sp<fAstProdSubTreeN> &fType::getType() const {
-		return _typeTree;
+	const sp<fAstProdSubTreeN> &fType::getTypeTree() const {
+		return typeTree_;
 	}
 
 
@@ -21,6 +21,6 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fType::toString() const {
-		return "Type(" + _typeTree->toString() + ")";
+		return "Type(" + typeTree_->toString() + ")";
 	}
 }
