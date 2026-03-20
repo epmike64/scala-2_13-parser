@@ -89,7 +89,7 @@ namespace zebra::back::tree {
 
 	void  ZVisitor::visit(sp<fClassDef> cls, esc prnSc){
 
-		sp<ZClass> zcp = ms<ZClass>(ZId(cls->getIdentName()));
+		sp<ZClass> zcp = ms<ZClass>(cls->getIdentName());
 		esc s = ms<ZEnclScope>(prnSc, zcp);
 
 		if (cls->getModifiers()) {
@@ -378,8 +378,8 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fFun> n, esc prnSc) {
 		std::cout << "Visiting fFun" << std::endl;
-		sp<ZFunc> z_fun = ms<ZFunc>();
-		esc s = ms<ZEnclScope>(prnSc,  z_fun);
+		// sp<ZFunc> z_fun = ms<ZFunc>();
+		// esc s = ms<ZEnclScope>(prnSc,  z_fun);
 		// esc s = ms<ZEnclScope>(prnSc, Z_FFUN);
 		// n->getModifiers()->accept(shared_from_this(), s);
 	}
@@ -449,7 +449,7 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fNamedFun> n, esc prnSc) {
 		std::cout << "Visiting Named Function: " << n->getFunSig()->getIdentToken()->toString() << std::endl;
-		sp<ZFunc> z_fun = ms<ZFunc>(ZId(n->getFunSig()->getIdentName()));
+		sp<ZFunc> z_fun = ms<ZFunc>(n->getFunSig()->getIdentName());
 		esc s = ms<ZEnclScope>(prnSc,  z_fun);
 
 		// esc s = ms<ZEnclScope>(prnSc, Z_NAMED_FUN);
