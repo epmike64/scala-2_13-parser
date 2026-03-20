@@ -115,7 +115,7 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fParamClauses> n, esc prnSc) {
 		std::cout << "Visiting Parameter Clauses" << std::endl;
-		esc s = ms<ZEnclScope>(prnSc, Z_PARAM_CLAUSES);
+		esc s = ms<ZEnclScope>(prnSc, ms<ZProdSubTreeN>(Z_PARAM_CLAUSES));
 
 
 		for (auto paramList : n->getParamLists()) {
