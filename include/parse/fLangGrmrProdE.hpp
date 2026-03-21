@@ -14,7 +14,6 @@ namespace zebra::parse {
 		FOR, CLASS_PARENTS, CLASS_PARAM_CLAUSES,
 		EXPR,
 		EXPRS_OR_BINDINGS,
-		SUBTREE,
 		TYPES,
 		TYPE,
 		SIMPLE_TYPE,
@@ -67,7 +66,6 @@ namespace zebra::parse {
 			case fLangGrmrProdE::CLASS_PARAM_CLAUSES: return "CLASS_PARAM_CLAUSES";
 			case fLangGrmrProdE::EXPR: return "EXPR";
 			case fLangGrmrProdE::EXPRS_OR_BINDINGS: return "EXPRS_OR_BINDINGS";
-			case fLangGrmrProdE::SUBTREE: return "SUBTREE";
 			case fLangGrmrProdE::TYPES: return "TYPES";
 			case fLangGrmrProdE::TYPE: return "TYPE";
 			case fLangGrmrProdE::SIMPLE_TYPE: return "SIMPLE_TYPE";
