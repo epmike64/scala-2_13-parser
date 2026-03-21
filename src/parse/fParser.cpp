@@ -990,7 +990,7 @@ namespace zebra::parse {
 					a->setRight(stableId(false));
 					h.insertPseudoOperator(a, fLangPseudoOperatorKindE::O_AT, h.next());
 					a->setRight(pattern3());
-					return ms<fAstProdSubTreeN>(fLangGrmrProdE::SUBTREE, std::move(a->astRootOpr()));
+					return ms<fAstProdSubTreeN>(fLangGrmrProdE::PATTERN_2, std::move(a->astRootOpr()));
 				}
 				//fall through
 			}
