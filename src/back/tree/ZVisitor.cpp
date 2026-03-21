@@ -676,10 +676,6 @@ namespace zebra::back::tree {
 		if (!psubT) {
 			return;
 		}
-		// std::string zid = to_gr_prod_string(subTr->getGp()) + "_" + UUID::generate().toString();
-		// sp<ZProdSubTreeN> zcp = ms<ZProdSubTreeN>(ZId(zid));
-		// esc s = ms<ZEnclScope>(prnSc, zcp);
-		// prnSc->getZUnit()->setProdSubTreeN(zcp);
 
 		sp<std::vector<sp<fAstNod>>> postOrderSS = ms<std::vector<sp<fAstNod>>>();
 		ss.push(ms<fAstStackItem>(psubT));
