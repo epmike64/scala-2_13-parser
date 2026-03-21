@@ -1076,9 +1076,6 @@ namespace zebra::parse {
 			}
 			case fAstNodKndE::AST_OPERAND: {
 				if(h.isTkTID()){
-					// h.insertOperator(a, fLangOperatorKind.getIdSymbolicAssoc(h.getAsNamedToken().isRightAssociative()), h.next());
-					// h.insertOperator(a, fLangOperatorKind.getIdSymbolicAssoc(h.getAsNamedToken().isRightAssociative()), h.next());
-					// h.insertMethodNameOperator(a, h.next());
 					h.insertPseudoOperator(a, fLangPseudoOperatorKindE::O_ID, h.next());
 				} else {
 					a->setIsContinue(false);
