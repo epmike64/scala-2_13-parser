@@ -949,8 +949,6 @@ namespace zebra::parse {
 				case fTKnd::T_ID_E: {
 					switch (a->astLastNKnd()) {
 						case fAstNodKndE::AST_OPERAND: {
-							// h.insertOperator(a, fLangOperatorKind.getIdSymbolicAssoc(h.getAsNamedToken().isRightAssociative()), h.next());
-							//h.insertMethodNameOperator(a, h.next());
 							h.insertPseudoOperator(a, fLangPseudoOperatorKindE::O_ID, h.next());
 							continue;
 						}
