@@ -5,7 +5,6 @@
 #include "ast/leaf/fType.hpp"
 #include <functional>
 
-#include "ZSymbol.hpp"
 
 namespace zebra::ast::symbol {
 	class ZParam;
@@ -133,23 +132,33 @@ namespace zebra::ast::symbol {
 	};
 
 	class ZTreePostOrderSS {
-		PVecP<fAstNod> postOrderSS;
+		mutable PVecP<fAstNod> postOrderSS_;
 	public:
-		explicit ZTreePostOrderSS(PVecP<fAstNod> postOrderSS) : postOrderSS(std::move(postOrderSS)) {}
+		ZTreePostOrderSS() = default;
+		explicit ZTreePostOrderSS(PVecP<fAstNod> ss) : postOrderSS_(std::move(ss)) {}
+		const PVecP<fAstNod>& getPostOrderSS() const {
+			if (postOrderSS_ == nullptr) {
+				postOrderSS_ = ms<std::vector<std::shared_ptr<fAstNod>>>();
+			}
+			return postOrderSS_;
+		}
 	};
 
 	class ZProdSubTreeN: public ZSymbol {
 	protected:
-		sp<ZTreePostOrderSS> postOrderSS_;
+		mutable sp<ZTreePostOrderSS> postOrderSS_;
 		public:
 		ZProdSubTreeN() : ZSymbol(Z_PROD_SUB_TREE_NOD) {}
 		explicit ZProdSubTreeN(ZLangConstruct c) : ZSymbol(c) {}
-
+		//
 		void setTreePostOrderSS(sp<ZTreePostOrderSS> ztp) {
 			postOrderSS_ = ztp;
 		}
 
 		sp<ZTreePostOrderSS> getTreePostOrderSS() const {
+			if (postOrderSS_ == nullptr) {
+				postOrderSS_ = ms<ZTreePostOrderSS>();
+			}
 			return postOrderSS_;
 		}
 	};

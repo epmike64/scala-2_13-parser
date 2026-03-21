@@ -671,7 +671,10 @@ namespace zebra::back::tree {
 
 
 		std::cout << subTr->toString() << std::endl;
+		//std::stack<sp<fAstStackItem>> ss;
 		std::stack<sp<fAstStackItem>> ss;
+		prnSc->getZSymbol();
+
 		sp<fAstNod> psubT = getAstPSTreeRightN(subTr);
 		if (!psubT) {
 			return;
