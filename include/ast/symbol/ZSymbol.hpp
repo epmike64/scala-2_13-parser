@@ -132,30 +132,24 @@ namespace zebra::ast::symbol {
 	};
 
 	class ZTreePostOrderSS {
-		mutable PVecP<fAstNod> postOrderSS_;
+		std::vector<sp<fAstNod>> postOrderSS_;
 	public:
-		ZTreePostOrderSS() = default;
-		explicit ZTreePostOrderSS(PVecP<fAstNod> ss) : postOrderSS_(std::move(ss)) {}
-		const PVecP<fAstNod>& getPostOrderSS() const {
-			if (postOrderSS_ == nullptr) {
-				postOrderSS_ = ms<std::vector<std::shared_ptr<fAstNod>>>();
-			}
-			return postOrderSS_;
+		bool empty() {
+			return postOrderSS_.empty();
+		}
+		void push_back(sp<fAstNod> n) {
+			postOrderSS_.push_back(n);
 		}
 	};
 
 	class ZProdSubTreeN: public ZSymbol {
 	protected:
-		mutable sp<ZTreePostOrderSS> postOrderSS_;
+		sp<ZTreePostOrderSS> postOrderSS_;
 		public:
 		ZProdSubTreeN() : ZSymbol(Z_PROD_SUB_TREE_NOD) {}
 		explicit ZProdSubTreeN(ZLangConstruct c) : ZSymbol(c) {}
-		//
-		void setTreePostOrderSS(sp<ZTreePostOrderSS> ztp) {
-			postOrderSS_ = ztp;
-		}
 
-		sp<ZTreePostOrderSS> getTreePostOrderSS() const {
+		sp<ZTreePostOrderSS> getTreePostOrderSS() {
 			if (postOrderSS_ == nullptr) {
 				postOrderSS_ = ms<ZTreePostOrderSS>();
 			}
@@ -167,11 +161,6 @@ namespace zebra::ast::symbol {
 	public:
 		ZType(): ZProdSubTreeN( Z_TYPE) {}
 		explicit ZType(ZLangConstruct c) : ZProdSubTreeN(c) {}
-
-		void setZType(sp<ZTreePostOrderSS> ss) {
-			postOrderSS_ = ss;
-		}
-
 		sp<ZTreePostOrderSS> getZType() const {
 			return postOrderSS_;
 		}

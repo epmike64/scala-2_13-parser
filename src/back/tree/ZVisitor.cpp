@@ -668,19 +668,17 @@ namespace zebra::back::tree {
 
 
 	void ZVisitor::visit(sp<fAstProdSubTreeN> subTr,  esc prnSc) {
-
-
 		std::cout << subTr->toString() << std::endl;
-		//std::stack<sp<fAstStackItem>> ss;
-		std::stack<sp<fAstStackItem>> ss;
-		prnSc->getZSymbol();
-
 		sp<fAstNod> psubT = getAstPSTreeRightN(subTr);
 		if (!psubT) {
 			return;
 		}
 
-		sp<std::vector<sp<fAstNod>>> postOrderSS = ms<std::vector<sp<fAstNod>>>();
+		sp<ZProdSubTreeN> prnt = std::dynamic_pointer_cast<ZProdSubTreeN>(prnSc->getZSymbol());
+		sp<ZTreePostOrderSS> postOrderSS = prnt->getTreePostOrderSS();
+
+		std::stack<sp<fAstStackItem>> ss ;
+
 		ss.push(ms<fAstStackItem>(psubT));
 
 		while (!ss.empty()) {
@@ -727,9 +725,6 @@ namespace zebra::back::tree {
 			currNode->accept(shared_from_this(), prnSc);
 			postOrderSS->push_back(currNode);
 		}
-		sp<ZProdSubTreeN> zz = std::dynamic_pointer_cast<ZProdSubTreeN>(prnSc->getZSymbol());
-		assert(zz != nullptr);
-		zz->setTreePostOrderSS(ms<ZTreePostOrderSS>(postOrderSS));
 		std::cout << subTr->toString() + " END" << std::endl;
 	}
 
