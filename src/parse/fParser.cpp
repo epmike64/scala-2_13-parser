@@ -1201,24 +1201,6 @@ namespace zebra::parse {
 		return value;
 	}
 
-	// sp<fTypeParam> fParser::typeParam() {
-	// 	sp<fTypeParam> p = ms<fTypeParam>(h.next());
-	// 	if (h.isTkLBracket()) {
-	// 		p->setVariantTypeParams(variantTypeParams());
-	// 	}
-	// 	if (h.isTkLowerBound()) {
-	// 		p->setLowerBound(type());
-	// 	}
-	// 	if (h.isTkUpperBound()) {
-	// 		p->setUpperBound(type());
-	// 	}
-	// 	if (h.isTkColon()) {
-	// 		p->setType(type());
-	// 	}
-	//
-	// 	return p;
-	// }
-
 	std::vector<sp<fTypeParam>> fParser::funTypeParams() {
 		std::vector<sp<fTypeParam>> params;
 		int sz = h.pushNLEnabled(false);
