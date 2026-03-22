@@ -33,19 +33,20 @@
 #include "ast/leaf/fValueDecl.hpp"
 #include "ast/leaf/fVariantTypeParam.hpp"
 #include "util/fUUID.hpp"
+#include "back/tree/ZVisitHelp.hpp"
 
 namespace zebra::back::tree {
 
-	esc getWrapScope(esc prnSc,   ZLangConstruct lc) {
-		assert(prnSc != nullptr);
-		while (prnSc->getLangConstruct() != lc) {
-			prnSc = prnSc->getParentScope();
-			if (prnSc == nullptr) {
-				throw std::runtime_error("No enclosing scope found for language construct: " + std::to_string(lc));
-			}
-		}
-		return prnSc;
-	}
+	// esc getWrapScope(esc prnSc,   ZLangConstruct lc) {
+	// 	assert(prnSc != nullptr);
+	// 	while (prnSc->getLangConstruct() != lc) {
+	// 		prnSc = prnSc->getParentScope();
+	// 		if (prnSc == nullptr) {
+	// 			throw std::runtime_error("No enclosing scope found for language construct: " + std::to_string(lc));
+	// 		}
+	// 	}
+	// 	return prnSc;
+	// }
 
 
 	void ZVisitor::visit() {
@@ -203,7 +204,7 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fTypeParamClause> n, esc prnSc) {
 
-		esc clsScp = getWrapScope(prnSc, Z_CLASS_DEF);
+		esc clsScp = ZVisitHelp::getWrapScope(prnSc, Z_CLASS_DEF);
 
 		for (auto typeParam : *n->getVariantTypeParams()) {
 
