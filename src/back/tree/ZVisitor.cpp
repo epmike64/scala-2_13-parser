@@ -191,25 +191,8 @@ namespace zebra::back::tree {
 		f->addParam(zParam);
 	}
 
-	void ZVisitor::visit(sp<fClassParam> fClsPar, esc prnSc) {
-
-		assert(prnSc->getLangConstruct() == Z_CLASS_DEF);
-
-		sp<ZClassParam> clsParam = ms<ZClassParam>(fClsPar->getIdentName(), fClsPar->isMutable() );
-		esc clsParamScp = ms<ZEnclScope>(prnSc,  clsParam);
-		fClsPar->getParamType()->accept(shared_from_this(), clsParamScp);
-
-
-		sp<fAstProdSubTreeN> assignExpr = fClsPar->getDefaultValueExpr();
-		if (assignExpr != nullptr) {
-			sp<ZProdSubTreeN> pSubTr = ms<ZProdSubTreeN>(Z_CLASS_PARAM_DEFAULT_EXPR);
-			esc pSubTrScp = ms<ZEnclScope>(prnSc,  pSubTr);
-
-			assignExpr->accept(shared_from_this(), pSubTrScp);
-			clsParam->setDefaultValueExpr(pSubTr->getTreePostOrderSS());
-		}
-		sp<ZClassDef> clsDef = std::dynamic_pointer_cast<ZClassDef>(prnSc->getZSymbol());
-		clsDef->addClassParam(clsParam);
+	void ZVisitor::visit(sp<fClassParam> n, esc prnSc) {
+		ZVisitHelp::visitClassParam(n, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fParamType> n, esc prnSc) {

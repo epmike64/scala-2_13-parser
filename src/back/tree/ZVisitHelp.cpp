@@ -6,6 +6,7 @@
 #include "ast/leaf/fClassParam.hpp"
 #include "ast/symbol/ZEnclScope.hpp"
 #include "ast/leaf/fClassParamClauses.hpp"
+#include "ast/leaf/fParamType.hpp"
 
 namespace zebra::back::tree {
 	using namespace ast::symbol;
@@ -107,6 +108,9 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitHelp::visitClassParamClauses(sp<fClassParamClauses> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+
+		assert(prnSc->getZSymbol() != nullptr && prnSc->getLangConstruct() == Z_CLASS_DEF);
+
 		for (const auto& classParamList : n->getClassParamLists()) {
 			for (const auto& classParam : classParamList) {
 				classParam->accept(visitor, prnSc);
@@ -115,5 +119,25 @@ namespace zebra::back::tree {
 		for (const auto& implicitClassParam : n->getImplicitClassParamList()) {
 			implicitClassParam->accept(visitor, prnSc);
 		}
+	}
+
+	void ZVisitHelp::visitClassParam(sp<fClassParam> fClsPar, esc prnSc, sp<fAstNodVisitor> visitor) {
+		assert(prnSc->getLangConstruct() == Z_CLASS_DEF);
+
+		sp<ZClassParam> clsParam = ms<ZClassParam>(fClsPar->getIdentName(), fClsPar->isMutable() );
+		esc clsParamScp = ms<ZEnclScope>(prnSc,  clsParam);
+		fClsPar->getParamType()->accept(visitor, clsParamScp);
+
+
+		sp<fAstProdSubTreeN> assignExpr = fClsPar->getDefaultValueExpr();
+		if (assignExpr != nullptr) {
+			sp<ZProdSubTreeN> pSubTr = ms<ZProdSubTreeN>(Z_CLASS_PARAM_DEFAULT_EXPR);
+			esc pSubTrScp = ms<ZEnclScope>(prnSc,  pSubTr);
+
+			assignExpr->accept(visitor, pSubTrScp);
+			clsParam->setDefaultValueExpr(pSubTr->getTreePostOrderSS());
+		}
+		sp<ZClassDef> clsDef = std::dynamic_pointer_cast<ZClassDef>(prnSc->getZSymbol());
+		clsDef->addClassParam(clsParam);
 	}
 }
