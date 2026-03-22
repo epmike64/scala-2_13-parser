@@ -1,7 +1,10 @@
 #include "back/tree/ZVisitHelp.hpp"
 
+#include <iostream>
+#include <stack>
+
 #include "ast/symbol/ZEnclScope.hpp"
-#include "iostream"
+
 namespace zebra::back::tree {
 	using namespace ast::symbol;
 
@@ -26,5 +29,76 @@ namespace zebra::back::tree {
 		} else {
 			std::cout << "" << std::endl;
 		}
+	}
+
+	sp<fAstNod> ZVisitHelp::getAstPSTreeRightN(sp<fAstProdSubTreeN> subTr) {
+		while (true) {
+			sp<fAstNod> subTRight = subTr->getRootOpNod()->getAstRightN();
+			sp<fAstProdSubTreeN> subTRight_SubTr = std::dynamic_pointer_cast<fAstProdSubTreeN>(subTRight);
+			if (!subTRight_SubTr) {
+				return subTRight;
+			}
+			subTr = subTRight_SubTr;
+		}
+	}
+
+	void ZVisitHelp::traverseProdSubTree(sp<fAstProdSubTreeN> subTr, esc prnSc, sp<fAstNodVisitor> visitor) {
+		std::cout << subTr->toString() << std::endl;
+
+		sp<fAstNod> psubT = getAstPSTreeRightN(subTr);
+		if (!psubT) {
+			return;
+		}
+
+		sp<ZProdSubTreeN> prnt = std::dynamic_pointer_cast<ZProdSubTreeN>(prnSc->getZSymbol());
+		assert(prnt != nullptr);
+
+		std::stack<sp<fAstStackItem>> ss;
+		ss.push(ms<fAstStackItem>(psubT));
+
+		while (!ss.empty()) {
+			sp<fAstStackItem> currItem = ss.top();
+			sp<fAstNod> currNode = currItem->getNode();
+			if (currNode == nullptr) {
+				throw std::runtime_error("Current node in AST stack cannot be null");
+			}
+
+			if (!currItem->isLeftVisited()) {
+				currItem->setLeftVisited();
+				if (currNode->getAstLeftN()) {
+					sp<fAstProdSubTreeN> leftSubTr = std::dynamic_pointer_cast<fAstProdSubTreeN>(currNode->getAstLeftN());
+					if (leftSubTr) {
+						sp<fAstNod> pst = getAstPSTreeRightN(leftSubTr);
+						if (pst) {
+							ss.push(ms<fAstStackItem>(pst));
+						}
+					} else {
+						ss.push(ms<fAstStackItem>(currNode->getAstLeftN()));
+					}
+					continue;
+				}
+			}
+
+			if (!currItem->isRightVisited()) {
+				currItem->setRightVisited();
+				if (currNode->getAstRightN()) {
+					sp<fAstProdSubTreeN> rightSubTr = std::dynamic_pointer_cast<fAstProdSubTreeN>(currNode->getAstRightN());
+					if (rightSubTr) {
+						sp<fAstNod> pst = getAstPSTreeRightN(rightSubTr);
+						if (pst) {
+							ss.push(ms<fAstStackItem>(pst));
+						}
+					} else {
+						ss.push(ms<fAstStackItem>(currNode->getAstRightN()));
+					}
+					continue;
+				}
+			}
+
+			ss.pop();
+			currNode->accept(visitor, prnSc);
+		}
+
+		std::cout << subTr->toString() + " END" << std::endl;
 	}
 }

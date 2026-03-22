@@ -1,5 +1,7 @@
 # pragma once
+#include <stack>
 #include "ast/symbol/ZLangConstruct.hpp"
+#include "ast/node/fAstNodVisitor.hpp"
 
 namespace zebra::back::tree {
 	using namespace ast::symbol;
@@ -25,7 +27,8 @@ namespace zebra::back::tree {
 	class ZVisitHelp {
 	public:
 		static esc getWrapScope(esc prnSc, ZLangConstruct lc);
-		static void treePostOrderPush(util::sp<fAstNod> n, esc prnSc);
-	
+		static void treePostOrderPush(sp<fAstNod> n, esc prnSc);
+		static sp<fAstNod> getAstPSTreeRightN(sp<fAstProdSubTreeN> subTr);
+		static void traverseProdSubTree(sp<fAstProdSubTreeN> subTr, esc prnSc, sp<fAstNodVisitor> visitor);
 	};
 }
