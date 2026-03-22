@@ -45,7 +45,7 @@ add_executable(zebra-4-backend
 		include/back/tree/ZVisitor.hpp
 
 
-		include/ast/leaf/fObject.hpp
+		include/ast/leaf/fObjectDef.hpp
 		include/ast/leaf/fClassDef.hpp
 		include/ast/leaf/fValueDef.hpp
 		include/ast/leaf/fType.hpp
@@ -89,7 +89,7 @@ add_executable(zebra-4-backend
 		src/lex/util/fLangMethNameCheck.cpp
 
 		src/ast/leaf/fClassDef.cpp
-		src/ast/leaf/fObject.cpp
+		src/ast/leaf/fObjectDef.cpp
 		src/ast/leaf/fLiteral.cpp
 		src/ast/leaf/fCompileUnit.cpp
 		src/ast/leaf/fStableId.cpp

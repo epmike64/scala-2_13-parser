@@ -73,7 +73,7 @@ namespace zebra::back::tree {
 		 void visit(sp<fModifier>, esc) override;
 		 void visit(sp<fModifiers>, esc) override;
 		 void visit(sp<fRegFunc>, esc) override;
-		 void visit(sp<fObject>, esc) override;
+		 void visit(sp<fObjectDef>, esc) override;
 		 void visit(sp<fOverrideModifier>, esc) override;
 		 void visit(sp<fPackage>, esc) override;
 		 void visit(sp<fParam>, esc) override;

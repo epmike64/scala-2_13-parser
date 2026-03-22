@@ -934,9 +934,9 @@ namespace zebra::parse {
 
 
 
-	sp<fObject> fParser::objectDef(bool isCase, sp<fModifiers> mods) {
+	sp<fObjectDef> fParser::objectDef(bool isCase, sp<fModifiers> mods) {
 		h.accept(fTKnd::T_OBJECT);
-		sp<fObject> obj = ms<fObject>(h.next(), std::move(mods), isCase);
+		sp<fObjectDef> obj = ms<fObjectDef>(h.next(), std::move(mods), isCase);
 		obj->setExtendsTemplate(classExtends(false));
 		return obj;
 	}

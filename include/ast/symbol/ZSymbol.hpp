@@ -214,6 +214,11 @@ namespace zebra::ast::symbol {
 		ZClassConstr() : ZSymbol(Z_CLASS_CONSTR) {}
 	};
 
+	class ZObjectDef: public ZId, public ZSymbol {
+		public:
+		explicit ZObjectDef(std::string zId) : ZId(std::move(zId)), ZSymbol(Z_OBJECT_DEF) {}
+	};
+
 	class ZClassDef : public ZTrait {
 		sp<ZClassDef> parentClass_;
 		PVecP<ZClassParam> clsParams_;

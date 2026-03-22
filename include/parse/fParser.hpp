@@ -12,7 +12,7 @@
 #include "ast/leaf/fClassDef.hpp"
 #include "ast/leaf/fImport.hpp"
 #include "ast/leaf/fLiteral.hpp"
-#include "ast/leaf/fObject.hpp"
+#include "ast/leaf/fObjectDef.hpp"
 #include "ast/leaf/fStableId.hpp"
 #include "ast/leaf/fType.hpp"
 #include "ast/leaf/fValueDef.hpp"
@@ -183,7 +183,7 @@ namespace zebra::parse {
 
 		sp<fTemplate> classExtends(bool isTrait);
 
-		sp<fObject> objectDef(bool isCase, sp<fModifiers> mods);
+		sp<fObjectDef> objectDef(bool isCase, sp<fModifiers> mods);
 		sp<fClassDef> classDef(bool isCase, sp<fModifiers> mods);
 
 		void classParamClauses2(sp<fClassParamClauses> cpcs);

@@ -35,7 +35,7 @@ namespace zebra::ast::leaf {
 	class fModifier;
 	class fModifiers;
 	class fRegFunc;
-	class fObject;
+	class fObjectDef;
 	class fOverrideModifier;
 	class fPackage;
 	class fParam;
@@ -113,7 +113,7 @@ namespace zebra::ast::node {
 		virtual void visit(sp<fModifier>, esc) = 0;
 		virtual void visit(sp<fModifiers>, esc) = 0;
 		virtual void visit(sp<fRegFunc>, esc) = 0;
-		virtual void visit(sp<fObject>, esc) = 0;
+		virtual void visit(sp<fObjectDef>, esc) = 0;
 		virtual void visit(sp<fOverrideModifier>, esc) = 0;
 		virtual void visit(sp<fPackage>, esc) = 0;
 		virtual void visit(sp<fParam>, esc) = 0;

@@ -16,7 +16,7 @@
 #include "ast/leaf/fLocalModifier.hpp"
 #include "ast/leaf/fModifiers.hpp"
 #include "ast/leaf/fRegFunc.hpp"
-#include "ast/leaf/fObject.hpp"
+#include "ast/leaf/fObjectDef.hpp"
 #include "ast/leaf/fOverrideModifier.hpp"
 #include "ast/leaf/fParam.hpp"
 #include "ast/leaf/fParamClauses.hpp"
@@ -77,29 +77,76 @@ namespace zebra::back::tree {
 
 	void  ZVisitor::visit(sp<fClassDef> cls, esc prnSc){
 
-		sp<ZClassDef> zcp = ms<ZClassDef>(cls->getIdentName());
-		esc s = ms<ZEnclScope>(prnSc, zcp);
+		std::cout << "Visiting "<< (cls->isCaseClass()? "Case ": "") <<"ClassDef "  << cls->getIdentName()  << std::endl;
+
+		sp<ZClassDef> zClsDef = ms<ZClassDef>(cls->getIdentName());
+		esc clsDefScp = ms<ZEnclScope>(prnSc, zClsDef);
 
 		if (cls->getModifiers()) {
-			cls->getModifiers()->accept(shared_from_this(), prnSc);
+			cls->getModifiers()->accept(shared_from_this(), clsDefScp);
 		}
 
 		if (cls->getConstrAccessModifier()) {
-			cls->getConstrAccessModifier()->accept(shared_from_this(), s);
+			cls->getConstrAccessModifier()->accept(shared_from_this(), clsDefScp);
 		}
 
 		// if (cls->getTypeParamClause()) {
-		// 	cls->getTypeParamClause()->accept(shared_from_this(), s);
+		// 	cls->getTypeParamClause()->accept(shared_from_this(), clsDefScp);
 		// }
 
 		if (cls->getClassParamClauses()) {
-			cls->getClassParamClauses()->accept(shared_from_this(), s);
+			cls->getClassParamClauses()->accept(shared_from_this(), clsDefScp);
 		}
 
 		if (cls->getExtendsTemplate()) {
-			cls->getExtendsTemplate()->accept(shared_from_this(), s);
+			cls->getExtendsTemplate()->accept(shared_from_this(), clsDefScp);
 		}
 	}
+
+	void ZVisitor::visit(sp<fObjectDef> obj, esc prnSc) {
+		std::cout << "Visiting "<< (obj->isCaseClass()? "Case ": "") <<"Object"  << obj->getIdentName()  << std::endl;
+
+		sp<ZObjectDef> zObjDef = ms<ZObjectDef>(obj->getIdentName());
+		esc objDefScp = ms<ZEnclScope>(prnSc, zObjDef);
+
+		if (obj->getModifiers()) {
+			obj->getModifiers()->accept(shared_from_this(), objDefScp);
+		}
+
+		if (obj->getExtendsTemplate()) {
+			obj->getExtendsTemplate()->accept(shared_from_this(), objDefScp);
+		}
+	}
+
+	void ZVisitor::visit(sp<fClassTemplate> n, esc prnSc) {
+		std::cout << "Visiting Class Template" << std::endl;
+		// esc s = ms<ZEnclScope>(prnSc, Z_CLASS_TEMPLATE);
+		// if (n->getClassParents()) {
+		// 	n->getClassParents()->accept(shared_from_this(), s);
+		// }
+		if (n->getTemplateBody()) {
+			n->getTemplateBody()->accept(shared_from_this(), prnSc);
+		}
+	}
+
+	void ZVisitor::visit(sp<fTemplate> n, esc prnSc) {
+		std::cout << "Visiting Template" << std::endl;
+		// esc s = ms<ZEnclScope>(prnSc, Z_TEMPLATE);
+		if (n->getTemplateBody()) {
+			n->getTemplateBody()->accept(shared_from_this(), prnSc);
+		}
+	}
+
+	void ZVisitor::visit(sp<fTemplateBody> n, esc prnSc) {
+		std::cout << "Visiting Template Body" << std::endl;
+
+		sp<ZTemplateBody> zTB = ms<ZTemplateBody>();
+		esc tbScp = ms<ZEnclScope>(prnSc,  zTB);
+		for (const auto& stmt : n->getStmts()) {
+			stmt->accept(shared_from_this(), tbScp);
+		}
+	}
+
 
 	void ZVisitor::visit(sp<fParamClauses> n, esc prnSc) {
 
@@ -128,14 +175,7 @@ namespace zebra::back::tree {
 
 
 
-	void ZVisitor::visit(sp<fTemplateBody> n, esc prnSc) {
 
-		sp<ZTemplateBody> z_tb = ms<ZTemplateBody>();
-		esc s = ms<ZEnclScope>(prnSc,  z_tb);
-		for (const auto& stmt : n->getStmts()) {
-			stmt->accept(shared_from_this(), s);
-		}
-	}
 
 	void ZVisitor::visit(sp<fParam> n, esc prnSc) {
 		std::cout << "Visiting Parameter: " << n->getIdentToken()->toString() << std::endl;
@@ -321,16 +361,7 @@ namespace zebra::back::tree {
 		// }
 	}
 
-	void ZVisitor::visit(sp<fClassTemplate> n, esc prnSc) {
-		std::cout << "Visiting Class Template" << std::endl;
-		// esc s = ms<ZEnclScope>(prnSc, Z_CLASS_TEMPLATE);
-		// if (n->getClassParents()) {
-		// 	n->getClassParents()->accept(shared_from_this(), s);
-		// }
-		// if (n->getTemplateBody()) {
-		// 	n->getTemplateBody()->accept(shared_from_this(), s);
-		// }
-	}
+
 
 	void ZVisitor::visit(sp<fConstrBlock> n, esc prnSc) {
 		std::cout << "Visiting Constructor Block" << std::endl;
@@ -450,21 +481,7 @@ namespace zebra::back::tree {
 
 
 
-	void ZVisitor::visit(sp<fObject> n, esc prnSc) {
-		std::cout << "Visiting Object" << std::endl;
-		// if (n->isCaseClass()) {
-		// 	std::cout << "Visiting Case Class: " << n->getObjectName()->toString()  << std::endl;
-		// } else {
-		// 	std::cout << "Visiting Class: " << n->getObjectName()->toString() << std::endl;
-		// }
-		// esc s = ms<ZEnclScope>(prnSc, Z_OBJECT);
-		// if (n->getModifiers()) {
-		// 	n->getModifiers()->accept(shared_from_this(), s);
-		// }
-		// if (n->getExtendsTemplate()) {
-		// 	n->getExtendsTemplate()->accept(shared_from_this(), s);
-		// }
-	}
+
 
 	void ZVisitor::visit(sp<fOverrideModifier> n, esc prnSc) {
 		std::cout << "Visiting Override Modifier: " << n->toString() << std::endl;
@@ -512,14 +529,6 @@ namespace zebra::back::tree {
 		// }
 	}
 
-	void ZVisitor::visit(sp<fTemplate> n, esc prnSc) {
-		std::cout << "Visiting Template" << std::endl;
-		// esc s = ms<ZEnclScope>(prnSc, Z_TEMPLATE);
-		if (n->getTemplateBody()) {
-
-			 n->getTemplateBody()->accept(shared_from_this(), prnSc);
-		}
-	}
 
 
 	void ZVisitor::visit(sp<fThisFunc> n, esc prnSc) {

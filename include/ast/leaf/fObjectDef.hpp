@@ -11,15 +11,15 @@ namespace zebra::ast::leaf {
 	using namespace zebra::ast::node;
 	using namespace zebra::util;
 
-	class fObject : public fAstOprndNod {
+	class fObjectDef : public fAstOprndNod {
 		const bool isCaseClass_;
-		const fToken* objectName_;
+		const fToken* identName_;
 		const sp<fModifiers> modifiers_;
 		sp<fTemplate> extendsTemplate_;
 
 	public:
 
-		fObject(const fToken* objectName, sp<fModifiers> &&modifiers, bool isCaseClass) ;
+		fObjectDef(const fToken* objectName, sp<fModifiers> &&modifiers, bool isCaseClass) ;
 
 		 bool isCaseClass() const ;
 
@@ -28,7 +28,8 @@ namespace zebra::ast::leaf {
 		 void setExtendsTemplate(sp<fTemplate> &&extendsTemplate) ;
 
 		 sp<fTemplate> getExtendsTemplate() const ;
-		const fToken* getObjectName() const ;
+		const fToken* getIdentToken() const ;
+		const std::string& getIdentName() const ;
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 

@@ -51,7 +51,9 @@ namespace zebra::back::tree {
 		}
 
 		sp<ZProdSubTreeN> prnt = std::dynamic_pointer_cast<ZProdSubTreeN>(prnSc->getZSymbol());
-		assert(prnt != nullptr);
+		if (prnt == nullptr) {
+			throw std::runtime_error("Parent symbol in scope must be a production subtree node");
+		}
 
 		std::stack<sp<fAstStackItem>> ss;
 		ss.push(ms<fAstStackItem>(psubT));
