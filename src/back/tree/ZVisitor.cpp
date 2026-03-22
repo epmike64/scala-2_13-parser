@@ -636,23 +636,6 @@ namespace zebra::back::tree {
 		}
 	}
 
-	class fAstStackItem {
-		sp<fAstNod> node;
-		bool leftVisited, rightVisited;
-	public:
-		fAstStackItem(sp<fAstNod> node) : node(node), leftVisited(false), rightVisited(false) {
-			if (this->node == nullptr) {
-				throw std::invalid_argument("AST node in stack item cannot be null");
-			}
-		}
-		void setLeftVisited() { leftVisited = true; }
-		void setRightVisited() { rightVisited = true; }
-		bool isLeftVisited() const { return leftVisited; }
-		bool isRightVisited() const { return rightVisited; }
-		sp<fAstNod> getNode() const { return node; }
-	};
-
-
 
 	void ZVisitor::visit(sp<fAstProdSubTreeN> subTr,  esc prnSc) {
 		std::cout << subTr->toString() << std::endl;
