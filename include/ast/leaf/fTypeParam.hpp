@@ -21,7 +21,7 @@ namespace zebra::ast::leaf {
 
 	class fTypeParam : public fAstOprndNod {
 	protected:
-		const fToken* typeParamName_ = nullptr;
+		const fToken* identName_ = nullptr;
 		sp<fTypeParamClause> typeParamClause_;
 		sp<fType> upperBound_, lowerBound_;
 		sp<std::vector<sp<fType>>> types_;
@@ -33,7 +33,9 @@ namespace zebra::ast::leaf {
 
 		void setTypeParamName(const fToken* typeParamName);
 
-		 const fToken* getTypeParamName() const ;
+		 const fToken* getIdentToken() const ;
+
+		std::string getIdentName() const ;
 
 		void setTypeParamClause(const sp<fTypeParamClause> &typeParamClause);
 

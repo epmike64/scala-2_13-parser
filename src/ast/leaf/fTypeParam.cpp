@@ -10,11 +10,15 @@ namespace zebra::ast::leaf {
 
 
 	void fTypeParam::setTypeParamName(const fToken* typeParamName) {
-		this->typeParamName_ = typeParamName;
+		this->identName_ = typeParamName;
 	}
 
-	const fToken* fTypeParam::getTypeParamName() const {
-		return typeParamName_;
+	const fToken* fTypeParam::getIdentToken() const {
+		return identName_;
+	}
+
+	std::string  fTypeParam::getIdentName() const {
+		return identName_->getTStrVal();
 	}
 
 	void fTypeParam::setTypeParamClause(const sp<fTypeParamClause> &typeParamClause) {
@@ -76,7 +80,7 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fTypeParam::toString() const {
-		return "TypeParam(name=" + (typeParamName_ ? typeParamName_->toString() : "null") +
+		return "TypeParam(name=" + (identName_ ? identName_->toString() : "null") +
 		       ", typeParamClause=" + (typeParamClause_ ? typeParamClause_->toString() : "null") +
 		       ", upperBound=" + (upperBound_ ? upperBound_->toString() : "null") +
 		       ", lowerBound=" + (lowerBound_ ? lowerBound_->toString() : "null") +
