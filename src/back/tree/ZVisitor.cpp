@@ -198,9 +198,7 @@ namespace zebra::back::tree {
 	}
 
 	void  ZVisitor::visit(sp<fType> n, esc prnSc)  {
-		sp<ZType> zcp = ms<ZType>();
-		esc s = ms<ZEnclScope>(prnSc,  zcp);
-		n->getTypeTree()->accept(shared_from_this(), s);
+		n->getTypeTree()->accept(shared_from_this(), prnSc);
 	}
 
 	void ZVisitor::visit(sp<fTypeParamClause> n, esc prnSc) {
@@ -675,7 +673,7 @@ namespace zebra::back::tree {
 		}
 
 		sp<ZProdSubTreeN> prnt = std::dynamic_pointer_cast<ZProdSubTreeN>(prnSc->getZSymbol());
-		sp<ZTreePostOrderSS> postOrderSS = prnt->getTreePostOrderSS();
+		assert(prnt != nullptr);
 
 		std::stack<sp<fAstStackItem>> ss ;
 
@@ -723,16 +721,12 @@ namespace zebra::back::tree {
 
 			ss.pop();
 			currNode->accept(shared_from_this(), prnSc);
-			postOrderSS->push_back(currNode);
 		}
 		std::cout << subTr->toString() + " END" << std::endl;
 	}
 
 
-	void  ZVisitor::visit(sp<fAstOptrNod> n, esc prnSc)  {
-		assert(n != nullptr);
-		std::cout << "Operator: " << n->toString() << std::endl;
-	}
+
 
 	void  ZVisitor::visit(sp<fAstOprndNod> n, esc prnSc)  {
 		assert(n != nullptr && n->getAstLeftN() == nullptr && n->getAstRightN() == nullptr);
@@ -743,11 +737,32 @@ namespace zebra::back::tree {
 	 *
 	 *  FOR LATER
 	 */
+
+	void  ZVisitor::visit(sp<fAstOptrNod> n, esc prnSc)  {
+		std::cout << "Operator: " << n->toString() << std::endl;
+		treePostOrderPush(n, prnSc);
+	}
+
 	void  ZVisitor::visit(sp<fLiteral> n, esc prnSc)  {
 		std::cout << "Visiting Literal: " << n->toString() << std::endl;
+		treePostOrderPush(n, prnSc);
 	}
+
 	void  ZVisitor::visit(sp<fStableId>n, esc prnSc)  {
 		std::cout << "Visiting StableId: " << n->toString() << std::endl;
+		treePostOrderPush(n, prnSc);
+	}
+
+	void ZVisitor::treePostOrderPush(sp<fAstNod> n, esc prnSc) {
+		sp<ZProdSubTreeN> prnt = std::dynamic_pointer_cast<ZProdSubTreeN>(prnSc->getZSymbol());
+		if (prnt) {
+			prnt->getTreePostOrderSS()->push_back(n);
+			std::cout << "Pushed: " + n->toString() << std::endl;
+			std::cout << prnt->getTreePostOrderSS()->toString() << std::endl;
+			std::cout <<  "" << std::endl;
+		} else {
+			std::cout << "" << std::endl;
+		}
 	}
 
 	/**

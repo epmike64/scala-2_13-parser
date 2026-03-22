@@ -140,6 +140,15 @@ namespace zebra::ast::symbol {
 		void push_back(sp<fAstNod> n) {
 			postOrderSS_.push_back(n);
 		}
+		std::string toString() const{
+			std::stringstream out;
+			out << "PostOrderSS: [";
+			for (const auto& nod : postOrderSS_) {
+				out << (nod ? nod->toString() : "null") << ", ";
+			}
+			out << "]";
+			return out.str();
+		}
 	};
 
 	class ZProdSubTreeN: public ZSymbol {
