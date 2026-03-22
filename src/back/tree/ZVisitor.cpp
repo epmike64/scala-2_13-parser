@@ -164,31 +164,21 @@ namespace zebra::back::tree {
 		ZVisitHelp::visitClassParamClauses(n, prnSc, shared_from_this());
 	}
 
+	void ZVisitor::visit(sp<fTypeParamClause> n, esc prnSc) {
+		ZVisitHelp::visitTypeParamClauses(n, prnSc, shared_from_this());
+	}
+
+	void ZVisitor::visit(sp<fVariantTypeParam> n, esc prnSc) {
+		std::cout << "Visiting VariantTypeParam: " << n->toString() << std::endl;
+		sp<ZVariantTypeParam> vTp = ms<ZVariantTypeParam>();
+		esc vTpScp = ms<ZEnclScope>(prnSc,  vTp);
+	}
 
 
 
 
 	void ZVisitor::visit(sp<fParam> n, esc prnSc) {
-		std::cout << "Visiting Parameter: " << n->getIdentToken()->toString() << std::endl;
-
-		assert(prnSc->getLangConstruct() == Z_REG_FUNC || prnSc->getLangConstruct() == Z_THIS_FUNC);
-		sp<ZParam> zParam = ms<ZParam>(n->getIdentName());
-
-		esc zParamScp = ms<ZEnclScope>(prnSc,  zParam);
-		n->getParamType()->accept(shared_from_this(), zParamScp);
-
-
-		sp<fAstProdSubTreeN> assignExpr = n->getDefaultValueExpr();
-		if (assignExpr != nullptr) {
-			sp<ZProdSubTreeN> zPSubTr = ms<ZProdSubTreeN>(Z_PARAM_DEFAULT_EXPR);
-			esc zPSubTrScp = ms<ZEnclScope>(prnSc,  zPSubTr);
-
-			assignExpr->accept(shared_from_this(), zPSubTrScp);
-			zParam->setDefaultValueExpr(zPSubTr->getTreePostOrderSS());
-		}
-
-		sp<ZFunc> f = std::dynamic_pointer_cast<ZFunc>(prnSc->getZSymbol());
-		f->addParam(zParam);
+		ZVisitHelp::visitParam(n, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fClassParam> n, esc prnSc) {
@@ -203,23 +193,6 @@ namespace zebra::back::tree {
 		n->getTypeTree()->accept(shared_from_this(), prnSc);
 	}
 
-	void ZVisitor::visit(sp<fTypeParamClause> n, esc prnSc) {
-
-		sp<ZVariantTypeParam> vTp = ms<ZVariantTypeParam>();
-		esc vTpScp = ms<ZEnclScope>(prnSc,  vTp);
-
-		for (auto typeParam : *n->getVariantTypeParams()) {
-
-
-			typeParam->accept(shared_from_this(), vTpScp);
-		}
-	}
-
-	void ZVisitor::visit(sp<fVariantTypeParam> n, esc prnSc) {
-		std::cout << "Visiting VariantTypeParam: " << n->toString() << std::endl;
-		sp<ZVariantTypeParam> vTp = ms<ZVariantTypeParam>();
-		esc vTpScp = ms<ZEnclScope>(prnSc,  vTp);
-	}
 
 
 	void ZVisitor::visit(sp<fClassConstr> n, esc prnSc) {

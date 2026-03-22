@@ -6,7 +6,9 @@
 #include "ast/leaf/fClassParam.hpp"
 #include "ast/symbol/ZEnclScope.hpp"
 #include "ast/leaf/fClassParamClauses.hpp"
+#include "ast/leaf/fParam.hpp"
 #include "ast/leaf/fParamType.hpp"
+#include "ast/leaf/fTypeParamClause.hpp"
 
 namespace zebra::back::tree {
 	using namespace ast::symbol;
@@ -28,7 +30,7 @@ namespace zebra::back::tree {
 			prnt->getTreePostOrderSS()->push_back(n);
 			std::cout << "Pushed: " + n->toString() << std::endl;
 			std::cout << prnt->getTreePostOrderSS()->toString() << std::endl;
-			std::cout <<  "" << std::endl;
+			std::cout << "" << std::endl;
 		} else {
 			std::cout << "" << std::endl;
 		}
@@ -58,7 +60,7 @@ namespace zebra::back::tree {
 			throw std::runtime_error("Parent symbol in scope must be a production subtree node");
 		}
 
-		std::stack<sp<fAstStackItem>> ss;
+		std::stack<sp<fAstStackItem> > ss;
 		ss.push(ms<fAstStackItem>(psubT));
 
 		while (!ss.empty()) {
@@ -108,36 +110,67 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitHelp::visitClassParamClauses(sp<fClassParamClauses> n, esc prnSc, sp<fAstNodVisitor> visitor) {
-
 		assert(prnSc->getZSymbol() != nullptr && prnSc->getLangConstruct() == Z_CLASS_DEF);
 
-		for (const auto& classParamList : n->getClassParamLists()) {
-			for (const auto& classParam : classParamList) {
+		for (const auto &classParamList: n->getClassParamLists()) {
+			for (const auto &classParam: classParamList) {
 				classParam->accept(visitor, prnSc);
 			}
 		}
-		for (const auto& implicitClassParam : n->getImplicitClassParamList()) {
+		for (const auto &implicitClassParam: n->getImplicitClassParamList()) {
 			implicitClassParam->accept(visitor, prnSc);
 		}
 	}
 
-	void ZVisitHelp::visitClassParam(sp<fClassParam> fClsPar, esc prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitHelp::visitTypeParamClauses(sp<fTypeParamClause> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+		for (auto variantTypeParam: *n->getVariantTypeParams()) {
+			variantTypeParam->accept(visitor, prnSc);
+		}
+	}
+
+
+	void ZVisitHelp::visitTypeParam(sp<fTypeParam> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+	}
+
+	void ZVisitHelp::visitClassParam(sp<fClassParam> clsPar, esc prnSc, sp<fAstNodVisitor> visitor) {
+		std::cout << "Visiting Class Parameter: " << clsPar->getIdentName() << std::endl;
 		assert(prnSc->getLangConstruct() == Z_CLASS_DEF);
 
-		sp<ZClassParam> clsParam = ms<ZClassParam>(fClsPar->getIdentName(), fClsPar->isMutable() );
-		esc clsParamScp = ms<ZEnclScope>(prnSc,  clsParam);
-		fClsPar->getParamType()->accept(visitor, clsParamScp);
+		sp<ZClassParam> clsParam = ms<ZClassParam>(clsPar->getIdentName(), clsPar->isMutable());
+		esc clsParamScp = ms<ZEnclScope>(prnSc, clsParam);
+		clsPar->getParamType()->accept(visitor, clsParamScp);
 
-
-		sp<fAstProdSubTreeN> assignExpr = fClsPar->getDefaultValueExpr();
+		sp<fAstProdSubTreeN> assignExpr = clsPar->getDefaultValueExpr();
 		if (assignExpr != nullptr) {
 			sp<ZProdSubTreeN> pSubTr = ms<ZProdSubTreeN>(Z_CLASS_PARAM_DEFAULT_EXPR);
-			esc pSubTrScp = ms<ZEnclScope>(prnSc,  pSubTr);
+			esc pSubTrScp = ms<ZEnclScope>(prnSc, pSubTr);
 
 			assignExpr->accept(visitor, pSubTrScp);
 			clsParam->setDefaultValueExpr(pSubTr->getTreePostOrderSS());
 		}
 		sp<ZClassDef> clsDef = std::dynamic_pointer_cast<ZClassDef>(prnSc->getZSymbol());
 		clsDef->addClassParam(clsParam);
+	}
+
+	void ZVisitHelp::visitParam(sp<fParam> par, esc prnSc, sp<fAstNodVisitor> visitor) {
+		std::cout << "Visiting Parameter: " << par->getIdentName() << std::endl;
+
+		assert(prnSc->getLangConstruct() == Z_REG_FUNC || prnSc->getLangConstruct() == Z_THIS_FUNC);
+		sp<ZParam> zParam = ms<ZParam>(par->getIdentName());
+
+		esc zParamScp = ms<ZEnclScope>(prnSc, zParam);
+		par->getParamType()->accept(visitor, zParamScp);
+
+		sp<fAstProdSubTreeN> assignExpr = par->getDefaultValueExpr();
+		if (assignExpr != nullptr) {
+			sp<ZProdSubTreeN> zPSubTr = ms<ZProdSubTreeN>(Z_PARAM_DEFAULT_EXPR);
+			esc zPSubTrScp = ms<ZEnclScope>(prnSc, zPSubTr);
+
+			assignExpr->accept(visitor, zPSubTrScp);
+			zParam->setDefaultValueExpr(zPSubTr->getTreePostOrderSS());
+		}
+
+		sp<ZFunc> f = std::dynamic_pointer_cast<ZFunc>(prnSc->getZSymbol());
+		f->addParam(zParam);
 	}
 }
