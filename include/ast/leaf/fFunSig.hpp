@@ -24,7 +24,7 @@ namespace zebra::ast::leaf {
 
 			 sp<fParamClauses> getParamClauses() const ;
 
-			sp<std::vector<sp<fTypeParam>>> getTypeParam() const;
+			sp<std::vector<sp<fTypeParam>>> getTypeParamList() const;
 
 			void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 			std::string toString() const override;

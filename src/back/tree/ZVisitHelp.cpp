@@ -3,7 +3,9 @@
 #include <iostream>
 #include <stack>
 
+#include "ast/leaf/fClassParam.hpp"
 #include "ast/symbol/ZEnclScope.hpp"
+#include "ast/leaf/fClassParamClauses.hpp"
 
 namespace zebra::back::tree {
 	using namespace ast::symbol;
@@ -102,5 +104,16 @@ namespace zebra::back::tree {
 		}
 
 		std::cout << subTr->toString() + " END" << std::endl;
+	}
+
+	void ZVisitHelp::visitClassParamClauses(sp<fClassParamClauses> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+		for (const auto& classParamList : n->getClassParamLists()) {
+			for (const auto& classParam : classParamList) {
+				classParam->accept(visitor, prnSc);
+			}
+		}
+		for (const auto& implicitClassParam : n->getImplicitClassParamList()) {
+			implicitClassParam->accept(visitor, prnSc);
+		}
 	}
 }

@@ -214,6 +214,19 @@ namespace zebra::ast::symbol {
 		ZClassConstr() : ZSymbol(Z_CLASS_CONSTR) {}
 	};
 
+	class ZTypeParamFlatList: public ZSymbol {
+	protected:
+		vecP<ZTypeParam> typeParams_;
+	public:
+		ZTypeParamFlatList() : ZSymbol(Z_TYPE_PARAM_ARGS) {}
+		void addTypeParam(sp<ZTypeParam> tp) {
+			typeParams_.push_back(tp);
+		}
+		void addTypeParams(vecP<ZTypeParam> tps) {
+			typeParams_.insert(typeParams_.end(), tps.begin(), tps.end());
+		}
+	};
+
 	class ZObjectDef: public ZId, public ZSymbol {
 		public:
 		explicit ZObjectDef(std::string zId) : ZId(std::move(zId)), ZSymbol(Z_OBJECT_DEF) {}
@@ -223,7 +236,7 @@ namespace zebra::ast::symbol {
 		sp<ZClassDef> parentClass_;
 		PVecP<ZClassParam> clsParams_;
 		PVecP<ZTrait> traits_;
-		PVecP<ZTypeParam> typeParams_;
+		sp<ZTypeParamFlatList> typeParams_;
 		PVecP<ZClassConstr> constrs_;
 		// PVecP<ZDecl> decls_;
 		PVecP<ZRegFunc> funcs_;

@@ -30,5 +30,6 @@ namespace zebra::back::tree {
 		static void treePostOrderPush(sp<fAstNod> n, esc prnSc);
 		static sp<fAstNod> getAstPSTreeRightN(sp<fAstProdSubTreeN> subTr);
 		static void traverseProdSubTree(sp<fAstProdSubTreeN> subTr, esc prnSc, sp<fAstNodVisitor> visitor);
+		static void visitClassParamClauses(sp<fClassParamClauses> n, esc prnSc, sp<fAstNodVisitor> visitor);
 	};
 }

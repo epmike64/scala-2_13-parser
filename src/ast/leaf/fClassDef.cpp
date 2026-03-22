@@ -39,10 +39,6 @@ namespace zebra::ast::leaf {
 
 		std::string typeParamsStr;
 		if (typeParamClause_) {
-			// for (const auto &tp: *typeParams_) {
-			// 	if (!typeParamsStr.empty()) typeParamsStr += ", ";
-			// 	typeParamsStr += tp->toString();
-			// }
 			typeParamsStr = typeParamClause_->toString();
 		}
 

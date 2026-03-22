@@ -37,7 +37,7 @@ namespace zebra::ast::leaf {
 		return paramClauses_;
 	}
 
-	sp<std::vector<sp<fTypeParam>>> fFunSig::getTypeParam() const {
+	sp<std::vector<sp<fTypeParam>>> fFunSig::getTypeParamList() const {
 		return typeParam_;
 	}
 

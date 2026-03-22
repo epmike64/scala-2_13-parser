@@ -90,9 +90,9 @@ namespace zebra::back::tree {
 			cls->getConstrAccessModifier()->accept(shared_from_this(), clsDefScp);
 		}
 
-		// if (cls->getTypeParamClause()) {
-		// 	cls->getTypeParamClause()->accept(shared_from_this(), clsDefScp);
-		// }
+		if (cls->getTypeParamClause()) {
+			cls->getTypeParamClause()->accept(shared_from_this(), clsDefScp);
+		}
 
 		if (cls->getClassParamClauses()) {
 			cls->getClassParamClauses()->accept(shared_from_this(), clsDefScp);
@@ -161,16 +161,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fClassParamClauses> n, esc prnSc) {
-		for (const auto& classParamList : n->getClassParamLists()) {
-
-			for (auto & classParam : classParamList) {
-				classParam->accept(shared_from_this(), prnSc);
-			}
-		}
-		/*
-		for (const auto& implicitClassParam : n->getImplicitClassParamList()) {
-			implicitClassParam->accept(shared_from_this(), prnSc);
-		}*/
+		ZVisitHelp::visitClassParamClauses(n, prnSc, shared_from_this());
 	}
 
 
@@ -231,18 +222,20 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fTypeParamClause> n, esc prnSc) {
 
-		esc clsScp = ZVisitHelp::getWrapScope(prnSc, Z_CLASS_DEF);
+		sp<ZVariantTypeParam> vTp = ms<ZVariantTypeParam>();
+		esc vTpScp = ms<ZEnclScope>(prnSc,  vTp);
 
 		for (auto typeParam : *n->getVariantTypeParams()) {
 
-			sp<ZVariantTypeParam> z_vtp = ms<ZVariantTypeParam>();
-			esc s = ms<ZEnclScope>(prnSc,  z_vtp);
-			typeParam->accept(shared_from_this(), s);
+
+			typeParam->accept(shared_from_this(), vTpScp);
 		}
 	}
 
 	void ZVisitor::visit(sp<fVariantTypeParam> n, esc prnSc) {
 		std::cout << "Visiting VariantTypeParam: " << n->toString() << std::endl;
+		sp<ZVariantTypeParam> vTp = ms<ZVariantTypeParam>();
+		esc vTpScp = ms<ZEnclScope>(prnSc,  vTp);
 	}
 
 
@@ -460,22 +453,21 @@ namespace zebra::back::tree {
 
 
 
-	void ZVisitor::visit(sp<fRegFunc> n, esc prnSc) {
-		std::cout << "Visiting Named Function: " << n->getFunSig()->getIdentToken()->toString() << std::endl;
-		sp<ZRegFunc> zFunc = ms<ZRegFunc>(n->getFunSig()->getIdentName());
+	void ZVisitor::visit(sp<fRegFunc> fun, esc prnSc) {
+		std::cout << "Visiting Named Function: " << fun->getFunSig()->getIdentName() << std::endl;
+
+		sp<ZRegFunc> zFunc = ms<ZRegFunc>(fun->getFunSig()->getIdentName());
 		esc zFunScp = ms<ZEnclScope>(prnSc,  zFunc);
 
-		// esc s = ms<ZEnclScope>(prnSc, Z_NAMED_FUN);
-		// if (n->getModifiers()) {
-		// 	n->getModifiers()->accept(shared_from_this(), s);
-		// }
+		if (fun->getModifiers()) {
+			fun->getModifiers()->accept(shared_from_this(), zFunScp);
+		}
 
-		n->getFunSig()->accept(shared_from_this(), zFunScp);
+		fun->getFunSig()->accept(shared_from_this(), zFunScp);
 
-		// std::cout << "Visiting Named Function Body" << std::endl;
-		// if (n->getFunBody()) {
-		// 	n->getFunBody()->accept(shared_from_this(), s);
-		// }
+		if (fun->getFunBody()) {
+			fun->getFunBody()->accept(shared_from_this(), zFunScp);
+		}
 	}
 
 
@@ -504,20 +496,19 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fFunSig> n, esc prnSc) {
-		std::cout << "Visiting Function Signature: " << n->getIdentToken()->toString() << std::endl;
+		std::cout << "Visiting FunSig: " << n->getIdentName() << std::endl;
 
 		// esc s = ms<ZEnclScope>(prnSc, Z_FUN_SIG);
 		assert(prnSc->getLangConstruct() == Z_REG_FUNC);
+
+		if (n->getTypeParamList()) {
+			for (auto tpp :*n->getTypeParamList()) {
+					tpp->accept(shared_from_this(), prnSc);
+			}
+		}
 		if (n->getParamClauses()) {
 			n->getParamClauses()->accept(shared_from_this(), prnSc);
 		}
-		// if (n->getTypeParam()) {
-		// 	std::cout << "Visiting Function Type Parameters" << std::endl;
-		// 	auto typeParams = *n->getTypeParam().get();
-		// 	for (auto tpp : typeParams) {
-		// 			tpp->accept(shared_from_this(), prnSc);
-		// 	}
-		// }
 	}
 
 	void ZVisitor::visit(sp<fReturn> n, esc prnSc) {
