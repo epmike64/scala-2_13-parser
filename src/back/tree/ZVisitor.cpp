@@ -155,9 +155,9 @@ namespace zebra::back::tree {
 				param->accept(shared_from_this(), prnSc);
 			}
 		}
-		/*for (auto impicitParam: *n->getImplicitParamList()) {
+		for (auto impicitParam: *n->getImplicitParamList()) {
 			impicitParam->accept(shared_from_this(), prnSc);
-		}*/
+		}
 	}
 
 	void ZVisitor::visit(sp<fClassParamClauses> n, esc prnSc) {
