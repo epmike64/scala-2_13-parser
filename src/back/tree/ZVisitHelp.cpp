@@ -128,6 +128,11 @@ namespace zebra::back::tree {
 		}
 	}
 
+	void ZVisitHelp::visitVariantTypeParam(sp<fVariantTypeParam> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+		std::cout << "Visiting VariantTypeParam: " << n->toString() << std::endl;
+		// sp<ZVariantTypeParam> vTp = ms<ZVariantTypeParam>();
+		// esc vTpScp = ms<ZEnclScope>(prnSc,  vTp);
+	}
 
 	void ZVisitHelp::visitTypeParam(sp<fTypeParam> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 	}

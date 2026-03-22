@@ -169,9 +169,8 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fVariantTypeParam> n, esc prnSc) {
-		std::cout << "Visiting VariantTypeParam: " << n->toString() << std::endl;
-		sp<ZVariantTypeParam> vTp = ms<ZVariantTypeParam>();
-		esc vTpScp = ms<ZEnclScope>(prnSc,  vTp);
+		ZVisitHelp::visitVariantTypeParam(n, prnSc, shared_from_this());
+
 	}
 
 
