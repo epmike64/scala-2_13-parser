@@ -37,18 +37,6 @@
 
 namespace zebra::back::tree {
 
-	// esc getWrapScope(esc prnSc,   ZLangConstruct lc) {
-	// 	assert(prnSc != nullptr);
-	// 	while (prnSc->getLangConstruct() != lc) {
-	// 		prnSc = prnSc->getParentScope();
-	// 		if (prnSc == nullptr) {
-	// 			throw std::runtime_error("No enclosing scope found for language construct: " + std::to_string(lc));
-	// 		}
-	// 	}
-	// 	return prnSc;
-	// }
-
-
 	void ZVisitor::visit() {
 		std::cout << "--- Visitor starts ---" << std::endl;
 		esc s = ms<ZEnclScope>(nullptr, ms<ZProgram>());
@@ -741,30 +729,20 @@ namespace zebra::back::tree {
 
 	void  ZVisitor::visit(sp<fAstOptrNod> n, esc prnSc)  {
 		std::cout << "Operator: " << n->toString() << std::endl;
-		treePostOrderPush(n, prnSc);
+		ZVisitHelp::treePostOrderPush(n, prnSc);
 	}
 
 	void  ZVisitor::visit(sp<fLiteral> n, esc prnSc)  {
 		std::cout << "Visiting Literal: " << n->toString() << std::endl;
-		treePostOrderPush(n, prnSc);
+		ZVisitHelp::treePostOrderPush(n, prnSc);
 	}
 
 	void  ZVisitor::visit(sp<fStableId>n, esc prnSc)  {
 		std::cout << "Visiting StableId: " << n->toString() << std::endl;
-		treePostOrderPush(n, prnSc);
+		ZVisitHelp::treePostOrderPush(n, prnSc);
 	}
 
-	void ZVisitor::treePostOrderPush(sp<fAstNod> n, esc prnSc) {
-		sp<ZProdSubTreeN> prnt = std::dynamic_pointer_cast<ZProdSubTreeN>(prnSc->getZSymbol());
-		if (prnt) {
-			prnt->getTreePostOrderSS()->push_back(n);
-			std::cout << "Pushed: " + n->toString() << std::endl;
-			std::cout << prnt->getTreePostOrderSS()->toString() << std::endl;
-			std::cout <<  "" << std::endl;
-		} else {
-			std::cout << "" << std::endl;
-		}
-	}
+
 
 	/**
 	 *

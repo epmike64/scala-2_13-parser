@@ -83,8 +83,6 @@ namespace zebra::back::tree {
 		 void visit(sp<fReturn>, esc) override;
 		 void visit(sp<fStableId>, esc) override;
 
-		void treePostOrderPush(sp<fAstNod> n, esc prnSc);
-
 		void visit(sp<fTemplate>, esc) override;
 		 void visit(sp<fTemplateBody>, esc) override;
 		 void visit(sp<fThisFunc>, esc) override;
