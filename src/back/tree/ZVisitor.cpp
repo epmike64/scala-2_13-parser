@@ -237,7 +237,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fParamTypes> n, esc prnSc) {
-		std::cout << "Visiting Parameter Types" << std::endl;
+		ZVisitTypeHelp::visitParamTypes(n, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fFunSig> n, esc prnSc) {
@@ -249,7 +249,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fThisFunc> n, esc prnSc) {
-		std::cout << "Visiting This Function" << std::endl;
+		ZVisitFuncHelp::visitThisFunc(n, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fThrow> n, esc prnSc) {

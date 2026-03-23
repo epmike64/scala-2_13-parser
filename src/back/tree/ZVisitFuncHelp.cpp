@@ -67,4 +67,9 @@ namespace zebra::back::tree {
 		}
 	}
 
+
+	void ZVisitFuncHelp::visitThisFunc(sp<fThisFunc> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+		std::cout << "Visiting This Function" << std::endl;
+	}
+
 }

@@ -13,6 +13,6 @@ namespace zebra::back::tree {
 	public:
 		static void visitRegFunc(sp<fRegFunc> fun, esc prnSc, sp<fAstNodVisitor> visitor);
 		static void visitFunSig(sp<fFunSig> n, esc prnSc, sp<fAstNodVisitor> visitor);
-
+		static void visitThisFunc(sp<fThisFunc> n, esc prnSc, sp<fAstNodVisitor> visitor);
 	};
 }

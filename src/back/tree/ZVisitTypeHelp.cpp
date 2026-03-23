@@ -6,6 +6,7 @@
 #include "ast/leaf/fClassParamClauses.hpp"
 #include "ast/leaf/fParam.hpp"
 #include "ast/leaf/fParamType.hpp"
+#include "ast/leaf/fParamTypes.hpp"
 #include "ast/leaf/fTypeParamClause.hpp"
 #include "ast/symbol/ZEnclScope.hpp"
 #include "ast/symbol/ZLangConstruct.hpp"
@@ -101,4 +102,12 @@ namespace zebra::back::tree {
 		sp<ZFunc> f = std::dynamic_pointer_cast<ZFunc>(prnSc->getZSymbol());
 		f->addParam(zParam);
 	}
+
+	void ZVisitTypeHelp::visitParamTypes(sp<fParamTypes> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+		std::cout << "Visiting Parameter Types" << std::endl;
+		for (const auto& paramType: *n->getParamTypes()) {
+			paramType->accept(visitor, prnSc);
+		}
+	}
+
 }
