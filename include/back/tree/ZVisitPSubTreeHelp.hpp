@@ -24,7 +24,7 @@ namespace zebra::back::tree {
 		sp<fAstNod> getNode() const { return node; }
 	};
 
-	class ZVisitHelp {
+	class ZVisitPSubTreeHelp {
 	public:
 		static esc getWrapScope(esc prnSc, ZLangConstruct lc);
 		static void treePostOrderPush(sp<fAstNod> n, esc prnSc);

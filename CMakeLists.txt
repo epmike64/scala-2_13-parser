@@ -181,8 +181,8 @@ add_executable(zebra-4-backend
 		include/ast/symbol/ZLangConstruct.hpp
 		include/ast/symbol/ZError.hpp
 		include/util/fUUID.hpp
-		src/back/tree/ZVisitHelp.cpp
-		include/back/tree/ZVisitHelp.hpp
+		src/back/tree/ZVisitPSubTreeHelp.cpp
+		include/back/tree/ZVisitPSubTreeHelp.hpp
 		src/back/tree/ZVisitTypeHelp.cpp
 		include/back/tree/ZVisitTypeHelp.hpp
 		src/back/tree/ZVisitFuncHelp.cpp

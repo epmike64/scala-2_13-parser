@@ -33,7 +33,7 @@
 #include "ast/leaf/fVariantTypeParam.hpp"
 #include "back/tree/ZVisitFuncHelp.hpp"
 #include "util/fUUID.hpp"
-#include "back/tree/ZVisitHelp.hpp"
+#include "back/tree/ZVisitPSubTreeHelp.hpp"
 #include "back/tree/ZVisitTypeHelp.hpp"
 
 namespace zebra::back::tree {
@@ -555,11 +555,11 @@ namespace zebra::back::tree {
 
 
 	sp<fAstNod> ZVisitor::getAstPSTreeRightN(sp<fAstProdSubTreeN> subTree) {
-		return ZVisitHelp::getAstPSTreeRightN(subTree);
+		return ZVisitPSubTreeHelp::getAstPSTreeRightN(subTree);
 	}
 
 	void ZVisitor::visit(sp<fAstProdSubTreeN> subTr, esc prnSc) {
-		ZVisitHelp::traverseProdSubTree(subTr, prnSc, shared_from_this());
+		ZVisitPSubTreeHelp::traverseProdSubTree(subTr, prnSc, shared_from_this());
 	}
 
 
@@ -577,17 +577,17 @@ namespace zebra::back::tree {
 
 	void  ZVisitor::visit(sp<fAstOptrNod> n, esc prnSc)  {
 		std::cout << "Operator: " << n->toString() << std::endl;
-		ZVisitHelp::treePostOrderPush(n, prnSc);
+		ZVisitPSubTreeHelp::treePostOrderPush(n, prnSc);
 	}
 
 	void  ZVisitor::visit(sp<fLiteral> n, esc prnSc)  {
 		std::cout << "Visiting Literal: " << n->toString() << std::endl;
-		ZVisitHelp::treePostOrderPush(n, prnSc);
+		ZVisitPSubTreeHelp::treePostOrderPush(n, prnSc);
 	}
 
 	void  ZVisitor::visit(sp<fStableId>n, esc prnSc)  {
 		std::cout << "Visiting StableId: " << n->toString() << std::endl;
-		ZVisitHelp::treePostOrderPush(n, prnSc);
+		ZVisitPSubTreeHelp::treePostOrderPush(n, prnSc);
 	}
 
 

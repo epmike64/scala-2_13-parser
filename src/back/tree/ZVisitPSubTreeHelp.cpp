@@ -1,4 +1,4 @@
-#include "back/tree/ZVisitHelp.hpp"
+#include "back/tree/ZVisitPSubTreeHelp.hpp"
 
 #include <iostream>
 #include <stack>
@@ -13,7 +13,7 @@
 namespace zebra::back::tree {
 	using namespace ast::symbol;
 
-	esc ZVisitHelp::getWrapScope(esc prnSc, ZLangConstruct lc) {
+	esc ZVisitPSubTreeHelp::getWrapScope(esc prnSc, ZLangConstruct lc) {
 		assert(prnSc != nullptr);
 		while (prnSc->getLangConstruct() != lc) {
 			prnSc = prnSc->getParentScope();
@@ -24,7 +24,7 @@ namespace zebra::back::tree {
 		return prnSc;
 	}
 
-	void ZVisitHelp::treePostOrderPush(sp<fAstNod> n, esc prnSc) {
+	void ZVisitPSubTreeHelp::treePostOrderPush(sp<fAstNod> n, esc prnSc) {
 		sp<ZProdSubTreeN> prnt = std::dynamic_pointer_cast<ZProdSubTreeN>(prnSc->getZSymbol());
 		if (prnt) {
 			prnt->getTreePostOrderSS()->push_back(n);
@@ -36,7 +36,7 @@ namespace zebra::back::tree {
 		}
 	}
 
-	sp<fAstNod> ZVisitHelp::getAstPSTreeRightN(sp<fAstProdSubTreeN> subTr) {
+	sp<fAstNod> ZVisitPSubTreeHelp::getAstPSTreeRightN(sp<fAstProdSubTreeN> subTr) {
 		while (true) {
 			sp<fAstNod> subTRight = subTr->getRootOpNod()->getAstRightN();
 			sp<fAstProdSubTreeN> subTRight_SubTr = std::dynamic_pointer_cast<fAstProdSubTreeN>(subTRight);
@@ -47,7 +47,7 @@ namespace zebra::back::tree {
 		}
 	}
 
-	void ZVisitHelp::traverseProdSubTree(sp<fAstProdSubTreeN> subTr, esc prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitPSubTreeHelp::traverseProdSubTree(sp<fAstProdSubTreeN> subTr, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << subTr->toString() << std::endl;
 
 		sp<fAstNod> psubT = getAstPSTreeRightN(subTr);
