@@ -189,6 +189,8 @@ add_executable(zebra-4-backend
 		include/back/tree/ZVisitFuncHelp.hpp
 		include/back/tree/ZVisitStmtHelp.hpp
 		src/back/tree/ZVisitStmtHelp.cpp
+		src/back/tree/ZVisitClassHelp.cpp
+		include/back/tree/ZVisitClassHelp.hpp
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE

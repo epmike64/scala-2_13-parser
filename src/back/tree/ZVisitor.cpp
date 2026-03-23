@@ -31,6 +31,7 @@
 #include "ast/leaf/fUnderscore.hpp"
 #include "ast/leaf/fValueDecl.hpp"
 #include "ast/leaf/fVariantTypeParam.hpp"
+#include "back/tree/ZVisitClassHelp.hpp"
 #include "back/tree/ZVisitFuncHelp.hpp"
 #include "util/fUUID.hpp"
 #include "back/tree/ZVisitPSubTreeHelp.hpp"
@@ -79,31 +80,7 @@ namespace zebra::back::tree {
 
 
 	void  ZVisitor::visit(sp<fClassDef> cls, esc prnSc){
-
-		std::cout << "Visiting "<< (cls->isCaseClass()? "Case ": "") <<"ClassDef "  << cls->getIdentName()  << std::endl;
-
-		sp<ZClassDef> zClsDef = ms<ZClassDef>(cls->getIdentName());
-		esc clsDefScp = ms<ZEnclScope>(prnSc, zClsDef);
-
-		if (cls->getModifiers()) {
-			cls->getModifiers()->accept(shared_from_this(), clsDefScp);
-		}
-
-		if (cls->getConstrAccessModifier()) {
-			cls->getConstrAccessModifier()->accept(shared_from_this(), clsDefScp);
-		}
-
-		if (cls->getTypeParamClause()) {
-			cls->getTypeParamClause()->accept(shared_from_this(), clsDefScp);
-		}
-
-		if (cls->getClassParamClauses()) {
-			cls->getClassParamClauses()->accept(shared_from_this(), clsDefScp);
-		}
-
-		if (cls->getExtendsTemplate()) {
-			cls->getExtendsTemplate()->accept(shared_from_this(), clsDefScp);
-		}
+		ZVisitClassHelp::visitClassDef(cls, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fObjectDef> obj, esc prnSc) {
