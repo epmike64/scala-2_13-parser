@@ -276,7 +276,6 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fTypeParam> n, esc prnSc) {
-		std::cout << "Visiting Type Parameter: " << n->getIdentToken()->toString() << std::endl;
 		ZVisitTypeHelp::visitTypeParam(n, prnSc, shared_from_this());
 	}
 

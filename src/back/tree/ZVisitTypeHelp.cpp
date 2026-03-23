@@ -54,8 +54,8 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitTypeHelp::visitTypeParam(sp<fTypeParam> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+		std::cout << "Visiting Type Parameter: " << n->getIdentToken()->toString() << std::endl;
 		if (n->getTypeParamClause()) {
-			std::cout << "Visiting Type Parameter Clause for Type Parameter: " << n->getIdentName() << std::endl;
 			n->getTypeParamClause()->accept(visitor, prnSc);
 		}
 	}
