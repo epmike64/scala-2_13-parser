@@ -137,8 +137,6 @@ namespace zebra::parse {
 
 		sp<fTypeParam> typeParam();
 
-		sp<fTypeParam> typeParam2(sp<fTypeParam> p);
-
 		std::vector<sp<fTypeParam>> funTypeParams();
 
 		sp<fValue> varDef(sp<fModifiers> mods);

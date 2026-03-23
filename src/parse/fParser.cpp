@@ -1581,12 +1581,9 @@ namespace zebra::parse {
 		return cc;
 	}
 
+
 	sp<fTypeParam> fParser::typeParam() {
-		return typeParam2(ms<fTypeParam>());
-	}
-
-	sp<fTypeParam> fParser::typeParam2(sp<fTypeParam> p) {
-
+		sp<fTypeParam> p = ms<fTypeParam>();
 		p->setTypeParamName(h.acceptOneOf({fTKnd::T_ID, fTKnd::T_UNDERSCORE}));
 		if (h.isTkLBracket()) {
 			p->setTypeParamClause(typeParamClause());
@@ -1621,7 +1618,7 @@ namespace zebra::parse {
 			variance = fVarianceE::CONTRAVARIANT;
 		}
 		sp<fVariantTypeParam> p = ms<fVariantTypeParam>(variance);
-		typeParam2(std::dynamic_pointer_cast<fTypeParam>(p));
+		p->setTypeParam(typeParam());
 		return p;
 	}
 

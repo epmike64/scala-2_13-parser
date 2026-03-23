@@ -10,14 +10,16 @@ namespace zebra::ast::leaf {
 	using namespace ast::node;
 	using namespace ast::symbol;
 
-	class fVariantTypeParam : public fTypeParam {
+	class fVariantTypeParam : public fAstOprndNod {
 		lex::kind::fVarianceE variance_ = lex::kind::fVarianceE::INVARIANT;
-
+		sp<fTypeParam> typeParam_;
 	public:
 		explicit fVariantTypeParam(lex::kind::fVarianceE variance) : variance_(variance) {
 		}
 
+		 void setTypeParam(const sp<fTypeParam> &typeParam) ;
 
+		 sp<fTypeParam> getTypeParam() const;
 		lex::kind::fVarianceE getVariance() const;
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;

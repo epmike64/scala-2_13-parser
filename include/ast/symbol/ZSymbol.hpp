@@ -184,8 +184,8 @@ namespace zebra::ast::symbol {
 	protected:
 		const fVarianceE variance_;
 	public:
-		ZVariantTypeParam(std::string sid, fVarianceE v) : ZSymbol(Z_VARIANT_TYPE_PARAM), variance_(v), ZTypeParam(sid, Z_VARIANT_TYPE_PARAM) {}
-		explicit ZVariantTypeParam(std::string sid, fVarianceE v, ZLangConstruct c) : ZSymbol(c), variance_(v), ZTypeParam(sid, c) {}
+		ZVariantTypeParam(fVarianceE v) : ZSymbol(Z_VARIANT_TYPE_PARAM), variance_(v), ZTypeParam(sid, Z_VARIANT_TYPE_PARAM) {}
+		explicit ZVariantTypeParam(fVarianceE v, ZLangConstruct c) : ZSymbol(c), variance_(v), ZTypeParam(sid, c) {}
 		~ZVariantTypeParam() override = default;
 	};
 

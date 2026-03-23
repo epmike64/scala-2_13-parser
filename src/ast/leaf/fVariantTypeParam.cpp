@@ -9,6 +9,10 @@ namespace zebra::ast::leaf {
 		return variance_;
 	}
 
+	void fVariantTypeParam::setTypeParam(const sp<fTypeParam> &typeParam) {
+		typeParam_ = typeParam;
+	}
+
 	void fVariantTypeParam::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
 		visitor->visit(std::static_pointer_cast<fVariantTypeParam>(shared_from_this()), s);
 	}
@@ -16,7 +20,6 @@ namespace zebra::ast::leaf {
 	std::string fVariantTypeParam::toString() const {
 		const std::string varianceStr = variance_ == lex::kind::fVarianceE::INVARIANT  ? "invariant" :
 		                                variance_ == lex::kind::fVarianceE::COVARIANT   ? "covariant" : "contravariant";
-		return "fVariantTypeParam(variance=" + varianceStr +
-		       ", base=" + fTypeParam::toString() + ")";
+		return "fVariantTypeParam(variance=" + varianceStr + ", typeParam=" + (typeParam_ ? typeParam_->toString() : "null") + ")";
 	}
 }
