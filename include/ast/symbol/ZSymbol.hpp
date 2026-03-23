@@ -83,7 +83,7 @@ namespace zebra::ast::symbol {
 
 
 
-	class ZFunc : public ZSymbol {
+	class ZFunc : public virtual ZSymbol {
 	protected:
 		PVecP<ZParam> params_;
 	public:
@@ -100,7 +100,7 @@ namespace zebra::ast::symbol {
 
 	class ZThisFunc: public ZFunc{
 	public:
-		ZThisFunc() : ZFunc(Z_THIS_FUNC_DEF) {}
+		ZThisFunc() : ZSymbol(Z_THIS_FUNC_DEF), ZFunc(Z_THIS_FUNC_DEF) {}
 	};
 
 	class ZTreePostOrderSS {
@@ -156,7 +156,7 @@ namespace zebra::ast::symbol {
 
 
 
-	class ZTypeParamList: public ZSymbol {
+	class ZTypeParamList: public virtual ZSymbol {
 	protected:
 		vecP<ZTypeParam> typeParams_;
 		explicit ZTypeParamList(ZLangConstruct c) : ZSymbol(c) {}
@@ -174,8 +174,8 @@ namespace zebra::ast::symbol {
 
 	class ZTypeParam: public ZId, public ZTypeParamList {
 	public:
-		explicit ZTypeParam(std::string zId) : ZId(std::move(zId)), ZTypeParamList(Z_TYPE_PARAM) {}
-		ZTypeParam(std::string zId, ZLangConstruct c) : ZId(std::move(zId)), ZTypeParamList(c) {}
+		explicit ZTypeParam(std::string zId) : ZSymbol(Z_TYPE_PARAM), ZId(std::move(zId)), ZTypeParamList(Z_TYPE_PARAM) {}
+		ZTypeParam(std::string zId, ZLangConstruct c) : ZSymbol(c), ZId(std::move(zId)), ZTypeParamList(c) {}
 		~ZTypeParam() override = default;
 	};
 
@@ -183,8 +183,8 @@ namespace zebra::ast::symbol {
 	protected:
 		const fVarianceE variance_;
 	public:
-		ZVariantTypeParam(std::string sid, fVarianceE v) : variance_(v), ZTypeParam(sid, Z_VARIANT_TYPE_PARAM) {}
-		explicit ZVariantTypeParam(std::string sid,fVarianceE v, ZLangConstruct c) : variance_(v), ZTypeParam(sid,c) {}
+		ZVariantTypeParam(std::string sid, fVarianceE v) : ZSymbol(Z_VARIANT_TYPE_PARAM), variance_(v), ZTypeParam(sid, Z_VARIANT_TYPE_PARAM) {}
+		explicit ZVariantTypeParam(std::string sid, fVarianceE v, ZLangConstruct c) : ZSymbol(c), variance_(v), ZTypeParam(sid, c) {}
 		~ZVariantTypeParam() override = default;
 	};
 
@@ -199,7 +199,7 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZImportList: public ZSymbol{
+	class ZImportList: public virtual ZSymbol{
 		vecP<ZImport> imports_;
 	public:
 		ZImportList() : ZSymbol(Z_IMPORT_LIST) {}
@@ -209,17 +209,17 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZRegFunc: public I_ZId, ZFunc, ZTypeParamList {
+	class ZRegFunc: public I_ZId, public ZFunc, public ZTypeParamList {
 	public:
-		explicit ZRegFunc(std::string sid) : I_ZId(std::move(sid)), ZFunc(Z_REG_FUNC_DEF), ZTypeParamList(Z_REG_FUNC_DEF) {}
-		ZRegFunc(std::string sid, ZLangConstruct c) : I_ZId(std::move(sid)), ZFunc(c), ZTypeParamList(c) {}
+		explicit ZRegFunc(std::string sid) : ZSymbol(Z_REG_FUNC_DEF), I_ZId(std::move(sid)), ZFunc(Z_REG_FUNC_DEF), ZTypeParamList(Z_REG_FUNC_DEF) {}
+		ZRegFunc(std::string sid, ZLangConstruct c) : ZSymbol(c), I_ZId(std::move(sid)), ZFunc(c), ZTypeParamList(c) {}
 	};
 
-	class ZTraitDef: public ZId, ZTypeParamList, ZImportList {
+	class ZTraitDef: public ZId, public ZTypeParamList, public ZImportList {
 
 	public:
-		explicit ZTraitDef(std::string sId) : ZId(std::move(sId)), ZTypeParamList(Z_TRAIT_DEF) {}
-		ZTraitDef(std::string sId, ZLangConstruct c) : ZId(std::move(sId)), ZTypeParamList(c) {}
+		explicit ZTraitDef(std::string sId) : ZSymbol(Z_TRAIT_DEF), ZId(std::move(sId)), ZTypeParamList(Z_TRAIT_DEF) {}
+		ZTraitDef(std::string sId, ZLangConstruct c) : ZSymbol(c), ZId(std::move(sId)), ZTypeParamList(c) {}
 	};
 
 
@@ -255,7 +255,7 @@ namespace zebra::ast::symbol {
 		// PVecP<ZDecl> decls_;
 		PVecP<ZRegFunc> funcs_;
 	public:
-		explicit ZClassDef(std::string zId) : ZTraitDef(std::move(zId), Z_CLASS_DEF) {}
+		explicit ZClassDef(std::string zId) : ZSymbol(Z_CLASS_DEF), ZTraitDef(std::move(zId), Z_CLASS_DEF) {}
 		void addClassParam(sp<ZClassParam> clsParam) {
 			if (clsParams_ == nullptr) {
 				clsParams_ = ms<std::vector<std::shared_ptr<ZClassParam>>>();
