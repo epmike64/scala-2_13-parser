@@ -455,7 +455,7 @@ namespace zebra::back::tree {
 		std::cout << "Visiting FunSig: " << n->getIdentName() << std::endl;
 
 		// esc s = ms<ZEnclScope>(prnSc, Z_FUN_SIG);
-		assert(prnSc->getLangConstruct() == Z_REG_FUNC);
+		assert(prnSc->getLangConstruct() == Z_REG_FUNC_DEF);
 
 		if (n->getTypeParamList()) {
 			for (auto tpp :*n->getTypeParamList()) {
@@ -623,6 +623,7 @@ namespace zebra::back::tree {
 	 * DONE
 	 */
 	void ZVisitor::visit(sp<fPackage> n, esc prnSc) {}
+
 	void ZVisitor::visit(sp<fImport> n, esc prnSc) {
 
 		sp<ZImport> zim =  ms<ZImport>();
