@@ -86,29 +86,6 @@ namespace zebra::ast::symbol {
 		virtual void addImports(sp<std::vector<std::string>> ims) = 0;
 	};
 
-	class ZTrait: public I_Imports, public ZIdSymbol {
-		sp<ZImport> Import_;
-	public:
-		explicit ZTrait(std::string sId) : ZIdSymbol(std::move(sId), Z_TRAIT) {}
-		ZTrait(std::string sId, ZLangConstruct c) : ZIdSymbol(std::move(sId), c) {}
-		sp<ZImport> getZImport() override {
-			return Import_;
-		}
-		void addImport(std::string im) override{
-			if (Import_ == nullptr) {
-				Import_ = ms<ZImport>();
-			}
-			Import_->addImport(std::move(im));
-		}
-		void addImports(sp<std::vector<std::string>> ims) override {
-			if (Import_ == nullptr) {
-				Import_ = ms<ZImport>();
-			}
-			for (const auto& im : *ims) {
-				Import_->addImport(im);
-			}
-		}
-	};
 
 	class ZFunc : public ZSymbol {
 	protected:
@@ -229,6 +206,32 @@ namespace zebra::ast::symbol {
 		}
 	};
 
+	class ZTrait: public ZId, ZTypeParamList, I_Imports {
+		sp<ZImport> Import_;
+	public:
+		explicit ZTrait(std::string sId) : ZId(std::move(sId)), ZTypeParamList(Z_TRAIT), I_Imports() {}
+		ZTrait(std::string sId, ZLangConstruct c) : ZId(std::move(sId)), ZTypeParamList(c), I_Imports() {}
+
+		sp<ZImport> getZImport() override {
+			return Import_;
+		}
+		void addImport(std::string im) override{
+			if (Import_ == nullptr) {
+				Import_ = ms<ZImport>();
+			}
+			Import_->addImport(std::move(im));
+		}
+		void addImports(sp<std::vector<std::string>> ims) override {
+			if (Import_ == nullptr) {
+				Import_ = ms<ZImport>();
+			}
+			for (const auto& im : *ims) {
+				Import_->addImport(im);
+			}
+		}
+	};
+
+
 	class ZClassParam: public ZParam{
 	protected:
 		const bool isMutable_;
@@ -256,7 +259,7 @@ namespace zebra::ast::symbol {
 		sp<ZClassDef> parentClass_;
 		PVecP<ZClassParam> clsParams_;
 		PVecP<ZTrait> traits_;
-		sp<ZTypeParamList> typeParams_;
+		// sp<ZTypeParamList> typeParams_;
 		PVecP<ZClassConstr> constrs_;
 		// PVecP<ZDecl> decls_;
 		PVecP<ZRegFunc> funcs_;
