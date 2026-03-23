@@ -114,8 +114,9 @@ namespace zebra::back::tree {
 		ZVisitParamHelp::visitClassParamClauses(n, prnSc, shared_from_this());
 	}
 
+
 	void ZVisitor::visit(sp<fTypeParamClause> n, esc prnSc) {
-		ZVisitTypeParamHelp::visitTypeParamClauses(n, prnSc, shared_from_this());
+		ZVisitTypeParamHelp::visitTypeParamClause(n, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fVariantTypeParam> n, esc prnSc) {
