@@ -145,7 +145,7 @@ namespace zebra::parse {
 
 		sp<fFunSig> funSig();
 
-		sp<fRegFunc> namedFun(sp<fModifiers> mods);
+		sp<fRegFunc> regularFun(sp<fModifiers> mods);
 
 		sp<fParamClauses> paramClauses();
 

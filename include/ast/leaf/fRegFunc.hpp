@@ -11,7 +11,8 @@ namespace zebra::ast::leaf {
 	class fRegFunc : public fFunc {
 		const sp<fFunSig> funSig_;
 		sp<fType> returnType_;
-		sp<fAstOprndNod> funBody_;
+		sp<fBlock> funBodyBlock_;
+		sp<fAstProdSubTreeN> funBodyExpr_;
 		public:
 
 		fRegFunc(sp<fModifiers> &&modifiers, sp<fFunSig> &&funSig);
@@ -20,11 +21,13 @@ namespace zebra::ast::leaf {
 
 		 sp<fType> getReturnType() const ;
 
-		 sp<fAstOprndNod> getFunBody() const ;
-
 		 void setReturnType(sp<fType> &&returnType);
 
-		 void setFunBody(sp<fAstOprndNod> &&funBody) ;
+		 void setFunBodyExpr(sp<fAstProdSubTreeN> &&funBodyExpr);
+		 void setFunBodyBlock(sp<fBlock> &&funBodyBlock);
+
+		sp<fAstProdSubTreeN> getFunBodyExpr();
+		sp<fBlock> getFunBodyBlock();
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;

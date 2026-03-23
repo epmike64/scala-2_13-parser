@@ -1232,7 +1232,7 @@ namespace zebra::parse {
 		return fs;
 	}
 
-	sp<fRegFunc> fParser::namedFun(sp<fModifiers> mods) {
+	sp<fRegFunc> fParser::regularFun(sp<fModifiers> mods) {
 		sp<fRegFunc> fun = ms<fRegFunc>(std::move(mods), funSig());
 		if (h.isTkColon()) {
 			h.next();
@@ -1240,11 +1240,11 @@ namespace zebra::parse {
 		}
 		if (h.isTkAssign()) {
 			h.next();
-			fun->setFunBody(expr(nullptr));
+			fun->setFunBodyExpr(expr(nullptr));
 		} else if (h.isTkLCurl()) {
 			int sz = h.pushNLEnabled(true);
 			h.accept(fTKnd::T_LCURL);
-			fun->setFunBody(block());
+			fun->setFunBodyBlock(block());
 			h.popNLEnabled(sz, true);
 			h.accept(fTKnd::T_RCURL);
 		}
@@ -1346,7 +1346,7 @@ namespace zebra::parse {
 			case fTKnd::T_ID_E: case fTKnd::T_PLUS_E: case fTKnd::T_MINUS_E: case fTKnd::T_STAR_E: case fTKnd::T_FORWARD_SLASH_E: case fTKnd::T_PERCENT_E:
 			case fTKnd::T_TILDE_E: case fTKnd::T_EXCLAMATION_E: case fTKnd::T_POUND_E: case fTKnd::T_AMPERSAND_E: case fTKnd::T_PIPE_E: case fTKnd::T_LT_E: case fTKnd::T_GT_E:
 			case fTKnd::T_CARET_E: case fTKnd::T_QUESTION_E:{
-				return namedFun(mods);
+				return regularFun(mods);
 			}
 			case fTKnd::T_THIS_E: {
 				return thisFun(mods);

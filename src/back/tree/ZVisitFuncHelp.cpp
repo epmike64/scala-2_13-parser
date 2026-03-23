@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "ast/leaf/fBlock.hpp"
 #include "ast/leaf/fFunSig.hpp"
 #include "ast/leaf/fModifiers.hpp"
 #include "ast/leaf/fParamClauses.hpp"
@@ -50,8 +51,15 @@ namespace zebra::back::tree {
 			zFunc->setReturnType(zType);
 		}
 
-		if (fun->getFunBody()) {
-			fun->getFunBody()->accept(visitor, zFunScp);
+		if (fun->getFunBodyExpr()) {
+
+			sp<ZProdSubTreeN> tr = ms<ZProdSubTreeN>();
+			esc trScp = ms<ZEnclScope>(prnSc, tr);
+			fun->getFunBodyExpr()->accept(visitor, trScp);
+			zFunc->setFunBodyExpr(tr);
+
+		} else if (fun->getFunBodyBlock()) {
+			fun->getFunBodyBlock()->accept(visitor, zFunScp);
 		}
 	}
 

@@ -342,10 +342,6 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fFunc> n, esc prnSc) {
 		std::cout << "Visiting fFun" << std::endl;
-		// sp<ZFunc> z_fun = ms<ZFunc>();
-		// esc s = ms<ZEnclScope>(prnSc,  z_fun);
-		// esc s = ms<ZEnclScope>(prnSc, Z_FFUN);
-		// n->getModifiers()->accept(shared_from_this(), s);
 	}
 
 

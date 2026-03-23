@@ -212,6 +212,7 @@ namespace zebra::ast::symbol {
 	class ZRegFunc: public I_ZId, public ZFunc, public ZTypeParamList {
 	protected:
 		sp<ZType> returnType_;
+		sp<ZProdSubTreeN> funBodyExpr_;
 		public:
 		explicit ZRegFunc(std::string sid) : ZSymbol(Z_REG_FUNC_DEF), I_ZId(std::move(sid)), ZFunc(Z_REG_FUNC_DEF), ZTypeParamList(Z_REG_FUNC_DEF) {}
 		ZRegFunc(std::string sid, ZLangConstruct c) : ZSymbol(c), I_ZId(std::move(sid)), ZFunc(c), ZTypeParamList(c) {}
@@ -219,6 +220,9 @@ namespace zebra::ast::symbol {
 		~ZRegFunc() override = default;
 		void setReturnType(sp<ZType> t) {
 			returnType_ = t;
+		}
+		void setFunBodyExpr(sp<ZProdSubTreeN> e) {
+			funBodyExpr_ = e;
 		}
 	};
 
