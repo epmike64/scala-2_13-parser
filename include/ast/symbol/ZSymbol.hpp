@@ -67,24 +67,18 @@ namespace zebra::ast::symbol {
 
 
 	class ZImport : public ZSymbol {
-		PVec<std::string> imports_;
+		std::vector<std::string> imports_;
 	public:
 		ZImport() : ZSymbol(Z_IMPORT) {}
 		void addImport(std::string im) {
-			if (imports_ == nullptr) {
-				imports_ = ms<std::vector<std::string>>();
-			}
-			imports_->push_back(std::move(im));
+			imports_.push_back(std::move(im));
+		}
+		void addImport(std::vector<std::string> im) {
+			imports_.insert(imports_.end(), std::make_move_iterator(im.begin()), std::make_move_iterator(im.end()));
 		}
 	};
 
-	class I_Imports {
-	public:
-		virtual ~I_Imports() = default;
-		virtual sp<ZImport> getZImport() = 0;
-		virtual void addImport(std::string im) = 0;
-		virtual void addImports(sp<std::vector<std::string>> ims) = 0;
-	};
+
 
 
 	class ZFunc : public ZSymbol {
@@ -206,29 +200,21 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZTrait: public ZId, ZTypeParamList, I_Imports {
-		sp<ZImport> Import_;
+	class ZImportList: public ZSymbol{
+		vecP<ZImport> imports_;
 	public:
-		explicit ZTrait(std::string sId) : ZId(std::move(sId)), ZTypeParamList(Z_TRAIT), I_Imports() {}
-		ZTrait(std::string sId, ZLangConstruct c) : ZId(std::move(sId)), ZTypeParamList(c), I_Imports() {}
+		ZImportList() : ZSymbol(Z_IMPORT_LIST) {}
+		~ZImportList() override = default;
+		void addImport(sp<ZImport> im) {
+			imports_.push_back(im);
+		}
+	};
 
-		sp<ZImport> getZImport() override {
-			return Import_;
-		}
-		void addImport(std::string im) override{
-			if (Import_ == nullptr) {
-				Import_ = ms<ZImport>();
-			}
-			Import_->addImport(std::move(im));
-		}
-		void addImports(sp<std::vector<std::string>> ims) override {
-			if (Import_ == nullptr) {
-				Import_ = ms<ZImport>();
-			}
-			for (const auto& im : *ims) {
-				Import_->addImport(im);
-			}
-		}
+	class ZTrait: public ZId, ZTypeParamList, ZImportList {
+
+	public:
+		explicit ZTrait(std::string sId) : ZId(std::move(sId)), ZTypeParamList(Z_TRAIT) {}
+		ZTrait(std::string sId, ZLangConstruct c) : ZId(std::move(sId)), ZTypeParamList(c) {}
 	};
 
 

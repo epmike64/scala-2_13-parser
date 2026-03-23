@@ -625,21 +625,22 @@ namespace zebra::back::tree {
 	void ZVisitor::visit(sp<fPackage> n, esc prnSc) {}
 	void ZVisitor::visit(sp<fImport> n, esc prnSc) {
 
-		sp<std::vector<std::string>> imports_ = ms<std::vector<std::string>>();
+		sp<ZImport> zim =  ms<ZImport>();
 		for (sp<fImportExpr>& impExpr : n->getImportExprs()) {
 			std::string qualName = impExpr->getId()->getQualName();
 			if (impExpr->getUnderscore()) {
 				qualName += "._";
-				imports_->emplace_back(std::move(qualName));
+				zim->addImport(std::move(qualName));
 			} else if (impExpr->getSelectors()) {
 
 				for (size_t i = 0; i < impExpr->getSelectors()->size(); i++) {
 					std::string qualNameSel =  qualName + "." + impExpr->getSelectors()->at(i)->getFrom()->toString();
-					imports_->emplace_back(std::move(qualNameSel));
+					zim->addImport(std::move(qualNameSel));
 				}
 			}
 		}
-		sp<I_Imports> im = std::dynamic_pointer_cast<I_Imports>(prnSc->getZSymbol());
-		im->addImports(imports_);
+
+		sp<ZImportList> imList = std::dynamic_pointer_cast<ZImportList>(prnSc->getZSymbol());
+		imList->addImport(zim);
 	}
 }
