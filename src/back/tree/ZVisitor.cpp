@@ -36,7 +36,8 @@
 #include "util/fUUID.hpp"
 #include "back/tree/ZVisitPSubTreeHelp.hpp"
 #include "back/tree/ZVisitBlockHelp.hpp"
-#include "back/tree/ZVisitTypeHelp.hpp"
+#include "back/tree/ZVisitParamHelp.hpp"
+#include "back/tree/ZVisitTypeParamHelp.hpp"
 
 namespace zebra::back::tree {
 
@@ -110,23 +111,23 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fClassParamClauses> n, esc prnSc) {
-		ZVisitTypeHelp::visitClassParamClauses(n, prnSc, shared_from_this());
+		ZVisitParamHelp::visitClassParamClauses(n, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fTypeParamClause> n, esc prnSc) {
-		ZVisitTypeHelp::visitTypeParamClauses(n, prnSc, shared_from_this());
+		ZVisitTypeParamHelp::visitTypeParamClauses(n, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fVariantTypeParam> n, esc prnSc) {
-		ZVisitTypeHelp::visitVariantTypeParam(n, prnSc, shared_from_this());
+		ZVisitTypeParamHelp::visitVariantTypeParam(n, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fParam> n, esc prnSc) {
-		ZVisitTypeHelp::visitParam(n, prnSc, shared_from_this());
+		ZVisitParamHelp::visitParam(n, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fClassParam> n, esc prnSc) {
-		ZVisitTypeHelp::visitClassParam(n, prnSc, shared_from_this());
+		ZVisitParamHelp::visitClassParam(n, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fParamType> n, esc prnSc) {
@@ -238,7 +239,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fParamTypes> n, esc prnSc) {
-		ZVisitTypeHelp::visitParamTypes(n, prnSc, shared_from_this());
+		ZVisitParamHelp::visitParamTypes(n, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fFunSig> n, esc prnSc) {
@@ -277,7 +278,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fTypeParam> n, esc prnSc) {
-		ZVisitTypeHelp::visitTypeParam(n, prnSc, shared_from_this());
+		ZVisitTypeParamHelp::visitTypeParam(n, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fUnderscore> n, esc prnSc) {

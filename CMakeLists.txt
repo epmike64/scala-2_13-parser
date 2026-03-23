@@ -183,8 +183,8 @@ add_executable(zebra-4-backend
 		include/util/fUUID.hpp
 		src/back/tree/ZVisitPSubTreeHelp.cpp
 		include/back/tree/ZVisitPSubTreeHelp.hpp
-		src/back/tree/ZVisitTypeHelp.cpp
-		include/back/tree/ZVisitTypeHelp.hpp
+		src/back/tree/ZVisitParamHelp.cpp
+		include/back/tree/ZVisitParamHelp.hpp
 		src/back/tree/ZVisitFuncHelp.cpp
 		include/back/tree/ZVisitFuncHelp.hpp
 		include/back/tree/ZVisitBlockHelp.hpp
@@ -195,6 +195,8 @@ add_executable(zebra-4-backend
 		include/back/tree/ZVisitLoopHelp.hpp
 		include/back/tree/ZVisitValueHelp.hpp
 		include/back/tree/ZVisitCaseHelp.hpp
+		include/back/tree/ZVisitTypeParamHelp.hpp
+		src/back/tree/ZVisitTypeParamHelp.cpp
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE
