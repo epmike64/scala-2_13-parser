@@ -306,6 +306,7 @@ namespace zebra::ast::symbol {
 	};
 
 	class ZCompileUnit: public ZIdSymbol {
+		const sp<ZImportList> importList_ = ms<ZImportList>();
 		std::string packgName_;
 		PVecP<ZClassDef> classes_;
 	public:
@@ -321,6 +322,14 @@ namespace zebra::ast::symbol {
 				classes_ = ms<std::vector<std::shared_ptr<ZClassDef>>>();
 			}
 			classes_->push_back(cls);
+		}
+
+		void addImport(sp<ZImport> imp) {
+			importList_->addImport(imp);
+		}
+
+		sp<ZImportList> getImportList() {
+			return importList_;
 		}
 	};
 

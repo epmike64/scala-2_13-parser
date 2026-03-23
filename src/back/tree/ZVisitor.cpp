@@ -60,9 +60,9 @@ namespace zebra::back::tree {
 		}
 
 		if (n->getImports().size() > 0) {
-			std::cout << "Visiting Imports in Compile Unit" << std::endl;
+			esc imScp = ms<ZEnclScope>(prnSc, zcu->getImportList());
 			for (const auto& imp : n->getImports()) {
-				imp->accept(shared_from_this(), prnSc);
+				imp->accept(shared_from_this(), imScp);
 			}
 		}
 
@@ -185,6 +185,7 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fFunc> n, esc prnSc) {
 		std::cout << "Visiting fFun" << std::endl;
+		throw std::runtime_error("Unimplemented");
 	}
 
 	void ZVisitor::visit(sp<fGenerator> n, esc prnSc) {
@@ -337,6 +338,8 @@ namespace zebra::back::tree {
 					std::string qualNameSel =  qualName + "." + impExpr->getSelectors()->at(i)->getFrom()->toString();
 					zim->addImport(std::move(qualNameSel));
 				}
+			} else {
+				zim->addImport(std::move(qualName));
 			}
 		}
 
