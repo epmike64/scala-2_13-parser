@@ -243,6 +243,15 @@ namespace zebra::ast::symbol {
 		ZClassParam(std::string sid, ZLangConstruct c, bool isMutable) :ZParam(std::move(sid), c), isMutable_(isMutable){}
 	};
 
+	class ZBlock: public ZSymbol {
+		vecP<ZSymbol> stmts_;
+		public:
+		ZBlock() : ZSymbol(Z_BLOCK) {}
+		void addStmt(sp<ZSymbol> stmt) {
+			stmts_.push_back(stmt);
+		}
+	};
+
 	class ZClassConstr: public ZSymbol {
 	protected:
 		PVecP<ZClassParam> clsParams_;

@@ -59,6 +59,9 @@ namespace zebra::back::tree {
 			zFunc->setFunBodyExpr(tr);
 
 		} else if (fun->getFunBodyBlock()) {
+
+			sp<ZBlock> block = ms<ZBlock>();
+
 			fun->getFunBodyBlock()->accept(visitor, zFunScp);
 		}
 	}
