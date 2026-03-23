@@ -191,6 +191,10 @@ add_executable(zebra-4-backend
 		src/back/tree/ZVisitBlockHelp.cpp
 		src/back/tree/ZVisitClassHelp.cpp
 		include/back/tree/ZVisitClassHelp.hpp
+		include/back/tree/ZVisitModHelp.hpp
+		include/back/tree/ZVisitLoopHelp.hpp
+		include/back/tree/ZVisitValueHelp.hpp
+		include/back/tree/ZVisitCaseHelp.hpp
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE
