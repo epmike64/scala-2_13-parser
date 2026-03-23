@@ -8,7 +8,10 @@
 
 namespace zebra::ast::symbol {
 	class ZParam;
+	class ZTypeParamList;
+	class ZTypeParam;
 	class ZProdSubTreeN;
+	class ZVariantTypeParam;
 
 	using namespace zebra::ast::node;
 	using namespace zebra::ast::leaf;
@@ -179,14 +182,42 @@ namespace zebra::ast::symbol {
 		public:
 		ZParamType() : ZType(Z_PARAM_TYPE) {}
 		explicit ZParamType(ZLangConstruct c) : ZType(c) {}
-
+		~ZParamType() override = default;
 	};
 
-	class ZVariantTypeParam: public ZParamType {
+
+
+	class ZTypeParamList: public ZSymbol {
+	protected:
+		vecP<ZVariantTypeParam> typeParams_;
+		explicit ZTypeParamList(ZLangConstruct c) : ZSymbol(c) {}
 	public:
-		ZVariantTypeParam() : ZParamType( Z_VARIANT_TYPE_PARAM) {}
-		explicit ZVariantTypeParam(ZLangConstruct c) : ZParamType(c) {}
+		ZTypeParamList() : ZSymbol(Z_TYPE_PARAM_ARGS) {}
+		~ZTypeParamList() override = default;
+
+		void addTypeParam(sp<ZVariantTypeParam> tp) {
+			typeParams_.push_back(tp);
+		}
+		void addTypeParams(vecP<ZVariantTypeParam> tps) {
+			typeParams_.insert(typeParams_.end(), tps.begin(), tps.end());
+		}
 	};
+
+	class ZTypeParam: public ZId, public ZTypeParamList {
+	protected:
+		explicit ZTypeParam(ZLangConstruct c) : ZId(""), ZTypeParamList(c) {}
+	public:
+		explicit ZTypeParam(std::string zId) : ZId(std::move(zId)), ZTypeParamList(Z_TYPE_PARAM) {}
+		~ZTypeParam() override = default;
+	};
+
+	class ZVariantTypeParam: public ZTypeParam {
+	public:
+		ZVariantTypeParam() : ZTypeParam(Z_VARIANT_TYPE_PARAM) {}
+		explicit ZVariantTypeParam(ZLangConstruct c) : ZTypeParam(c) {}
+		~ZVariantTypeParam() override = default;
+	};
+
 
 	class ZParam : public I_ZId, public ZParamType {
 		sp<ZTreePostOrderSS> defaultExpr_;
@@ -214,18 +245,7 @@ namespace zebra::ast::symbol {
 		ZClassConstr() : ZSymbol(Z_CLASS_CONSTR) {}
 	};
 
-	class ZTypeParamFlatList: public ZSymbol {
-	protected:
-		vecP<ZTypeParam> typeParams_;
-	public:
-		ZTypeParamFlatList() : ZSymbol(Z_TYPE_PARAM_ARGS) {}
-		void addTypeParam(sp<ZTypeParam> tp) {
-			typeParams_.push_back(tp);
-		}
-		void addTypeParams(vecP<ZTypeParam> tps) {
-			typeParams_.insert(typeParams_.end(), tps.begin(), tps.end());
-		}
-	};
+
 
 	class ZObjectDef: public ZId, public ZSymbol {
 		public:
@@ -236,7 +256,7 @@ namespace zebra::ast::symbol {
 		sp<ZClassDef> parentClass_;
 		PVecP<ZClassParam> clsParams_;
 		PVecP<ZTrait> traits_;
-		sp<ZTypeParamFlatList> typeParams_;
+		sp<ZTypeParamList> typeParams_;
 		PVecP<ZClassConstr> constrs_;
 		// PVecP<ZDecl> decls_;
 		PVecP<ZRegFunc> funcs_;
