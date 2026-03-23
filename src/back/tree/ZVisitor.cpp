@@ -171,7 +171,6 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fVariantTypeParam> n, esc prnSc) {
 		ZVisitTypeHelp::visitVariantTypeParam(n, prnSc, shared_from_this());
-
 	}
 
 
@@ -539,10 +538,7 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fTypeParam> n, esc prnSc) {
 		std::cout << "Visiting Type Parameter: " << n->getIdentToken()->toString() << std::endl;
-		// if (n->getTypeBound()) {
-		// 	std::cout << "Visiting Type Bound for Type Parameter" << std::endl;
-		// 	n->getTypeBound()->accept(shared_from_this(), prnSc);
-		// }
+		ZVisitTypeHelp::visitTypeParam(n, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fUnderscore> n, esc prnSc) {
