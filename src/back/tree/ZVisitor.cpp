@@ -31,6 +31,7 @@
 #include "ast/leaf/fUnderscore.hpp"
 #include "ast/leaf/fValueDecl.hpp"
 #include "ast/leaf/fVariantTypeParam.hpp"
+#include "back/tree/ZVisitFuncHelp.hpp"
 #include "util/fUUID.hpp"
 #include "back/tree/ZVisitHelp.hpp"
 #include "back/tree/ZVisitTypeHelp.hpp"
@@ -156,8 +157,10 @@ namespace zebra::back::tree {
 				param->accept(shared_from_this(), prnSc);
 			}
 		}
-		for (auto impicitParam: *n->getImplicitParamList()) {
-			impicitParam->accept(shared_from_this(), prnSc);
+		if (n->getImplicitParamList()) {
+			for (auto impicitParam: *n->getImplicitParamList()) {
+				impicitParam->accept(shared_from_this(), prnSc);
+			}
 		}
 	}
 
@@ -409,20 +412,7 @@ namespace zebra::back::tree {
 
 
 	void ZVisitor::visit(sp<fRegFunc> fun, esc prnSc) {
-		std::cout << "Visiting Named Function: " << fun->getFunSig()->getIdentName() << std::endl;
-
-		sp<ZRegFunc> zFunc = ms<ZRegFunc>(fun->getFunSig()->getIdentName());
-		esc zFunScp = ms<ZEnclScope>(prnSc,  zFunc);
-
-		if (fun->getModifiers()) {
-			fun->getModifiers()->accept(shared_from_this(), zFunScp);
-		}
-
-		fun->getFunSig()->accept(shared_from_this(), zFunScp);
-
-		if (fun->getFunBody()) {
-			fun->getFunBody()->accept(shared_from_this(), zFunScp);
-		}
+		ZVisitFuncHelp::visitRegFunc(fun, prnSc, shared_from_this());
 	}
 
 
@@ -451,19 +441,7 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fFunSig> n, esc prnSc) {
-		std::cout << "Visiting FunSig: " << n->getIdentName() << std::endl;
-
-		// esc s = ms<ZEnclScope>(prnSc, Z_FUN_SIG);
-		assert(prnSc->getLangConstruct() == Z_REG_FUNC_DEF);
-
-		if (n->getTypeParamList()) {
-			for (auto tpp :*n->getTypeParamList()) {
-					tpp->accept(shared_from_this(), prnSc);
-			}
-		}
-		if (n->getParamClauses()) {
-			n->getParamClauses()->accept(shared_from_this(), prnSc);
-		}
+		ZVisitFuncHelp::visitFunSig(n, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fReturn> n, esc prnSc) {
