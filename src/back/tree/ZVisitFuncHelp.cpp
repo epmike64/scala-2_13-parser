@@ -44,7 +44,10 @@ namespace zebra::back::tree {
 		fun->getFunSig()->accept(visitor, zFunScp);
 
 		if (fun->getReturnType()) {
-			fun->getReturnType()->accept(visitor, zFunScp);
+			sp<ZType> zType = ms<ZType>();
+			esc typeScp = ms<ZEnclScope>(prnSc, zType);
+			fun->getReturnType()->accept(visitor, typeScp);
+			zFunc->setReturnType(zType);
 		}
 
 		if (fun->getFunBody()) {

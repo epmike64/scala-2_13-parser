@@ -210,9 +210,16 @@ namespace zebra::ast::symbol {
 	};
 
 	class ZRegFunc: public I_ZId, public ZFunc, public ZTypeParamList {
-	public:
+	protected:
+		sp<ZType> returnType_;
+		public:
 		explicit ZRegFunc(std::string sid) : ZSymbol(Z_REG_FUNC_DEF), I_ZId(std::move(sid)), ZFunc(Z_REG_FUNC_DEF), ZTypeParamList(Z_REG_FUNC_DEF) {}
 		ZRegFunc(std::string sid, ZLangConstruct c) : ZSymbol(c), I_ZId(std::move(sid)), ZFunc(c), ZTypeParamList(c) {}
+
+		~ZRegFunc() override = default;
+		void setReturnType(sp<ZType> t) {
+			returnType_ = t;
+		}
 	};
 
 	class ZTraitDef: public ZId, public ZTypeParamList, public ZImportList {
