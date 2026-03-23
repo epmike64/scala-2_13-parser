@@ -34,6 +34,7 @@
 #include "back/tree/ZVisitFuncHelp.hpp"
 #include "util/fUUID.hpp"
 #include "back/tree/ZVisitPSubTreeHelp.hpp"
+#include "back/tree/ZVisitStmtHelp.hpp"
 #include "back/tree/ZVisitTypeHelp.hpp"
 
 namespace zebra::back::tree {
@@ -268,10 +269,8 @@ namespace zebra::back::tree {
 		std::cout << "Visiting Access Qualifier: " << n->toString() << std::endl;
 	}
 	void ZVisitor::visit(sp<fBlock> n, esc prnSc) {
-		std::cout << "Visiting Block" << std::endl;
-		for (const auto& stmt : n->getStmts()) {
-			stmt->accept(shared_from_this(), prnSc);
-		}
+		ZVisitStmtHelp::visitBlock(n, prnSc, shared_from_this());
+
 	}
 	void ZVisitor::visit(sp<fCaseClause> n, esc prnSc) {
 		std::cout << "Visiting Case Clause" << std::endl;
