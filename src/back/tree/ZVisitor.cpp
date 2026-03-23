@@ -84,47 +84,20 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fObjectDef> obj, esc prnSc) {
-		std::cout << "Visiting "<< (obj->isCaseClass()? "Case ": "") <<"Object"  << obj->getIdentName()  << std::endl;
-
-		sp<ZObjectDef> zObjDef = ms<ZObjectDef>(obj->getIdentName());
-		esc objDefScp = ms<ZEnclScope>(prnSc, zObjDef);
-
-		if (obj->getModifiers()) {
-			obj->getModifiers()->accept(shared_from_this(), objDefScp);
-		}
-
-		if (obj->getExtendsTemplate()) {
-			obj->getExtendsTemplate()->accept(shared_from_this(), objDefScp);
-		}
+		ZVisitClassHelp::visitObjectDef(obj, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fClassTemplate> n, esc prnSc) {
-		std::cout << "Visiting Class Template" << std::endl;
-		// esc s = ms<ZEnclScope>(prnSc, Z_CLASS_TEMPLATE);
-		// if (n->getClassParents()) {
-		// 	n->getClassParents()->accept(shared_from_this(), s);
-		// }
-		if (n->getTemplateBody()) {
-			n->getTemplateBody()->accept(shared_from_this(), prnSc);
-		}
+		ZVisitClassHelp::visitClassTemplate(n, prnSc, shared_from_this());
+
 	}
 
 	void ZVisitor::visit(sp<fTemplate> n, esc prnSc) {
-		std::cout << "Visiting Template" << std::endl;
-		// esc s = ms<ZEnclScope>(prnSc, Z_TEMPLATE);
-		if (n->getTemplateBody()) {
-			n->getTemplateBody()->accept(shared_from_this(), prnSc);
-		}
+		ZVisitClassHelp::visitTemplate(n, prnSc, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fTemplateBody> n, esc prnSc) {
-		std::cout << "Visiting Template Body" << std::endl;
-
-		sp<ZTemplateBody> zTB = ms<ZTemplateBody>();
-		esc tbScp = ms<ZEnclScope>(prnSc,  zTB);
-		for (const auto& stmt : n->getStmts()) {
-			stmt->accept(shared_from_this(), tbScp);
-		}
+		ZVisitClassHelp::visitTemplateBody(n, prnSc, shared_from_this());
 	}
 
 
@@ -448,12 +421,8 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fTraitDef> n, esc prnSc) {
-		std::cout << "Visiting Trait Definition: " << std::endl;
-		// esc s = ms<ZEnclScope>(prnSc, Z_TRAIT_DEF);
-		// if (n->getExtendsTemplate()) {
-		// 	std::cout << "Visiting extends template of trait definition" << std::endl;
-		// 	n->getExtendsTemplate()->accept(shared_from_this(), s);
-		// }
+		ZVisitClassHelp::visitTraitDef(n, prnSc, shared_from_this());
+
 	}
 
 	void ZVisitor::visit(sp<fTry> n, esc prnSc) {
