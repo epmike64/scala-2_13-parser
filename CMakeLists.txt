@@ -183,6 +183,8 @@ add_executable(zebra-4-backend
 		include/util/fUUID.hpp
 		src/back/tree/ZVisitHelp.cpp
 		include/back/tree/ZVisitHelp.hpp
+		src/back/tree/ZVisitTypeHelp.cpp
+		include/back/tree/ZVisitTypeHelp.hpp
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE
