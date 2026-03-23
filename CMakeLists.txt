@@ -187,8 +187,8 @@ add_executable(zebra-4-backend
 		include/back/tree/ZVisitTypeHelp.hpp
 		src/back/tree/ZVisitFuncHelp.cpp
 		include/back/tree/ZVisitFuncHelp.hpp
-		include/back/tree/ZVisitStmtHelp.hpp
-		src/back/tree/ZVisitStmtHelp.cpp
+		include/back/tree/ZVisitBlockHelp.hpp
+		src/back/tree/ZVisitBlockHelp.cpp
 		src/back/tree/ZVisitClassHelp.cpp
 		include/back/tree/ZVisitClassHelp.hpp
 )

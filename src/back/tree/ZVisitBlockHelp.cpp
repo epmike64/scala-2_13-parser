@@ -1,4 +1,4 @@
-#include "back/tree/ZVisitStmtHelp.hpp"
+#include "back/tree/ZVisitBlockHelp.hpp"
 
 #include <iostream>
 
@@ -10,7 +10,7 @@ namespace zebra::back::tree {
 	using namespace util;
 
 
-	void ZVisitStmtHelp::visitBlock(sp<fBlock> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitBlockHelp::visitBlock(sp<fBlock> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Block" << std::endl;
 		for (const auto& stmt : n->getStmts()) {
 			stmt->accept(visitor, prnSc);

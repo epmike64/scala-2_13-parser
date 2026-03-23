@@ -61,8 +61,9 @@ namespace zebra::back::tree {
 		} else if (fun->getFunBodyBlock()) {
 
 			sp<ZBlock> block = ms<ZBlock>();
-
-			fun->getFunBodyBlock()->accept(visitor, zFunScp);
+			esc zBlockScp = ms<ZEnclScope>(prnSc, block);
+			fun->getFunBodyBlock()->accept(visitor, zBlockScp);
+			zFunc->setFunBodyBlock(block);
 		}
 	}
 

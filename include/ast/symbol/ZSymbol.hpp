@@ -9,6 +9,7 @@
 
 
 namespace zebra::ast::symbol {
+	class ZBlock;
 	class ZParam;
 	class ZTypeParamList;
 	class ZTypeParam;
@@ -213,6 +214,8 @@ namespace zebra::ast::symbol {
 	protected:
 		sp<ZType> returnType_;
 		sp<ZProdSubTreeN> funBodyExpr_;
+		sp<ZBlock> funBodyBlock_;
+
 		public:
 		explicit ZRegFunc(std::string sid) : ZSymbol(Z_REG_FUNC_DEF), I_ZId(std::move(sid)), ZFunc(Z_REG_FUNC_DEF), ZTypeParamList(Z_REG_FUNC_DEF) {}
 		ZRegFunc(std::string sid, ZLangConstruct c) : ZSymbol(c), I_ZId(std::move(sid)), ZFunc(c), ZTypeParamList(c) {}
@@ -223,6 +226,9 @@ namespace zebra::ast::symbol {
 		}
 		void setFunBodyExpr(sp<ZProdSubTreeN> e) {
 			funBodyExpr_ = e;
+		}
+		void setFunBodyBlock(sp<ZBlock> b) {
+			funBodyBlock_ = b;
 		}
 	};
 
