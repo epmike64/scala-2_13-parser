@@ -45,7 +45,7 @@ namespace zebra::ast::leaf {
 	}
 
 	void fFunSig::setFunTypeParamClause(std::vector<sp<fTypeParam> > &&typeParam) {
-		this->typeParamClause_ = ms<fFunTypeParamClause>(std::move(typeParam));
+		this->funTypeParamClause_ = ms<fFunTypeParamClause>(std::move(typeParam));
 	}
 
 	const fToken *fFunSig::getIdentToken() const {
@@ -61,7 +61,7 @@ namespace zebra::ast::leaf {
 	}
 
 	sp<fFunTypeParamClause> fFunSig::getFunTypeParamClause() const {
-		return typeParamClause_;
+		return funTypeParamClause_;
 	}
 
 	void fFunSig::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
@@ -69,17 +69,8 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fFunSig::toString() const {
-		return "FunSig(name=" + identName_->toString() +
+		return "FunSig(name=" + (identName_ ? identName_->toString() : "null") +
 		       ", paramClauses=" + (paramClauses_ ? paramClauses_->toString() : "null") +
-		       ", typeParam=" + (typeParamClause_
-			                         ? [&]() {
-				                         std::string result = "[";
-				                         for (const auto &tp: *typeParamClause_) {
-					                         result += (tp ? tp->toString() : "null") + ", ";
-				                         }
-				                         result += "]";
-				                         return result;
-			                         }()
-			                         : "null") + ")";
+		       ", funTypeParamClause=" + (funTypeParamClause_ ? funTypeParamClause_->toString() : "null") + ")";
 	}
 }

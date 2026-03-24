@@ -14,7 +14,7 @@ namespace zebra::ast::leaf {
 	class fFunSig : public fAstOprndNod {
 		const fToken *identName_;
 		sp<fParamClauses> paramClauses_;
-		sp<fFunTypeParamClause> typeParamClause_;
+		sp<fFunTypeParamClause> funTypeParamClause_;
 
 	public:
 		fFunSig(const fToken *funName);
