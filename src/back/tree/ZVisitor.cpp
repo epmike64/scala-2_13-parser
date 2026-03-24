@@ -29,7 +29,7 @@
 #include "ast/leaf/fTypeDef.hpp"
 #include "ast/leaf/fTypeParam.hpp"
 #include "ast/leaf/fUnderscore.hpp"
-#include "ast/leaf/fValueDecl.hpp"
+#include "ast/leaf/fValue.hpp"
 #include "ast/leaf/fVariantTypeParam.hpp"
 #include "back/tree/ZVisitClassHelp.hpp"
 #include "back/tree/ZVisitFuncHelp.hpp"

@@ -12,7 +12,6 @@
 #include "ast/leaf/fLiteral.hpp"
 #include "ast/leaf/fStableId.hpp"
 #include "ast/leaf/fType.hpp"
-#include "ast/leaf/fValueDef.hpp"
 #include "ast/leaf/fWhile.hpp"
 #include "ast/leaf/fBlock.hpp"
 #include "ast/leaf/fAccessModifier.hpp"

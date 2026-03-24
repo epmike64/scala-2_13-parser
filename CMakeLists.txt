@@ -47,7 +47,6 @@ add_executable(zebra-4-backend
 
 		include/ast/leaf/fObjectDef.hpp
 		include/ast/leaf/fClassDef.hpp
-		include/ast/leaf/fValueDef.hpp
 		include/ast/leaf/fType.hpp
 		include/ast/leaf/fIf.hpp
 		include/ast/leaf/fWhile.hpp
@@ -93,7 +92,6 @@ add_executable(zebra-4-backend
 		src/ast/leaf/fLiteral.cpp
 		src/ast/leaf/fCompileUnit.cpp
 		src/ast/leaf/fStableId.cpp
-		src/ast/leaf/fValueDef.cpp
 		src/ast/leaf/fType.cpp
 		src/ast/leaf/fIf.cpp
 		src/ast/leaf/fWhile.cpp
@@ -130,7 +128,6 @@ add_executable(zebra-4-backend
 		include/ast/leaf/fTypeParam.hpp
 		include/ast/leaf/fUnderscore.hpp
 		include/ast/leaf/fValue.hpp
-		include/ast/leaf/fValueDecl.hpp
 		include/ast/leaf/fVariantTypeParam.hpp
 		include/ast/leaf/fId.hpp
 		include/ast/leaf/fIds.hpp
@@ -162,7 +159,6 @@ add_executable(zebra-4-backend
 		src/ast/leaf/fTypeParam.cpp
 		src/ast/leaf/fUnderscore.cpp
 		src/ast/leaf/fValue.cpp
-		src/ast/leaf/fValueDecl.cpp
 		src/ast/leaf/fVariantTypeParam.cpp
 		include/lex/kind/fAccessQualifierE.hpp
 		include/ast/leaf/fModifiers.hpp

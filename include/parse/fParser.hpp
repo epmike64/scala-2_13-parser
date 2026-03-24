@@ -15,7 +15,6 @@
 #include "ast/leaf/fObjectDef.hpp"
 #include "ast/leaf/fStableId.hpp"
 #include "ast/leaf/fType.hpp"
-#include "ast/leaf/fValueDef.hpp"
 #include "lex/kind/fVarMutTypeE.hpp"
 #include "util/fCommon.hpp"
 
