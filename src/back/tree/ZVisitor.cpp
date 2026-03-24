@@ -160,10 +160,25 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fIf> n, esc prnSc) {
 		std::cout << "-- IF Cond Expr" << std::endl;
+		if (n->getCondExpr()) {
+			n->getCondExpr()->accept(shared_from_this(), prnSc);
+		}
+		if (n->getIfBody()) {
+			n->getIfBody()->accept(shared_from_this(), prnSc);
+		}
+		if (n->getElseBody()) {
+			n->getElseBody()->accept(shared_from_this(), prnSc);
+		}
 	}
 
 	void ZVisitor::visit(sp<fWhile > n, esc prnSc) {
 		std::cout << "-- WHILE Cond Expr" << std::endl;
+		if (n->getCondExpr()) {
+			n->getCondExpr()->accept(shared_from_this(), prnSc);
+		}
+		if (n->getBody()) {
+			n->getBody()->accept(shared_from_this(), prnSc);
+		}
 	}
 
 	void ZVisitor::visit(sp<fAccessModifier> n, esc prnSc) {
@@ -178,22 +193,65 @@ namespace zebra::back::tree {
 	}
 	void ZVisitor::visit(sp<fCaseClause> n, esc prnSc) {
 		std::cout << "Visiting Case Clause" << std::endl;
+		if (n->getPattern()) {
+			std::cout << "Visiting Case Clause Pattern" << std::endl;
+			n->getPattern()->accept(shared_from_this(), prnSc);
+		}
+		if (n->getGuard()) {
+			std::cout << "Visiting Case Clause Guard" << std::endl;
+			n->getGuard()->accept(shared_from_this(), prnSc);
+		}
+		if (n->getBlock()) {
+			std::cout << "Visiting Case Clause Block" << std::endl;
+			n->getBlock()->accept(shared_from_this(), prnSc);
+		}
 	}
 
 	void ZVisitor::visit(sp<fCaseClauses> n, esc prnSc) {
 		std::cout << "Visiting Case Clauses" << std::endl;
+		for (const auto& caseClause : n->getCaseClauses()) {
+			caseClause->accept(shared_from_this(), prnSc);
+		}
 	}
 
 	void ZVisitor::visit(sp<fClassParents> n, esc prnSc) {
 		std::cout << "Visiting Class Parents" << std::endl;
+		if (n->getConstr()) {
+			std::cout << "Visiting Class Constructor in Class Parents" << std::endl;
+			n->getConstr()->accept(shared_from_this(), prnSc);
+		}
+		if (n->getWithTypes()) {
+			std::cout << "Visiting With Types in Class Parents" << std::endl;
+			n->getWithTypes()->accept(shared_from_this(), prnSc);
+		}
 	}
 
 	void ZVisitor::visit(sp<fConstrBlock> n, esc prnSc) {
 		std::cout << "Visiting Constructor Block" << std::endl;
+		if (n->getArgExprs()) {
+			std::cout << "Visiting Constructor Block Argument Expressions" << std::endl;
+			n->getArgExprs()->accept(shared_from_this(), prnSc);
+		}
+		if (n->getBlockStmts().size() > 0) {
+			std::cout << "Visiting Constructor Block Statements" << std::endl;
+			for (const auto& stmt : n->getBlockStmts()) {
+				stmt->accept(shared_from_this(), prnSc);
+			}
+		}
 	}
 
 	void ZVisitor::visit(sp<fFor> n, esc prnSc) {
 		std::cout << "Visiting For Loop" << std::endl;
+		if (n->getGenerators().size() > 0) {
+			std::cout << "Visiting Generators in For Loop" << std::endl;
+			for (const auto& gen : n->getGenerators()) {
+				gen->accept(shared_from_this(), prnSc);
+			}
+		}
+		if (n->getYieldExpr()) {
+			std::cout << "Visiting For Loop Body" << std::endl;
+			n->getYieldExpr()->accept(shared_from_this(), prnSc);
+		}
 	}
 
 	void ZVisitor::visit(sp<fFunc> n, esc prnSc) {
@@ -203,6 +261,22 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fGenerator> n, esc prnSc) {
 		std::cout << "Visiting Generator" << std::endl;
+		if (n->getCasePattern1()) {
+			std::cout << "Visiting Enumerator in Generator" << std::endl;
+			n->getCasePattern1()->accept(shared_from_this(), prnSc);
+		}
+		for (const auto& guard : n->getGuards()) {
+			std::cout << "Visiting Guard in Generator" << std::endl;
+			guard->accept(shared_from_this(), prnSc);
+		}
+		for (const auto& ep : n->getEndingPattern1s()) {
+			std::cout << "Visiting Ending Pattern in Generator" << std::endl;
+			ep->accept(shared_from_this(), prnSc);
+		}
+		for (const auto& ee : n->getEndingExprs()) {
+			std::cout << "Visiting Ending Expression in Generator" << std::endl;
+			ee->accept(shared_from_this(), prnSc);
+		}
 	}
 
 	void ZVisitor::visit(sp<fId> n, esc prnSc) {
@@ -264,6 +338,9 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fReturn> n, esc prnSc) {
 		std::cout << "Visiting Return Statement" << std::endl;
+		if (n->getReturnExpr()) {
+			n->getReturnExpr()->accept(shared_from_this(), prnSc);
+		}
 	}
 
 	void ZVisitor::visit(sp<fThisFunc> n, esc prnSc) {
@@ -283,6 +360,14 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fTry> n, esc prnSc) {
 		std::cout << "Visiting Try Block" << std::endl;
+		if (n->getTryBlock()) {
+			std::cout << "Visiting Try Block Body" << std::endl;
+			n->getTryBlock()->accept(shared_from_this(), prnSc);
+		}
+		if (n->getCatchBlock()) {
+			std::cout << "Visiting Catch Clauses in Try Block" << std::endl;
+			n->getCatchBlock()->accept(shared_from_this(), prnSc);
+		}
 	}
 
 	void ZVisitor::visit(sp<fTypeArgs> n, esc prnSc) {
