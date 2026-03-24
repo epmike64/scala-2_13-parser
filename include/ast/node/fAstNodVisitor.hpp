@@ -3,7 +3,6 @@
 #include "fAstNod.hpp"
 
 #include "fAstProdSubTreeN.hpp"
-#include "ast/leaf/fFunSig.hpp"
 #include "util/fCommon.hpp"
 
 // fIf and fTypeParamClause are forward-declared in the namespace block below;
@@ -26,6 +25,7 @@ namespace zebra::ast::leaf {
 	class fFor;
 	class fFunc;
 	class fFunSig;
+	class fFunTypeParamClause;
 	class fGenerator;
 	class fId;
 	class fIds;

@@ -5,6 +5,7 @@
 
 #include "ast/leaf/fClassParam.hpp"
 #include "ast/leaf/fClassParamClauses.hpp"
+#include "ast/leaf/fFunTypeParamClause.hpp"
 #include "ast/leaf/fParam.hpp"
 #include "ast/leaf/fParamType.hpp"
 #include "ast/leaf/fParamTypes.hpp"
