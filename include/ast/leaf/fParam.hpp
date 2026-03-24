@@ -1,5 +1,6 @@
 #pragma once
 
+#include "fParamType.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"

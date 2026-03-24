@@ -5,6 +5,7 @@
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"
+#include "ast/leaf/fParam.hpp"
 
 namespace zebra::ast::leaf {
 	using namespace ast::node;

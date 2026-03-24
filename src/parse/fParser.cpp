@@ -1226,7 +1226,7 @@ namespace zebra::parse {
 	sp<fFunSig> fParser::funSig() {
 		sp<fFunSig> fs = ms<fFunSig>(h.next());
 		if (h.isTkLBracket()) {
-			fs->setTypeParams(funTypeParams());
+			fs->setFunTypeParamClause(funTypeParams());
 		}
 		fs->setParamClauses(paramClauses());
 		return fs;

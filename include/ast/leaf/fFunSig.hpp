@@ -5,6 +5,7 @@
 #include "fFunTypeParamClause.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
+#include "ast/leaf/fParamClauses.hpp"
 #include "util/fCommon.hpp"
 
 namespace zebra::ast::leaf {
