@@ -177,11 +177,7 @@ namespace zebra::back::tree {
 		}
 
 		for (const auto& name : n->getNames()) {
-			// sp<ZProdSubTreeN> subName = ms<ZProdSubTreeN>();
-			// esc subScp = ms<ZEnclScope>(prnSc, subName);
-			// name->accept(shared_from_this(), subScp);
 			val->addName(ZVisitPSubTreeHelp::visitIntoSubTree(name, prnSc, shared_from_this()));
-
 		}
 
 		if (n->getType()) {

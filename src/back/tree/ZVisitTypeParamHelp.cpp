@@ -22,6 +22,9 @@ namespace zebra::back::tree {
 		std::cout << "Visiting FunTypeParamClause: " << n->toString() << std::endl;
 
 		sp<ZTypeParamList> list = std::dynamic_pointer_cast<ZTypeParamList>(prnSc->getZSymbol());
+		if (!list) {
+			throw std::runtime_error("visitFunTypeParamClause: parent scope must contain a ZTypeParamList");
+		}
 
 		for (auto typeParam: n->getTypeParamList()) {
 
@@ -48,6 +51,9 @@ namespace zebra::back::tree {
 		n->getTypeParam()->accept(visitor, tpScp);
 
 		sp<ZVariantTypeParamList> list = std::dynamic_pointer_cast<ZVariantTypeParamList>(prnSc->getZSymbol());
+		if (!list) {
+			throw std::runtime_error("visitVariantTypeParam: parent scope must contain a ZVariantTypeParamList");
+		}
 		list->addVariantTypeParam(vtp);
 
 	}
