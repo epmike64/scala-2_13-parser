@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "ast/leaf/fAccessModifier.hpp"
+#include "ast/leaf/fClassConstr.hpp"
 #include "ast/leaf/fClassDef.hpp"
 #include "ast/leaf/fClassParents.hpp"
 #include "ast/leaf/fClassTemplate.hpp"
@@ -72,6 +73,34 @@ namespace zebra::back::tree {
 			n->getTemplateBody()->accept(visitor, prnSc);
 		}
 	}
+
+
+	void ZVisitClassHelp::visitClassParents(sp<fClassParents> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+
+		std::cout << "Visiting Class Parents" << std::endl;
+		if (n->getConstr()) {
+			std::cout << "Visiting Class Constructor in Class Parents" << std::endl;
+			n->getConstr()->accept(visitor, prnSc);
+		}
+		if (n->getWithTypes()) {
+			std::cout << "Visiting With Types in Class Parents" << std::endl;
+			n->getWithTypes()->accept(visitor, prnSc);
+		}
+	}
+
+	void ZVisitClassHelp::visitClassConstr(sp<fClassConstr> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+		std::cout << "Visiting Class Constr" << std::endl;
+
+		std::cout << "Visiting Class Constructor" << std::endl;
+		n->getParamType()->accept(visitor, prnSc);
+		if (n->getArgs()) {
+
+		}
+	}
+
+
+
+
 
 	void ZVisitClassHelp::visitTemplate(sp<fTemplate> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Template" << std::endl;

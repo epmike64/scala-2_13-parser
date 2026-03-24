@@ -13,5 +13,8 @@ namespace zebra::back::tree {
 		static void visitTemplate(sp<fTemplate> n, esc prnSc, sp<fAstNodVisitor> visitor);
 		static void visitTemplateBody(sp<fTemplateBody> n, esc prnSc, sp<fAstNodVisitor> visitor);
 		static void visitTraitDef(sp<fTraitDef> n, esc prnSc, sp<fAstNodVisitor> visitor);
+
+		static void visitClassParents(sp<fClassParents> n, esc prnSc, sp<fAstNodVisitor> visitor);
+		static void visitClassConstr(sp<fClassConstr> n, esc prnSc, sp<fAstNodVisitor> visitor);
 	};
 }

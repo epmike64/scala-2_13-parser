@@ -139,8 +139,16 @@ namespace zebra::back::tree {
 		n->getTypeTree()->accept(shared_from_this(), prnSc);
 	}
 
+	void ZVisitor::visit(sp<fClassParents> n, esc prnSc) {
+		ZVisitClassHelp::visitClassParents(n, prnSc, shared_from_this());
+
+
+	}
+
 	void ZVisitor::visit(sp<fClassConstr> n, esc prnSc) {
-		std::cout << "Visiting Class Constructor" << std::endl;
+		ZVisitClassHelp::visitClassConstr(n, prnSc, shared_from_this());
+
+
 	}
 
 	void  ZVisitor::visit(sp<fValueDef> n, esc prnSc)  {
@@ -158,39 +166,34 @@ namespace zebra::back::tree {
 		}
 	}
 
+	sp<ZProdSubTreeN> ZVisitor::visitIntoSubTree(sp<fAstNod> node, esc prnSc) {
+		sp<ZProdSubTreeN> tr = ms<ZProdSubTreeN>();
+		esc scp = ms<ZEnclScope>(prnSc, tr);
+		node->accept(shared_from_this(), scp);
+		return tr;
+	}
+
 	void ZVisitor::visit(sp<fIf> n, esc prnSc) {
 		std::cout << "-- IF Cond Expr" << std::endl;
 
 		sp<Zif> zif = ms<Zif>();
-		{
-			sp<ZProdSubTreeN> ifTr = ms<ZProdSubTreeN>();
-			esc ifScp = ms<ZEnclScope>(prnSc, ifTr);
-			n->getCondExpr()->accept(shared_from_this(), ifScp);
-			zif->setCondExpr(ifTr);
-		}
+		zif->setCondExpr(visitIntoSubTree(n->getCondExpr(), prnSc));
 
 		if (n->getIfBody()) {
-			sp<ZProdSubTreeN> bdTr = ms<ZProdSubTreeN>();
-			esc bdScp = ms<ZEnclScope>(prnSc, bdTr);
-			n->getIfBody()->accept(shared_from_this(), bdScp);
-			zif->setBody(bdTr);
+			zif->setBody(visitIntoSubTree(n->getIfBody(), prnSc));
 		}
 
 		if (n->getElseBody()) {
-			sp<ZProdSubTreeN> ebdTr = ms<ZProdSubTreeN>();
-			esc bdScp = ms<ZEnclScope>(prnSc, ebdTr);
-			n->getElseBody()->accept(shared_from_this(), prnSc);
-			zif->setElseBody(ebdTr);
+			zif->setElseBody(visitIntoSubTree(n->getElseBody(), prnSc));
 		}
 	}
 
 	void ZVisitor::visit(sp<fWhile > n, esc prnSc) {
 		std::cout << "-- WHILE Cond Expr" << std::endl;
-		if (n->getCondExpr()) {
-			n->getCondExpr()->accept(shared_from_this(), prnSc);
-		}
+		sp<ZWhile> zwhile = ms<ZWhile>();
+		zwhile->setCondExpr(visitIntoSubTree(n->getCondExpr(), prnSc));
 		if (n->getBody()) {
-			n->getBody()->accept(shared_from_this(), prnSc);
+			zwhile->setBody(visitIntoSubTree(n->getBody(), prnSc));
 		}
 	}
 
@@ -227,17 +230,7 @@ namespace zebra::back::tree {
 		}
 	}
 
-	void ZVisitor::visit(sp<fClassParents> n, esc prnSc) {
-		std::cout << "Visiting Class Parents" << std::endl;
-		if (n->getConstr()) {
-			std::cout << "Visiting Class Constructor in Class Parents" << std::endl;
-			n->getConstr()->accept(shared_from_this(), prnSc);
-		}
-		if (n->getWithTypes()) {
-			std::cout << "Visiting With Types in Class Parents" << std::endl;
-			n->getWithTypes()->accept(shared_from_this(), prnSc);
-		}
-	}
+
 
 	void ZVisitor::visit(sp<fConstrBlock> n, esc prnSc) {
 		std::cout << "Visiting Constructor Block" << std::endl;

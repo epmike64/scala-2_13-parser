@@ -5,14 +5,14 @@
 
 namespace zebra::ast::leaf {
 
-	fClassConstr::fClassConstr(sp<fParamType> &&primaryCtorParamType) : paramType(std::move(primaryCtorParamType)) {
-		if (this->paramType == nullptr) {
+	fClassConstr::fClassConstr(sp<fParamType> &&paramType) : paramType_(std::move(paramType)) {
+		if (this->paramType_ == nullptr) {
 			throw std::invalid_argument("Primary constructor parameter type cannot be null");
 		}
 	}
 
-	sp<fParamType> fClassConstr::getPrimaryCtorParamType() const {
-		return paramType;
+	sp<fParamType> fClassConstr::getParamType() const {
+		return paramType_;
 	}
 
 	void fClassConstr::setArgsExpr(sp<fAstProdSubTreeN> &&args) {
@@ -28,7 +28,7 @@ namespace zebra::ast::leaf {
 	}
 
 	std::string fClassConstr::toString() const {
-		return "fClassConstr(paramType=" + (paramType ? paramType->toString() : "null") +
+		return "fClassConstr(paramType=" + (paramType_ ? paramType_->toString() : "null") +
 		       ", args=" + (args_ ? args_->toString() : "null") + ")";
 	}
 }

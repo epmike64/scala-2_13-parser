@@ -9,12 +9,12 @@ namespace zebra::ast::leaf {
 	using namespace ast::node;
 
 	class fClassConstr : public fAstOprndNod {
-		const sp<fParamType> paramType;
+		const sp<fParamType> paramType_;
 		sp<fAstProdSubTreeN> args_;
 	public:
-		fClassConstr(sp<fParamType> &&primaryCtorParamType);
+		fClassConstr(sp<fParamType> &&paramType);
 
-		sp<fParamType> getPrimaryCtorParamType() const ;
+		sp<fParamType> getParamType() const ;
 
 		 void setArgsExpr(sp<fAstProdSubTreeN>&& args) ;
 

@@ -145,7 +145,7 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class Zif: ZSymbol {
+	class Zif: public ZSymbol {
 	protected:
 		sp<ZProdSubTreeN> condExpr_;
 		sp<ZProdSubTreeN> bodyExpr_;
@@ -160,6 +160,20 @@ namespace zebra::ast::symbol {
 		}
 		void setElseBody(sp<ZProdSubTreeN> p) {
 			elseBodyExpr_ = p;
+		}
+	};
+
+	class ZWhile: public ZSymbol {
+	protected:
+		sp<ZProdSubTreeN> condExpr_;
+		sp<ZProdSubTreeN> bodyExpr_;
+	public:
+		ZWhile() : ZSymbol(Z_WHILE) {}
+		void setCondExpr(sp<ZProdSubTreeN> p) {
+			condExpr_ = p;
+		}
+		void setBody(sp<ZProdSubTreeN> p) {
+			bodyExpr_ = p;
 		}
 	};
 
