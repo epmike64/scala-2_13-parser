@@ -177,12 +177,8 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZValueDef {
+	class ZValue: ZSymbol {
 	public:
-
-	};
-
-	class fValueDecl {
 
 	};
 
@@ -192,8 +188,6 @@ namespace zebra::ast::symbol {
 		explicit ZParamType(ZLangConstruct c) : ZType(c) {}
 		~ZParamType() override = default;
 	};
-
-
 
 	class ZTypeParamList: public ZSymbol {
 	protected:
