@@ -33,7 +33,7 @@ namespace zebra::back::tree {
 		if (cls->getTypeParamClause()) {
 			zClsDef->setVariantTypeParamList(ms<ZVariantTypeParamList>());
 			esc vtpListScp = ms<ZEnclScope>(clsDefScp, zClsDef->getVariantTypeParamList());
-			ZVisitTypeParamHelp::buildTypeParamClause(cls->getTypeParamClause(), zClsDef->getVariantTypeParamList(), vtpListScp,visitor);
+			ZVisitTypeParamHelp::buildVariantTypeParamClause(cls->getTypeParamClause(), zClsDef->getVariantTypeParamList(), vtpListScp,visitor);
 		}
 
 		if (cls->getClassParamClauses()) {

@@ -101,7 +101,7 @@ namespace zebra::ast::symbol {
 
 	class ZThisFunc: public ZFunc{
 	public:
-		ZThisFunc() : ZSymbol(Z_THIS_FUNC_DEF), ZFunc(Z_THIS_FUNC_DEF) {}
+		ZThisFunc() : ZFunc(Z_THIS_FUNC_DEF){}
 	};
 
 	class ZTreePostOrderSS {

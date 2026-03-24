@@ -19,8 +19,15 @@ namespace zebra::back::tree {
 
 	void ZVisitTypeParamHelp::visitFunTypeParamClause(sp<fFunTypeParamClause> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting FunTypeParamClause: " << n->toString() << std::endl;
+
+		sp<ZTypeParamList> list = std::dynamic_pointer_cast<ZTypeParamList>(prnSc->getZSymbol());
+
 		for (auto typeParam: n->getTypeParamList()) {
-			typeParam->accept(visitor, prnSc);
+
+			sp<ZTypeParam> tp = ms<ZTypeParam>(typeParam->getIdentName());
+			esc tpSc = ms<ZEnclScope>(prnSc, tp);
+			typeParam->accept(visitor, tpSc);
+			list->addTypeParam(tp);
 		}
 	}
 
@@ -44,11 +51,10 @@ namespace zebra::back::tree {
 
 	}
 
-	void ZVisitTypeParamHelp::buildTypeParamClause(sp<fTypeParamClause> typeParamScope, sp<ZVariantTypeParamList> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitTypeParamHelp::buildVariantTypeParamClause(sp<fTypeParamClause> typeParamClause, sp<ZVariantTypeParamList> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Building TypeParamClause: " << std::endl;
-		// n->setVariantTypeParamList(ms<ZVariantTypeParamList>());
 		esc vtpListScp = ms<ZEnclScope>(prnSc, n);
-		typeParamScope->accept(visitor, vtpListScp);
+		typeParamClause->accept(visitor, vtpListScp);
 	}
 
 	void ZVisitTypeParamHelp::visitTypeParam(sp<fTypeParam> n, esc prnSc, sp<fAstNodVisitor> visitor) {
@@ -58,7 +64,7 @@ namespace zebra::back::tree {
 
 		if (n->getTypeParamClause()) {
 			tp->setVariantTypeParamList(ms<ZVariantTypeParamList>());
-			buildTypeParamClause(n->getTypeParamClause(), tp->getVariantTypeParamList(), prnSc, visitor);
+			buildVariantTypeParamClause(n->getTypeParamClause(), tp->getVariantTypeParamList(), prnSc, visitor);
 		}
 	}
 
