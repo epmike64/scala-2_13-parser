@@ -12,6 +12,7 @@
 #include "ast/leaf/fObjectDef.hpp"
 #include "ast/leaf/fTemplate.hpp"
 #include "ast/leaf/fTemplateBody.hpp"
+#include "back/tree/ZVisitPSubTreeHelp.hpp"
 #include "back/tree/ZVisitTypeParamHelp.hpp"
 
 namespace zebra::back::tree {
@@ -99,9 +100,10 @@ namespace zebra::back::tree {
 
 		std::cout << "Visiting Class Constructor" << std::endl;
 
-		n->getParamType()->accept(visitor, prnSc);
+		ZVisitPSubTreeHelp::visitIntoSubTree(n->getParamType(), prnSc, visitor);
 		if (n->getArgs()) {
-
+			std::cout << "Visiting Constructor Arguments" << std::endl;
+			ZVisitPSubTreeHelp::visitIntoSubTree(n->getArgs(), prnSc, visitor);
 		}
 	}
 
