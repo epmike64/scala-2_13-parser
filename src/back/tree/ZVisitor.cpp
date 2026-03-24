@@ -412,6 +412,10 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fAstProdSubTreeN> subTr, esc prnSc) {
+		if (!prnSc->getZSymbol()) {
+			prnSc->setZSymbol(ms<ZProdSubTreeN>());
+			std::cout << "Attention: Subtree Symbol Set" << std::endl;
+		}
 		ZVisitPSubTreeHelp::traverseProdSubTree(subTr, prnSc, shared_from_this());
 	}
 

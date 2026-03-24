@@ -49,12 +49,12 @@ namespace zebra::ast::symbol {
 		sp<ZSymbol> zSymbol = nullptr;
 	public:
 
-		ZEnclScope(esc parentScope, sp<ZSymbol> zUnit);
+		ZEnclScope(esc parentScope, sp<ZSymbol> zSymbol);
 		esc getParentScope() const;
 
 		ZLangConstruct getLangConstruct() const;
-
 		sp<ZSymbol> getZSymbol();
+		void setZSymbol(sp<ZSymbol> zSymbol) ;
 	};
 
 
