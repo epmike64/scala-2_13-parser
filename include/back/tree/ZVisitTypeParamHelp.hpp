@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ast/leaf/fClassParamClauses.hpp"
+#include "ast/symbol/ZSymbol.hpp"
 
 namespace zebra::back::tree {
 	using namespace ast::symbol;
@@ -11,6 +12,10 @@ namespace zebra::back::tree {
 	public:
 		static void visitTypeParamClause(sp<fTypeParamClause> n, esc prnSc, sp<fAstNodVisitor> visitor);
 		static void visitVariantTypeParam(sp<fVariantTypeParam> n,  esc prnSc, sp<fAstNodVisitor> visitor);
+
+		static void buildTypeParamClause(sp<fTypeParamClause> typeParamScope, sp<ZVariantTypeParamList> n, esc prnSc,
+		                                 sp<fAstNodVisitor> visitor);
+
 		static void visitTypeParam(sp<fTypeParam> n,  esc prnSc, sp<fAstNodVisitor> visitor);
 		static void visitFunTypeParamClause(sp<fFunTypeParamClause> n, esc prnSc, sp<fAstNodVisitor> visitor);
 	};

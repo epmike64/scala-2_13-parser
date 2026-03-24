@@ -84,7 +84,7 @@ namespace zebra::ast::symbol {
 
 
 
-	class ZFunc : public virtual ZSymbol {
+	class ZFunc : public ZSymbol {
 	protected:
 		PVecP<ZParam> params_;
 	public:
@@ -184,18 +184,19 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZTypeParam: public ZId, public ZSymbol {
+	class ZTypeParam: public ZIdSymbol{
 	protected:
-		sp<ZTypeParamList> typeParamList_;
+		sp<ZVariantTypeParamList> variantTypeParamList_;
 	public:
-		explicit ZTypeParam(std::string zId) : ZSymbol(Z_TYPE_PARAM), ZId(std::move(zId)) {}
-		ZTypeParam(std::string zId, ZLangConstruct c) : ZSymbol(c), ZId(std::move(zId)) {}
+		explicit ZTypeParam(std::string zId) : ZIdSymbol(std::move(zId), Z_TYPE_PARAM){}
+		ZTypeParam(std::string zId, ZLangConstruct c) : ZIdSymbol(std::move(zId), c){}
 		~ZTypeParam() override = default;
-		void setTypeParamList(sp<ZTypeParamList> tps) {
-			typeParamList_ = tps;
+
+		void setVariantTypeParamList(sp<ZVariantTypeParamList> vtpList) {
+			variantTypeParamList_ = vtpList;
 		}
-		sp<ZTypeParamList> getTypeParamList() {
-			return typeParamList_;
+		sp<ZVariantTypeParamList> getVariantTypeParamList() {
+			return variantTypeParamList_;
 		}
 	};
 
@@ -262,21 +263,30 @@ namespace zebra::ast::symbol {
 		void setTypeParamList(sp<ZTypeParamList> tps) {
 			typeParamList_ = tps;
 		}
+
+		sp<ZTypeParamList> getTypeParamList() {
+			return typeParamList_;
+		}
 	};
 
 	class ZTraitDef: public ZIdSymbol {
 		protected:
 		const sp<ZImportList> importList_ = ms<ZImportList>();
-		sp<ZTypeParamList> typeParamList_;
+		sp<ZVariantTypeParamList> variantTypeParamList_;
 	public:
 		explicit ZTraitDef(std::string sId) : ZIdSymbol(std::move(sId), Z_TRAIT_DEF){}
 		ZTraitDef(std::string sId, ZLangConstruct c) :  ZIdSymbol(std::move(sId), c) {}
-		void setTypeParamList(sp<ZTypeParamList> tps) {
-			typeParamList_ = tps;
-		}
+
 		sp<ZImportList> getImportList() {
 			return importList_;
 		}
+		void setVariantTypeParamList(sp<ZVariantTypeParamList> tps) {
+			variantTypeParamList_ = tps;
+		}
+		sp<ZVariantTypeParamList> getVariantTypeParamList()  {
+			return variantTypeParamList_;
+		}
+
 	};
 
 

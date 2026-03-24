@@ -23,9 +23,10 @@ namespace zebra::back::tree {
 		assert(prnSc->getLangConstruct() == Z_REG_FUNC_DEF);
 
 		if (n->getFunTypeParamClause()) {
-			for (auto tpp :*n->getFunTypeParamClause()) {
-				tpp->accept(visitor, prnSc);
-			}
+			sp<ZRegFunc> zFunc = std::dynamic_pointer_cast<ZRegFunc>(prnSc->getZSymbol());
+			zFunc->setTypeParamList(ms<ZTypeParamList>());
+			esc funTPScp = ms<ZEnclScope>(prnSc, zFunc->getTypeParamList());
+			n->getFunTypeParamClause()->accept(visitor, funTPScp);
 		}
 		if (n->getParamClauses()) {
 			n->getParamClauses()->accept(visitor, prnSc);

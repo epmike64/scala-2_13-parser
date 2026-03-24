@@ -9,6 +9,7 @@
 #include "ast/leaf/fObjectDef.hpp"
 #include "ast/leaf/fTemplate.hpp"
 #include "ast/leaf/fTemplateBody.hpp"
+#include "back/tree/ZVisitTypeParamHelp.hpp"
 
 namespace zebra::back::tree {
 	using namespace ast::symbol;
@@ -30,7 +31,9 @@ namespace zebra::back::tree {
 		}
 
 		if (cls->getTypeParamClause()) {
-			cls->getTypeParamClause()->accept(visitor, clsDefScp);
+			zClsDef->setVariantTypeParamList(ms<ZVariantTypeParamList>());
+			esc vtpListScp = ms<ZEnclScope>(clsDefScp, zClsDef->getVariantTypeParamList());
+			ZVisitTypeParamHelp::buildTypeParamClause(cls->getTypeParamClause(), zClsDef->getVariantTypeParamList(), vtpListScp,visitor);
 		}
 
 		if (cls->getClassParamClauses()) {
