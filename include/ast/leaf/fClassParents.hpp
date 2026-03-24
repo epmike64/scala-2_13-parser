@@ -10,13 +10,11 @@ namespace zebra::ast::leaf {
 	using namespace ast::node;
 
 	class fClassParents: public fAstOprndNod {
-		sp<fClassConstr> constr_;
+		const sp<fClassConstr> constr_;
 		sp<fParamType> withTypes_;
 	public:
 
-		fClassParents() = default;
-
-		 void setConstr(sp<fClassConstr> &&constr) ;
+		fClassParents(sp<fClassConstr> &&constr);
 
 		 void setWithType(sp<fParamType> &&withType);
 

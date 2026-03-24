@@ -66,9 +66,9 @@ namespace zebra::back::tree {
 
 	void ZVisitClassHelp::visitClassTemplate(sp<fClassTemplate> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Class Template" << std::endl;
-		if (n->getClassParents()) {
-			n->getClassParents()->accept(visitor, prnSc);
-		}
+
+		n->getClassParents()->accept(visitor, prnSc);
+
 		if (n->getTemplateBody()) {
 			n->getTemplateBody()->accept(visitor, prnSc);
 		}
@@ -76,12 +76,10 @@ namespace zebra::back::tree {
 
 
 	void ZVisitClassHelp::visitClassParents(sp<fClassParents> n, esc prnSc, sp<fAstNodVisitor> visitor) {
-
 		std::cout << "Visiting Class Parents" << std::endl;
-		if (n->getConstr()) {
-			std::cout << "Visiting Class Constructor in Class Parents" << std::endl;
-			n->getConstr()->accept(visitor, prnSc);
-		}
+
+		n->getConstr()->accept(visitor, prnSc);
+
 		if (n->getWithTypes()) {
 			std::cout << "Visiting With Types in Class Parents" << std::endl;
 			n->getWithTypes()->accept(visitor, prnSc);

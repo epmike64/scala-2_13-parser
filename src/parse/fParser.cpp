@@ -1564,8 +1564,7 @@ namespace zebra::parse {
 	}
 
 	sp<fClassParents> fParser::classParents(bool isTrait) {
-		sp<fClassParents> parents = ms<fClassParents>();
-		parents->setConstr(classConstr(isTrait));
+		sp<fClassParents> parents = ms<fClassParents>(classConstr(isTrait));
 		while (h.isTkWith()) {
 			h.next();
 			parents->setWithType(simpleType());

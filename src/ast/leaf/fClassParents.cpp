@@ -7,12 +7,7 @@
 
 namespace zebra::ast::leaf {
 
-	void fClassParents::setConstr(sp<fClassConstr> &&constr) {
-		if (constr == nullptr) {
-			throw std::invalid_argument("Constructor cannot be null");
-		}
-		this->constr_ = std::move(constr);
-	}
+	fClassParents::fClassParents(sp<fClassConstr> &&constr): constr_(constr){}
 
 	void fClassParents::setWithType(sp<fParamType> &&withType) {
 		if (withType == nullptr) {
