@@ -120,7 +120,6 @@ namespace zebra::parse {
 		void pattern3Id(sp<fAst> a);
 
 		sp<fType> type();
-		sp<fValueDef> ValDcl(bool);
 
 		sp<fAstNod> typeArgs();
 

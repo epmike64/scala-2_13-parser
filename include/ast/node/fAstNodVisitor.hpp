@@ -58,8 +58,6 @@ namespace zebra::ast::leaf {
 	class fTypeParamClause;
 	class fUnderscore;
 	class fValue;
-	class fValueDecl;
-	class fValueDef;
 	class fVariantTypeParam;
 	class fWhile;
 }
@@ -136,8 +134,6 @@ namespace zebra::ast::node {
 		virtual void visit(sp<fTypeParam>, esc) = 0;
 		virtual void visit(sp<fUnderscore>, esc) = 0;
 		virtual void visit(sp<fValue>, esc) = 0;
-		// virtual void visit(sp<fValueDecl>, esc) = 0;
-		// virtual void visit(sp<fValueDef>, esc) = 0;
 		virtual void visit(sp<fTypeParamClause> n, esc)  = 0;
 		virtual void visit(sp<fVariantTypeParam>, esc) = 0;
 		virtual void visit(sp<fWhile>, esc) = 0;
