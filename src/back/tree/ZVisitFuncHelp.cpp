@@ -22,8 +22,8 @@ namespace zebra::back::tree {
 
 		assert(prnSc->getLangConstruct() == Z_REG_FUNC_DEF);
 
-		if (n->getTypeParamList()) {
-			for (auto tpp :*n->getTypeParamList()) {
+		if (n->getFunTypeParamClause()) {
+			for (auto tpp :*n->getFunTypeParamClause()) {
 				tpp->accept(visitor, prnSc);
 			}
 		}

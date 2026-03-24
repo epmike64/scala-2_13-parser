@@ -194,6 +194,9 @@ namespace zebra::ast::symbol {
 		void setTypeParamList(sp<ZTypeParamList> tps) {
 			typeParamList_ = tps;
 		}
+		sp<ZTypeParamList> getTypeParamList() {
+			return typeParamList_;
+		}
 	};
 
 	class ZVariantTypeParam: public ZSymbol{
@@ -207,6 +210,10 @@ namespace zebra::ast::symbol {
 		void setTypeParam(sp<ZTypeParam> tp) {
 			typeParam_ = tp;
 		}
+		sp<ZTypeParam> getTypeParam() {
+			return typeParam_;
+		}
+
 	};
 
 

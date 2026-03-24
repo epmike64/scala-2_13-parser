@@ -3,6 +3,7 @@
 #include "fAstNod.hpp"
 
 #include "fAstProdSubTreeN.hpp"
+#include "ast/leaf/fFunSig.hpp"
 #include "util/fCommon.hpp"
 
 // fIf and fTypeParamClause are forward-declared in the namespace block below;
@@ -103,6 +104,7 @@ namespace zebra::ast::node {
 		virtual void visit(sp<fFor>, esc) = 0;
 		virtual void visit(sp<fFunc>, esc) = 0;
 		virtual void visit(sp<fFunSig>, esc) = 0;
+		virtual void visit(sp<fFunTypeParamClause>, esc) = 0;;
 		virtual void visit(sp<fGenerator>, esc) = 0;
 		virtual void visit(sp<fId>, esc) = 0;
 		virtual void visit(sp<fIds>, esc) = 0;

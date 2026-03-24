@@ -25,31 +25,24 @@ namespace zebra::back::tree {
 
 	void ZVisitTypeParamHelp::visitVariantTypeParam(sp<fVariantTypeParam> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting VariantTypeParam: " << n->toString() << std::endl;
-		// sp<fTypeParam> typeParam = std::dynamic_pointer_cast<fTypeParam>(n);
-		// if (prnSc->getLangConstruct() == Z_REG_FUNC_DEF || prnSc->getLangConstruct() == Z_CLASS_DEF || prnSc->getLangConstruct() == Z_TRAIT_DEF) {
-		//
-		// 	sp<ZVariantTypeParam> zTP = ms<ZVariantTypeParam>(n->getVariance());
-		// 	esc tpScp = ms<ZEnclScope>(prnSc, zTP);
-		// 	typeParam->accept(visitor, tpScp);
-		// 	sp<ZTypeParamList> list = std::dynamic_pointer_cast<ZTypeParamList>(prnSc->getZSymbol());
-		// 	list->addTypeParam(zTP);
-		//
-		// } else {
-		// 	typeParam->accept(visitor, prnSc);
-		// }
 
-		sp<ZTypeParam> typeParam = ms<ZTypeParam>(n->getTypeParam()->getIdentName());
-		esc tpScp = ms<ZEnclScope>(prnSc, typeParam);
+		sp<ZVariantTypeParam> vtp = ms<ZVariantTypeParam>(n->getVariance());
+		vtp->setTypeParam(ms<ZTypeParam>(n->getTypeParam()->getIdentName()));
+		esc tpScp = ms<ZEnclScope>(prnSc, vtp->getTypeParam());
 		n->getTypeParam()->accept(visitor, tpScp);
-		sp<ZTypeParamList> list = std::dynamic_pointer_cast<ZTypeParamList>(prnSc->getZSymbol());
-		list->addTypeParam(typeParam);
+		sp<ZVariantTypeParamList> list = std::dynamic_pointer_cast<ZVariantTypeParamList>(prnSc->getZSymbol());
+		list->addVariantTypeParam(vtp);
 
 	}
 
 	void ZVisitTypeParamHelp::visitTypeParam(sp<fTypeParam> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Type Parameter: " << n->getIdentToken()->toString() << std::endl;
+		sp<ZTypeParam> tp = ms<ZTypeParam>(n->getIdentToken()->toString());
+
 		if (n->getTypeParamClause()) {
-			n->getTypeParamClause()->accept(visitor, prnSc);
+			tp->setTypeParamList(ms<ZTypeParamList>());
+			esc vtpListScp = ms<ZEnclScope>(prnSc, tp->getTypeParamList());
+			n->getTypeParamClause()->accept(visitor, vtpListScp);
 		}
 	}
 

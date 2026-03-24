@@ -197,6 +197,8 @@ add_executable(zebra-4-backend
 		include/back/tree/ZVisitCaseHelp.hpp
 		include/back/tree/ZVisitTypeParamHelp.hpp
 		src/back/tree/ZVisitTypeParamHelp.cpp
+		include/ast/leaf/fFunTypeParamClause.hpp
+		src/ast/leaf/fFunTypeParamClause.cpp
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE

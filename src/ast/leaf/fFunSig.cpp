@@ -7,8 +7,31 @@
 #include "ast/leaf/fTypeParam.hpp"
 
 namespace zebra::ast::leaf {
+	fFunTypeParamClause::fFunTypeParamClause(std::vector<sp<fTypeParam> > typeParam) {
+		this->typeParams_ = std::move(typeParam);
+	}
 
-	fFunSig::fFunSig(const fToken* funName) : identName_(funName) {
+	const std::vector<sp<fTypeParam> > &fFunTypeParamClause::getTypeParamList() {
+		return typeParams_;
+	}
+
+	void fFunTypeParamClause::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+		visitor->visit(std::static_pointer_cast<fFunTypeParamClause>(shared_from_this()), s);
+	}
+
+	std::string fFunTypeParamClause::toString() const {
+		return "FunTypeParamClause(typeParams=" + [&]() {
+			std::string result = "[";
+			for (const auto &tp: typeParams_) {
+				result += (tp ? tp->toString() : "null") + ", ";
+			}
+			result += "]";
+			return result;
+		}() + ")";
+	}
+
+
+	fFunSig::fFunSig(const fToken *funName) : identName_(funName) {
 		if (this->identName_ == nullptr) {
 			throw std::invalid_argument("Function name cannot be null");
 		}
@@ -21,11 +44,11 @@ namespace zebra::ast::leaf {
 		this->paramClauses_ = std::move(paramClauses);
 	}
 
-	void fFunSig::setTypeParams(std::vector<sp<fTypeParam> >  &&typeParam) {
-		this->typeParam_ = std::make_shared<std::vector<sp<fTypeParam>>>(std::move(typeParam));
+	void fFunSig::setFunTypeParamClause(std::vector<sp<fTypeParam> > &&typeParam) {
+		this->typeParamClause_ = ms<fFunTypeParamClause>(std::move(typeParam));
 	}
 
-	const fToken* fFunSig::getIdentToken() const {
+	const fToken *fFunSig::getIdentToken() const {
 		return identName_;
 	}
 
@@ -37,8 +60,8 @@ namespace zebra::ast::leaf {
 		return paramClauses_;
 	}
 
-	sp<std::vector<sp<fTypeParam>>> fFunSig::getTypeParamList() const {
-		return typeParam_;
+	sp<fFunTypeParamClause> fFunSig::getFunTypeParamClause() const {
+		return typeParamClause_;
 	}
 
 	void fFunSig::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
@@ -48,13 +71,15 @@ namespace zebra::ast::leaf {
 	std::string fFunSig::toString() const {
 		return "FunSig(name=" + identName_->toString() +
 		       ", paramClauses=" + (paramClauses_ ? paramClauses_->toString() : "null") +
-		       ", typeParam=" + (typeParam_ ? [&]() {
-			std::string result = "[";
-			for (const auto& tp : *typeParam_) {
-				result += (tp ? tp->toString() : "null") + ", ";
-			}
-			result += "]";
-			return result;
-		}() : "null") + ")";
+		       ", typeParam=" + (typeParamClause_
+			                         ? [&]() {
+				                         std::string result = "[";
+				                         for (const auto &tp: *typeParamClause_) {
+					                         result += (tp ? tp->toString() : "null") + ", ";
+				                         }
+				                         result += "]";
+				                         return result;
+			                         }()
+			                         : "null") + ")";
 	}
 }

@@ -63,6 +63,7 @@ namespace zebra::back::tree {
 		 void visit(sp<fFor>, esc) override;
 		 void visit(sp<fFunc>, esc) override;
 		 void visit(sp<fFunSig>, esc) override;
+		 void visit(sp<fFunTypeParamClause>, esc) override;
 		 void visit(sp<fGenerator>, esc) override;
 		 void visit(sp<fId>, esc) override;
 		 void visit(sp<fIds>, esc) override;
