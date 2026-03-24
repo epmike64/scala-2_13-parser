@@ -9,6 +9,10 @@ namespace zebra::ast::leaf {
 		return variance_;
 	}
 
+	sp<fTypeParam> fVariantTypeParam::getTypeParam() {
+		return typeParam_;
+	}
+
 	void fVariantTypeParam::setTypeParam(const sp<fTypeParam> &typeParam) {
 		typeParam_ = typeParam;
 	}
