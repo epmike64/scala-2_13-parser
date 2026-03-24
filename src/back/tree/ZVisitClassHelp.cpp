@@ -71,7 +71,9 @@ namespace zebra::back::tree {
 		if (n->getClassParents()) {
 			n->getClassParents()->accept(visitor, prnSc);
 		}
-		n->getTemplateBody()->accept(visitor, prnSc);
+		if (n->getTemplateBody()) {
+			n->getTemplateBody()->accept(visitor, prnSc);
+		}
 	}
 
 	void ZVisitClassHelp::visitTemplate(sp<fTemplate> n, esc prnSc, sp<fAstNodVisitor> visitor) {
