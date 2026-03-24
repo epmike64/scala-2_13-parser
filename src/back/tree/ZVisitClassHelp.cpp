@@ -36,7 +36,7 @@ namespace zebra::back::tree {
 		if (cls->getTypeParamClause()) {
 			zClsDef->setVariantTypeParamList(ms<ZVariantTypeParamList>());
 			esc vtpListScp = ms<ZEnclScope>(clsDefScp, zClsDef->getVariantTypeParamList());
-			ZVisitTypeParamHelp::buildVariantTypeParamClause(cls->getTypeParamClause(), zClsDef->getVariantTypeParamList(), vtpListScp,visitor);
+			cls->getTypeParamClause()->accept(visitor, vtpListScp);
 		}
 
 		if (cls->getClassParamClauses()) {
@@ -115,12 +115,20 @@ namespace zebra::back::tree {
 	}
 	void ZVisitClassHelp::visitTraitDef(sp<fTraitDef> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Trait Definition: " << std::endl;
+
+		sp<ZTraitDef> zTraiDef = ms<ZTraitDef>(n->getIdentName());
+		esc clsDefScp = ms<ZEnclScope>(prnSc, zTraiDef);
+
 		if (n->getModifiers()) {
 			n->getModifiers()->accept(visitor, prnSc);
 		}
+
 		if (n->getTypeParamClause()) {
-			n->getTypeParamClause()->accept(visitor, prnSc);
+			zTraiDef->setVariantTypeParamList(ms<ZVariantTypeParamList>());
+			esc vtpListScp = ms<ZEnclScope>(clsDefScp, zTraiDef->getVariantTypeParamList());
+			n->getTypeParamClause()->accept(visitor, vtpListScp);
 		}
+
 		if (n->getExtendsTemplate()) {
 			n->getExtendsTemplate()->accept(visitor, prnSc);
 		}
