@@ -12,7 +12,7 @@ namespace zebra::ast::leaf {
 	using namespace zebra::util;
 
 	class fObjectDef : public fAstOprndNod {
-		const bool isCaseClass_;
+		const bool isCaseObj_;
 		const fToken* identName_;
 		const sp<fModifiers> modifiers_;
 		sp<fTemplate> extendsTemplate_;
@@ -21,7 +21,7 @@ namespace zebra::ast::leaf {
 
 		fObjectDef(const fToken* objectName, sp<fModifiers> &&modifiers, bool isCaseClass) ;
 
-		 bool isCaseClass() const ;
+		 bool isCaseObj() const ;
 
 		 sp<fModifiers> getModifiers() const ;
 

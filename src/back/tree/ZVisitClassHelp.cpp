@@ -50,24 +50,33 @@ namespace zebra::back::tree {
 	
 	
 	void ZVisitClassHelp::visitObjectDef(sp<fObjectDef> obj, esc prnSc, sp<fAstNodVisitor> visitor) {
-		std::cout << "Visiting "<< (obj->isCaseClass()? "Case ": "") <<"Object"  << obj->getIdentName()  << std::endl;
+		std::cout << "Visiting "<< (obj->isCaseObj()? "Case ": "") <<"Object"  << obj->getIdentName()  << std::endl;
 
-		sp<ZObjectDef> zObjDef = ms<ZObjectDef>(obj->getIdentName());
+		sp<ZObjectDef> zObjDef = ms<ZObjectDef>(obj->isCaseObj(), obj->getIdentName());
 		esc objDefScp = ms<ZEnclScope>(prnSc, zObjDef);
 
+
 		if (obj->getModifiers()) {
-			obj->getModifiers()->accept(visitor, objDefScp);
+			sp<ZModifiers> mods = ms<ZModifiers>();
+			esc modsScp = ms<ZEnclScope>(prnSc, mods);
+			obj->getModifiers()->accept(visitor, modsScp);
+			zObjDef->setModifiers(mods);
 		}
 
 		if (obj->getExtendsTemplate()) {
-			obj->getExtendsTemplate()->accept(visitor, objDefScp);
+			sp<ZClassTemplate> zCT = ms<ZClassTemplate>();
+			esc tbScp = ms<ZEnclScope>(objDefScp, zCT);
+			obj->getExtendsTemplate()->accept(visitor, tbScp);
+			zObjDef->setClassTemplate(zCT);
 		}
 	}
 
 	void ZVisitClassHelp::visitClassTemplate(sp<fClassTemplate> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Class Template" << std::endl;
 
-		n->getClassParents()->accept(visitor, prnSc);
+		sp<ZClassParents> zClsParents = ms<ZClassParents>();
+		esc clsParentsScp = ms<ZEnclScope>(prnSc, zClsParents);
+		n->getClassParents()->accept(visitor, clsParentsScp);
 
 		if (n->getTemplateBody()) {
 			n->getTemplateBody()->accept(visitor, prnSc);

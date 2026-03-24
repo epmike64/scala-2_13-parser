@@ -7,14 +7,14 @@
 
 namespace zebra::ast::leaf {
 
-	fObjectDef::fObjectDef(const fToken* objectName, sp<fModifiers> &&modifiers, bool isCaseClass) : identName_(objectName), modifiers_(std::move(modifiers)), isCaseClass_(isCaseClass) {
+	fObjectDef::fObjectDef(const fToken* objectName, sp<fModifiers> &&modifiers, bool isCaseClass) : identName_(objectName), modifiers_(std::move(modifiers)), isCaseObj_(isCaseClass) {
 		if (this->identName_ == nullptr) {
 			throw std::invalid_argument("Object name token cannot be null");
 		}
 	}
 
-	bool fObjectDef::isCaseClass() const {
-		return isCaseClass_;
+	bool fObjectDef::isCaseObj() const {
+		return isCaseObj_;
 	}
 
 	sp<fModifiers> fObjectDef::getModifiers() const {
@@ -43,7 +43,7 @@ namespace zebra::ast::leaf {
 
 	std::string fObjectDef::toString() const {
 		return "ObjectDef(name=" + identName_->toString() +
-		       ", isCaseClass=" + (isCaseClass_ ? "true" : "false") +
+		       ", isCaseClass=" + (isCaseObj_ ? "true" : "false") +
 		       ", modifiers=" + (modifiers_ ? modifiers_->toString() : "null") +
 		       ", extendsTemplate=" + (extendsTemplate_ ? extendsTemplate_->toString() : "null") + ")";
 	}

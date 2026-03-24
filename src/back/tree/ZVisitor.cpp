@@ -61,7 +61,7 @@ namespace zebra::back::tree {
 		}
 
 		if (n->getImports().size() > 0) {
-			esc imScp = ms<ZEnclScope>(prnSc, zcu->getImportList());
+			esc imScp = ms<ZEnclScope>(prnSc, zcu->getImports());
 			for (const auto& imp : n->getImports()) {
 				imp->accept(shared_from_this(), imScp);
 			}

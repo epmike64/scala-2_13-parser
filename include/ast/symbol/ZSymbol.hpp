@@ -282,15 +282,25 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZImportList: public virtual ZSymbol{
-		vecP<ZImport> imports_;
+	class ZClassParents: public ZSymbol {
+		sp<ZType> type_;
 	public:
-		ZImportList() : ZSymbol(Z_IMPORT_LIST) {}
-		~ZImportList() override = default;
-		void addImport(sp<ZImport> im) {
-			imports_.push_back(im);
+		ZClassParents() : ZSymbol(Z_CLASS_PARENTS) {}
+		~ZClassParents() override = default;
+		void setType(sp<ZType> t) {
+			type_ = t;
 		}
 	};
+
+	// class ZImportList: public virtual ZSymbol{
+	// 	vecP<ZImport> imports_;
+	// public:
+	// 	ZImportList() : ZSymbol(Z_IMPORT_LIST) {}
+	// 	~ZImportList() override = default;
+	// 	void addImport(sp<ZImport> im) {
+	// 		imports_.push_back(im);
+	// 	}
+	// };
 
 	class ZRegFunc: public ZId, public ZFunc {
 	protected:
@@ -325,15 +335,12 @@ namespace zebra::ast::symbol {
 
 	class ZTraitDef: public ZIdSymbol {
 		protected:
-		const sp<ZImportList> importList_ = ms<ZImportList>();
+
 		sp<ZVariantTypeParamList> variantTypeParamList_;
 	public:
 		explicit ZTraitDef(std::string sId) : ZIdSymbol(std::move(sId), Z_TRAIT_DEF){}
 		ZTraitDef(std::string sId, ZLangConstruct c) :  ZIdSymbol(std::move(sId), c) {}
 
-		sp<ZImportList> getImportList() {
-			return importList_;
-		}
 		void setVariantTypeParamList(sp<ZVariantTypeParamList> tps) {
 			variantTypeParamList_ = tps;
 		}
@@ -369,28 +376,71 @@ namespace zebra::ast::symbol {
 		ZClassConstr() : ZSymbol(Z_CLASS_CONSTR) {}
 	};
 
-
-
-	class ZObjectDef: public ZId, public ZSymbol {
-		public:
-		explicit ZObjectDef(std::string zId) : ZId(std::move(zId)), ZSymbol(Z_OBJECT_DEF) {}
+	class ZTemplateBody : public ZSymbol {
+		vecP<ZImport> imports_;
+		vecP<ZSymbol> stmts_;
+	public:
+		ZTemplateBody() : ZSymbol(Z_TEMPLATE_BODY) {}
+		void addStmt(sp<ZSymbol> stmt) {
+			stmts_.push_back(stmt);
+		}
 	};
 
-	class ZClassDef : public ZTraitDef {
-		sp<ZClassDef> parentClass_;
-		PVecP<ZClassParam> clsParams_;
-		PVecP<ZTraitDef> traits_;
-		// sp<ZTypeParamList> typeParams_;
-		PVecP<ZClassConstr> constrs_;
-		// PVecP<ZDecl> decls_;
-		PVecP<ZRegFunc> funcs_;
+	class ZClassTemplate: public ZSymbol {
+		protected:
+		sp<ZTemplateBody> templateBody_;
+		sp<ZClassParents> classParents_;
 	public:
-		explicit ZClassDef(std::string zId) : ZTraitDef(std::move(zId), Z_CLASS_DEF) {}
+		ZClassTemplate() : ZSymbol(Z_CLASS_TEMPLATE) {}
+		void setTemplateBody(sp<ZTemplateBody> tb) {
+			templateBody_ = tb;
+		}
+		void setClassParents(sp<ZClassParents> cp) {
+			classParents_ = cp;
+		}
+	};
+
+	class ZObjectDef: public ZId, public ZSymbol {
+		protected:
+		const bool isCase_;
+		sp<ZModifiers> modifiers_;
+		sp<ZClassTemplate> classTemplate_;
+		public:
+		explicit ZObjectDef(bool isCase, std::string zId) : isCase_(isCase), ZId(std::move(zId)), ZSymbol(Z_OBJECT_DEF) {}
+		void setModifiers(sp<ZModifiers> mods) {
+			modifiers_ = mods;
+		}
+		void setClassTemplate(sp<ZClassTemplate> ct) {
+			classTemplate_ = ct;
+		}
+	};
+
+	class ZClassDef : public ZIdSymbol {
+		sp<ZModifiers> modifiers_;
+		sp<ZClassDef> parentClass_;
+		sp<ZVariantTypeParamList> typeParams_;
+		PVecP<ZTraitDef> traits_;
+		PVecP<ZClassParam> clsParams_;
+		PVecP<ZClassConstr> constrs_;
+		PVecP<ZRegFunc> funcs_;
+		PVecP<ZValueDcl> decls_;
+		sp<ZClassTemplate> classTemplate_;
+	public:
+		explicit ZClassDef(std::string zId) : ZIdSymbol(std::move(zId), Z_CLASS_DEF) {}
 		void addClassParam(sp<ZClassParam> clsParam) {
 			if (clsParams_ == nullptr) {
 				clsParams_ = ms<std::vector<std::shared_ptr<ZClassParam>>>();
 			}
 			clsParams_->push_back(clsParam);
+		}
+		void setModifiers(sp<ZModifiers> mods) {
+			modifiers_ = mods;
+		}
+		sp<ZVariantTypeParamList> getVariantTypeParamList() {
+			return typeParams_;
+		}
+		void setVariantTypeParamList(sp<ZVariantTypeParamList> tpl) {
+			typeParams_ = tpl;
 		}
 	};
 
@@ -399,20 +449,20 @@ namespace zebra::ast::symbol {
 		ZProgram() : ZSymbol(Z_PROGRAM) {}
 	};
 
-	class I_Stmts {
-	public:
-		virtual ~I_Stmts() = default;
-	};
-
-	class ZTemplateBody: I_Stmts, public ZSymbol {
-	public:
-		ZTemplateBody() : ZSymbol(Z_TEMPLATE_BODY) {}
+	class ZImportList: public ZSymbol {
+		vecP<ZImport> imports_;
+		public:
+		ZImportList() : ZSymbol(Z_IMPORT_LIST) {}
+		void addImport(sp<ZImport> imp) {
+			imports_.push_back(imp);
+		}
 	};
 
 	class ZCompileUnit: public ZIdSymbol {
-		const sp<ZImportList> importList_ = ms<ZImportList>();
+	protected:
+		sp<ZImportList> imports_ = ms<ZImportList>();
 		std::string packgName_;
-		PVecP<ZClassDef> classes_;
+		vecP<ZClassDef> classes_;
 	public:
 		explicit ZCompileUnit(std::string zId) : ZIdSymbol(std::move(zId), Z_COMPILATION_UNIT) {
 			packgName_ = "_ROOT_PKG_";
@@ -422,18 +472,15 @@ namespace zebra::ast::symbol {
 		}
 
 		void addClass(sp<ZClassDef> cls) {
-			if (classes_ == nullptr) {
-				classes_ = ms<std::vector<std::shared_ptr<ZClassDef>>>();
-			}
-			classes_->push_back(cls);
+			classes_.push_back(cls);
 		}
 
 		void addImport(sp<ZImport> imp) {
-			importList_->addImport(imp);
+			imports_->addImport(imp);
 		}
 
-		sp<ZImportList> getImportList() {
-			return importList_;
+		sp<ZImportList> getImports() {
+			return imports_;
 		}
 	};
 
