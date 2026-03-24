@@ -177,8 +177,9 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZValue: ZSymbol {
+	class ZValueDcl: ZSymbol {
 	public:
+		ZValueDcl() : ZSymbol(Z_VALUE_DCL) {}
 
 	};
 

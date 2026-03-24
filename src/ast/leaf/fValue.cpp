@@ -8,42 +8,42 @@
 
 namespace zebra::ast::leaf {
 
-	fValue::fValue(sp<fModifiers> &&modifiers, lex::kind::fVarMutTypeE mutabilityType) : modifiers_(std::move(modifiers)), mutabilityType_(mutabilityType) {}
+	fValueDcl::fValueDcl(sp<fModifiers> &&modifiers, lex::kind::fVarMutTypeE mutabilityType) : modifiers_(std::move(modifiers)), mutabilityType_(mutabilityType) {}
 
-	sp<fModifiers> fValue::getModifiers() const {
+	sp<fModifiers> fValueDcl::getModifiers() const {
 		return modifiers_;
 	}
 
-	void fValue::addName(sp<fAstProdSubTreeN> &&name) {
+	void fValueDcl::addName(sp<fAstProdSubTreeN> &&name) {
 		this->names_.push_back(std::move(name));
 	}
 
-	std::vector<sp<fAstProdSubTreeN>> fValue::getNames() const {
+	std::vector<sp<fAstProdSubTreeN>> fValueDcl::getNames() const {
 		return names_;
 	}
 
-	void fValue::setType(sp<fType> &&type) {
+	void fValueDcl::setType(sp<fType> &&type) {
 		this->type_ = std::move(type);
 	}
 
-	sp<fType> fValue::getType() const {
+	sp<fType> fValueDcl::getType() const {
 		return type_;
 	}
 
-	void fValue::setAssignExpr(sp<fAstProdSubTreeN> &&assignExpr) {
+	void fValueDcl::setAssignExpr(sp<fAstProdSubTreeN> &&assignExpr) {
 		this->assignExpr_ = std::move(assignExpr);
 	}
 
-	sp<fAstProdSubTreeN> fValue::getAssignExpr() const {
+	sp<fAstProdSubTreeN> fValueDcl::getAssignExpr() const {
 		return assignExpr_;
 	}
 
 
-	void fValue::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
-		visitor->visit(std::static_pointer_cast<fValue>(shared_from_this()), s);
+	void fValueDcl::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+		visitor->visit(std::static_pointer_cast<fValueDcl>(shared_from_this()), s);
 	}
 
-	std::string fValue::toString() const {
+	std::string fValueDcl::toString() const {
 		std::ostringstream oss;
 		if (modifiers_) {
 			oss << "modifiers: " << modifiers_->toString() << ", ";

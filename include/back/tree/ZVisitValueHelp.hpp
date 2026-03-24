@@ -11,7 +11,6 @@ namespace zebra::back::tree {
 
 	class ZVisitValueHelp {
 		public:
-		static void visitValDef(sp<fValueDef> n, esc prnSc, sp<fAstNodVisitor> visitor);
-		static void visitValDecl(sp<fValueDecl> n, esc prnSc, sp<fAstNodVisitor> visitor);
+
 	};
 }

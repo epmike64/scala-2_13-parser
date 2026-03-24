@@ -131,13 +131,13 @@ namespace zebra::parse {
 
 		sp<fBlock> block();
 
-		sp<fValue> patDef(fVarMutTypeE mutType, sp<fModifiers> mods);
+		sp<fValueDcl> patDef(fVarMutTypeE mutType, sp<fModifiers> mods);
 
 		sp<fTypeParam> typeParam();
 
 		std::vector<sp<fTypeParam>> funTypeParams();
 
-		sp<fValue> varDef(sp<fModifiers> mods);
+		sp<fValueDcl> varDef(sp<fModifiers> mods);
 
 		sp<fFunSig> funSig();
 

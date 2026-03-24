@@ -1167,15 +1167,15 @@ namespace zebra::parse {
 		return block;
 	}
 
-	sp<fValue> fParser::patDef(fVarMutTypeE mutType, sp<fModifiers> mods) {
-		sp<fValue> value = nullptr;
+	sp<fValueDcl> fParser::patDef(fVarMutTypeE mutType, sp<fModifiers> mods) {
+		sp<fValueDcl> value = nullptr;
 		switch (mutType){
 			case fVarMutTypeE::VAL: {
-				value = ms<fValue>(std::move(mods), fVarMutTypeE::VAL);
+				value = ms<fValueDcl>(std::move(mods), fVarMutTypeE::VAL);
 				break;
 			}
 			case fVarMutTypeE::VAR: {
-				value = ms<fValue>(std::move(mods), fVarMutTypeE::VAR);
+				value = ms<fValueDcl>(std::move(mods), fVarMutTypeE::VAR);
 				break;
 			}
 			default:
@@ -1217,7 +1217,7 @@ namespace zebra::parse {
 		return params;
 	}
 
-	sp<fValue> fParser::varDef(sp<fModifiers> mods) {
+	sp<fValueDcl> fParser::varDef(sp<fModifiers> mods) {
 		// patDef() + "ids: Type = _"
 		return patDef(fVarMutTypeE::VAR, mods);
 	}

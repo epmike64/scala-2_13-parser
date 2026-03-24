@@ -11,7 +11,7 @@ namespace zebra::ast::leaf {
 	using namespace ast::node;
 	using namespace ast::symbol;
 
-	class fValue : public fAstOprndNod {
+	class fValueDcl : public fAstOprndNod {
 		const lex::kind::fVarMutTypeE mutabilityType_;
 		const sp<fModifiers> modifiers_;
 		std::vector<sp<fAstProdSubTreeN>> names_;
@@ -19,7 +19,7 @@ namespace zebra::ast::leaf {
 		sp<fAstProdSubTreeN> assignExpr_;
 		public:
 
-		fValue(sp<fModifiers> &&modifiers, lex::kind::fVarMutTypeE mutabilityType) ;
+		fValueDcl(sp<fModifiers> &&modifiers, lex::kind::fVarMutTypeE mutabilityType) ;
 
 		 sp<fModifiers> getModifiers() const ;
 

@@ -164,6 +164,26 @@ namespace zebra::back::tree {
 		}
 	}
 
+	void ZVisitor::visit(sp<fValueDcl> n, esc prnSc) {
+		std::cout << "Visiting Value Decl: " << std::endl;
+
+		sp<ZValueDcl> val = ms<ZValueDcl>();
+
+		if (n->getModifiers()) {
+			n->getModifiers()->accept(shared_from_this(), prnSc);
+		}
+		for (const auto& name : n->getNames()) {
+			name->accept(shared_from_this(), prnSc);
+		}
+		if (n->getType()) {
+			n->getType()->accept(shared_from_this(), prnSc);
+		}
+		if (n->getAssignExpr()) {
+
+			n->getAssignExpr()->accept(shared_from_this(), prnSc);
+		}
+	}
+
 	void ZVisitor::visit(sp<fWhile > n, esc prnSc) {
 		std::cout << "-- WHILE Cond Expr" << std::endl;
 		sp<ZWhile> zwhile = ms<ZWhile>();
@@ -377,21 +397,7 @@ namespace zebra::back::tree {
 		std::cout << "Visiting Underscore: " <<n ->toString() << std::endl;
 	}
 
-	void ZVisitor::visit(sp<fValue> n, esc prnSc) {
-		std::cout << "Visiting Value: " << std::endl;
-		if (n->getModifiers()) {
-			n->getModifiers()->accept(shared_from_this(), prnSc);
-		}
-		for (const auto& name : n->getNames()) {
-			name->accept(shared_from_this(), prnSc);
-		}
-		if (n->getType()) {
-			n->getType()->accept(shared_from_this(), prnSc);
-		}
-		if (n->getAssignExpr()) {
-			n->getAssignExpr()->accept(shared_from_this(), prnSc);
-		}
-	}
+
 
 	sp<fAstNod> ZVisitor::getAstPSTreeRightN(sp<fAstProdSubTreeN> subTree) {
 		return ZVisitPSubTreeHelp::getAstPSTreeRightN(subTree);
