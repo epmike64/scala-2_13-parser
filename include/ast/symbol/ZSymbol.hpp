@@ -126,15 +126,12 @@ namespace zebra::ast::symbol {
 
 	class ZProdSubTreeN: public ZSymbol {
 	protected:
-		sp<ZTreePostOrderSS> postOrderSS_;
+		const sp<ZTreePostOrderSS> postOrderSS_ = ms<ZTreePostOrderSS>();
 		public:
 		ZProdSubTreeN() : ZSymbol(Z_PROD_SUB_TREE_NOD) {}
 		explicit ZProdSubTreeN(ZLangConstruct c) : ZSymbol(c) {}
 
-		sp<ZTreePostOrderSS> getTreePostOrderSS() {
-			if (postOrderSS_ == nullptr) {
-				postOrderSS_ = ms<ZTreePostOrderSS>();
-			}
+		sp<ZTreePostOrderSS> getTreePostOrderSS() const {
 			return postOrderSS_;
 		}
 	};
@@ -145,6 +142,24 @@ namespace zebra::ast::symbol {
 		explicit ZType(ZLangConstruct c) : ZProdSubTreeN(c) {}
 		sp<ZTreePostOrderSS> getZType() const {
 			return postOrderSS_;
+		}
+	};
+
+	class Zif: ZSymbol {
+	protected:
+		sp<ZProdSubTreeN> condExpr_;
+		sp<ZProdSubTreeN> bodyExpr_;
+		sp<ZProdSubTreeN> elseBodyExpr_;
+	public:
+		Zif() : ZSymbol(Z_IF) {}
+		void setCondExpr(sp<ZProdSubTreeN> p) {
+			condExpr_ = p;
+		}
+		void setBody(sp<ZProdSubTreeN> p) {
+			bodyExpr_ = p;
+		}
+		void setElseBody(sp<ZProdSubTreeN> p) {
+			elseBodyExpr_ = p;
 		}
 	};
 

@@ -160,14 +160,27 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fIf> n, esc prnSc) {
 		std::cout << "-- IF Cond Expr" << std::endl;
-		if (n->getCondExpr()) {
-			n->getCondExpr()->accept(shared_from_this(), prnSc);
+
+		sp<Zif> zif = ms<Zif>();
+		{
+			sp<ZProdSubTreeN> ifTr = ms<ZProdSubTreeN>();
+			esc ifScp = ms<ZEnclScope>(prnSc, ifTr);
+			n->getCondExpr()->accept(shared_from_this(), ifScp);
+			zif->setCondExpr(ifTr);
 		}
+
 		if (n->getIfBody()) {
-			n->getIfBody()->accept(shared_from_this(), prnSc);
+			sp<ZProdSubTreeN> bdTr = ms<ZProdSubTreeN>();
+			esc bdScp = ms<ZEnclScope>(prnSc, bdTr);
+			n->getIfBody()->accept(shared_from_this(), bdScp);
+			zif->setBody(bdTr);
 		}
+
 		if (n->getElseBody()) {
+			sp<ZProdSubTreeN> ebdTr = ms<ZProdSubTreeN>();
+			esc bdScp = ms<ZEnclScope>(prnSc, ebdTr);
 			n->getElseBody()->accept(shared_from_this(), prnSc);
+			zif->setElseBody(ebdTr);
 		}
 	}
 
