@@ -62,9 +62,6 @@ namespace zebra::back::tree {
 			obj->getExtendsTemplate()->accept(visitor, objDefScp);
 		}
 	}
-	
-	///////////////
-	
 
 	void ZVisitClassHelp::visitClassTemplate(sp<fClassTemplate> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Class Template" << std::endl;
