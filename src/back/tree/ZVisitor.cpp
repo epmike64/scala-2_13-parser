@@ -29,7 +29,7 @@
 #include "ast/leaf/fTypeDef.hpp"
 #include "ast/leaf/fTypeParam.hpp"
 #include "ast/leaf/fUnderscore.hpp"
-#include "ast/leaf/fValue.hpp"
+#include "ast/leaf/fValueDcl.hpp"
 #include "ast/leaf/fVariantTypeParam.hpp"
 #include "back/tree/ZVisitClassHelp.hpp"
 #include "back/tree/ZVisitFuncHelp.hpp"
@@ -170,17 +170,29 @@ namespace zebra::back::tree {
 		sp<ZValueDcl> val = ms<ZValueDcl>();
 
 		if (n->getModifiers()) {
-			n->getModifiers()->accept(shared_from_this(), prnSc);
+			sp<ZModifiers> mods = ms<ZModifiers>();
+			esc modScp = ms<ZEnclScope>(prnSc, mods);
+			n->getModifiers()->accept(shared_from_this(), modScp);
+			val->setModifiers(mods);
 		}
-		for (const auto& name : n->getNames()) {
-			name->accept(shared_from_this(), prnSc);
-		}
-		if (n->getType()) {
-			n->getType()->accept(shared_from_this(), prnSc);
-		}
-		if (n->getAssignExpr()) {
 
-			n->getAssignExpr()->accept(shared_from_this(), prnSc);
+		for (const auto& name : n->getNames()) {
+			// sp<ZProdSubTreeN> subName = ms<ZProdSubTreeN>();
+			// esc subScp = ms<ZEnclScope>(prnSc, subName);
+			// name->accept(shared_from_this(), subScp);
+			val->addName(ZVisitPSubTreeHelp::visitIntoSubTree(name, prnSc, shared_from_this()));
+
+		}
+
+		if (n->getType()) {
+			sp<ZType> type = ms<ZType>();
+			esc typeScp = ms<ZEnclScope>(prnSc, type);
+			n->getType()->accept(shared_from_this(), typeScp);
+			val->setType(type);
+		}
+
+		if (n->getAssignExpr()) {
+			val->setAssignExpr(ZVisitPSubTreeHelp::visitIntoSubTree(n->getAssignExpr(), prnSc, shared_from_this()));
 		}
 	}
 

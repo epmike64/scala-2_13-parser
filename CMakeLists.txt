@@ -127,7 +127,7 @@ add_executable(zebra-4-backend
 		include/ast/leaf/fTypeDef.hpp
 		include/ast/leaf/fTypeParam.hpp
 		include/ast/leaf/fUnderscore.hpp
-		include/ast/leaf/fValue.hpp
+		include/ast/leaf/fValueDcl.hpp
 		include/ast/leaf/fVariantTypeParam.hpp
 		include/ast/leaf/fId.hpp
 		include/ast/leaf/fIds.hpp
@@ -158,7 +158,7 @@ add_executable(zebra-4-backend
 		src/ast/leaf/fTypeDef.cpp
 		src/ast/leaf/fTypeParam.cpp
 		src/ast/leaf/fUnderscore.cpp
-		src/ast/leaf/fValue.cpp
+		src/ast/leaf/fValueDcl.cpp
 		src/ast/leaf/fVariantTypeParam.cpp
 		include/lex/kind/fAccessQualifierE.hpp
 		include/ast/leaf/fModifiers.hpp

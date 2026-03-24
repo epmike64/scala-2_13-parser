@@ -163,6 +163,12 @@ namespace zebra::ast::symbol {
 		}
 	};
 
+	class ZModifiers: public ZSymbol {
+		std::vector<std::string> modifiers_;
+		public:
+		ZModifiers() : ZSymbol(Z_MODIFIERS) {}
+	};
+
 	class ZWhile: public ZSymbol {
 	protected:
 		sp<ZProdSubTreeN> condExpr_;
@@ -178,9 +184,24 @@ namespace zebra::ast::symbol {
 	};
 
 	class ZValueDcl: ZSymbol {
-	public:
+		sp<ZModifiers> modifiers_;
+		sp<ZType> type_;
+		sp<ZProdSubTreeN> assignExpr_;
+		vecP<ZProdSubTreeN> names_ = vecP<ZProdSubTreeN>();
+		public:
 		ZValueDcl() : ZSymbol(Z_VALUE_DCL) {}
-
+		void setModifiers(sp<ZModifiers> m) {
+			modifiers_ = m;
+		}
+		void setType(sp<ZType> t) {
+			type_ = t;
+		}
+		void setAssignExpr(sp<ZProdSubTreeN> e) {
+			assignExpr_ = e;
+		}
+		void addName(sp<ZProdSubTreeN> n) {
+			names_.push_back(n);
+		}
 	};
 
 	class ZParamType: public ZType {

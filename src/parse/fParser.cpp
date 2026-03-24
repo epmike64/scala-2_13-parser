@@ -33,7 +33,7 @@
 #include "ast/leaf/fTypeArgs.hpp"
 #include "ast/leaf/fTypeDef.hpp"
 #include "ast/leaf/fUnderscore.hpp"
-#include "ast/leaf/fValue.hpp"
+#include "ast/leaf/fValueDcl.hpp"
 #include "ast/leaf/fVariantTypeParam.hpp"
 #include "ast/leaf/fWhile.hpp"
 #include "lex/kind/fVarianceE.hpp"
