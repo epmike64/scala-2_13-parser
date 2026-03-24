@@ -235,6 +235,10 @@ namespace zebra::back::tree {
 		ZVisitFuncHelp::visitRegFunc(fun, prnSc, shared_from_this());
 	}
 
+	void ZVisitor::visit(sp<fFunTypeParamClause> n, esc prnSc) {
+		ZVisitTypeParamHelp::visitFunTypeParamClause(n, prnSc, shared_from_this());
+	}
+
 	void ZVisitor::visit(sp<fOverrideModifier> n, esc prnSc) {
 		std::cout << "Visiting Override Modifier: " << n->toString() << std::endl;
 	}

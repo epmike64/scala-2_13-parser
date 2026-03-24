@@ -17,6 +17,10 @@ namespace zebra::back::tree {
 	using namespace ast::leaf;
 	using namespace util;
 
+	void ZVisitTypeParamHelp::visitFunTypeParamClause(sp<fFunTypeParamClause> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+		std::cout << "Visiting FunTypeParamClause: " << n->toString() << std::endl;
+	}
+
 	void ZVisitTypeParamHelp::visitTypeParamClause(sp<fTypeParamClause> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		for (auto variantTypeParam: *n->getVariantTypeParams()) {
 			variantTypeParam->accept(visitor, prnSc);
