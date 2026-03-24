@@ -145,6 +145,17 @@ namespace zebra::back::tree {
 
 	void  ZVisitor::visit(sp<fValueDef> n, esc prnSc)  {
 		std::cout << "Visiting Value Decl: " << n->toString() << std::endl;
+		if (n->getModifiers()) {
+			n->getModifiers()->accept(shared_from_this(), prnSc);
+		}
+		if (n->getType()) {
+			std::cout << "Visiting Value Decl Type" << std::endl;
+			n->getType()->accept(shared_from_this(), prnSc);
+		}
+		if (n->getAssignExpr()) {
+			std::cout << "Visiting Value Decl Assign Expr" << std::endl;
+			n->getAssignExpr()->accept(shared_from_this(), prnSc);
+		}
 	}
 
 	void ZVisitor::visit(sp<fIf> n, esc prnSc) {
@@ -276,10 +287,19 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fTypeArgs> n, esc prnSc) {
 		std::cout << "Visiting Type Arguments" << std::endl;
+		for (const auto& typeArg : n->getTypeArgs()) {
+			typeArg->accept(shared_from_this(), prnSc);
+		}
 
 	}
 	void ZVisitor::visit(sp<fTypeDef> n, esc prnSc) {
 		std::cout << "Visiting Type Definition: " << n->getTypeDefName()->toString() << std::endl;
+		if (n->getTypeParams()) {
+			n->getTypeParams()->accept(shared_from_this(), prnSc);
+		}
+		if (n->getAssignedType()) {
+			n->getAssignedType()->accept(shared_from_this(), prnSc);
+		}
 	}
 
 	void ZVisitor::visit(sp<fTypeParam> n, esc prnSc) {
@@ -296,6 +316,19 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fValueDecl> n, esc prnSc) {
 		std::cout << "Visiting Value Declaration: " << std::endl;
+		if (n->getModifiers()) {
+			n->getModifiers()->accept(shared_from_this(), prnSc);
+		}
+		for (const auto& name : n->getNames()) {
+			name->accept(shared_from_this(), prnSc);
+		}
+		if (n->getType()) {
+			n->getType()->accept(shared_from_this(), prnSc);
+		}
+		if (n->getAssignExpr()) {
+			n->getAssignExpr()->accept(shared_from_this(), prnSc);
+		}
+
 	}
 
 	sp<fAstNod> ZVisitor::getAstPSTreeRightN(sp<fAstProdSubTreeN> subTree) {

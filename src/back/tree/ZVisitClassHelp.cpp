@@ -5,6 +5,8 @@
 
 #include "ast/leaf/fAccessModifier.hpp"
 #include "ast/leaf/fClassDef.hpp"
+#include "ast/leaf/fClassParents.hpp"
+#include "ast/leaf/fClassTemplate.hpp"
 #include "ast/leaf/fModifiers.hpp"
 #include "ast/leaf/fObjectDef.hpp"
 #include "ast/leaf/fTemplate.hpp"
@@ -66,10 +68,15 @@ namespace zebra::back::tree {
 
 	void ZVisitClassHelp::visitClassTemplate(sp<fClassTemplate> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Class Template" << std::endl;
+		if (n->getClassParents()) {
+			n->getClassParents()->accept(visitor, prnSc);
+		}
+		n->getTemplateBody()->accept(visitor, prnSc);
 	}
 
 	void ZVisitClassHelp::visitTemplate(sp<fTemplate> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Template" << std::endl;
+		n->getTemplateBody()->accept(visitor, prnSc);
 	}
 
 	void ZVisitClassHelp::visitTemplateBody(sp<fTemplateBody> n, esc prnSc, sp<fAstNodVisitor> visitor) {
@@ -82,6 +89,15 @@ namespace zebra::back::tree {
 	}
 	void ZVisitClassHelp::visitTraitDef(sp<fTraitDef> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Trait Definition: " << std::endl;
+		if (n->getModifiers()) {
+			n->getModifiers()->accept(visitor, prnSc);
+		}
+		if (n->getTypeParamClause()) {
+			n->getTypeParamClause()->accept(visitor, prnSc);
+		}
+		if (n->getExtendsTemplate()) {
+			n->getExtendsTemplate()->accept(visitor, prnSc);
+		}
 	}
 
 }
