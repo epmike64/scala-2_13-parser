@@ -141,59 +141,35 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fClassParents> n, esc prnSc) {
 		ZVisitClassHelp::visitClassParents(n, prnSc, shared_from_this());
-
-
 	}
 
 	void ZVisitor::visit(sp<fClassConstr> n, esc prnSc) {
 		ZVisitClassHelp::visitClassConstr(n, prnSc, shared_from_this());
-
-
 	}
 
-	void  ZVisitor::visit(sp<fValueDef> n, esc prnSc)  {
-		std::cout << "Visiting Value Decl: " << n->toString() << std::endl;
-		if (n->getModifiers()) {
-			n->getModifiers()->accept(shared_from_this(), prnSc);
-		}
-		if (n->getType()) {
-			std::cout << "Visiting Value Decl Type" << std::endl;
-			n->getType()->accept(shared_from_this(), prnSc);
-		}
-		if (n->getAssignExpr()) {
-			std::cout << "Visiting Value Decl Assign Expr" << std::endl;
-			n->getAssignExpr()->accept(shared_from_this(), prnSc);
-		}
-	}
 
-	sp<ZProdSubTreeN> ZVisitor::visitIntoSubTree(sp<fAstNod> node, esc prnSc) {
-		sp<ZProdSubTreeN> tr = ms<ZProdSubTreeN>();
-		esc scp = ms<ZEnclScope>(prnSc, tr);
-		node->accept(shared_from_this(), scp);
-		return tr;
-	}
 
 	void ZVisitor::visit(sp<fIf> n, esc prnSc) {
 		std::cout << "-- IF Cond Expr" << std::endl;
 
 		sp<Zif> zif = ms<Zif>();
-		zif->setCondExpr(visitIntoSubTree(n->getCondExpr(), prnSc));
+		zif->setCondExpr(ZVisitPSubTreeHelp::visitIntoSubTree(n->getCondExpr(), prnSc, shared_from_this()));
 
 		if (n->getIfBody()) {
-			zif->setBody(visitIntoSubTree(n->getIfBody(), prnSc));
+			zif->setBody(ZVisitPSubTreeHelp::visitIntoSubTree(n->getIfBody(), prnSc, shared_from_this()));
 		}
 
 		if (n->getElseBody()) {
-			zif->setElseBody(visitIntoSubTree(n->getElseBody(), prnSc));
+			zif->setElseBody(ZVisitPSubTreeHelp::visitIntoSubTree(n->getElseBody(), prnSc, shared_from_this()));
 		}
 	}
 
 	void ZVisitor::visit(sp<fWhile > n, esc prnSc) {
 		std::cout << "-- WHILE Cond Expr" << std::endl;
 		sp<ZWhile> zwhile = ms<ZWhile>();
-		zwhile->setCondExpr(visitIntoSubTree(n->getCondExpr(), prnSc));
+		zwhile->setCondExpr(ZVisitPSubTreeHelp::visitIntoSubTree(n->getCondExpr(), prnSc, shared_from_this()));
 		if (n->getBody()) {
-			zwhile->setBody(visitIntoSubTree(n->getBody(), prnSc));
+			zwhile->setBody(ZVisitPSubTreeHelp::visitIntoSubTree(n->getBody(), prnSc, shared_from_this()));
 		}
 	}
 
@@ -403,10 +379,6 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fValue> n, esc prnSc) {
 		std::cout << "Visiting Value: " << std::endl;
-	}
-
-	void ZVisitor::visit(sp<fValueDecl> n, esc prnSc) {
-		std::cout << "Visiting Value Declaration: " << std::endl;
 		if (n->getModifiers()) {
 			n->getModifiers()->accept(shared_from_this(), prnSc);
 		}
@@ -419,7 +391,6 @@ namespace zebra::back::tree {
 		if (n->getAssignExpr()) {
 			n->getAssignExpr()->accept(shared_from_this(), prnSc);
 		}
-
 	}
 
 	sp<fAstNod> ZVisitor::getAstPSTreeRightN(sp<fAstProdSubTreeN> subTree) {

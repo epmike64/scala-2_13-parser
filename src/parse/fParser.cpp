@@ -1168,15 +1168,15 @@ namespace zebra::parse {
 		return block;
 	}
 
-	sp<fValue> fParser::patDef(fVariableMutabilityTypeE mutabilityType, sp<fModifiers> mods) {
+	sp<fValue> fParser::patDef(fVarMutTypeE mutType, sp<fModifiers> mods) {
 		sp<fValue> value = nullptr;
-		switch (mutabilityType){
-			case fVariableMutabilityTypeE::VAL: {
-				value = ms<fValueDef>(std::move(mods));
+		switch (mutType){
+			case fVarMutTypeE::VAL: {
+				value = ms<fValue>(std::move(mods), fVarMutTypeE::VAL);
 				break;
 			}
-			case fVariableMutabilityTypeE::VAR: {
-				value = std::dynamic_pointer_cast<fValue>(ms<fValueDecl>(std::move(mods)));
+			case fVarMutTypeE::VAR: {
+				value = ms<fValue>(std::move(mods), fVarMutTypeE::VAR);
 				break;
 			}
 			default:
@@ -1220,7 +1220,7 @@ namespace zebra::parse {
 
 	sp<fValue> fParser::varDef(sp<fModifiers> mods) {
 		// patDef() + "ids: Type = _"
-		return patDef(fVariableMutabilityTypeE::VAR, mods);
+		return patDef(fVarMutTypeE::VAR, mods);
 	}
 
 	sp<fFunSig> fParser::funSig() {
@@ -1381,7 +1381,7 @@ namespace zebra::parse {
 			}
 			case fTKnd::T_VAL_E: {
 				h.next();
-				return patDef(fVariableMutabilityTypeE::VAL, mods);
+				return patDef(fVarMutTypeE::VAL, mods);
 			}
 			case fTKnd::T_VAR_E: {
 				h.next();
@@ -1537,17 +1537,17 @@ namespace zebra::parse {
 
 		switch (*h.tKnd()) {
 			case fTKnd::T_VAL_E: {
-				p->setMutability(fVariableMutabilityTypeE::VAL);
+				p->setMutability(fVarMutTypeE::VAL);
 				h.next();
 				break;
 			}
 			case fTKnd::T_VAR_E: {
-				p->setMutability(fVariableMutabilityTypeE::VAR);
+				p->setMutability(fVarMutTypeE::VAR);
 				h.next();
 				break;
 			}
 			default:
-				p->setMutability(fVariableMutabilityTypeE::NONE);
+				p->setMutability(fVarMutTypeE::NONE);
 				break;
 		}
 

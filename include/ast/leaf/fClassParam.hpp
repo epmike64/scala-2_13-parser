@@ -2,7 +2,7 @@
 
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
-#include "lex/kind/fVariableMutabilityTypeE.hpp"
+#include "lex/kind/fVarMutTypeE.hpp"
 #include "util/fCommon.hpp"
 
 namespace zebra::ast::leaf {
@@ -10,7 +10,7 @@ namespace zebra::ast::leaf {
 
 	class fClassParam : public fAstOprndNod {
 		const fToken *identifier_;
-		lex::kind::fVariableMutabilityTypeE mutability_ = lex::kind::fVariableMutabilityTypeE::NONE;
+		lex::kind::fVarMutTypeE mutability_ = lex::kind::fVarMutTypeE::NONE;
 		sp<fParamType> paramType_;
 		sp<fAstProdSubTreeN> defaultValueExpr_;
 		sp<fModifiers> modifiers_;
@@ -20,7 +20,7 @@ namespace zebra::ast::leaf {
 
 		void setIdentifier(const fToken* identifier);
 
-		void setMutability(lex::kind::fVariableMutabilityTypeE mutability) ;
+		void setMutability(lex::kind::fVarMutTypeE mutability) ;
 
 		bool isMutable();
 
@@ -34,7 +34,7 @@ namespace zebra::ast::leaf {
 
 		const std::string getIdentName() const;
 
-		lex::kind::fVariableMutabilityTypeE getMutability() const;
+		lex::kind::fVarMutTypeE getMutability() const;
 		sp<fParamType> getParamType() const;
 		sp<fAstProdSubTreeN> getDefaultValueExpr() const;
 		sp<fModifiers> getModifiers() const;

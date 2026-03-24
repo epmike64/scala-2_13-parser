@@ -4,6 +4,7 @@
 
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
+#include "lex/kind/fVarMutTypeE.hpp"
 #include "util/fCommon.hpp"
 
 namespace zebra::ast::leaf {
@@ -11,13 +12,14 @@ namespace zebra::ast::leaf {
 	using namespace ast::symbol;
 
 	class fValue : public fAstOprndNod {
+		const lex::kind::fVarMutTypeE mutabilityType_;
 		const sp<fModifiers> modifiers_;
 		std::vector<sp<fAstProdSubTreeN>> names_;
 		sp<fType> type_;
 		sp<fAstProdSubTreeN> assignExpr_;
 		public:
 
-		fValue(sp<fModifiers> &&modifiers) ;
+		fValue(sp<fModifiers> &&modifiers, lex::kind::fVarMutTypeE mutabilityType) ;
 
 		 sp<fModifiers> getModifiers() const ;
 

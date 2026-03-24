@@ -166,7 +166,7 @@ add_executable(zebra-4-backend
 		src/ast/leaf/fVariantTypeParam.cpp
 		include/lex/kind/fAccessQualifierE.hpp
 		include/ast/leaf/fModifiers.hpp
-		include/lex/kind/fVariableMutabilityTypeE.hpp
+		include/lex/kind/fVarMutTypeE.hpp
 		include/lex/kind/fVarianceE.hpp
 		src/ast/leaf/fModifiers.cpp
 		src/ast/leaf/fParam.cpp

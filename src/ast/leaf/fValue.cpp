@@ -8,8 +8,7 @@
 
 namespace zebra::ast::leaf {
 
-	fValue::fValue(sp<fModifiers> &&modifiers) : modifiers_(std::move(modifiers)) {
-	}
+	fValue::fValue(sp<fModifiers> &&modifiers, lex::kind::fVarMutTypeE mutabilityType) : modifiers_(std::move(modifiers)), mutabilityType_(mutabilityType) {}
 
 	sp<fModifiers> fValue::getModifiers() const {
 		return modifiers_;

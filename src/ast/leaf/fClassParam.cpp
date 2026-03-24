@@ -19,12 +19,12 @@ namespace zebra::ast::leaf {
 		return identifier_->getTStrVal();
 	}
 
-	lex::kind::fVariableMutabilityTypeE fClassParam::getMutability() const {
+	lex::kind::fVarMutTypeE fClassParam::getMutability() const {
 		return mutability_;
 	}
 
 	bool fClassParam::isMutable() {
-		return mutability_ == lex::kind::fVariableMutabilityTypeE::VAR;
+		return mutability_ == lex::kind::fVarMutTypeE::VAR;
 	}
 
 	sp<fParamType> fClassParam::getParamType() const {
@@ -44,7 +44,7 @@ namespace zebra::ast::leaf {
 		this->identifier_ = identifier;
 	}
 
-	void fClassParam::setMutability(lex::kind::fVariableMutabilityTypeE mutability) {
+	void fClassParam::setMutability(lex::kind::fVarMutTypeE mutability) {
 		this->mutability_ = mutability;
 	}
 
@@ -71,8 +71,8 @@ namespace zebra::ast::leaf {
 
 	std::string fClassParam::toString() const {
 		return "fClassParam(identifier=" + (identifier_ ? identifier_->toString() : "null") +
-		       ", mutability=" + (mutability_ == lex::kind::fVariableMutabilityTypeE::VAL ? "val" :
-		                          mutability_ == lex::kind::fVariableMutabilityTypeE::VAR ? "var" : "none") +
+		       ", mutability=" + (mutability_ == lex::kind::fVarMutTypeE::VAL ? "val" :
+		                          mutability_ == lex::kind::fVarMutTypeE::VAR ? "var" : "none") +
 		       ", paramType=" + (paramType_ ? paramType_->toString() : "null") +
 		       ", defaultValueExpr=" + (defaultValueExpr_ ? defaultValueExpr_->toString() : "null") +
 		       ", modifiers=" + (modifiers_ ? modifiers_->toString() : "null") + ")";

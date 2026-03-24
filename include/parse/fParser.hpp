@@ -16,7 +16,7 @@
 #include "ast/leaf/fStableId.hpp"
 #include "ast/leaf/fType.hpp"
 #include "ast/leaf/fValueDef.hpp"
-#include "lex/kind/fVariableMutabilityTypeE.hpp"
+#include "lex/kind/fVarMutTypeE.hpp"
 #include "util/fCommon.hpp"
 
 namespace zebra::parse {
@@ -133,7 +133,7 @@ namespace zebra::parse {
 
 		sp<fBlock> block();
 
-		sp<fValue> patDef(fVariableMutabilityTypeE mutabilityType, sp<fModifiers> mods);
+		sp<fValue> patDef(fVarMutTypeE mutType, sp<fModifiers> mods);
 
 		sp<fTypeParam> typeParam();
 

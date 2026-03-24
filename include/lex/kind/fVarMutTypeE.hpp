@@ -2,7 +2,7 @@
 
 namespace zebra::lex::kind {
 
-	enum class fVariableMutabilityTypeE {
+	enum class fVarMutTypeE {
 		VAL, VAR, NONE
   };
 
