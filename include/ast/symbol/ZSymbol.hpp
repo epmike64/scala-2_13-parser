@@ -177,6 +177,15 @@ namespace zebra::ast::symbol {
 		}
 	};
 
+	class ZValueDef {
+	public:
+
+	};
+
+	class fValueDecl {
+
+	};
+
 	class ZParamType: public ZType {
 		public:
 		ZParamType() : ZType(Z_PARAM_TYPE) {}

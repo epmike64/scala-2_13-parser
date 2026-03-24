@@ -87,9 +87,9 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitClassHelp::visitClassConstr(sp<fClassConstr> n, esc prnSc, sp<fAstNodVisitor> visitor) {
-		std::cout << "Visiting Class Constr" << std::endl;
 
 		std::cout << "Visiting Class Constructor" << std::endl;
+
 		n->getParamType()->accept(visitor, prnSc);
 		if (n->getArgs()) {
 

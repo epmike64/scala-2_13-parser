@@ -13,15 +13,12 @@
 namespace zebra::back::tree {
 	using namespace ast::symbol;
 
-	esc ZVisitPSubTreeHelp::getWrapScope(esc prnSc, ZLangConstruct lc) {
-		assert(prnSc != nullptr);
-		while (prnSc->getLangConstruct() != lc) {
-			prnSc = prnSc->getParentScope();
-			if (prnSc == nullptr) {
-				throw std::runtime_error("No enclosing scope found for language construct: " + std::to_string(lc));
-			}
-		}
-		return prnSc;
+
+	sp<ZProdSubTreeN> visitIntoSubTree(sp<fAstNod> node, esc prnSc, sp<fAstNodVisitor> visitor) {
+		sp<ZProdSubTreeN> tr = ms<ZProdSubTreeN>();
+		esc scp = ms<ZEnclScope>(prnSc, tr);
+		node->accept(visitor, scp);
+		return tr;
 	}
 
 	void ZVisitPSubTreeHelp::treePostOrderPush(sp<fAstNod> n, esc prnSc) {
@@ -110,4 +107,14 @@ namespace zebra::back::tree {
 	}
 
 
+	esc ZVisitPSubTreeHelp::getWrapScope(esc prnSc, ZLangConstruct lc) {
+		assert(prnSc != nullptr);
+		while (prnSc->getLangConstruct() != lc) {
+			prnSc = prnSc->getParentScope();
+			if (prnSc == nullptr) {
+				throw std::runtime_error("No enclosing scope found for language construct: " + std::to_string(lc));
+			}
+		}
+		return prnSc;
+	}
 }

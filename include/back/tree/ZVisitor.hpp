@@ -101,8 +101,5 @@ namespace zebra::back::tree {
 		void visit(sp<fValueDef>, esc) override;
 		 void visit(sp<fVariantTypeParam>, esc) override;
 		 void visit(sp<fWhile>, esc) override;
-
-	private:
-		sp<ZProdSubTreeN> visitIntoSubTree(sp<fAstNod> node, esc prnSc);
 	};
 }
