@@ -9,7 +9,7 @@ namespace zebra::ast::leaf {
 	class fAccessModifier;
 	class fClassParamClauses;
 	using namespace zebra::ast::node;
-	using zebra::lex::token::fToken;
+	using lex::token::fToken;
 	using namespace zebra::util;
 
 	class fClassDef : public fTraitDef {
