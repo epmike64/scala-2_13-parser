@@ -1,19 +1,19 @@
 #pragma once
 
 #include "ast/node/fAstOprndNod.hpp"
-#include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"
 
 namespace zebra::ast {
 	using namespace ast::node;
 
-	enum fLangOprndType {
+	enum fLangOprndType  {
 		ACCESS_MODIFIER,
 		ACCESS_QUALIFIER,
 		BLOCK,
 		CASE_CLAUSE,
 		CASE_CLAUSES,
 		CLASS_CONSTR,
+		PROD_SUB_TREE_N,
 		CLASS_DEF,
 		CLASS_PARAM,
 		CLASS_PARAM_CLAUSES,

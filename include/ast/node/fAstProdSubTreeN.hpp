@@ -1,19 +1,19 @@
 #pragma once
 
-#include "ast/node/fAstOprndNod.hpp"
-
 #include "parse/fLangGrmrProdE.hpp"
 #include "parse/fAst.hpp"
 #include "util/fCommon.hpp"
 
 #include <memory>
 
+#include "ast/fLangOperand.hpp"
+
 namespace zebra::ast::node {
 
 	using parse::fLangGrmrProdE;
 	using util::sp;
 
-	class fAstProdSubTreeN : public fAstOprndNod {
+	class fAstProdSubTreeN : public fLangOprnd {
 	private:
 		fLangGrmrProdE gp;
 		sp<fAstRootOptrNod> rootOpNod;
@@ -35,6 +35,10 @@ namespace zebra::ast::node {
 		void accept(sp<fAstNodVisitor> visitor, symbol::esc s) override;
 
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return PROD_SUB_TREE_N;
+		}
 	};
 
 } // namespace com::flint::compiler::frontend::ast::nodes::leaves::node::subtree
