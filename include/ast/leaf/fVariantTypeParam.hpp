@@ -21,7 +21,7 @@ namespace zebra::ast::leaf {
 		 void setTypeParam(const sp<fTypeParam> &typeParam) ;
 
 		sp<fTypeParam> getTypeParam();
-		lex::kind::fVarianceE getVariance() const;
+		fVarianceE getVariance() const;
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 

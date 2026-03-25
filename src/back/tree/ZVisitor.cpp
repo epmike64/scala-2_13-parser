@@ -240,7 +240,7 @@ namespace zebra::back::tree {
 		std::cout << "Visiting Constructor Block" << std::endl;
 		if (n->getArgExprs()) {
 			std::cout << "Visiting Constructor Block Argument Expressions" << std::endl;
-			n->getArgExprs()->accept(shared_from_this(), prnSc);
+			ZVisitPSubTreeHelp::visitIntoSubTree(n->getArgExprs(), prnSc, shared_from_this());
 		}
 		if (n->getBlockStmts().size() > 0) {
 			std::cout << "Visiting Constructor Block Statements" << std::endl;
