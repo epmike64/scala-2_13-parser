@@ -42,7 +42,7 @@ namespace zebra::ast::leaf {
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
 
-		fLangOprndType getLangOprndType() const {
+		fLangOprndType getLangOprndType() override {
 			return LOprndT::GENERATOR;
 		}
 	};
