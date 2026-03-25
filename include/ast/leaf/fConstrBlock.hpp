@@ -9,7 +9,7 @@
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 
-	class fConstrBlock : public fAstOprndNod {
+	class fConstrBlock : public fLangOprnd {
 		sp<fAstProdSubTreeN> argExprs_;
 		std::vector<sp<fAstNod>> blockStmts_;
 		public:
@@ -27,5 +27,9 @@ namespace zebra::ast::leaf {
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return CONSTR_BLOCK;
+		}
 	};
 }

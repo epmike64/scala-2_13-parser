@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "fLangOperand.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"
@@ -10,7 +11,7 @@ namespace zebra::ast::leaf {
 	using namespace ast::node;
 	using std::vector;
 
-	class fClassParamClauses : public fAstOprndNod {
+	class fClassParamClauses : public fLangOprnd{
 		vector<sp<fClassParam> > implicitParams_;
 		vector<vector<sp<fClassParam> > > classParams_;
 
@@ -28,5 +29,9 @@ namespace zebra::ast::leaf {
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return CLASS_PARAM_CLAUSES;
+		}
 	};
 }

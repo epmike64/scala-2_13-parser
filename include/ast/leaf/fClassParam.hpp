@@ -1,5 +1,6 @@
 #pragma once
 
+#include "fLangOperand.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "lex/kind/fVarMutTypeE.hpp"
@@ -8,7 +9,7 @@
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 
-	class fClassParam : public fAstOprndNod {
+	class fClassParam : public fLangOprnd {
 		const fToken *identifier_;
 		lex::kind::fVarMutTypeE mutability_ = lex::kind::fVarMutTypeE::NONE;
 		sp<fParamType> paramType_;
@@ -41,5 +42,9 @@ namespace zebra::ast::leaf {
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return CLASS_PARAM;
+		}
 	};
 }

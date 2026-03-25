@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "fFunTypeParamClause.hpp"
+#include "fLangOperand.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "ast/leaf/fParamClauses.hpp"
@@ -11,7 +12,7 @@
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 
-	class fFunSig : public fAstOprndNod {
+	class fFunSig : public fLangOprnd {
 		const fToken *identName_;
 		sp<fParamClauses> paramClauses_;
 		sp<fFunTypeParamClause> funTypeParamClause_;
@@ -34,5 +35,9 @@ namespace zebra::ast::leaf {
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return FUNC_SIG;
+		 }
 	};
 }

@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "fClassParamClauses.hpp"
+#include "fLangOperand.hpp"
 #include "fTypeParamClause.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
@@ -11,7 +12,7 @@
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 
-	class fTraitDef : public fAstOprndNod {
+	class fTraitDef : public fLangOprnd {
 	protected:
 		const fToken* identName_;
 		const sp<fModifiers> modifiers_;
@@ -36,5 +37,9 @@ namespace zebra::ast::leaf {
 		 sp<fTemplate> getExtendsTemplate() const;
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return TRAIT_DEF;
+		}
 	};
 }

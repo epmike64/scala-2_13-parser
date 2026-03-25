@@ -5,10 +5,12 @@
 #include "util/fCommon.hpp"
 #include <vector>
 
+#include "fLangOperand.hpp"
+
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 
-	class fBlock : public fAstOprndNod {
+	class fBlock : public fLangOprnd {
 		std::vector<sp<fAstNod>> _stmts;
 		public:
 		fBlock() = default;
@@ -19,5 +21,9 @@ namespace zebra::ast::leaf {
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return BLOCK;
+		}
 	};
 }

@@ -9,7 +9,7 @@
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 
-	class fFor : public fAstOprndNod {
+	class fFor : public fLangOprnd {
 		const std::vector<sp<fGenerator> > generators_;
 		bool isYield_ = false;
 		sp<fAstProdSubTreeN> yieldExpr_;
@@ -31,5 +31,9 @@ namespace zebra::ast::leaf {
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return FOR;
+		}
 	};
 }

@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "fCaseClause.hpp"
+#include "fLangOperand.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"
@@ -10,7 +11,7 @@
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 
-	class fCaseClauses : public fAstOprndNod {
+	class fCaseClauses : public fLangOprnd {
 		const std::vector<std::shared_ptr<fCaseClause>> _caseClauses;
 		public:
 
@@ -20,5 +21,9 @@ namespace zebra::ast::leaf {
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return CASE_CLAUSES;
+		}
 	};
 }

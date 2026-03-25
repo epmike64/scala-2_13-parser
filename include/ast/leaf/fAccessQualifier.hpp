@@ -1,5 +1,6 @@
 #pragma once
 
+#include "fLangOperand.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "lex/kind/fAccessQualifierE.hpp"
@@ -8,7 +9,7 @@
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 
-	class fAccessQualifier : public fAstOprndNod {
+	class fAccessQualifier : public fLangOprnd {
 		const lex::kind::fAccessQualifierE _qualifier;
 		const fToken* _id;
 	public:
@@ -17,5 +18,9 @@ namespace zebra::ast::leaf {
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return ACCESS_QUALIFIER;
+		}
 	};
 }

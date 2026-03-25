@@ -5,6 +5,7 @@
 #include <vector>
 #include <stdexcept>
 
+#include "fLangOperand.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"
 
@@ -12,7 +13,7 @@ namespace zebra::ast::leaf {
 	using namespace zebra::ast::node;
 	using namespace zebra::util;
 
-	class fCompileUnit : public fAstOprndNod {
+	class fCompileUnit : public fLangOprnd {
 		std::vector<sp<fPackage>> _packages;
 		std::vector<sp<fImport>> _imports;
 		std::vector<sp<fAstNod>> _stmts;
@@ -32,5 +33,9 @@ namespace zebra::ast::leaf {
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return COMPILE_UNIT;
+		}
 	};
 }
