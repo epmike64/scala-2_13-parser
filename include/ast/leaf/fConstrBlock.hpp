@@ -30,7 +30,7 @@ namespace zebra::ast::leaf {
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {
-			return CONSTR_BLOCK;
+			return LOprndT::CONSTR_BLOCK;
 		}
 	};
 }

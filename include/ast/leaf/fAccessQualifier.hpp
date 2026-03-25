@@ -20,7 +20,7 @@ namespace zebra::ast::leaf {
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {
-			return ACCESS_QUALIFIER;
+			return LOprndT::ACCESS_QUALIFIER;
 		}
 	};
 }

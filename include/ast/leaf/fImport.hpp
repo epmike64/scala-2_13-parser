@@ -59,7 +59,7 @@ namespace zebra::ast::leaf {
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {
-			return IMPORT;
+			return LOprndT::IMPORT;
 		 }
 	};
 }

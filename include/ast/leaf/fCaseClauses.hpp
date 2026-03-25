@@ -23,7 +23,7 @@ namespace zebra::ast::leaf {
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {
-			return CASE_CLAUSES;
+			return LOprndT::CASE_CLAUSES;
 		}
 	};
 }

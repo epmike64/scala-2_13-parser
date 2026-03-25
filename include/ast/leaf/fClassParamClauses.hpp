@@ -31,7 +31,7 @@ namespace zebra::ast::leaf {
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {
-			return CLASS_PARAM_CLAUSES;
+			return LOprndT::CLASS_PARAM_CLAUSES;
 		}
 	};
 }

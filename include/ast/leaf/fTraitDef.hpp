@@ -39,7 +39,7 @@ namespace zebra::ast::leaf {
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {
-			return TRAIT_DEF;
+			return LOprndT::TRAIT_DEF;
 		}
 	};
 }

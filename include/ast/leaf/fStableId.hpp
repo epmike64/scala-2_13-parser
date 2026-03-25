@@ -58,7 +58,7 @@ namespace zebra::ast::leaf {
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {
-			return STABLE_ID;
+			return LOprndT::STABLE_ID;
 		 }
 
 	};

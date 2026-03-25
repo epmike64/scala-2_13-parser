@@ -1,4 +1,3 @@
-
 #include "back/tree/ZVisitClassHelp.hpp"
 
 #include <iostream>
@@ -19,9 +18,11 @@ namespace zebra::back::tree {
 	using namespace ast::symbol;
 	using namespace ast::leaf;
 	using namespace util;
+	using namespace ast;
 
 	void ZVisitClassHelp::visitClassDef(sp<fClassDef> cls, esc prnSc, sp<fAstNodVisitor> visitor) {
-		std::cout << "Visiting "<< (cls->isCaseClass()? "Case ": "") <<"ClassDef "  << cls->getIdentName()  << std::endl;
+		std::cout << "Visiting " << (cls->isCaseClass() ? "Case " : "") << "ClassDef " << cls->getIdentName() <<
+				std::endl;
 
 		sp<ZClassDef> zClsDef = ms<ZClassDef>(cls->getIdentName());
 		esc clsDefScp = ms<ZEnclScope>(prnSc, zClsDef);
@@ -48,10 +49,10 @@ namespace zebra::back::tree {
 			cls->getExtendsTemplate()->accept(visitor, clsDefScp);
 		}
 	}
-	
-	
+
+
 	void ZVisitClassHelp::visitObjectDef(sp<fObjectDef> obj, esc prnSc, sp<fAstNodVisitor> visitor) {
-		std::cout << "Visiting "<< (obj->isCaseObj()? "Case ": "") <<"Object"  << obj->getIdentName()  << std::endl;
+		std::cout << "Visiting " << (obj->isCaseObj() ? "Case " : "") << "Object" << obj->getIdentName() << std::endl;
 
 		sp<ZObjectDef> zObjDef = ms<ZObjectDef>(obj->isCaseObj(), obj->getIdentName());
 		esc objDefScp = ms<ZEnclScope>(prnSc, zObjDef);
@@ -97,7 +98,6 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitClassHelp::visitClassConstr(sp<fClassConstr> n, esc prnSc, sp<fAstNodVisitor> visitor) {
-
 		std::cout << "Visiting Class Constructor" << std::endl;
 
 		ZVisitPSubTreeHelp::visitIntoSubTree(n->getParamType(), prnSc, visitor);
@@ -108,9 +108,6 @@ namespace zebra::back::tree {
 	}
 
 
-
-
-
 	void ZVisitClassHelp::visitTemplate(sp<fTemplate> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Template" << std::endl;
 		n->getTemplateBody()->accept(visitor, prnSc);
@@ -119,17 +116,26 @@ namespace zebra::back::tree {
 	void ZVisitClassHelp::visitTemplateBody(sp<fTemplateBody> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Template Body" << std::endl;
 		sp<ZTemplateBody> zTB = ms<ZTemplateBody>();
-		esc tbScp = ms<ZEnclScope>(prnSc,  zTB);
+		esc tbScp = ms<ZEnclScope>(prnSc, zTB);
 
-		for (const auto& s : n->getStmts()) {
+		for (const auto &ss: n->getStmts()) {
+			if (!ss->isOperator()) {
+				sp<ast::fLangOprnd> oprnd = std::dynamic_pointer_cast<ast::fLangOprnd>(ss);
+				switch (oprnd->getLangOprndType()) {
+					case ast::LOprndT::IMPORT: {
+					}
+					case ast::LOprndT::PROD_SUB_TREE_N: {
+					}
+					default:
+						break;
+				}
+			}
+
 			esc emptyScp = ms<ZEnclScope>(prnSc, nullptr);
-
-
-
-
-			s->accept(visitor, emptyScp);
+			ss->accept(visitor, emptyScp);
 		}
 	}
+
 	void ZVisitClassHelp::visitTraitDef(sp<fTraitDef> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Trait Definition: " << std::endl;
 
@@ -150,5 +156,4 @@ namespace zebra::back::tree {
 			n->getExtendsTemplate()->accept(visitor, prnSc);
 		}
 	}
-
 }

@@ -37,7 +37,7 @@ namespace zebra::ast::node {
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {
-			return PROD_SUB_TREE_N;
+			return LOprndT::PROD_SUB_TREE_N;
 		}
 	};
 

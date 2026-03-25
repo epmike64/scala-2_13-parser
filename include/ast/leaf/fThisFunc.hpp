@@ -24,7 +24,7 @@ namespace zebra::ast::leaf {
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {
-			return THIS_FUNC;
+			return LOprndT::THIS_FUNC;
 		 }
 	};
 }

@@ -9,7 +9,7 @@
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 
-	class fGenerator : public fAstOprndNod {
+	class fGenerator : public fLangOprnd {
 		const sp<fAstProdSubTreeN> casePattern1_;
 		const bool isCase;
 		std::vector<sp<fAstProdSubTreeN>> guards_;
@@ -41,5 +41,9 @@ namespace zebra::ast::leaf {
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() const {
+			return LOprndT::GENERATOR;
+		}
 	};
 }

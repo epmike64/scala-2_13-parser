@@ -44,7 +44,7 @@ namespace zebra::ast::leaf {
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {
-			return CLASS_PARAM;
+			return LOprndT::CLASS_PARAM;
 		}
 	};
 }
