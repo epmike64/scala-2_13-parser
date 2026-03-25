@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 
+#include "fLangOperand.hpp"
 #include "fModifiers.hpp"
 #include "util/fCommon.hpp"
 #include "ast/node/fAstOprndNod.hpp"
@@ -11,7 +12,7 @@ namespace zebra::ast::leaf {
 	using namespace zebra::ast::node;
 	using namespace zebra::util;
 
-	class fObjectDef : public fAstOprndNod {
+	class fObjectDef : public fLangOprnd {
 		const bool isCaseObj_;
 		const fToken* identName_;
 		const sp<fModifiers> modifiers_;
@@ -34,5 +35,9 @@ namespace zebra::ast::leaf {
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return OBJECT_DEF;
+		 }
 	};
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "fLangOperand.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"
@@ -7,7 +8,7 @@
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 
-	class fTry : public fAstOprndNod {
+	class fTry : public fLangOprnd {
 		const sp<fAstProdSubTreeN> tryBlock_;
 		sp<fAstProdSubTreeN> catchBlock_;
 		sp<fAstProdSubTreeN> finallyBlock_;
@@ -27,5 +28,9 @@ namespace zebra::ast::leaf {
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return TRY;
+		 }
 	};
 }

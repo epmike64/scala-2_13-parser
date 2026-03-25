@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "fLangOperand.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "lex/token/fToken.hpp"
 #include "util/fCommon.hpp"
@@ -19,7 +20,7 @@ namespace zebra::ast::leaf {
 	class fTypeParamClause;
 	class fType;
 
-	class fTypeParam : public fAstOprndNod {
+	class fTypeParam : public fLangOprnd {
 	protected:
 		const fToken* identName_ = nullptr;
 		sp<fTypeParamClause> typeParamClause_;
@@ -60,5 +61,9 @@ namespace zebra::ast::leaf {
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return TYPE_PARAM;
+		 }
 	};
 }

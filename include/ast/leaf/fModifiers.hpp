@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "fLangOperand.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"
@@ -10,7 +11,7 @@
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 
-	class fModifiers : public fAstOprndNod {
+	class fModifiers : public fLangOprnd {
 		sp<fAccessModifier> accessModifier_;
 		sp<fOverrideModifier> overrideModifier_;
 		sp<std::vector<sp<fLocalModifier>>> localModifiers_;
@@ -32,5 +33,9 @@ namespace zebra::ast::leaf {
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return MODIFIERS;
+		 }
 	};
 }

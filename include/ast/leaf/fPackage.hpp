@@ -9,7 +9,7 @@
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 
-	class fPackage : public fAstOprndNod {
+	class fPackage : public fLangOprnd {
 		const std::vector<const fToken*> ids_;
 		public:
 			fPackage(std::vector<const fToken*> &&ids) ;
@@ -19,5 +19,9 @@ namespace zebra::ast::leaf {
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return PACKAGE;
+		 }
 	};
 }

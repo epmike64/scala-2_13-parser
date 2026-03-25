@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 
+#include "fLangOperand.hpp"
 #include "lex/kind/fLangOperatorKind.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 
@@ -20,7 +21,7 @@ namespace zebra::ast::leaf {
 	};
 
 	//
-	class fStableId : public fAstOprndNod {
+	class fStableId : public fLangOprnd {
 		const bool isPath_;
 		bool isKwType_ = false;
 		std::vector<sp<fTPair>> tpairs_;
@@ -55,6 +56,10 @@ namespace zebra::ast::leaf {
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return STABLE_ID;
+		 }
 
 	};
 }

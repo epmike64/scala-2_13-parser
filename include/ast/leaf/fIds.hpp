@@ -9,7 +9,7 @@
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 
-	class fIds : public fAstOprndNod {
+	class fIds : public fLangOprnd {
 		const std::vector<sp<fId>> _ids;
 		public:
 
@@ -25,5 +25,9 @@ namespace zebra::ast::leaf {
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return IDS;
+		 }
 	};
 }

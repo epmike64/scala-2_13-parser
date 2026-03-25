@@ -3,13 +3,14 @@
 #include "ast/node/fAstOprndNod.hpp"
 #include <stdexcept>
 
+#include "fLangOperand.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"
 
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 
-	class fIf : public fAstOprndNod {
+	class fIf : public fLangOprnd {
 		sp<fAstProdSubTreeN> condExpr;
 		sp<fAstProdSubTreeN> ifBody;
 		sp<fAstProdSubTreeN> elseBody;
@@ -40,5 +41,9 @@ namespace zebra::ast::leaf {
 		}
 
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return IF;
+		 }
 	};
 }

@@ -12,7 +12,7 @@ namespace zebra::ast::leaf {
 
 	using std::vector;
 
-	class fParamClauses : public fAstOprndNod {
+	class fParamClauses : public fLangOprnd {
 		vector<vector<sp<fParam>>> params_;
 		sp<vector<sp<fParam>>> implicitParams_;
 	public:
@@ -29,5 +29,9 @@ namespace zebra::ast::leaf {
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return PARAM_CLAUSES;
+		 }
 	};
 }

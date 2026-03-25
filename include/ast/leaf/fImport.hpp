@@ -45,7 +45,7 @@ namespace zebra::ast::leaf {
 		std::string toString() const ;
 	};
 
-	class fImport : public fAstOprndNod {
+	class fImport : public fLangOprnd{
 		std::vector<sp<fImportExpr>> importExprs_;
 		public:
 		fImport() = default;
@@ -56,5 +56,9 @@ namespace zebra::ast::leaf {
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return IMPORT;
+		 }
 	};
 }

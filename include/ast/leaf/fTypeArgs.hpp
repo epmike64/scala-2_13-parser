@@ -11,7 +11,7 @@ namespace zebra::ast::leaf {
 	using namespace ast::node;
 	using namespace ast::symbol;
 
-	class fTypeArgs : public fAstOprndNod {
+	class fTypeArgs : public fLangOprnd {
 		const std::vector<sp<fType>> typeArgs_;
 		public:
 
@@ -20,5 +20,9 @@ namespace zebra::ast::leaf {
 		 const std::vector<sp<fType>>& getTypeArgs() const ;
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
 		std::string toString() const override;
+
+		fLangOprndType getLangOprndType() override {
+			return TYPE_ARGS;
+		 }
 	};
 }
