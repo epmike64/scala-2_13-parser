@@ -1,11 +1,14 @@
 #pragma once
 
 #include "ZLangConstruct.hpp"
-#include "ast/leaf/fVariantTypeParam.hpp"
-#include "ast/leaf/fType.hpp"
+#include "lex/kind/fVarianceE.hpp"
+#include "ast/node/fAstNod.hpp"
+#include "util/fCommon.hpp"
 #include <functional>
+#include <sstream>
+#include <string>
+#include <vector>
 
-#include "ZSymbol.hpp"
 
 
 namespace zebra::ast::symbol {
@@ -17,7 +20,6 @@ namespace zebra::ast::symbol {
 	class ZVariantTypeParam;
 
 	using namespace zebra::ast::node;
-	using namespace zebra::ast::leaf;
 	using namespace zebra::lex::kind;
 	using namespace zebra::util;
 

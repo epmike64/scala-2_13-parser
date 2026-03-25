@@ -9,6 +9,7 @@
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 	using namespace ast::symbol;
+	using namespace lex::kind;
 
 	class fVariantTypeParam : public fLangOprnd {
 		fVarianceE variance_ = fVarianceE::INVARIANT;

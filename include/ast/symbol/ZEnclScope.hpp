@@ -5,7 +5,6 @@
 
 #include "ZEnclScopeFwd.hpp"
 #include "../node/fAstProdSubTreeN.hpp"
-#include "ast/leaf/fType.hpp"
 #include "util/fCommon.hpp"
 #include "ZSymbol.hpp"
 
@@ -13,7 +12,6 @@
 namespace zebra::ast::symbol {
 
 	using namespace zebra::ast::node;
-	using namespace zebra::ast::leaf;
 	using namespace zebra::lex::kind;
 	using namespace zebra::util;
 	using symbol::ZSymbol;

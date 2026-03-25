@@ -1,7 +1,5 @@
 #pragma once
 
-#include "ast/leaf/fVariantTypeParam.hpp"
-#include "ast/leaf/fType.hpp"
 
 namespace zebra::ast::symbol {
 

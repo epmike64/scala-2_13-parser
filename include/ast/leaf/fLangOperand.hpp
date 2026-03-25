@@ -1,7 +1,5 @@
 #pragma once
 
-#include "fModifier.hpp"
-#include "../symbol/ZEnclScope.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"
