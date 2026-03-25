@@ -1,6 +1,6 @@
 #pragma once
 
-#include "fLangOperand.hpp"
+#include "../fLangOperand.hpp"
 #include "lex/token/fToken.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstProdSubTreeN.hpp"

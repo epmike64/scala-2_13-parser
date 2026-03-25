@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#include "fLangOperand.hpp"
+#include "../fLangOperand.hpp"
 #include "lex/kind/fLangOperatorKind.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 

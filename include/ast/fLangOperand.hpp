@@ -4,7 +4,7 @@
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"
 
-namespace zebra::ast::leaf {
+namespace zebra::ast {
 	using namespace ast::node;
 
 	enum fLangOprndType {

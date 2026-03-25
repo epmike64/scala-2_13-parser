@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "fClassParamClauses.hpp"
-#include "fLangOperand.hpp"
+#include "../fLangOperand.hpp"
 #include "fTypeParamClause.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"

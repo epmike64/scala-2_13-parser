@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#include "fLangOperand.hpp"
+#include "../fLangOperand.hpp"
 #include "fModifiers.hpp"
 #include "util/fCommon.hpp"
 #include "ast/node/fAstOprndNod.hpp"

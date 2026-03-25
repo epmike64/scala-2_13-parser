@@ -5,7 +5,7 @@
 #include "util/fCommon.hpp"
 #include <vector>
 
-#include "fLangOperand.hpp"
+#include "../fLangOperand.hpp"
 
 namespace zebra::ast::leaf {
 	using namespace ast::node;

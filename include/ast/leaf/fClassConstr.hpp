@@ -1,6 +1,6 @@
 #pragma once
 
-#include "fLangOperand.hpp"
+#include "../fLangOperand.hpp"
 #include "fParamType.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"

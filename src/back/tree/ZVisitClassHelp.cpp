@@ -121,9 +121,13 @@ namespace zebra::back::tree {
 		sp<ZTemplateBody> zTB = ms<ZTemplateBody>();
 		esc tbScp = ms<ZEnclScope>(prnSc,  zTB);
 
-		for (const auto& stmt : n->getStmts()) {
+		for (const auto& s : n->getStmts()) {
 			esc emptyScp = ms<ZEnclScope>(prnSc, nullptr);
-			stmt->accept(visitor, emptyScp);
+
+
+
+
+			s->accept(visitor, emptyScp);
 		}
 	}
 	void ZVisitClassHelp::visitTraitDef(sp<fTraitDef> n, esc prnSc, sp<fAstNodVisitor> visitor) {
