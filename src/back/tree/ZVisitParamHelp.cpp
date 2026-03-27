@@ -8,7 +8,6 @@
 #include "ast/leaf/fParam.hpp"
 #include "ast/leaf/fParamType.hpp"
 #include "ast/leaf/fParamTypes.hpp"
-#include "ast/leaf/fTypeParamClause.hpp"
 #include "ast/symbol/ZEnclScope.hpp"
 #include "ast/symbol/ZLangConstruct.hpp"
 
@@ -34,9 +33,11 @@ namespace zebra::back::tree {
 
 	void ZVisitParamHelp::visitClassParam(sp<fClassParam> clsPar, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Class Parameter: " << clsPar->getIdentName() << std::endl;
-		// assert(prnSc->getLangConstruct() == Z_CLASS_DEF);
 
+		sp<ZClassParamList> classParamList = util::dynSp<ZClassParamList>(prnSc->getZSymbol());
 		sp<ZClassParam> clsParam = ms<ZClassParam>(clsPar->getIdentName(), clsPar->isMutable());
+		classParamList->addClassParam(clsParam);
+
 		esc clsParamScp = ms<ZEnclScope>(prnSc, clsParam);
 		clsPar->getParamType()->accept(visitor, clsParamScp);
 
@@ -48,10 +49,6 @@ namespace zebra::back::tree {
 			assignExpr->accept(visitor, pSubTrScp);
 			clsParam->setDefaultValueExpr(pSubTr->getTreePostOrderSS());
 		}
-
-		// sp<ZClassParamList> classParamList = std::dynamic_pointer_cast<ZClassParamList>(prnSc->getZSymbol());
-		sp<ZClassParamList> classParamList = dynSp<ZClassParamList>(prnSc->getZSymbol());
-		classParamList->addClassParam(clsParam);
 	}
 
 	void ZVisitParamHelp::visitParam(sp<fParam> par, esc prnSc, sp<fAstNodVisitor> visitor) {
