@@ -26,7 +26,10 @@ namespace zebra::back::tree {
 				std::endl;
 
 		sp<ZClassDef> zClsDef = ms<ZClassDef>(cls->getIdentName());
+		sp<ZStmtList> zClsDefStmts = std::dynamic_pointer_cast<ZStmtList>(prnSc->getZSymbol());
+		zClsDefStmts->addStmt(zClsDef);
 		esc clsDefScp = ms<ZEnclScope>(prnSc, zClsDef);
+
 
 		if (cls->getModifiers()) {
 			cls->getModifiers()->accept(visitor, clsDefScp);
@@ -43,7 +46,9 @@ namespace zebra::back::tree {
 		}
 
 		if (cls->getClassParamClauses()) {
-			cls->getClassParamClauses()->accept(visitor, clsDefScp);
+			zClsDef->setClassParamList(ms<ZClassParamList>());
+			esc cplScp = ms<ZEnclScope>(clsDefScp, zClsDef->getClassParamList());
+			cls->getClassParamClauses()->accept(visitor, cplScp);
 		}
 
 		if (cls->getExtendsTemplate()) {
