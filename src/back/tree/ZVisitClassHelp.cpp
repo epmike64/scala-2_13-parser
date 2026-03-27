@@ -122,11 +122,11 @@ namespace zebra::back::tree {
 	void ZVisitClassHelp::visitTemplateBody(sp<fTemplateBody> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Template Body" << std::endl;
 
-		sp<ZTemplateBody> zTB = ms<ZTemplateBody>();
-		esc tbScp = ms<ZEnclScope>(prnSc, zTB);
+		// sp<ZTemplateBody> zTB = ms<ZTemplateBody>();
+		// esc tbScp = ms<ZEnclScope>(prnSc, zTB);
 
 		for (const auto &ss: n->getStmts()) {
-			ss->accept(visitor, tbScp);
+			ss->accept(visitor, prnSc);
 		}
 	}
 

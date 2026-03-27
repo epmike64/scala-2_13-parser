@@ -162,7 +162,9 @@ namespace zebra::back::tree {
 	void ZVisitor::visit(sp<fValueDcl> n, esc prnSc) {
 		std::cout << "Visiting Value Decl: " << std::endl;
 
+		sp<ZStmtList> list  = dynSp<ZStmtList>(prnSc->getZSymbol());
 		sp<ZValueDcl> val = ms<ZValueDcl>();
+		list->addStmt(val);
 
 		if (n->getModifiers()) {
 			sp<ZModifiers> mods = ms<ZModifiers>();

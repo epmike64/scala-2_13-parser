@@ -44,30 +44,21 @@ namespace zebra::back::tree {
 	void ZVisitTypeParamHelp::visitVariantTypeParam(sp<fVariantTypeParam> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting VariantTypeParam: " << n->toString() << std::endl;
 
+		sp<ZVariantTypeParamList> list = dynSp<ZVariantTypeParamList>(prnSc->getZSymbol());
 		sp<ZVariantTypeParam> vtp = ms<ZVariantTypeParam>(n->getVariance());
+		list->addVariantTypeParam(vtp);
+
 		vtp->setTypeParam(ms<ZTypeParam>(n->getTypeParam()->getIdentName()));
 		esc tpScp = ms<ZEnclScope>(prnSc, vtp->getTypeParam());
 
 		n->getTypeParam()->accept(visitor, tpScp);
-
-		sp<ZVariantTypeParamList> list = std::dynamic_pointer_cast<ZVariantTypeParamList>(prnSc->getZSymbol());
-		if (!list) {
-			throw std::runtime_error("visitVariantTypeParam: parent scope must contain a ZVariantTypeParamList");
-		}
-		list->addVariantTypeParam(vtp);
-
 	}
 
-	// void ZVisitTypeParamHelp::buildVariantTypeParamClause(sp<fTypeParamClause> typeParamClause, sp<ZVariantTypeParamList> n, esc prnSc, sp<fAstNodVisitor> visitor) {
-	// 	std::cout << "Building TypeParamClause: " << std::endl;
-	// 	esc vtpListScp = ms<ZEnclScope>(prnSc, n);
-	// 	typeParamClause->accept(visitor, vtpListScp);
-	// }
 
 	void ZVisitTypeParamHelp::visitTypeParam(sp<fTypeParam> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Type Parameter: " << n->getIdentToken()->toString() << std::endl;
 
-		sp<ZTypeParam> tp = std::dynamic_pointer_cast<ZTypeParam>(prnSc->getZSymbol());
+		sp<ZTypeParam> tp = dynSp<ZTypeParam>(prnSc->getZSymbol());
 
 		if (n->getTypeParamClause()) {
 			tp->setVariantTypeParamList(ms<ZVariantTypeParamList>());

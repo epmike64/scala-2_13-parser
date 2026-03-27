@@ -434,7 +434,7 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZClassDef : public ZIdSymbol {
+	class ZClassDef : public ZId, public ZStmtList{
 		sp<ZModifiers> modifiers_;
 		sp<ZClassDef> parentClass_;
 		sp<ZVariantTypeParamList> typeParams_;
@@ -446,7 +446,7 @@ namespace zebra::ast::symbol {
 		// PVecP<ZValueDcl> decls_;
 		sp<ZClassTemplate> classTemplate_;
 	public:
-		explicit ZClassDef(std::string zId) : ZIdSymbol(std::move(zId), Z_CLASS_DEF) {}
+		explicit ZClassDef(std::string zId) : ZId(std::move(zId)), ZStmtList(Z_CLASS_DEF) {}
 
 		void setModifiers(sp<ZModifiers> mods) {
 			modifiers_ = mods;
