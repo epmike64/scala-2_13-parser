@@ -439,12 +439,11 @@ namespace zebra::ast::symbol {
 		sp<ZClassDef> parentClass_;
 		sp<ZVariantTypeParamList> typeParams_;
 		sp<ZClassParamList> classParamList_;
-		PVecP<ZTraitDef> traits_;
-		// PVecP<ZClassParam> clsParams_;
+		// PVecP<ZTraitDef> traits_;
 		PVecP<ZClassConstr> constrs_;
 		// PVecP<ZRegFunc> funcs_;
 		// PVecP<ZValueDcl> decls_;
-		sp<ZClassTemplate> classTemplate_;
+		// sp<ZClassTemplate> classTemplate_;
 	public:
 		explicit ZClassDef(std::string zId) : ZId(std::move(zId)), ZStmtList(Z_CLASS_DEF) {}
 
