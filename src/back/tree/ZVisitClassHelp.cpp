@@ -120,11 +120,11 @@ namespace zebra::back::tree {
 
 		for (const auto &ss: n->getStmts()) {
 			if (!ss->isOperator()) {
-				sp<ast::fLangOprnd> oprnd = std::dynamic_pointer_cast<ast::fLangOprnd>(ss);
+				sp<fLangOprnd> oprnd = std::dynamic_pointer_cast<ast::fLangOprnd>(ss);
 				switch (oprnd->getLangOprndType()) {
-					case ast::LOprndT::IMPORT: {
+					case LOprndT::IMPORT: {
 					}
-					case ast::LOprndT::PROD_SUB_TREE_N: {
+					case LOprndT::PROD_SUB_TREE_N: {
 					}
 					default:
 						break;
