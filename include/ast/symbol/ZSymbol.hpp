@@ -424,8 +424,8 @@ namespace zebra::ast::symbol {
 		PVecP<ZTraitDef> traits_;
 		PVecP<ZClassParam> clsParams_;
 		PVecP<ZClassConstr> constrs_;
-		PVecP<ZRegFunc> funcs_;
-		PVecP<ZValueDcl> decls_;
+		// PVecP<ZRegFunc> funcs_;
+		// PVecP<ZValueDcl> decls_;
 		sp<ZClassTemplate> classTemplate_;
 	public:
 		explicit ZClassDef(std::string zId) : ZIdSymbol(std::move(zId), Z_CLASS_DEF) {}
@@ -451,38 +451,34 @@ namespace zebra::ast::symbol {
 		ZProgram() : ZSymbol(Z_PROGRAM) {}
 	};
 
-	class ZImportList: public ZSymbol {
-		vecP<ZImport> imports_;
+	class ZStmtList: public ZSymbol {
+	protected:
+		PVecP<ZSymbol> statements_;
 		public:
-		ZImportList() : ZSymbol(Z_IMPORT_LIST) {}
-		void addImport(sp<ZImport> imp) {
-			imports_.push_back(imp);
+		ZStmtList() : ZSymbol(Z_STMT_LIST) {}
+		ZStmtList(ZLangConstruct c) : ZSymbol(c) {}
+		void addStatement(sp<ZSymbol> stmt) {
+			if (statements_ == nullptr) {
+				statements_ = ms<std::vector<std::shared_ptr<ZSymbol>>>();
+			}
+			statements_->push_back(stmt);
+		}
+		PVecP<ZSymbol> getStatements() {
+			return statements_;
 		}
 	};
 
-	class ZCompileUnit: public ZIdSymbol {
+	class ZCompileUnit: public ZId, ZStmtList {
 	protected:
-		sp<ZImportList> imports_ = ms<ZImportList>();
 		std::string packgName_;
-		vecP<ZClassDef> classes_;
+
 	public:
-		explicit ZCompileUnit(std::string zId) : ZIdSymbol(std::move(zId), Z_COMPILATION_UNIT) {
+		explicit ZCompileUnit(std::string zId) : ZId(std::move(zId)), ZStmtList(Z_COMPILATION_UNIT) {
 			packgName_ = "_ROOT_PKG_";
 		}
+
 		void setPackage(std::string n) {
 			packgName_ += "." + n;
-		}
-
-		void addClass(sp<ZClassDef> cls) {
-			classes_.push_back(cls);
-		}
-
-		void addImport(sp<ZImport> imp) {
-			imports_->addImport(imp);
-		}
-
-		sp<ZImportList> getImports() {
-			return imports_;
 		}
 	};
 

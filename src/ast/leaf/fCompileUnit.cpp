@@ -19,15 +19,7 @@ namespace zebra::ast::leaf {
 		_packages.push_back(std::move(pkg));
 	}
 
-	void fCompileUnit::addImport(sp<fImport>&& imp) {
-		if (imp == nullptr) {
-			throw std::invalid_argument("Import cannot be null");
-		}
-		_imports.push_back(std::move(imp));
-	}
-
 	std::vector<sp<fPackage>>& fCompileUnit::getPackages() { return _packages; }
-	std::vector<sp<fImport>>& fCompileUnit::getImports() { return _imports; }
 
 	std::vector<sp<fAstNod>>& fCompileUnit::getStmts() {
 		return _stmts;

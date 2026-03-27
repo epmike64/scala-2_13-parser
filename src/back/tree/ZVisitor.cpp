@@ -60,12 +60,12 @@ namespace zebra::back::tree {
 			zcu->setPackage(packgName);
 		}
 
-		if (n->getImports().size() > 0) {
-			esc imScp = ms<ZEnclScope>(prnSc, zcu->getImports());
-			for (const auto& imp : n->getImports()) {
-				imp->accept(shared_from_this(), imScp);
-			}
-		}
+		// if (n->getImports().size() > 0) {
+		// 	esc imScp = ms<ZEnclScope>(prnSc, zcu->getImports());
+		// 	for (const auto& imp : n->getImports()) {
+		// 		imp->accept(shared_from_this(), imScp);
+		// 	}
+		// }
 
 		if (n->getStmts().size() > 0) {
 			std::cout << "Visiting Statements in Compile Unit" << std::endl;
@@ -462,7 +462,7 @@ namespace zebra::back::tree {
 			}
 		}
 
-		sp<ZImportList> imList = std::dynamic_pointer_cast<ZImportList>(prnSc->getZSymbol());
-		imList->addImport(zim);
+		sp<ZStmtList> statements = std::dynamic_pointer_cast<ZStmtList>(prnSc->getZSymbol());
+		statements->addStatement(zim);
 	}
 }

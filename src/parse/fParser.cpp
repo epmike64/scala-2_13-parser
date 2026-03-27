@@ -1906,7 +1906,7 @@ namespace zebra::parse {
 
 		while (true) {
 			if (h.isTkImport()) {
-				cu->addImport(importClause());
+				cu->addStmt(importClause());
 			} else {
 
 				sp<fModifiers> mods = modifiers();

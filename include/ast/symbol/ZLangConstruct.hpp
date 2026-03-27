@@ -12,6 +12,7 @@ namespace zebra::ast::symbol {
 		Z_TRAIT_DEF,
 		Z_IMPORT,
 		Z_BLOCK,
+		Z_STMT_LIST,
 		Z_PARAM_DEFAULT_EXPR,
 		Z_CLASS_PARAM_DEFAULT_EXPR,
 		Z_CLASS_DEF, Z_OBJECT_DEF,
