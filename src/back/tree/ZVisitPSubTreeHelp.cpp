@@ -5,10 +5,8 @@
 
 #include "ast/leaf/fClassParam.hpp"
 #include "ast/symbol/ZEnclScope.hpp"
-#include "ast/leaf/fClassParamClauses.hpp"
-#include "ast/leaf/fParam.hpp"
 #include "ast/leaf/fParamType.hpp"
-#include "ast/leaf/fTypeParamClause.hpp"
+#include "util/fUtil.hpp"
 
 namespace zebra::back::tree {
 	using namespace ast::symbol;
@@ -53,9 +51,8 @@ namespace zebra::back::tree {
 		}
 
 		sp<ZProdSubTreeN> prnt = std::dynamic_pointer_cast<ZProdSubTreeN>(prnSc->getZSymbol());
-		if (prnt == nullptr) {
-			throw std::runtime_error("Parent symbol in scope must be a production subtree node");
-		}
+		zaccert(prnt != nullptr, "Parent symbol in scope must be a production subtree node");
+
 
 		std::stack<sp<fAstStackItem> > ss;
 		ss.push(ms<fAstStackItem>(psubT));

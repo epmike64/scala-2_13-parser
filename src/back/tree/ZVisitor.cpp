@@ -458,7 +458,7 @@ namespace zebra::back::tree {
 		}
 
 		sp<ZStatementList> ss = std::dynamic_pointer_cast<ZStatementList>(prnSc->getZSymbol());
-		zaccert(ss == nullptr, "Expected ZStatementList in scope for import statement");
+		zaccert(ss != nullptr, "Expected ZStatementList in scope for import statement");
 		ss->addStatement(zim);
 	}
 }
