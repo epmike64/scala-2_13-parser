@@ -462,7 +462,7 @@ namespace zebra::back::tree {
 			}
 		}
 
-		sp<ZStmtList> statements = std::dynamic_pointer_cast<ZStmtList>(prnSc->getZSymbol());
+		sp<ZStatementList> statements = std::dynamic_pointer_cast<ZStatementList>(prnSc->getZSymbol());
 		statements->addStatement(zim);
 	}
 }

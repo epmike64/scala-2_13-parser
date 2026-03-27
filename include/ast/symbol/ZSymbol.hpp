@@ -185,7 +185,7 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZValueDcl: ZSymbol {
+	class ZValueDcl: public ZSymbol {
 		sp<ZModifiers> modifiers_;
 		sp<ZType> type_;
 		sp<ZProdSubTreeN> assignExpr_;
@@ -294,15 +294,24 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	// class ZImportList: public virtual ZSymbol{
-	// 	vecP<ZImport> imports_;
-	// public:
-	// 	ZImportList() : ZSymbol(Z_IMPORT_LIST) {}
-	// 	~ZImportList() override = default;
-	// 	void addImport(sp<ZImport> im) {
-	// 		imports_.push_back(im);
-	// 	}
-	// };
+	class ZStatementList: public ZSymbol {
+	protected:
+		PVecP<ZSymbol> statements_;
+	public:
+		ZStatementList() : ZSymbol(Z_STMT_LIST) {}
+		ZStatementList(ZLangConstruct c) : ZSymbol(c) {}
+		~ZStatementList() override = default;
+
+		void addStatement(sp<ZSymbol> stmt) {
+			if (statements_ == nullptr) {
+				statements_ = ms<std::vector<std::shared_ptr<ZSymbol>>>();
+			}
+			statements_->push_back(stmt);
+		}
+		PVecP<ZSymbol> getStatements() {
+			return statements_;
+		}
+	};
 
 	class ZRegFunc: public ZId, public ZFunc {
 	protected:
@@ -353,6 +362,8 @@ namespace zebra::ast::symbol {
 	};
 
 
+
+
 	class ZClassParam: public ZParam{
 	protected:
 		const bool isMutable_;
@@ -378,14 +389,9 @@ namespace zebra::ast::symbol {
 		ZClassConstr() : ZSymbol(Z_CLASS_CONSTR) {}
 	};
 
-	class ZTemplateBody : public ZSymbol {
-		vecP<ZImport> imports_;
-		vecP<ZSymbol> stmts_;
+	class ZTemplateBody : public ZStatementList {
 	public:
-		ZTemplateBody() : ZSymbol(Z_TEMPLATE_BODY) {}
-		void addStmt(sp<ZSymbol> stmt) {
-			stmts_.push_back(stmt);
-		}
+		ZTemplateBody() : ZStatementList(Z_TEMPLATE_BODY) {}
 	};
 
 	class ZClassTemplate: public ZSymbol {
@@ -451,29 +457,13 @@ namespace zebra::ast::symbol {
 		ZProgram() : ZSymbol(Z_PROGRAM) {}
 	};
 
-	class ZStmtList: public ZSymbol {
-	protected:
-		PVecP<ZSymbol> statements_;
-		public:
-		ZStmtList() : ZSymbol(Z_STMT_LIST) {}
-		ZStmtList(ZLangConstruct c) : ZSymbol(c) {}
-		void addStatement(sp<ZSymbol> stmt) {
-			if (statements_ == nullptr) {
-				statements_ = ms<std::vector<std::shared_ptr<ZSymbol>>>();
-			}
-			statements_->push_back(stmt);
-		}
-		PVecP<ZSymbol> getStatements() {
-			return statements_;
-		}
-	};
 
-	class ZCompileUnit: public ZId, ZStmtList {
+	class ZCompileUnit: public ZId, public ZStatementList {
 	protected:
 		std::string packgName_;
 
 	public:
-		explicit ZCompileUnit(std::string zId) : ZId(std::move(zId)), ZStmtList(Z_COMPILATION_UNIT) {
+		explicit ZCompileUnit(std::string zId) : ZId(std::move(zId)), ZStatementList(Z_COMPILATION_UNIT) {
 			packgName_ = "_ROOT_PKG_";
 		}
 
