@@ -1,9 +1,9 @@
 #pragma once
 #include <list>
+#include <memory>
 #include <vector>
 #include <unordered_map>
 
-#include "ast/symbol/ZSymbol.hpp"
 
 namespace zebra::util {
 
@@ -29,12 +29,5 @@ namespace zebra::util {
 	using StrPVecPMap = sp<std::unordered_map<std::string, PVecP<T>>>;
 
 	template<typename T, typename U>
-	sp<T> dynSp(sp<U> basePtr) {
-		sp<T> res = std::dynamic_pointer_cast<T>(basePtr);
-		if (!res) {
-			throw std::runtime_error("Failed to cast pointer of type " + std::string(typeid(U).name()) +
-			                         " to type " + std::string(typeid(T).name()));
-		}
-		return res;
-	}
+	sp<T> dynSp(sp<U> basePtr);
 }
