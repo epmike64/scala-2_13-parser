@@ -38,6 +38,7 @@
 #include "back/tree/ZVisitBlockHelp.hpp"
 #include "back/tree/ZVisitParamHelp.hpp"
 #include "back/tree/ZVisitTypeParamHelp.hpp"
+#include "util/fUtil.hpp"
 
 namespace zebra::back::tree {
 
@@ -456,9 +457,7 @@ namespace zebra::back::tree {
 		}
 
 		sp<ZStatementList> ss = std::dynamic_pointer_cast<ZStatementList>(prnSc->getZSymbol());
-		if (ss == nullptr) {
-			throw std::runtime_error("Expected ZStatementList in scope for import statement");
-		}
+		zaccert(ss == nullptr, "Expected ZStatementList in scope for import statement");
 		ss->addStatement(zim);
 	}
 }
