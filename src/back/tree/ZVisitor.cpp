@@ -50,7 +50,7 @@ namespace zebra::back::tree {
 	void ZVisitor::visit(sp<fCompileUnit> n, esc prnSc)  {
 
 		sp<ZCompileUnit> zcu = ms<ZCompileUnit>("ZCompileUnit_" + UUID::generate().toString());
-		esc s = ms<ZEnclScope>(prnSc, zcu);
+		esc cuSc = ms<ZEnclScope>(prnSc, zcu);
 
 		if (n->getPackages().size() > 0) {
 			std::string packgName;
@@ -60,17 +60,10 @@ namespace zebra::back::tree {
 			zcu->setPackage(packgName);
 		}
 
-		// if (n->getImports().size() > 0) {
-		// 	esc imScp = ms<ZEnclScope>(prnSc, zcu->getImports());
-		// 	for (const auto& imp : n->getImports()) {
-		// 		imp->accept(shared_from_this(), imScp);
-		// 	}
-		// }
-
 		if (n->getStmts().size() > 0) {
 			std::cout << "Visiting Statements in Compile Unit" << std::endl;
 			for (const auto& stmt : n->getStmts()) {
-				stmt->accept(shared_from_this(), prnSc);
+				stmt->accept(shared_from_this(), cuSc);
 			}
 		}
 	}
@@ -462,7 +455,10 @@ namespace zebra::back::tree {
 			}
 		}
 
-		sp<ZStatementList> statements = std::dynamic_pointer_cast<ZStatementList>(prnSc->getZSymbol());
-		statements->addStatement(zim);
+		sp<ZStatementList> ss = std::dynamic_pointer_cast<ZStatementList>(prnSc->getZSymbol());
+		if (ss == nullptr) {
+			throw std::runtime_error("Expected ZStatementList in scope for import statement");
+		}
+		ss->addStatement(zim);
 	}
 }
