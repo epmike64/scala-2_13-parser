@@ -2,9 +2,12 @@ import scala.collection.mutable
 
 // ── 1. Simple generic class ───────────────────────────────────────────────────
 class Box[A](val value: A) {
+  import com1.test1.Tester1
   def map[B](f: A => B): Box[B] = new Box(f(value))
   override def toString: String = s"Box($value)"
 }
+
+import com2.test2.Tester2
 
 // ── 2. Context bound: A must have an implicit Ordering ───────────────────────
 class SortedPair[A: Ordering](val first: A, val second: A) {
@@ -16,6 +19,8 @@ class SortedPair[A: Ordering](val first: A, val second: A) {
 
 // ── 3. Lower bound ───────────────────────────────────────────────────────────
 class Stack[A] {
+  import com3.test3.Tester3
+
   private val elems: mutable.ListBuffer[A] = mutable.ListBuffer.empty
 
   def push(x: A): this.type = { elems.prepend(x); this }
@@ -24,6 +29,7 @@ class Stack[A] {
 
   // B >: A — accept supertypes when widening the stack type
   def pushAll[B >: A](xs: Seq[B]): Stack[B] = {
+    import com4.test4.Tester4
     val s = new Stack[B]
     xs.foreach(s.push)
     s

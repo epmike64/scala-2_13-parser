@@ -11,6 +11,7 @@
 #include "ast/leaf/fObjectDef.hpp"
 #include "ast/leaf/fTemplate.hpp"
 #include "ast/leaf/fTemplateBody.hpp"
+#include "ast/symbol/ZEnclScope.hpp"
 #include "back/tree/ZVisitPSubTreeHelp.hpp"
 #include "back/tree/ZVisitTypeParamHelp.hpp"
 
@@ -115,24 +116,12 @@ namespace zebra::back::tree {
 
 	void ZVisitClassHelp::visitTemplateBody(sp<fTemplateBody> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Template Body" << std::endl;
+
 		sp<ZTemplateBody> zTB = ms<ZTemplateBody>();
 		esc tbScp = ms<ZEnclScope>(prnSc, zTB);
 
 		for (const auto &ss: n->getStmts()) {
-			if (!ss->isOperator()) {
-				sp<fLangOprnd> oprnd = std::dynamic_pointer_cast<ast::fLangOprnd>(ss);
-				switch (oprnd->getLangOprndType()) {
-					case LOprndT::IMPORT: {
-					}
-					case LOprndT::PROD_SUB_TREE_N: {
-					}
-					default:
-						break;
-				}
-			}
-
-			esc emptyScp = ms<ZEnclScope>(prnSc, nullptr);
-			ss->accept(visitor, emptyScp);
+			ss->accept(visitor, tbScp);
 		}
 	}
 

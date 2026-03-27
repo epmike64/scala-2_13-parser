@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "ast/leaf/fAccessQualifier.hpp"
+#include "ast/symbol/ZEnclScope.hpp"
 #include "ast/leaf/fCaseClause.hpp"
 #include "ast/leaf/fCaseClauses.hpp"
 #include "ast/leaf/fClassParents.hpp"
