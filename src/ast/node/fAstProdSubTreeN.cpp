@@ -9,7 +9,11 @@ namespace zebra::ast::node {
 
 	std::string fAstProdSubTreeN::toString() const
 	{
-		return "AstProdSubTreeN(" + to_gr_prod_string(gp) + ")";
+		std::string topNodeStr;
+		if (rootOpNod && rootOpNod->getAstRightN()) {
+			topNodeStr = rootOpNod->getAstRightN()->toString();
+		}
+		return "AstProdSubTreeN(" + to_gr_prod_string(gp) + ", root->right: " + topNodeStr + ")";
 	}
 
 } // namespace zebra::ast::node

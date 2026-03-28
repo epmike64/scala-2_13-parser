@@ -70,6 +70,17 @@ namespace zebra::ast::symbol {
 		~ZIdSymbol() override = default;
 	};
 
+	class ZAstNWrap: public ZSymbol {
+	private:
+		sp<fAstNod> fAstN_;
+	public:
+		ZAstNWrap(sp<fAstNod> fAstN) : fAstN_(fAstN), ZSymbol(Z_F_WRAPPER) {}
+		std::string toString() const {
+			return "ZAstNWrap(" + (fAstN_ ? fAstN_->toString() : "null") + ")";
+		}
+	};
+
+
 
 	class ZImport : public ZSymbol {
 		std::vector<std::string> imports_;
@@ -107,19 +118,19 @@ namespace zebra::ast::symbol {
 	};
 
 	class ZTreePostOrderSS {
-		std::vector<sp<fAstNod>> postOrderSS_;
+		PVecP<ZSymbol> postOrderSS_;
 	public:
-		bool empty() {
-			return postOrderSS_.empty();
-		}
-		void push_back(sp<fAstNod> n) {
-			postOrderSS_.push_back(n);
+		void push_back(sp<ZSymbol> n) {
+			if (postOrderSS_ == nullptr) {
+				postOrderSS_ = ms<std::vector<std::shared_ptr<ZSymbol>>>();
+			}
+			postOrderSS_->push_back(n);
 		}
 		std::string toString() const{
 			std::stringstream out;
 			out << "PostOrderSS: [";
-			for (const auto& nod : postOrderSS_) {
-				out << (nod ? nod->toString() : "null") << ", ";
+			for (const auto& sym : *postOrderSS_) {
+				out << sym  << ", ";
 			}
 			out << "]";
 			return out.str();
@@ -144,6 +155,19 @@ namespace zebra::ast::symbol {
 		explicit ZType(ZLangConstruct c) : ZProdSubTreeN(c) {}
 		sp<ZTreePostOrderSS> getZType() const {
 			return postOrderSS_;
+		}
+	};
+
+	class ZTypeList: public ZSymbol {
+	protected:
+		PVecP<ZType> types_;
+	public:
+		ZTypeList() : ZSymbol(Z_TYPE_LIST) {}
+		void addType(sp<ZType> t) {
+			if (types_ == nullptr) {
+				types_ = ms<std::vector<std::shared_ptr<ZType>>>();
+			}
+			types_->push_back(t);
 		}
 	};
 

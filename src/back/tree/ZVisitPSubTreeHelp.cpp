@@ -20,17 +20,17 @@ namespace zebra::back::tree {
 		return tr;
 	}
 
-	void ZVisitPSubTreeHelp::treePostOrderPush(sp<fAstNod> n, esc prnSc) {
-		sp<ZProdSubTreeN> prnt = std::dynamic_pointer_cast<ZProdSubTreeN>(prnSc->getZSymbol());
-		if (prnt) {
-			prnt->getTreePostOrderSS()->push_back(n);
-			std::cout << "Pushed: " + n->toString() << std::endl;
-			std::cout << prnt->getTreePostOrderSS()->toString() << std::endl;
-			std::cout << "" << std::endl;
-		} else {
-			std::cout << "" << std::endl;
-		}
-	}
+	// void ZVisitPSubTreeHelp::treePostOrderPush(sp<fAstNod> n, esc prnSc) {
+	// 	sp<ZProdSubTreeN> prnt = std::dynamic_pointer_cast<ZProdSubTreeN>(prnSc->getZSymbol());
+	// 	if (prnt) {
+	// 		prnt->getTreePostOrderSS()->push_back(n);
+	// 		std::cout << "Pushed: " + n->toString() << std::endl;
+	// 		std::cout << prnt->getTreePostOrderSS()->toString() << std::endl;
+	// 		std::cout << "" << std::endl;
+	// 	} else {
+	// 		std::cout << "" << std::endl;
+	// 	}
+	// }
 
 	sp<fAstNod> ZVisitPSubTreeHelp::getAstPSTreeRightN(sp<fAstProdSubTreeN> subTr) {
 		while (true) {
@@ -100,15 +100,30 @@ namespace zebra::back::tree {
 			ss.pop();
 			if (!currNode->isOperator()) {
 				switch (dynSp<ast::fLangOprnd>(currNode)->getLangOprndType()) {
-					case LOprndT::LITERAL: case LOprndT::STABLE_ID: case LOprndT::TYPE:
-						currNode->accept(visitor, prnSc);
+					case LOprndT::LITERAL: case LOprndT::STABLE_ID:
+						prnt->getTreePostOrderSS()->push_back(ms<ZAstNWrap>(currNode));
 						break;
+					case LOprndT::TYPE: {
+						sp<ZType> zType = ms<ZType>();
+						esc typeScp = ms<ZEnclScope>(prnSc, zType);
+						currNode->accept(visitor, typeScp);
+						prnt->getTreePostOrderSS()->push_back(zType);
+						break;
+					}
+					case LOprndT::TYPE_ARGS: {
+							sp<ZTypeList> zTypeList = ms<ZTypeList>();
+							esc typeArgsScp = ms<ZEnclScope>(prnSc, zTypeList);
+							currNode->accept(visitor, typeArgsScp);
+							prnt->getTreePostOrderSS()->push_back(zTypeList);
+							break;
+					}
 					default:
-						throw std::runtime_error("Unexpected non-operator node type in production subtree: " + fLangOprndType2String(dynSp<ast::fLangOprnd>(currNode)->getLangOprndType()));
+						std::cout << fLangOprndType2String(dynSp<ast::fLangOprnd>(currNode)->getLangOprndType()) << std::endl;
+						throw std::runtime_error("Unsupported language operand type in production subtree: " + fLangOprndType2String(dynSp<ast::fLangOprnd>(currNode)->getLangOprndType()));
 				}
 
 			} else {
-				currNode->accept(visitor, prnSc);
+				prnt->getTreePostOrderSS()->push_back(ms<ZAstNWrap>(currNode));
 			}
 		}
 

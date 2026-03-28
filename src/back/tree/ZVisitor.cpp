@@ -378,10 +378,14 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fTypeArgs> n, esc prnSc) {
 		std::cout << "Visiting Type Arguments" << std::endl;
-		for (const auto& typeArg : n->getTypeArgs()) {
-			typeArg->accept(shared_from_this(), prnSc);
-		}
+		sp<ZTypeList> list = dynSp<ZTypeList>(prnSc->getZSymbol());
 
+		for (const auto& typeArg : n->getTypeArgs()) {
+			sp<ZType> zType = ms<ZType>();
+			esc typeScp = ms<ZEnclScope>(prnSc, zType);
+			typeArg->accept(shared_from_this(), typeScp);
+			list->addType(zType);
+		}
 	}
 	void ZVisitor::visit(sp<fTypeDef> n, esc prnSc) {
 		std::cout << "Visiting Type Definition: " << n->getTypeDefName()->toString() << std::endl;
@@ -408,10 +412,6 @@ namespace zebra::back::tree {
 	}
 
 	void ZVisitor::visit(sp<fAstProdSubTreeN> subTr, esc prnSc) {
-		// if (!prnSc->getZSymbol()) {
-		// 	prnSc->setZSymbol(ms<ZProdSubTreeN>());
-		// 	std::cout << "Attention: Subtree Symbol Set" << std::endl;
-		// }
 		ZVisitPSubTreeHelp::traverseProdSubTree(subTr, prnSc, shared_from_this());
 	}
 
@@ -423,17 +423,17 @@ namespace zebra::back::tree {
 
 	void  ZVisitor::visit(sp<fAstOptrNod> n, esc prnSc)  {
 		std::cout << "Operator: " << n->toString() << std::endl;
-		ZVisitPSubTreeHelp::treePostOrderPush(n, prnSc);
+		// ZVisitPSubTreeHelp::treePostOrderPush(n, prnSc);
 	}
 
 	void  ZVisitor::visit(sp<fLiteral> n, esc prnSc)  {
 		std::cout << "Visiting Literal: " << n->toString() << std::endl;
-		ZVisitPSubTreeHelp::treePostOrderPush(n, prnSc);
+		// ZVisitPSubTreeHelp::treePostOrderPush(n, prnSc);
 	}
 
 	void  ZVisitor::visit(sp<fStableId>n, esc prnSc)  {
 		std::cout << "Visiting StableId: " << n->toString() << std::endl;
-		ZVisitPSubTreeHelp::treePostOrderPush(n, prnSc);
+		// ZVisitPSubTreeHelp::treePostOrderPush(n, prnSc);
 	}
 
 
