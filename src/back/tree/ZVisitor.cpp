@@ -206,7 +206,6 @@ namespace zebra::back::tree {
 	}
 	void ZVisitor::visit(sp<fBlock> n, esc prnSc) {
 		ZVisitClassHelp::visitBlock(n, prnSc, shared_from_this());
-
 	}
 	void ZVisitor::visit(sp<fCaseClause> n, esc prnSc) {
 		std::cout << "Visiting Case Clause" << std::endl;

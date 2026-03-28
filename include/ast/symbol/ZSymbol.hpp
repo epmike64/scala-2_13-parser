@@ -295,13 +295,12 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZStmtList: public ZSymbol {
+	class ZStmtList  {
 	protected:
 		PVecP<ZSymbol> statements_;
 	public:
-		ZStmtList() : ZSymbol(Z_STMT_LIST) {}
-		ZStmtList(ZLangConstruct c) : ZSymbol(c) {}
-		~ZStmtList() override = default;
+		ZStmtList() = default;
+		~ZStmtList() = default;
 
 		void addStmt(sp<ZSymbol> stmt) {
 			if (statements_ == nullptr) {
@@ -386,10 +385,10 @@ namespace zebra::ast::symbol {
 	};
 
 
-	class ZBlock: public ZStmtList {
+	class ZBlock: public ZSymbol, public ZStmtList{
 		public:
-		ZBlock() : ZStmtList(Z_BLOCK) {}
-		ZBlock(ZLangConstruct c) : ZStmtList(Z_BLOCK) {}
+		ZBlock() : ZSymbol(Z_BLOCK) {}
+		ZBlock(ZLangConstruct c) : ZSymbol(Z_BLOCK) {}
 		~ZBlock() override = default;
 	};
 
@@ -400,9 +399,9 @@ namespace zebra::ast::symbol {
 		ZClassConstr() : ZSymbol(Z_CLASS_CONSTR) {}
 	};
 
-	class ZTemplateBody : public ZStmtList {
+	class ZTemplateBody : public ZSymbol, public ZStmtList {
 	public:
-		ZTemplateBody() : ZStmtList(Z_TEMPLATE_BODY) {}
+		ZTemplateBody() : ZSymbol(Z_TEMPLATE_BODY) {}
 	};
 
 	class ZClassTemplate: public ZSymbol {
@@ -434,18 +433,14 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZClassDef : public ZId, public ZStmtList{
+	class ZClassDef : public ZIdSymbol, public ZStmtList{
 		sp<ZModifiers> modifiers_;
 		sp<ZClassDef> parentClass_;
 		sp<ZVariantTypeParamList> typeParams_;
 		sp<ZClassParamList> classParamList_;
-		// PVecP<ZTraitDef> traits_;
-		PVecP<ZClassConstr> constrs_;
-		// PVecP<ZRegFunc> funcs_;
-		// PVecP<ZValueDcl> decls_;
-		// sp<ZClassTemplate> classTemplate_;
+		sp<ZClassTemplate> classTemplate_;
 	public:
-		explicit ZClassDef(std::string zId) : ZId(std::move(zId)), ZStmtList(Z_CLASS_DEF) {}
+		explicit ZClassDef(std::string zId) : ZIdSymbol(std::move(zId), Z_CLASS_DEF) {}
 
 		void setModifiers(sp<ZModifiers> mods) {
 			modifiers_ = mods;
@@ -470,12 +465,12 @@ namespace zebra::ast::symbol {
 	};
 
 
-	class ZCompileUnit: public ZId, public ZStmtList {
+	class ZCompileUnit: public ZIdSymbol, public ZStmtList {
 	protected:
 		std::string packgName_;
 
 	public:
-		explicit ZCompileUnit(std::string zId) : ZId(std::move(zId)), ZStmtList(Z_COMPILATION_UNIT) {
+		explicit ZCompileUnit(std::string zId) : ZIdSymbol(std::move(zId),Z_COMPILATION_UNIT)  {
 			packgName_ = "_ROOT_PKG_";
 		}
 
