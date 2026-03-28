@@ -68,4 +68,5 @@ namespace zebra::ast {
 		virtual fLangOprndType getLangOprndType() = 0;
 	};
 
+	std::string fLangOprndType2String(fLangOprndType t);
 }

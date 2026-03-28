@@ -54,9 +54,7 @@ namespace zebra::back::tree {
 		}
 
 		if (cls->getExtendsTemplate()) {
-			sp<ZClassTemplate> zCT = ms<ZClassTemplate>();
-			esc clsTempScp = ms<ZEnclScope>(prnSc, zCT);
-			cls->getExtendsTemplate()->accept(visitor, clsTempScp);
+			cls->getExtendsTemplate()->accept(visitor, clsDefScp);
 		}
 	}
 
@@ -64,7 +62,7 @@ namespace zebra::back::tree {
 		std::cout << "Visiting Trait Definition: " << std::endl;
 
 		sp<ZTraitDef> zTraiDef = ms<ZTraitDef>(n->getIdentName());
-		esc clsDefScp = ms<ZEnclScope>(prnSc, zTraiDef);
+		esc traitScp = ms<ZEnclScope>(prnSc, zTraiDef);
 
 		if (n->getModifiers()) {
 			n->getModifiers()->accept(visitor, prnSc);
@@ -72,14 +70,12 @@ namespace zebra::back::tree {
 
 		if (n->getTypeParamClause()) {
 			zTraiDef->setVariantTypeParamList(ms<ZVariantTypeParamList>());
-			esc vtpListScp = ms<ZEnclScope>(clsDefScp, zTraiDef->getVariantTypeParamList());
+			esc vtpListScp = ms<ZEnclScope>(traitScp, zTraiDef->getVariantTypeParamList());
 			n->getTypeParamClause()->accept(visitor, vtpListScp);
 		}
 
 		if (n->getExtendsTemplate()) {
-			sp<ZClassTemplate> zCT = ms<ZClassTemplate>();
-			esc clsTempScp = ms<ZEnclScope>(prnSc, zCT);
-			n->getExtendsTemplate()->accept(visitor, clsTempScp);
+			n->getExtendsTemplate()->accept(visitor, traitScp);
 		}
 	}
 
@@ -98,27 +94,25 @@ namespace zebra::back::tree {
 		}
 
 		if (obj->getExtendsTemplate()) {
-			sp<ZClassTemplate> zCT = ms<ZClassTemplate>();
-			esc tbScp = ms<ZEnclScope>(objDefScp, zCT);
-			obj->getExtendsTemplate()->accept(visitor, tbScp);
-			zObjDef->setClassTemplate(zCT);
+			obj->getExtendsTemplate()->accept(visitor, objDefScp);
 		}
 	}
 
 	void ZVisitClassHelp::visitClassTemplate(sp<fClassTemplate> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Class Template" << std::endl;
 
-		sp<ZClassTemplate> zCT = ms<ZClassTemplate>(prnSc);
+		sp<ITemplateBody> tb = dynSp<ITemplateBody>(prnSc->getZSymbol());
+		sp<ZClassTemplate> zCT = ms<ZClassTemplate>();
+		tb->setTemplateBody(zCT);
+		esc classTempScp = ms<ZEnclScope>(prnSc, zCT);
 
 		sp<ZClassParents> zClsParents = ms<ZClassParents>();
 		zCT->setClassParents(zClsParents);
 		esc clsParentsScp = ms<ZEnclScope>(prnSc, zClsParents);
 		n->getClassParents()->accept(visitor, clsParentsScp);
 
-		sp<ZTemplateBody> zTb = ms<ZTemplateBody>();
-		zCT->setTemplateBody(zTb);
-		esc tbScp = ms<ZEnclScope>(prnSc, zTb);
-		n->getTemplateBody()->accept(visitor, tbScp);
+
+		n->getTemplateBody()->accept(visitor, classTempScp);
 	}
 
 
@@ -146,13 +140,17 @@ namespace zebra::back::tree {
 
 	void ZVisitClassHelp::visitTemplate(sp<fTemplate> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Template" << std::endl;
-		n->getTemplateBody()->accept(visitor, prnSc);
+		sp<ITemplateBody> tb = dynSp<ITemplateBody>(prnSc->getZSymbol());
+		sp<ZClassTemplate> zCT = ms<ZClassTemplate>();
+		tb->setTemplateBody(zCT);
+		esc classTempScp = ms<ZEnclScope>(prnSc, zCT);
+		n->getTemplateBody()->accept(visitor, classTempScp);
 	}
 
 	void ZVisitClassHelp::visitTemplateBody(sp<fTemplateBody> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Template Body" << std::endl;
 
-		sp<ZTemplateBody> zTb = ms<ZTemplateBody>();
+		sp<ZTemplateBody> zTb = dynSp<ZTemplateBody>(prnSc->getZSymbol());
 		esc tbScp = ms<ZEnclScope>(prnSc, zTb);
 
 

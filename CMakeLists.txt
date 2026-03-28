@@ -198,6 +198,7 @@ add_executable(zebra-4-backend
 		include/ast/fLangOperand.hpp
 		include/util/fUtil.hpp
 		src/util/fUtil.cpp
+		src/ast/fLangOperand.cpp
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE

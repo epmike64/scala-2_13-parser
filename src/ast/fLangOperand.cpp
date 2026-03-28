@@ -1,0 +1,113 @@
+#include "ast/fLangOperand.hpp"
+
+namespace zebra::ast {
+
+
+		std::string fLangOprndType2String(fLangOprndType t) {
+		switch (t) {
+			case fLangOprndType::ACCESS_MODIFIER:
+				return "ACCESS_MODIFIER";
+				case fLangOprndType::ACCESS_QUALIFIER:
+				return "ACCESS_QUALIFIER";
+				case fLangOprndType::BLOCK:
+				return "BLOCK";
+				case fLangOprndType::CASE_CLAUSE:
+				return "CASE_CLAUSE";
+				case fLangOprndType::CASE_CLAUSES:
+				return "CASE_CLAUSES";
+				case fLangOprndType::CLASS_CONSTR:
+				return "CLASS_CONSTR";
+				case fLangOprndType::PROD_SUB_TREE_N:
+				return "PROD_SUB_TREE_N";
+				case fLangOprndType::CLASS_DEF:
+				return "CLASS_DEF";
+				case fLangOprndType::CLASS_PARAM:
+				return "CLASS_PARAM";
+				case fLangOprndType::CLASS_PARAM_CLAUSES:
+				return "CLASS_PARAM_CLAUSES";
+				case fLangOprndType::CLASS_PARENTS:
+				return "CLASS_PARENTS";
+				case fLangOprndType::CLASS_TEMPLATE:
+				return "CLASS_TEMPLATE";
+				case fLangOprndType::COMPILE_UNIT:
+				return "COMPILE_UNIT";
+				case fLangOprndType::CONSTR_BLOCK:
+				return "CONSTR_BLOCK";
+				case fLangOprndType::FOR:
+				return "FOR";
+				case fLangOprndType::FUNC_SIG:
+				return "FUNC_SIG";
+				return "FUN_TYPE_PARAM";
+				case fLangOprndType::GENERATOR:
+				return "GENERATOR";
+				case fLangOprndType::ID:
+				return "ID";
+				case fLangOprndType::IDS:
+				return "IDS";
+				case fLangOprndType::IF:
+				return "IF";
+				case fLangOprndType::IMPORT:
+				return "IMPORT";
+				case fLangOprndType::LITERAL:
+				return "LITERAL";
+				case fLangOprndType::LOCAL_MODIFIER:
+				return "LOCAL_MODIFIER";
+				case fLangOprndType::MODIFIER:
+				return "MODIFIER";
+				case fLangOprndType::MODIFIERS:
+				return "MODIFIERS";
+				case fLangOprndType::OBJECT_DEF:
+				return "OBJECT_DEF";
+				case fLangOprndType::OVERRIDE_MODIFIER:
+				return "OVERRIDE_MODIFIER";
+				case fLangOprndType::PACKAGE:
+				return "PACKAGE";
+				case fLangOprndType::PARAM:
+				return "PARAM";
+				case fLangOprndType::PARAM_CLAUSES:
+				return "PARAM_CLAUSES";
+				case fLangOprndType::PARAM_TYPE:
+				return "PARAM_TYPE";
+				case fLangOprndType::PARAM_TYPES:
+				return "PARAM_TYPES";
+				case fLangOprndType::REG_FUNC:
+				return "REG_FUNC";
+				case fLangOprndType::RETURN:
+				return "RETURN";
+				case fLangOprndType::STABLE_ID:
+				return "STABLE_ID";
+				case fLangOprndType::TEMPLATE:
+				return "TEMPLATE";
+				case fLangOprndType::TEMPLATE_BODY:
+				return "TEMPLATE_BODY";
+				case fLangOprndType::THIS_FUNC:
+				return "THIS_FUNC";
+				case fLangOprndType::TRAIT_DEF:
+				return "TRAIT_DEF";
+				case fLangOprndType::TYPE:
+				return "TYPE";
+				case fLangOprndType::TYPE_DEF:
+				return "TYPE_DEF";
+				case fLangOprndType::TYPE_PARAM:
+				return "TYPE_PARAM";
+				case fLangOprndType::TYPE_PARAM_CLAUSE:
+				return "TYPE_PARAM_CLAUSE";
+				case fLangOprndType::VALUE_DCL:
+				return "VALUE_DCL";
+				case fLangOprndType::WHILE:
+				return "WHILE";
+				case fLangOprndType::TYPE_ARGS:
+				return "TYPE_ARGS";
+				case fLangOprndType::VARIANT_TYPE_PARAM:
+				return "VARIANT_TYPE_PARAM";
+				case fLangOprndType::VARIANT_TYPE_PARAM_CLAUSE:
+				return "VARIANT_TYPE_PARAM_CLAUSE";
+				case fLangOprndType::THROW:
+				return "THROW";
+				case fLangOprndType::UNDERSCORE:
+				return "UNDERSCORE";
+			default:
+				return "UNKNOWN";
+		}
+	}
+}

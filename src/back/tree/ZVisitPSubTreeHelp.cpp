@@ -10,6 +10,7 @@
 
 namespace zebra::back::tree {
 	using namespace ast::symbol;
+	using namespace ast;
 
 
 	sp<ZProdSubTreeN> ZVisitPSubTreeHelp::visitIntoSubTree(sp<fAstNod> node, esc prnSc, sp<fAstNodVisitor> visitor) {
@@ -97,7 +98,18 @@ namespace zebra::back::tree {
 			}
 
 			ss.pop();
-			currNode->accept(visitor, prnSc);
+			if (!currNode->isOperator()) {
+				switch (dynSp<ast::fLangOprnd>(currNode)->getLangOprndType()) {
+					case LOprndT::LITERAL: case LOprndT::STABLE_ID: case LOprndT::TYPE:
+						currNode->accept(visitor, prnSc);
+						break;
+					default:
+						throw std::runtime_error("Unexpected non-operator node type in production subtree: " + fLangOprndType2String(dynSp<ast::fLangOprnd>(currNode)->getLangOprndType()));
+				}
+
+			} else {
+				currNode->accept(visitor, prnSc);
+			}
 		}
 
 		std::cout << subTr->toString() + " END" << std::endl;
