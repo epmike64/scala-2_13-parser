@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 
 #include "fTraitDef.hpp"
 #include "util/fCommon.hpp"

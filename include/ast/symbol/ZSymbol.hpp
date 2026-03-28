@@ -344,22 +344,7 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZTraitDef: public ZIdSymbol {
-		protected:
 
-		sp<ZVariantTypeParamList> variantTypeParamList_;
-	public:
-		explicit ZTraitDef(std::string sId) : ZIdSymbol(std::move(sId), Z_TRAIT_DEF){}
-		ZTraitDef(std::string sId, ZLangConstruct c) :  ZIdSymbol(std::move(sId), c) {}
-
-		void setVariantTypeParamList(sp<ZVariantTypeParamList> tps) {
-			variantTypeParamList_ = tps;
-		}
-		sp<ZVariantTypeParamList> getVariantTypeParamList()  {
-			return variantTypeParamList_;
-		}
-
-	};
 
 
 
@@ -402,19 +387,40 @@ namespace zebra::ast::symbol {
 	class ZTemplateBody : public ZSymbol, public ZStmtList {
 	public:
 		ZTemplateBody() : ZSymbol(Z_TEMPLATE_BODY) {}
+		ZTemplateBody(ZLangConstruct c) : ZSymbol(c) {}
 	};
 
 	class ZClassTemplate: public ZSymbol {
 		protected:
-		sp<ZTemplateBody> templateBody_;
 		sp<ZClassParents> classParents_;
+		sp<ZTemplateBody> templateBody_;
 	public:
 		ZClassTemplate() : ZSymbol(Z_CLASS_TEMPLATE) {}
+
+		void setClassParents(sp<ZClassParents> cp) {
+			classParents_ = cp;
+		}
 		void setTemplateBody(sp<ZTemplateBody> tb) {
 			templateBody_ = tb;
 		}
-		void setClassParents(sp<ZClassParents> cp) {
-			classParents_ = cp;
+	};
+
+	class ZTraitDef: public ZIdSymbol {
+	protected:
+		sp<ZVariantTypeParamList> variantTypeParamList_;
+		sp<ZTemplateBody> templateBody_;
+	public:
+		explicit ZTraitDef(std::string sId) : ZIdSymbol(std::move(sId), Z_TRAIT_DEF){}
+		ZTraitDef(std::string sId, ZLangConstruct c) :  ZIdSymbol(std::move(sId), c) {}
+
+		void setVariantTypeParamList(sp<ZVariantTypeParamList> tps) {
+			variantTypeParamList_ = tps;
+		}
+		sp<ZVariantTypeParamList> getVariantTypeParamList()  {
+			return variantTypeParamList_;
+		}
+		void setTemplateBody(sp<ZTemplateBody> tb) {
+			templateBody_ = tb;
 		}
 	};
 

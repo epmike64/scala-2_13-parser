@@ -54,10 +54,34 @@ namespace zebra::back::tree {
 		}
 
 		if (cls->getExtendsTemplate()) {
-			cls->getExtendsTemplate()->accept(visitor, clsDefScp);
+			sp<ZClassTemplate> zCT = ms<ZClassTemplate>();
+			esc clsTempScp = ms<ZEnclScope>(prnSc, zCT);
+			cls->getExtendsTemplate()->accept(visitor, clsTempScp);
 		}
 	}
 
+	void ZVisitClassHelp::visitTraitDef(sp<fTraitDef> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+		std::cout << "Visiting Trait Definition: " << std::endl;
+
+		sp<ZTraitDef> zTraiDef = ms<ZTraitDef>(n->getIdentName());
+		esc clsDefScp = ms<ZEnclScope>(prnSc, zTraiDef);
+
+		if (n->getModifiers()) {
+			n->getModifiers()->accept(visitor, prnSc);
+		}
+
+		if (n->getTypeParamClause()) {
+			zTraiDef->setVariantTypeParamList(ms<ZVariantTypeParamList>());
+			esc vtpListScp = ms<ZEnclScope>(clsDefScp, zTraiDef->getVariantTypeParamList());
+			n->getTypeParamClause()->accept(visitor, vtpListScp);
+		}
+
+		if (n->getExtendsTemplate()) {
+			sp<ZClassTemplate> zCT = ms<ZClassTemplate>();
+			esc clsTempScp = ms<ZEnclScope>(prnSc, zCT);
+			n->getExtendsTemplate()->accept(visitor, clsTempScp);
+		}
+	}
 
 	void ZVisitClassHelp::visitObjectDef(sp<fObjectDef> obj, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting " << (obj->isCaseObj() ? "Case " : "") << "Object" << obj->getIdentName() << std::endl;
@@ -84,13 +108,17 @@ namespace zebra::back::tree {
 	void ZVisitClassHelp::visitClassTemplate(sp<fClassTemplate> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Class Template" << std::endl;
 
+		sp<ZClassTemplate> zCT = ms<ZClassTemplate>(prnSc);
+
 		sp<ZClassParents> zClsParents = ms<ZClassParents>();
+		zCT->setClassParents(zClsParents);
 		esc clsParentsScp = ms<ZEnclScope>(prnSc, zClsParents);
 		n->getClassParents()->accept(visitor, clsParentsScp);
 
-		if (n->getTemplateBody()) {
-			n->getTemplateBody()->accept(visitor, prnSc);
-		}
+		sp<ZTemplateBody> zTb = ms<ZTemplateBody>();
+		zCT->setTemplateBody(zTb);
+		esc tbScp = ms<ZEnclScope>(prnSc, zTb);
+		n->getTemplateBody()->accept(visitor, tbScp);
 	}
 
 
@@ -176,24 +204,5 @@ namespace zebra::back::tree {
 
 
 
-	void ZVisitClassHelp::visitTraitDef(sp<fTraitDef> n, esc prnSc, sp<fAstNodVisitor> visitor) {
-		std::cout << "Visiting Trait Definition: " << std::endl;
 
-		sp<ZTraitDef> zTraiDef = ms<ZTraitDef>(n->getIdentName());
-		esc clsDefScp = ms<ZEnclScope>(prnSc, zTraiDef);
-
-		if (n->getModifiers()) {
-			n->getModifiers()->accept(visitor, prnSc);
-		}
-
-		if (n->getTypeParamClause()) {
-			zTraiDef->setVariantTypeParamList(ms<ZVariantTypeParamList>());
-			esc vtpListScp = ms<ZEnclScope>(clsDefScp, zTraiDef->getVariantTypeParamList());
-			n->getTypeParamClause()->accept(visitor, vtpListScp);
-		}
-
-		if (n->getExtendsTemplate()) {
-			n->getExtendsTemplate()->accept(visitor, prnSc);
-		}
-	}
 }
