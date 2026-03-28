@@ -7,10 +7,10 @@ namespace zebra::back::tree {
 	using namespace util;
 	using namespace ast::node;
 
-	class ZVisitBlockHelp {
-		public:
-		static void visitBlock(sp<fBlock> n, esc prnSc, sp<fAstNodVisitor> visitor);
-	};
-
+	// class ZVisitBlockHelp {
+	// 	public:
+	// 	static void visitBlock(sp<fBlock> n, esc prnSc, sp<fAstNodVisitor> visitor);
+	// };
+	//
 
 }

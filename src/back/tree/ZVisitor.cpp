@@ -205,7 +205,7 @@ namespace zebra::back::tree {
 		std::cout << "Visiting Access Qualifier: " << n->toString() << std::endl;
 	}
 	void ZVisitor::visit(sp<fBlock> n, esc prnSc) {
-		ZVisitBlockHelp::visitBlock(n, prnSc, shared_from_this());
+		ZVisitClassHelp::visitBlock(n, prnSc, shared_from_this());
 
 	}
 	void ZVisitor::visit(sp<fCaseClause> n, esc prnSc) {
