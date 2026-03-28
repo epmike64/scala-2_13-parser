@@ -124,8 +124,24 @@ namespace zebra::back::tree {
 	void ZVisitClassHelp::visitTemplateBody(sp<fTemplateBody> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Template Body" << std::endl;
 
-		for (const auto &ss: n->getStmts()) {
-			ss->accept(visitor, prnSc);
+		sp<ZTemplateBody> zTb = ms<ZTemplateBody>();
+		esc tbScp = ms<ZEnclScope>(prnSc, zTb);
+
+
+		for (const auto& stmt : n->getStmts()) {
+			zaccert(!stmt->isOperator(), "Statements in a block should not be operators");
+			switch (dynSp<fLangOprnd>(stmt)->getLangOprndType()) {
+				case LOprndT::PROD_SUB_TREE_N: {
+					sp<ZProdSubTreeN> pSubTr = ms<ZProdSubTreeN>();
+					zTb->addStmt(pSubTr);
+					esc pSubTrScp = ms<ZEnclScope>(tbScp, pSubTr);
+					stmt->accept(visitor, pSubTrScp);
+					continue;
+				}
+				default:
+					break;
+			}
+			stmt->accept(visitor, tbScp);
 		}
 	}
 
