@@ -422,15 +422,22 @@ namespace zebra::ast::symbol {
 		virtual sp<ZTemplateBody> getTemplateBody() = 0;
 	};
 
-	class ZClassTemplate: public ZTemplateBody {
+	class ZClassTemplate:  public ZSymbol, public ITemplateBody {
 		protected:
 		sp<ZClassParents> classParents_;
+		sp<ZTemplateBody> templateBody_;
 	public:
-		ZClassTemplate() : ZTemplateBody(Z_CLASS_TEMPLATE) {}
-		ZClassTemplate(ZLangConstruct c) : ZTemplateBody(c) {}
+		ZClassTemplate() : ZSymbol(Z_CLASS_TEMPLATE) {}
+		ZClassTemplate(ZLangConstruct c) : ZSymbol(Z_CLASS_TEMPLATE) {}
 
 		void setClassParents(sp<ZClassParents> cp) {
 			classParents_ = cp;
+		}
+		void setTemplateBody(sp<ZTemplateBody> t) {
+			templateBody_ = t;
+		}
+		sp<ZTemplateBody> getTemplateBody() {
+			return templateBody_;
 		}
 	};
 
@@ -457,13 +464,13 @@ namespace zebra::ast::symbol {
 
 	};
 
-	class ZObjectDef: public ZId, public ZSymbol, public ITemplateBody{
+	class ZObjectDef: public ZIdSymbol, public ITemplateBody{
 		protected:
 		const bool isCase_;
 		sp<ZModifiers> modifiers_;
-		sp<ZTemplateBody> classTemplate_;
+		sp<ZClassTemplate> classTemplate_;
 		public:
-		explicit ZObjectDef(bool isCase, std::string zId) : isCase_(isCase), ZId(std::move(zId)), ZSymbol(Z_OBJECT_DEF) {}
+		explicit ZObjectDef(bool isCase, std::string zId) : isCase_(isCase), ZIdSymbol(std::move(zId), Z_OBJECT_DEF) {}
 		void setModifiers(sp<ZModifiers> mods) {
 			modifiers_ = mods;
 		}
@@ -471,10 +478,13 @@ namespace zebra::ast::symbol {
 			classTemplate_ = ct;
 		}
 		void setTemplateBody(sp<ZTemplateBody> tb) override {
-			classTemplate_ = tb;
+			throw std::logic_error("Use ZClassTemplate");
 		}
 		sp<ZTemplateBody> getTemplateBody() override{
-			return classTemplate_;
+			if (classTemplate_ == nullptr) {
+				return nullptr;
+			}
+			return classTemplate_->getTemplateBody();
 		}
 	};
 

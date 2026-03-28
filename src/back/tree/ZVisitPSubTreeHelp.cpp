@@ -117,6 +117,13 @@ namespace zebra::back::tree {
 							prnt->getTreePostOrderSS()->push_back(zTypeList);
 							break;
 					}
+					case LOprndT::CLASS_TEMPLATE: {
+						sp<ZClassTemplate> zClassTemplate = ms<ZClassTemplate>();
+						esc classTemplateScp = ms<ZEnclScope>(prnSc, zClassTemplate);
+						currNode->accept(visitor, classTemplateScp);
+						prnt->getTreePostOrderSS()->push_back(zClassTemplate);
+						break;
+					}
 					default:
 						std::cout << fLangOprndType2String(dynSp<ast::fLangOprnd>(currNode)->getLangOprndType()) << std::endl;
 						throw std::runtime_error("Unsupported language operand type in production subtree: " + fLangOprndType2String(dynSp<ast::fLangOprnd>(currNode)->getLangOprndType()));
