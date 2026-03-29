@@ -13,8 +13,8 @@ namespace zebra::back::tree {
 
 	class ZVisitFuncHelp {
 	public:
-		static void visitRegFunc(sp<fRegFunc> n, sbx prnSc, sp<fAstNodVisitor> visitor);
-		static void visitFunSig(sp<fFunSig> n, sbx prnSc, sp<fAstNodVisitor> visitor);
-		static void visitThisFunc(sp<fThisFunc> n, sbx prnSc, sp<fAstNodVisitor> visitor);
+		static void visitRegFunc(sp<fRegFunc> n, sbx prnSbx, sp<fAstNodVisitor> visitor);
+		static void visitFunSig(sp<fFunSig> n, sbx prnSbx, sp<fAstNodVisitor> visitor);
+		static void visitThisFunc(sp<fThisFunc> n, sbx prnSbx, sp<fAstNodVisitor> visitor);
 	};
 }

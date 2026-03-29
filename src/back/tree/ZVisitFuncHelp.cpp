@@ -18,10 +18,10 @@ namespace zebra::back::tree {
 	using namespace ast::leaf;
 	using namespace util;
 
-	void ZVisitFuncHelp::visitFunSig(sp<fFunSig> n, sbx prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitFuncHelp::visitFunSig(sp<fFunSig> n, sbx prnSbx, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting FunSig: " << n->getIdentName() << std::endl;
 
-		sp<ZFunSig> zDef = initScopeSymbol<ZFunSig>(prnSc, n->getIdentName());
+		sp<ZFunSig> zDef = initScopeSymbol<ZFunSig>(prnSbx, n->getIdentName());
 
 		if (n->getFunTypeParamClause()) {
 			sbx subSc = visitChildNode(n->getFunTypeParamClause(), visitor);
@@ -34,10 +34,10 @@ namespace zebra::back::tree {
 		}
 	}
 
-	void ZVisitFuncHelp::visitRegFunc(sp<fRegFunc> n, sbx prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitFuncHelp::visitRegFunc(sp<fRegFunc> n, sbx prnSbx, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Regular Function: " << n->getFunSig()->getIdentName() << std::endl;
 
-		sp<ZRegFunc> zDef = initScopeSymbol<ZRegFunc>(prnSc);
+		sp<ZRegFunc> zDef = initScopeSymbol<ZRegFunc>(prnSbx);
 
 		if (n->getModifiers()) {
 			sbx subSc = visitChildNode(n->getModifiers(), visitor);
@@ -63,7 +63,7 @@ namespace zebra::back::tree {
 	}
 
 
-	void ZVisitFuncHelp::visitThisFunc(sp<fThisFunc> n, sbx prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitFuncHelp::visitThisFunc(sp<fThisFunc> n, sbx prnSbx, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting This Function" << std::endl;
 	}
 

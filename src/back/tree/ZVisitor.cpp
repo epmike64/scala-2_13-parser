@@ -90,22 +90,22 @@ namespace zebra::back::tree {
 		ZVisitClassHelp::visitObjectDef(obj, prnSc, shared_from_this());
 	}
 
-	void ZVisitor::visit(sp<fClassTemplate> n, sbx prnSc) {
-		ZVisitClassHelp::visitClassTemplate(n, prnSc, shared_from_this());
+	void ZVisitor::visit(sp<fClassTemplate> n, sbx prnSbx) {
+		ZVisitClassHelp::visitClassTemplate(n, prnSbx, shared_from_this());
 	}
 
-	void ZVisitor::visit(sp<fTemplate> n, sbx prnSc) {
-		ZVisitClassHelp::visitTemplate(n, prnSc, shared_from_this());
+	void ZVisitor::visit(sp<fTemplate> n, sbx prnSbx) {
+		ZVisitClassHelp::visitTemplate(n, prnSbx, shared_from_this());
 	}
 
-	void ZVisitor::visit(sp<fTemplateBody> n, sbx prnSc) {
-		ZVisitClassHelp::visitTemplateBody(n, prnSc, shared_from_this());
+	void ZVisitor::visit(sp<fTemplateBody> n, sbx prnSbx) {
+		ZVisitClassHelp::visitTemplateBody(n, prnSbx, shared_from_this());
 	}
 
 
-	void ZVisitor::visit(sp<fParamClauses> n, sbx prnSc) {
+	void ZVisitor::visit(sp<fParamClauses> n, sbx prnSbx) {
 
-		sp<ZParamList> zDef = initScopeSymbol<ZParamList>(prnSc);
+		sp<ZParamList> zDef = initScopeSymbol<ZParamList>(prnSbx);
 
 		for (auto paramList : n->getParamLists()) {
 			for (auto param : paramList) {
@@ -121,48 +121,48 @@ namespace zebra::back::tree {
 		}
 	}
 
-	void ZVisitor::visit(sp<fClassParamClauses> n, sbx prnSc) {
-		ZVisitParamHelp::visitClassParamClauses(n, prnSc, shared_from_this());
+	void ZVisitor::visit(sp<fClassParamClauses> n, sbx prnSbx) {
+		ZVisitParamHelp::visitClassParamClauses(n, prnSbx, shared_from_this());
 	}
 
 
-	void ZVisitor::visit(sp<fTypeParamClause> n, sbx prnSc) {
-		ZVisitTypeParamHelp::visitTypeParamClause(n, prnSc, shared_from_this());
+	void ZVisitor::visit(sp<fTypeParamClause> n, sbx prnSbx) {
+		ZVisitTypeParamHelp::visitTypeParamClause(n, prnSbx, shared_from_this());
 	}
 
-	void ZVisitor::visit(sp<fVariantTypeParam> n, sbx prnSc) {
-		ZVisitTypeParamHelp::visitVariantTypeParam(n, prnSc, shared_from_this());
+	void ZVisitor::visit(sp<fVariantTypeParam> n, sbx prnSbx) {
+		ZVisitTypeParamHelp::visitVariantTypeParam(n, prnSbx, shared_from_this());
 	}
 
 	void ZVisitor::visit(sp<fParam> n, sbx prnSc) {
 		ZVisitParamHelp::visitParam(n, prnSc, shared_from_this());
 	}
 
-	void ZVisitor::visit(sp<fClassParam> n, sbx prnSc) {
-		ZVisitParamHelp::visitClassParam(n, prnSc, shared_from_this());
+	void ZVisitor::visit(sp<fClassParam> n, sbx prnSbx) {
+		ZVisitParamHelp::visitClassParam(n, prnSbx, shared_from_this());
 	}
 
-	void ZVisitor::visit(sp<fParamType> n, sbx prnSc) {
-		n->getTypeTree()->accept(shared_from_this(), prnSc);
+	void ZVisitor::visit(sp<fParamType> n, sbx prnSbx) {
+		n->getTypeTree()->accept(shared_from_this(), prnSbx);
 	}
 
-	void  ZVisitor::visit(sp<fType> n, sbx prnSc)  {
-		n->getTypeTree()->accept(shared_from_this(), prnSc);
+	void  ZVisitor::visit(sp<fType> n, sbx prnSbx)  {
+		n->getTypeTree()->accept(shared_from_this(), prnSbx);
 	}
 
-	void ZVisitor::visit(sp<fClassParents> n, sbx prnSc) {
-		ZVisitClassHelp::visitClassParents(n, prnSc, shared_from_this());
+	void ZVisitor::visit(sp<fClassParents> n, sbx prnSbx) {
+		ZVisitClassHelp::visitClassParents(n, prnSbx, shared_from_this());
 	}
 
-	void ZVisitor::visit(sp<fClassConstr> n, sbx prnSc) {
-		ZVisitClassHelp::visitClassConstr(n, prnSc, shared_from_this());
+	void ZVisitor::visit(sp<fClassConstr> n, sbx prnSbx) {
+		ZVisitClassHelp::visitClassConstr(n, prnSbx, shared_from_this());
 	}
 
 
-	void ZVisitor::visit(sp<fIf> n, sbx prnSc) {
+	void ZVisitor::visit(sp<fIf> n, sbx prnSbx) {
 		std::cout << "-- IF Cond Expr" << std::endl;
 
-		sp<ZIf> zDef = initScopeSymbol<ZIf>(prnSc);
+		sp<ZIf> zDef = initScopeSymbol<ZIf>(prnSbx);
 
 		sbx subSc = visitChildNode(n->getCondExpr(),  shared_from_this());
 		zDef->setCondExpr(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
