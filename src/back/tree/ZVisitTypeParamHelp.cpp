@@ -14,10 +14,10 @@ namespace zebra::back::tree {
 	using namespace ast::leaf;
 	using namespace util;
 
-	void ZVisitTypeParamHelp::visitFunTypeParamClause(sp<fFunTypeParamClause> n, sbx prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitTypeParamHelp::visitFunTypeParamClause(sp<fFunTypeParamClause> n, sbx prnSbx, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting FunTypeParamClause: " << n->toString() << std::endl;
 
-		sp<ZTypeParamList> zDef = initScopeSymbol<ZTypeParamList>(prnSc);
+		sp<ZTypeParamList> zDef = initScopeSymbol<ZTypeParamList>(prnSbx);
 
 		for (auto typeParam: n->getTypeParamList()) {
 			sbx subSc = visitChildNode(typeParam, visitor);
@@ -25,9 +25,9 @@ namespace zebra::back::tree {
 		}
 	}
 
-	void ZVisitTypeParamHelp::visitTypeParamClause(sp<fTypeParamClause> n, sbx prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitTypeParamHelp::visitTypeParamClause(sp<fTypeParamClause> n, sbx prnSbx, sp<fAstNodVisitor> visitor) {
 
-		sp<ZVariantTypeParamList> zDef = initScopeSymbol<ZVariantTypeParamList>(prnSc);
+		sp<ZVariantTypeParamList> zDef = initScopeSymbol<ZVariantTypeParamList>(prnSbx);
 
 		for (auto variantTypeParam: *n->getVariantTypeParams()) {
 			sbx subSc = visitChildNode(variantTypeParam, visitor);
@@ -35,20 +35,20 @@ namespace zebra::back::tree {
 		}
 	}
 
-	void ZVisitTypeParamHelp::visitVariantTypeParam(sp<fVariantTypeParam> n, sbx prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitTypeParamHelp::visitVariantTypeParam(sp<fVariantTypeParam> n, sbx prnSbx, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting VariantTypeParam: " << n->toString() << std::endl;
 
-		sp<ZVariantTypeParam> zDef = initScopeSymbol<ZVariantTypeParam>(prnSc, n->getVariance());
+		sp<ZVariantTypeParam> zDef = initScopeSymbol<ZVariantTypeParam>(prnSbx, n->getVariance());
 
 		sbx subSc = visitChildNode(n->getTypeParam(), visitor);
 		zDef->setTypeParam(dynSp<ZTypeParam>(subSc->getZSymbol()));
 	}
 
 
-	void ZVisitTypeParamHelp::visitTypeParam(sp<fTypeParam> n, sbx prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitTypeParamHelp::visitTypeParam(sp<fTypeParam> n, sbx prnSbx, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Type Parameter: " << n->getIdentToken()->toString() << std::endl;
 
-		sp<ZTypeParam> zDef = initScopeSymbol<ZTypeParam>(prnSc, n->getIdentName());
+		sp<ZTypeParam> zDef = initScopeSymbol<ZTypeParam>(prnSbx, n->getIdentName());
 
 		if (n->getTypeParamClause()) {
 			sbx subSc = visitChildNode(n->getTypeParamClause(), visitor);

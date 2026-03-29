@@ -13,9 +13,9 @@ namespace zebra::back::tree {
 	using namespace ast;
 
 
-	// sp<ZProdSubTreeN> ZVisitPSubTreeHelp::visitIntoSubTree(sp<fAstNod> node, esc prnSc, sp<fAstNodVisitor> visitor) {
+	// sp<ZProdSubTreeN> ZVisitPSubTreeHelp::visitIntoSubTree(sp<fAstNod> node, esc prnSbx, sp<fAstNodVisitor> visitor) {
 	// 	sp<ZProdSubTreeN> tr = ms<ZProdSubTreeN>();
-	// 	esc trSc = ms<ZEnclScope>(prnSc);
+	// 	esc trSc = ms<ZEnclScope>(prnSbx);
 	// 	trSc->setZSymbol(tr);
 	// 	node->accept(visitor, trSc);
 	// 	return tr;
@@ -32,7 +32,7 @@ namespace zebra::back::tree {
 		}
 	}
 
-	void ZVisitPSubTreeHelp::traverseProdSubTree(sp<fAstProdSubTreeN> subTr, sbx prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitPSubTreeHelp::traverseProdSubTree(sp<fAstProdSubTreeN> subTr, sbx prnSbx, sp<fAstNodVisitor> visitor) {
 		std::cout << subTr->toString() << std::endl;
 
 		sp<fAstNod> psubT = getAstPSTreeRightN(subTr);
@@ -40,7 +40,7 @@ namespace zebra::back::tree {
 			return;
 		}
 
-		sp<ZProdSubTreeN> prnt = initScopeSymbol<ZProdSubTreeN>(prnSc);
+		sp<ZProdSubTreeN> prnt = initScopeSymbol<ZProdSubTreeN>(prnSbx);
 
 		std::stack<sp<fAstStackItem> > ss;
 		ss.push(ms<fAstStackItem>(psubT));
@@ -90,6 +90,6 @@ namespace zebra::back::tree {
 				prnt->getTreePostOrderSS()->push_back(ms<ZAstNWrap>(currNode));
 			}
 		}
-		prnSc->setZSymbol(prnt);
+		prnSbx->setZSymbol(prnt);
 	}
 }
