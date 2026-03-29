@@ -51,6 +51,7 @@ namespace zebra::ast::symbol {
 		esc getParentScope() const;
 
 		ZLangConstruct getLangConstruct() const;
+
 		sp<ZSymbol> getZSymbol();
 		void setZSymbol(sp<ZSymbol> zSymbol) ;
 	};

@@ -394,14 +394,6 @@ namespace zebra::ast::symbol {
 		void setFunBodyBlock(sp<ZBlock> b) {
 			funBodyBlock_ = b;
 		}
-
-		void setTypeParamList(sp<ZTypeParamList> tps) {
-			typeParamList_ = tps;
-		}
-
-		sp<ZTypeParamList> getTypeParamList() {
-			return typeParamList_;
-		}
 	};
 
 	class ZClassParam: public ZParam{

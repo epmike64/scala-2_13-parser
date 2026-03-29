@@ -16,6 +16,7 @@
 #include "back/tree/ZVisitPSubTreeHelp.hpp"
 #include "back/tree/ZVisitTypeParamHelp.hpp"
 #include "util/fUtil.hpp"
+#include "back/tree/ZVisitUtil.hpp"
 
 namespace zebra::back::tree {
 	using namespace ast::symbol;
@@ -27,37 +28,31 @@ namespace zebra::back::tree {
 		std::cout << "Visiting " << (n->isCaseClass() ? "Case " : "") << "ClassDef " << n->getIdentName() <<
 				std::endl;
 
-		sp<ZClassDef> zDef = ms<ZClassDef>(n->getIdentName());
-		prnSc->setZSymbol(zDef);
-
+		sp<ZClassDef> zDef = initScopeSymbol<ZClassDef>(prnSc, n->getIdentName());
 
 		if (n->getModifiers()) {
-			esc subSc = ms<ZEnclScope>(prnSc);
-			n->getModifiers()->accept(visitor, subSc);
+			esc subSc = visitChildNode(n->getModifiers(), prnSc, visitor);
 			zDef->setModifiers(dynSp<ZModifiers>(subSc->getZSymbol()));
 		}
 
 		if (n->getConstrAccessModifier()) {
-			esc subSc = ms<ZEnclScope>(prnSc);
-			n->getConstrAccessModifier()->accept(visitor, subSc);
+			esc subSc = visitChildNode(n->getConstrAccessModifier(), prnSc, visitor);
 			zDef->setConstrAccessModifier(dynSp<ZAccessModifier>(subSc->getZSymbol()));
 		}
 
 		if (n->getTypeParamClause()) {
-			esc subSc = ms<ZEnclScope>(prnSc);
-			n->getTypeParamClause()->accept(visitor, subSc);
+			esc subSc = visitChildNode(n->getTypeParamClause(), prnSc, visitor);
 			zDef->setVariantTypeParamList(dynSp<ZVariantTypeParamList>(subSc->getZSymbol()));
 		}
 
 		if (n->getClassParamClauses()) {
-			esc subSc = ms<ZEnclScope>(prnSc);
-			n->getClassParamClauses()->accept(visitor, subSc);
+			esc subSc = visitChildNode(n->getClassParamClauses(), prnSc, visitor);
 			zDef->setClassParamList(dynSp<ZClassParamList>(subSc->getZSymbol()));
 		}
 
 		if (n->getExtendsTemplate()) {
-			esc subSc = ms<ZEnclScope>(prnSc);
-			n->getExtendsTemplate()->accept(visitor,  subSc);
+			esc subSc = visitChildNode(n->getExtendsTemplate(), prnSc, visitor);
+
 			switch (n->getExtendsTemplate()->getLangOprndType()) {
 				case fLangOprndType::CLASS_TEMPLATE: {
 					zDef->setClassTemplate(dynSp<ZClassTemplate>(subSc->getZSymbol()));
@@ -78,16 +73,11 @@ namespace zebra::back::tree {
 	void ZVisitClassHelp::visitObjectDef(sp<fObjectDef> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting " << (n->isCaseObj() ? "Case " : "") << "Object" << n->getIdentName() << std::endl;
 
-		zaccert(prnSc->getZSymbol() == nullptr, "Parent symbol in scope should be null when visiting an object definition");
-
-		sp<ZObjectDef> zDef = ms<ZObjectDef>(n->isCaseObj(), n->getIdentName());
-		prnSc->setZSymbol(zDef);
-
+		sp<ZObjectDef> zDef = initScopeSymbol<ZObjectDef>(prnSc, n->isCaseObj(), n->getIdentName());
 
 		if (n->getModifiers()) {
-			esc subScp = ms<ZEnclScope>(prnSc);
-			n->getModifiers()->accept(visitor, subScp);
-			zDef->setModifiers(dynSp<ZModifiers>(subScp->getZSymbol()));
+			esc subSc = visitChildNode(n->getModifiers(), prnSc, visitor);
+			zDef->setModifiers(dynSp<ZModifiers>(subSc->getZSymbol()));
 		}
 
 		if (n->getExtendsTemplate()) {
@@ -113,10 +103,7 @@ namespace zebra::back::tree {
 	void ZVisitClassHelp::visitTraitDef(sp<fTraitDef> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Trait Definition: " << std::endl;
 
-		zaccert(prnSc->getZSymbol() == nullptr, "Parent symbol in scope should be null when visiting a trait definition");
-
-		sp<ZTraitDef> zDef = ms<ZTraitDef>(n->getIdentName());
-		prnSc->setZSymbol(zDef);
+		sp<ZTraitDef> zDef = initScopeSymbol<ZTraitDef>(prnSc, n->getIdentName());
 
 		if (n->getModifiers()) {
 			n->getModifiers()->accept(visitor, prnSc);
@@ -157,10 +144,8 @@ namespace zebra::back::tree {
 
 	void ZVisitClassHelp::visitClassTemplate(sp<fClassTemplate> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Class Template" << std::endl;
-		zaccert(prnSc->getZSymbol() == nullptr, "Parent symbol in scope should be null when visiting a class template");
 
-		sp<ZClassTemplate> zDef = ms<ZClassTemplate>();
-		prnSc->setZSymbol(zDef);
+		sp<ZClassTemplate> zDef = initScopeSymbol<ZClassTemplate>(prnSc);
 
 		esc subSc = ms<ZEnclScope>(prnSc);
 		n->getClassParents()->accept(visitor, subSc);

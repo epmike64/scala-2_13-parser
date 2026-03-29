@@ -9,6 +9,7 @@
 #include "ast/leaf/fRegFunc.hpp"
 #include "ast/symbol/ZEnclScope.hpp"
 #include "ast/symbol/ZSymbol.hpp"
+#include "back/tree/ZVisitUtil.hpp"
 
 
 namespace zebra::back::tree {
@@ -19,12 +20,9 @@ namespace zebra::back::tree {
 
 	void ZVisitFuncHelp::visitFunSig(sp<fFunSig> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting FunSig: " << n->getIdentName() << std::endl;
-		zaccert(prnSc->getZSymbol() != nullptr, "Parent symbol in scope should not be null when visiting a function signature");
-
 		assert(prnSc->getLangConstruct() == Z_REG_FUNC_DEF);
 
-		sp<ZFunSig> zDef = ms<ZFunSig>(n->getIdentName());
-		prnSc->setZSymbol(zDef);
+		sp<ZFunSig> zDef = initScopeSymbol<ZFunSig>(prnSc, n->getIdentName());
 
 		if (n->getFunTypeParamClause()) {
 			esc subSc = visitChildNode(n->getFunTypeParamClause(), prnSc, visitor);
