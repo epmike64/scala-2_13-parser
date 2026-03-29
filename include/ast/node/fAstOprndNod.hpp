@@ -31,7 +31,7 @@ namespace zebra::ast::node {
 			throw std::runtime_error("Cannot set right operand for " + std::string(typeid(*this).name()));
 		}
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, symbol::esc s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, symbol::ssc s) override;
 		 std::string toString() const override;
 	};
 

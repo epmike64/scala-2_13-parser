@@ -19,7 +19,7 @@ namespace zebra::ast::leaf {
 
 		const std::vector<std::shared_ptr<fCaseClause>> &getCaseClauses();
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) override;
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {

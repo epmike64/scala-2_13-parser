@@ -20,7 +20,7 @@ namespace zebra::ast::leaf {
 		return ids_;
 	}
 
-	void fPackage::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+	void fPackage::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
 		visitor->visit(std::static_pointer_cast<fPackage>(shared_from_this()), s);
 	}
 

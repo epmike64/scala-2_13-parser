@@ -12,7 +12,7 @@ namespace zebra::ast::symbol{
 	class ZTraitDef;
 	class ZClassDef;
 	class ZSymScope;
-	using esc = std::shared_ptr<ZSymScope>;
+	using ssc = std::shared_ptr<ZSymScope>;
 
 }
 

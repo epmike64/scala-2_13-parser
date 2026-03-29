@@ -1,11 +1,11 @@
 #include "ast/symbol/ZSymScope.hpp"
 
 namespace zebra::ast::symbol {
-	ZSymScope::ZSymScope(esc parentScope)
+	ZSymScope::ZSymScope(ssc parentScope)
 		: parentScope_(parentScope) {
 	}
 
-	esc ZSymScope::getParentScope() const {
+	ssc ZSymScope::getParentScope() const {
 		return parentScope_;
 	}
 

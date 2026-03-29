@@ -27,10 +27,10 @@ namespace zebra::back::tree {
 
 	class ZVisitPSubTreeHelp {
 	public:
-		static esc getWrapScope(esc prnSc, ZLangConstruct lc);
-		static void treePostOrderPush(sp<fAstNod> n, esc prnSc);
+		static ssc getWrapScope(ssc prnSc, ZLangConstruct lc);
+		static void treePostOrderPush(sp<fAstNod> n, ssc prnSc);
 		static sp<fAstNod> getAstPSTreeRightN(sp<fAstProdSubTreeN> subTr);
-		static void traverseProdSubTree(sp<fAstProdSubTreeN> subTr, esc prnSc, sp<fAstNodVisitor> visitor);
-		static sp<ZProdSubTreeN> visitIntoSubTree(sp<fAstNod> node, esc prnSc, sp<fAstNodVisitor> visitor);
+		static void traverseProdSubTree(sp<fAstProdSubTreeN> subTr, ssc prnSc, sp<fAstNodVisitor> visitor);
+		static sp<ZProdSubTreeN> visitIntoSubTree(sp<fAstNod> node, ssc prnSc, sp<fAstNodVisitor> visitor);
 	};
 }

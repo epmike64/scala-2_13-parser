@@ -11,9 +11,9 @@ namespace zebra::back::tree {
 
 	class ZVisitCaseHelp {
 		public:
-		static void visitCaseClause(sp<fCaseClause> n, esc prnSc, sp<fAstNodVisitor> visitor);
-		static void visitCaseClauses(sp<fCaseClauses> n, esc prnSc, sp<fAstNodVisitor> visitor);
-		static void visitIf(sp<fIf> n, esc prnSc, sp<fAstNodVisitor> visitor);
+		static void visitCaseClause(sp<fCaseClause> n, ssc prnSc, sp<fAstNodVisitor> visitor);
+		static void visitCaseClauses(sp<fCaseClauses> n, ssc prnSc, sp<fAstNodVisitor> visitor);
+		static void visitIf(sp<fIf> n, ssc prnSc, sp<fAstNodVisitor> visitor);
 
 	};
 }

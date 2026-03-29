@@ -32,7 +32,7 @@ namespace zebra::back::tree {
 		}
 	}
 
-	void ZVisitPSubTreeHelp::traverseProdSubTree(sp<fAstProdSubTreeN> subTr, esc prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitPSubTreeHelp::traverseProdSubTree(sp<fAstProdSubTreeN> subTr, ssc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << subTr->toString() << std::endl;
 
 		sp<fAstNod> psubT = getAstPSTreeRightN(subTr);

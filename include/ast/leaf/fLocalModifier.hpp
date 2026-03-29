@@ -13,7 +13,7 @@ namespace zebra::ast::leaf {
 
 		fLocalModifier(lex::kind::fLangModifierTypeE modType) : fModifier(modType) {}
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) override;
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() const {

@@ -15,7 +15,7 @@ namespace zebra::ast::leaf {
 		return _underscoreToken;
 	}
 
-	void fUnderscore::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+	void fUnderscore::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
 		visitor->visit(std::static_pointer_cast<fUnderscore>(shared_from_this()), s);
 	}
 

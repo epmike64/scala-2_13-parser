@@ -3,7 +3,7 @@
 
 namespace zebra::ast::node {
 
-	void fAstOprndNod::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+	void fAstOprndNod::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
 		visitor->visit(std::static_pointer_cast<fAstOprndNod>(shared_from_this()), s);
 	}
 

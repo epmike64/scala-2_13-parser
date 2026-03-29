@@ -47,7 +47,7 @@ namespace zebra::ast::leaf {
 		return funBodyBlock_;
 	}
 
-	void fRegFunc::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+	void fRegFunc::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
 		visitor->visit(std::static_pointer_cast<fRegFunc>(shared_from_this()), s);
 	}
 

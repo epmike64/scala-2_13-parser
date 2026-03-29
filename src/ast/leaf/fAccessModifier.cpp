@@ -7,7 +7,7 @@
 
 namespace zebra::ast::leaf {
 
-	void fAccessModifier::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+	void fAccessModifier::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
 		visitor->visit(std::static_pointer_cast<fAccessModifier>(shared_from_this()), s);
 	}
 

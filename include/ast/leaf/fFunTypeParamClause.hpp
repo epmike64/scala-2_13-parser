@@ -15,7 +15,7 @@ namespace zebra::ast::leaf {
 	public:
 		fFunTypeParamClause(std::vector<sp<fTypeParam>> typeParam) ;
 		const std::vector<sp<fTypeParam>>& getTypeParamList();
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) override;
 		std::string toString() const override;
 		fLangOprndType getLangOprndType() override {
 			return LOprndT::FUN_TYPE_PARAM_CLAUSE;

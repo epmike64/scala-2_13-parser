@@ -23,7 +23,7 @@ namespace zebra::ast::leaf {
 		return classParams_;
 	}
 
-	void fClassParamClauses::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+	void fClassParamClauses::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
 		visitor->visit(std::static_pointer_cast<fClassParamClauses>(shared_from_this()), s);
 	}
 

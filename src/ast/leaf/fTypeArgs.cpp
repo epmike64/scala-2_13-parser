@@ -15,7 +15,7 @@ namespace zebra::ast::leaf {
 		return typeArgs_;
 	}
 
-	void fTypeArgs::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+	void fTypeArgs::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
 		visitor->visit(std::static_pointer_cast<fTypeArgs>(shared_from_this()), s);
 	}
 

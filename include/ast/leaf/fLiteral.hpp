@@ -27,7 +27,7 @@ namespace zebra::ast::leaf {
 			return _kind;
 		}
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) override;
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {

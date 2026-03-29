@@ -25,7 +25,7 @@ namespace zebra::ast::leaf {
 		void addPackage(sp<fPackage>&& pkg);
 		std::vector<sp<fPackage>>& getPackages() ;
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) override;
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {

@@ -18,33 +18,33 @@ namespace zebra::back::tree {
 	using namespace ast::leaf;
 	using namespace util;
 
-	void ZVisitFuncHelp::visitFunSig(sp<fFunSig> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitFuncHelp::visitFunSig(sp<fFunSig> n, ssc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting FunSig: " << n->getIdentName() << std::endl;
 
 		sp<ZFunSig> zDef = initScopeSymbol<ZFunSig>(prnSc, n->getIdentName());
 
 		if (n->getFunTypeParamClause()) {
-			esc subSc = visitChildNode(n->getFunTypeParamClause(), prnSc, visitor);
+			ssc subSc = visitChildNode(n->getFunTypeParamClause(), prnSc, visitor);
 			zDef->setFunTypeParamList(dynSp<ZTypeParamList>(subSc->getZSymbol()));
 		}
 
 		if (n->getParamClauses()) {
-			esc subSc = visitChildNode(n->getParamClauses(), prnSc, visitor);
+			ssc subSc = visitChildNode(n->getParamClauses(), prnSc, visitor);
 			zDef->setParamClauses(dynSp<ZParamList>(subSc->getZSymbol()));
 		}
 	}
 
-	void ZVisitFuncHelp::visitRegFunc(sp<fRegFunc> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitFuncHelp::visitRegFunc(sp<fRegFunc> n, ssc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Regular Function: " << n->getFunSig()->getIdentName() << std::endl;
 
 		sp<ZRegFunc> zDef = initScopeSymbol<ZRegFunc>(prnSc);
 
 		if (n->getModifiers()) {
-			esc subSc = visitChildNode(n->getModifiers(), prnSc, visitor);
+			ssc subSc = visitChildNode(n->getModifiers(), prnSc, visitor);
 			zDef->setModifiers(dynSp<ZModifiers>(subSc->getZSymbol()));
 		}
 
-		esc subSc = visitChildNode(n->getFunSig(), prnSc, visitor);
+		ssc subSc = visitChildNode(n->getFunSig(), prnSc, visitor);
 		zDef->setFunSig(dynSp<ZFunSig>(subSc->getZSymbol()));
 
 		if (n->getReturnType()) {
@@ -63,7 +63,7 @@ namespace zebra::back::tree {
 	}
 
 
-	void ZVisitFuncHelp::visitThisFunc(sp<fThisFunc> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitFuncHelp::visitThisFunc(sp<fThisFunc> n, ssc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting This Function" << std::endl;
 	}
 

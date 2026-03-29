@@ -32,7 +32,7 @@ namespace zebra::ast::node {
 			return gp;
 		}
 		
-		void accept(sp<fAstNodVisitor> visitor, symbol::esc s) override;
+		void accept(sp<fAstNodVisitor> visitor, symbol::ssc s) override;
 
 		std::string toString() const override;
 

@@ -25,7 +25,7 @@ namespace zebra::ast::leaf {
 		void setGuard(sp<fAstProdSubTreeN> &&guard) ;
 		void setBlock(sp<fBlock> &&block) ;
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) override;
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {

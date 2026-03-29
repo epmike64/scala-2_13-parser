@@ -53,7 +53,7 @@ namespace zebra::ast::leaf {
 
 		std::string getQualName();
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) override;
 
 		std::string toString() const override;
 

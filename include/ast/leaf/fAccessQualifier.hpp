@@ -16,7 +16,7 @@ namespace zebra::ast::leaf {
 
 		fAccessQualifier(lex::kind::fAccessQualifierE qualifier, const fToken* id) : _qualifier(qualifier), _id(id) {}
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) override;
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {

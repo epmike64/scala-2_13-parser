@@ -35,7 +35,7 @@ namespace zebra::ast::leaf {
 		return localModifiers_;
 	}
 
-	void fModifiers::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+	void fModifiers::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
 		visitor->visit(std::static_pointer_cast<fModifiers>(shared_from_this()), s);
 	}
 

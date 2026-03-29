@@ -41,7 +41,7 @@ namespace zebra::ast::leaf {
 		return funTypeParamClause_;
 	}
 
-	void fFunSig::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+	void fFunSig::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
 		visitor->visit(std::static_pointer_cast<fFunSig>(shared_from_this()), s);
 	}
 

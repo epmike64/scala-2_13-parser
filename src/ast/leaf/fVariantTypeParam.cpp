@@ -17,7 +17,7 @@ namespace zebra::ast::leaf {
 		typeParam_ = typeParam;
 	}
 
-	void fVariantTypeParam::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+	void fVariantTypeParam::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
 		visitor->visit(std::static_pointer_cast<fVariantTypeParam>(shared_from_this()), s);
 	}
 

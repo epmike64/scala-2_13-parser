@@ -30,7 +30,7 @@ namespace zebra::ast::node {
 
 	 	virtual bool isOperator()  = 0;
 	 	virtual fAstNodKndE astNKndE()  = 0;
-		virtual void accept(std::shared_ptr<fAstNodVisitor> visitor, symbol::esc s) = 0;
+		virtual void accept(std::shared_ptr<fAstNodVisitor> visitor, symbol::ssc s) = 0;
 		virtual void setAstParentN(std::shared_ptr<fAstNod> p);
 
 		virtual std::string toString() const = 0;

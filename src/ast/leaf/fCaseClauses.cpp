@@ -15,7 +15,7 @@ namespace zebra::ast::leaf {
 		return _caseClauses;
 	}
 
-	void fCaseClauses::accept(std::shared_ptr<fAstNodVisitor> visitor, esc s) {
+	void fCaseClauses::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
 		visitor->visit(std::static_pointer_cast<fCaseClauses>(shared_from_this()), s);
 	}
 

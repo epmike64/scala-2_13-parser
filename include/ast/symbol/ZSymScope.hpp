@@ -37,12 +37,12 @@ namespace zebra::ast::symbol {
 
 	class ZSymScope {
 	protected:
-		const esc parentScope_;
+		const ssc parentScope_;
 		sp<ZSymbol> zSymbol_;
 	public:
 
-		ZSymScope(esc parentScope);
-		esc getParentScope() const;
+		ZSymScope(ssc parentScope);
+		ssc getParentScope() const;
 		sp<ZSymbol> getZSymbol();
 		void setZSymbol(sp<ZSymbol> zSymbol) ;
 	};
