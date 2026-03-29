@@ -6,6 +6,7 @@
 #include "ast/leaf/fClassParam.hpp"
 #include "ast/symbol/ZEnclScope.hpp"
 #include "ast/leaf/fParamType.hpp"
+#include "back/tree/ZVisitUtil.hpp"
 #include "util/fUtil.hpp"
 
 namespace zebra::back::tree {
@@ -51,9 +52,7 @@ namespace zebra::back::tree {
 			return;
 		}
 
-		sp<ZProdSubTreeN> prnt = std::dynamic_pointer_cast<ZProdSubTreeN>(prnSc->getZSymbol());
-		zaccert(prnt != nullptr, "Parent symbol in scope must be a production subtree node");
-
+		sp<ZProdSubTreeN> prnt = initScopeSymbol<ZProdSubTreeN>(prnSc);
 
 		std::stack<sp<fAstStackItem> > ss;
 		ss.push(ms<fAstStackItem>(psubT));
@@ -96,57 +95,13 @@ namespace zebra::back::tree {
 					continue;
 				}
 			}
-
 			ss.pop();
-			if (!currNode->isOperator()) {
-				switch (dynSp<ast::fLangOprnd>(currNode)->getLangOprndType()) {
-					case LOprndT::LITERAL: case LOprndT::STABLE_ID: case LOprndT::ID: case LOprndT::IDS: case LOprndT::UNDERSCORE: {
-						prnt->getTreePostOrderSS()->push_back(ms<ZAstNWrap>(currNode));
-						break;
-					}
-					case LOprndT::TYPE: {
-						sp<ZType> zType = ms<ZType>();
-						esc typeScp = ms<ZEnclScope>(prnSc, zType);
-						currNode->accept(visitor, typeScp);
-						prnt->getTreePostOrderSS()->push_back(zType);
-						break;
-					}
-					case LOprndT::TYPE_ARGS: {
-							esc subScp = ms<ZEnclScope>(prnSc, nullptr);
-							currNode->accept(visitor, subScp);
-							prnt->getTreePostOrderSS()->push_back(subScp->getZSymbol());
-							break;
-					}
-					case LOprndT::CLASS_TEMPLATE: {
-						sp<ZClassTemplate> zClassTemplate = ms<ZClassTemplate>();
-						esc classTemplateScp = ms<ZEnclScope>(prnSc, zClassTemplate);
-						currNode->accept(visitor, classTemplateScp);
-						prnt->getTreePostOrderSS()->push_back(zClassTemplate);
-						break;
-					}
-					case LOprndT::IF: {
-						esc ifScp = ms<ZEnclScope>(prnSc, nullptr);
-						currNode->accept(visitor, ifScp);
-						prnt->getTreePostOrderSS()->push_back(ifScp->getZSymbol());
-						break;
-					}
-					case LOprndT::BLOCK: {
-						sp<ZBlock> zBlock = ms<ZBlock>();
-						esc blockScp = ms<ZEnclScope>(prnSc, zBlock);
-						currNode->accept(visitor, blockScp);
-						prnt->getTreePostOrderSS()->push_back(zBlock);
-						break;
-					}
-					default:
-						std::cout << fLangOprndType2String(dynSp<ast::fLangOprnd>(currNode)->getLangOprndType()) << std::endl;
-						throw std::runtime_error("Unsupported language operand type in production subtree: " + fLangOprndType2String(dynSp<ast::fLangOprnd>(currNode)->getLangOprndType()));
-				}
-
+			if (currNode->isOperator()) {
+				prnt->getTreePostOrderSS()->push_back(ms<ZAstNWrap>(currNode));
 			} else {
 				prnt->getTreePostOrderSS()->push_back(ms<ZAstNWrap>(currNode));
 			}
 		}
-
-		std::cout << subTr->toString() + " END" << std::endl;
+		prnSc->setZSymbol(prnt);
 	}
 }
