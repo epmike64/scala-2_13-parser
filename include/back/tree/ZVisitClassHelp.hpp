@@ -7,8 +7,8 @@ namespace zebra::back::tree {
 	using namespace ast::node;
 	class ZVisitClassHelp {
 		public:
-		static void visitClassDef(sp<fClassDef> cls, esc prnSc, sp<fAstNodVisitor> visitor);
-		static void visitObjectDef(sp<fObjectDef> obj, esc prnSc, sp<fAstNodVisitor> visitor) ;
+		static void visitClassDef(sp<fClassDef> n, esc prnSc, sp<fAstNodVisitor> visitor);
+		static void visitObjectDef(sp<fObjectDef> n, esc prnSc, sp<fAstNodVisitor> visitor) ;
 		static void visitClassTemplate(sp<fClassTemplate> n, esc prnSc, sp<fAstNodVisitor> visitor);
 		static void visitTemplate(sp<fTemplate> n, esc prnSc, sp<fAstNodVisitor> visitor);
 		static void visitBlock(sp<fBlock> n, esc prnSc, sp<fAstNodVisitor> visitor);

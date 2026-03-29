@@ -36,7 +36,6 @@
 #include "back/tree/ZVisitFuncHelp.hpp"
 #include "util/fUUID.hpp"
 #include "back/tree/ZVisitPSubTreeHelp.hpp"
-#include "back/tree/ZVisitBlockHelp.hpp"
 #include "back/tree/ZVisitParamHelp.hpp"
 #include "back/tree/ZVisitTypeParamHelp.hpp"
 #include "util/fUtil.hpp"
@@ -147,7 +146,10 @@ namespace zebra::back::tree {
 	void ZVisitor::visit(sp<fIf> n, esc prnSc) {
 		std::cout << "-- IF Cond Expr" << std::endl;
 
-		sp<ZIf> zif = dynSp<ZIf>(prnSc->getZSymbol());
+		zaccert(prnSc->getZSymbol() == nullptr, "Parent symbol in scope should be null when visiting an if statement");
+		sp<ZIf> zif = ms<ZIf>();
+		prnSc->setZSymbol(zif);
+
 		zif->setCondExpr(ZVisitPSubTreeHelp::visitIntoSubTree(n->getCondExpr(), prnSc, shared_from_this()));
 
 		if (n->getIfBody()) {
@@ -191,7 +193,11 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fWhile > n, esc prnSc) {
 		std::cout << "-- WHILE Cond Expr" << std::endl;
+		zaccert(prnSc->getZSymbol() == nullptr, "Parent symbol in scope should be null when visiting a while loop");
+
 		sp<ZWhile> zwhile = ms<ZWhile>();
+		prnSc->setZSymbol(zwhile);
+
 		zwhile->setCondExpr(ZVisitPSubTreeHelp::visitIntoSubTree(n->getCondExpr(), prnSc, shared_from_this()));
 		if (n->getBody()) {
 			zwhile->setBody(ZVisitPSubTreeHelp::visitIntoSubTree(n->getBody(), prnSc, shared_from_this()));
@@ -378,7 +384,9 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fTypeArgs> n, esc prnSc) {
 		std::cout << "Visiting Type Arguments" << std::endl;
-		sp<ZTypeList> list = dynSp<ZTypeList>(prnSc->getZSymbol());
+		zaccert(prnSc->getZSymbol() == nullptr, "Parent symbol in scope should be null when visiting type arguments");
+		sp<ZTypeList> list = ms<ZTypeList>();
+		prnSc->setZSymbol(list);
 
 		for (const auto& typeArg : n->getTypeArgs()) {
 			sp<ZType> zType = ms<ZType>();

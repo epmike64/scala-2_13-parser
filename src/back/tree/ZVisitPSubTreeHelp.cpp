@@ -112,10 +112,9 @@ namespace zebra::back::tree {
 						break;
 					}
 					case LOprndT::TYPE_ARGS: {
-							sp<ZTypeList> zTypeList = ms<ZTypeList>();
-							esc typeArgsScp = ms<ZEnclScope>(prnSc, zTypeList);
-							currNode->accept(visitor, typeArgsScp);
-							prnt->getTreePostOrderSS()->push_back(zTypeList);
+							esc subScp = ms<ZEnclScope>(prnSc, nullptr);
+							currNode->accept(visitor, subScp);
+							prnt->getTreePostOrderSS()->push_back(subScp->getZSymbol());
 							break;
 					}
 					case LOprndT::CLASS_TEMPLATE: {
@@ -126,10 +125,9 @@ namespace zebra::back::tree {
 						break;
 					}
 					case LOprndT::IF: {
-						sp<ZIf> zIf = ms<ZIf>();
-						esc ifScp = ms<ZEnclScope>(prnSc, zIf);
+						esc ifScp = ms<ZEnclScope>(prnSc, nullptr);
 						currNode->accept(visitor, ifScp);
-						prnt->getTreePostOrderSS()->push_back(zIf);
+						prnt->getTreePostOrderSS()->push_back(ifScp->getZSymbol());
 						break;
 					}
 					case LOprndT::BLOCK: {

@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "util/fUtil.hpp"
 
 
 namespace zebra::ast::symbol {
@@ -121,6 +122,7 @@ namespace zebra::ast::symbol {
 		PVecP<ZSymbol> postOrderSS_;
 	public:
 		void push_back(sp<ZSymbol> n) {
+			zaccert(n != nullptr, "Cannot push null symbol to post-order symbol stack");
 			if (postOrderSS_ == nullptr) {
 				postOrderSS_ = ms<std::vector<std::shared_ptr<ZSymbol>>>();
 			}
@@ -337,18 +339,52 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZRegFunc: public ZId, public ZFunc {
+	class ZParamList {
+		protected:
+		PVecP<ZSymbol> params_;
+		public: ZParamList() = default;
+		~ZParamList() = default;
+		void addParam(sp<ZParam> p) {
+			if (params_ == nullptr) {
+				params_ = ms<std::vector<std::shared_ptr<ZSymbol>>>();
+			}
+			params_->push_back(p);
+		}
+	};
+
+	class ZFunSig: public ZIdSymbol {
 	protected:
-		sp<ZTypeParamList> typeParamList_;
+		sp<ZTypeParamList> funTypeParamList_;
+		sp<ZParamList> paramList_;
+	public:
+		explicit ZFunSig(std::string sid) : ZIdSymbol(std::move(sid), Z_FUN_SIG) {}
+		void setFunTypeParamList(sp<ZTypeParamList> tps) {
+			funTypeParamList_ = tps;
+		}
+		void setParamClauses(sp<ZParamList> p) {
+			paramList_ = p;
+		}
+	};
+
+	class ZRegFunc: public ZSymbol {
+	protected:
+		sp<ZFunSig> funSig_;
 		sp<ZType> returnType_;
 		sp<ZProdSubTreeN> funBodyExpr_;
 		sp<ZBlock> funBodyBlock_;
-
+		sp<ZModifiers> modifiers_;
 		public:
-		explicit ZRegFunc(std::string sid) : ZId(std::move(sid)), ZFunc(Z_REG_FUNC_DEF){}
-		ZRegFunc(std::string sid, ZLangConstruct c) : ZId(std::move(sid)), ZFunc(c) {}
-
+		ZRegFunc() : ZSymbol(Z_REG_FUNC_DEF) {}
 		~ZRegFunc() override = default;
+
+		void setModifiers(sp<ZModifiers> m) {
+			modifiers_ = m;
+		}
+
+		void setFunSig(sp<ZFunSig> sig) {
+			funSig_ = sig;
+		}
+
 		void setReturnType(sp<ZType> t) {
 			returnType_ = t;
 		}
@@ -468,12 +504,18 @@ namespace zebra::ast::symbol {
 		}
 	};
 
+	class ZAccessModifier: public ZSymbol {
+	public:
+		ZAccessModifier() : ZSymbol(Z_ACCESS_MODIFIER) {}
+	};
+
 	class ZClassDef : public ZIdSymbol{
 		sp<ZModifiers> modifiers_;
 		sp<ZClassDef> parentClass_;
 		sp<ZVariantTypeParamList> typeParams_;
 		sp<ZClassParamList> classParamList_;
 		sp<ZClassTemplate> classTemplate_;
+		sp<ZAccessModifier> constrAccessModifier_;
 	public:
 		explicit ZClassDef(std::string zId) : ZIdSymbol(std::move(zId), Z_CLASS_DEF) {}
 
@@ -494,6 +536,9 @@ namespace zebra::ast::symbol {
 		}
 		void setClassTemplate(sp<ZClassTemplate> ct) {
 			classTemplate_ = ct;
+		}
+		void setConstrAccessModifier(sp<ZAccessModifier> acmod) {
+			constrAccessModifier_ = acmod;
 		}
 	};
 

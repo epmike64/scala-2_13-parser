@@ -19,52 +19,49 @@ namespace zebra::back::tree {
 
 	void ZVisitFuncHelp::visitFunSig(sp<fFunSig> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting FunSig: " << n->getIdentName() << std::endl;
+		zaccert(prnSc->getZSymbol() != nullptr, "Parent symbol in scope should not be null when visiting a function signature");
 
 		assert(prnSc->getLangConstruct() == Z_REG_FUNC_DEF);
 
+		sp<ZFunSig> zDef = ms<ZFunSig>(n->getIdentName());
+		prnSc->setZSymbol(zDef);
+
 		if (n->getFunTypeParamClause()) {
-			sp<ZRegFunc> zFunc = std::dynamic_pointer_cast<ZRegFunc>(prnSc->getZSymbol());
-			zFunc->setTypeParamList(ms<ZTypeParamList>());
-			esc funTPScp = ms<ZEnclScope>(prnSc, zFunc->getTypeParamList());
-			n->getFunTypeParamClause()->accept(visitor, funTPScp);
+			esc subSc = visitChildNode(n->getFunTypeParamClause(), prnSc, visitor);
+			zDef->setFunTypeParamList(dynSp<ZTypeParamList>(subSc->getZSymbol()));
 		}
+
 		if (n->getParamClauses()) {
-			n->getParamClauses()->accept(visitor, prnSc);
+			esc subSc = visitChildNode(n->getParamClauses(), prnSc, visitor);
+			zDef->setParamClauses(dynSp<ZParamList>(subSc->getZSymbol()));
 		}
 	}
 
-	void ZVisitFuncHelp::visitRegFunc(sp<fRegFunc> fun, esc prnSc, sp<fAstNodVisitor> visitor) {
-		std::cout << "Visiting Regular Function: " << fun->getFunSig()->getIdentName() << std::endl;
+	void ZVisitFuncHelp::visitRegFunc(sp<fRegFunc> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+		std::cout << "Visiting Regular Function: " << n->getFunSig()->getIdentName() << std::endl;
 
-		sp<ZRegFunc> zFunc = ms<ZRegFunc>(fun->getFunSig()->getIdentName());
-		esc zFunScp = ms<ZEnclScope>(prnSc,  zFunc);
+		sp<ZRegFunc> zDef = initScopeSymbol<ZRegFunc>(prnSc);
 
-		if (fun->getModifiers()) {
-			fun->getModifiers()->accept(visitor, zFunScp);
+		if (n->getModifiers()) {
+			esc subSc = visitChildNode(n->getModifiers(), prnSc, visitor);
+			zDef->setModifiers(dynSp<ZModifiers>(subSc->getZSymbol()));
 		}
 
-		fun->getFunSig()->accept(visitor, zFunScp);
+		esc subSc = visitChildNode(n->getFunSig(), prnSc, visitor);
+		zDef->setFunSig(dynSp<ZFunSig>(subSc->getZSymbol()));
 
-		if (fun->getReturnType()) {
-			sp<ZType> zType = ms<ZType>();
-			esc typeScp = ms<ZEnclScope>(prnSc, zType);
-			fun->getReturnType()->accept(visitor, typeScp);
-			zFunc->setReturnType(zType);
+		if (n->getReturnType()) {
+			subSc = visitChildNode(n->getFunSig(), prnSc, visitor);
+			zDef->setReturnType(dynSp<ZType>(subSc->getZSymbol()));
 		}
 
-		if (fun->getFunBodyExpr()) {
+		if (n->getFunBodyExpr()) {
+			subSc = visitChildNode(n->getFunBodyExpr(), prnSc, visitor);
+			zDef->setFunBodyExpr(dynSp<ZProdSubTreeN>(subSc->getZSymbol()));
 
-			sp<ZProdSubTreeN> tr = ms<ZProdSubTreeN>();
-			esc trScp = ms<ZEnclScope>(prnSc, tr);
-			fun->getFunBodyExpr()->accept(visitor, trScp);
-			zFunc->setFunBodyExpr(tr);
-
-		} else if (fun->getFunBodyBlock()) {
-
-			sp<ZBlock> block = ms<ZBlock>();
-			esc zBlockScp = ms<ZEnclScope>(prnSc, block);
-			fun->getFunBodyBlock()->accept(visitor, zBlockScp);
-			zFunc->setFunBodyBlock(block);
+		} else if (n->getFunBodyBlock()) {
+			subSc = visitChildNode(n->getFunBodyBlock(), prnSc, visitor);
+			zDef->setFunBodyBlock(dynSp<ZBlock>(subSc->getZSymbol()));
 		}
 	}
 

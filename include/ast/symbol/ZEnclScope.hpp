@@ -47,7 +47,7 @@ namespace zebra::ast::symbol {
 		sp<ZSymbol> zSymbol = nullptr;
 	public:
 
-		ZEnclScope(esc parentScope, sp<ZSymbol> zSymbol);
+		ZEnclScope(esc parentScope);
 		esc getParentScope() const;
 
 		ZLangConstruct getLangConstruct() const;

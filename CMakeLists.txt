@@ -183,8 +183,6 @@ add_executable(zebra-4-backend
 		include/back/tree/ZVisitParamHelp.hpp
 		src/back/tree/ZVisitFuncHelp.cpp
 		include/back/tree/ZVisitFuncHelp.hpp
-		include/back/tree/ZVisitBlockHelp.hpp
-		src/back/tree/ZVisitBlockHelp.cpp
 		src/back/tree/ZVisitClassHelp.cpp
 		include/back/tree/ZVisitClassHelp.hpp
 		include/back/tree/ZVisitModHelp.hpp
