@@ -20,8 +20,8 @@ namespace zebra::back::tree {
 		sp<ZTypeParamList> zDef = initScopeSymbol<ZTypeParamList>(prnSbx);
 
 		for (auto typeParam: n->getTypeParamList()) {
-			sbx subSc = visitChildNode(typeParam, visitor);
-			zDef->addTypeParam(dynSp<ZTypeParam>(subSc->getZSymbol()));
+			sbx symBx = visitChildNode(typeParam, visitor);
+			zDef->addTypeParam(dynSp<ZTypeParam>(symBx->getZSymbol()));
 		}
 	}
 
@@ -30,8 +30,8 @@ namespace zebra::back::tree {
 		sp<ZVariantTypeParamList> zDef = initScopeSymbol<ZVariantTypeParamList>(prnSbx);
 
 		for (auto variantTypeParam: *n->getVariantTypeParams()) {
-			sbx subSc = visitChildNode(variantTypeParam, visitor);
-			zDef->addVariantTypeParam(dynSp<ZVariantTypeParam>(subSc->getZSymbol()));
+			sbx symBx = visitChildNode(variantTypeParam, visitor);
+			zDef->addVariantTypeParam(dynSp<ZVariantTypeParam>(symBx->getZSymbol()));
 		}
 	}
 
@@ -40,8 +40,8 @@ namespace zebra::back::tree {
 
 		sp<ZVariantTypeParam> zDef = initScopeSymbol<ZVariantTypeParam>(prnSbx, n->getVariance());
 
-		sbx subSc = visitChildNode(n->getTypeParam(), visitor);
-		zDef->setTypeParam(dynSp<ZTypeParam>(subSc->getZSymbol()));
+		sbx symBx = visitChildNode(n->getTypeParam(), visitor);
+		zDef->setTypeParam(dynSp<ZTypeParam>(symBx->getZSymbol()));
 	}
 
 
@@ -51,8 +51,8 @@ namespace zebra::back::tree {
 		sp<ZTypeParam> zDef = initScopeSymbol<ZTypeParam>(prnSbx, n->getIdentName());
 
 		if (n->getTypeParamClause()) {
-			sbx subSc = visitChildNode(n->getTypeParamClause(), visitor);
-			zDef->setVariantTypeParamList(dynSp<ZVariantTypeParamList>(subSc->getZSymbol()));
+			sbx symBx = visitChildNode(n->getTypeParamClause(), visitor);
+			zDef->setVariantTypeParamList(dynSp<ZVariantTypeParamList>(symBx->getZSymbol()));
 		}
 	}
 

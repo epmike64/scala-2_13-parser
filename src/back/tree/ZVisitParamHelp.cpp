@@ -24,13 +24,13 @@ namespace zebra::back::tree {
 
 		for (const auto &classParamList: n->getClassParamLists()) {
 			for (const auto &classParam: classParamList) {
-				sbx subSc = visitChildNode(classParam, visitor);
-				zDef->addClassParam(dynSp<ZClassParam>(subSc->getZSymbol()));
+				sbx symBx = visitChildNode(classParam, visitor);
+				zDef->addClassParam(dynSp<ZClassParam>(symBx->getZSymbol()));
 			}
 		}
 		for (const auto &classParam: n->getImplicitClassParamList()) {
-			sbx subSc = visitChildNode(classParam,  visitor);
-			zDef->addClassParam(dynSp<ZClassParam>(subSc->getZSymbol()));
+			sbx symBx = visitChildNode(classParam,  visitor);
+			zDef->addClassParam(dynSp<ZClassParam>(symBx->getZSymbol()));
 		}
 	}
 
@@ -42,13 +42,13 @@ namespace zebra::back::tree {
 		sp<ZClassParam> zDef = initScopeSymbol<ZClassParam>(prnSbx, n->getIdentName(), n->isMutable());
 
 		if (n->getParamType()) {
-			sbx subSc = visitChildNode(n->getParamType(),  visitor);
-			zDef->setParamType(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
+			sbx symBx = visitChildNode(n->getParamType(),  visitor);
+			zDef->setParamType(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
 		}
 
 		if (n->getDefaultValueExpr()) {
-			sbx subSc = visitChildNode(n->getDefaultValueExpr(),visitor);
-			zDef->setDefaultValueExpr(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
+			sbx symBx = visitChildNode(n->getDefaultValueExpr(),visitor);
+			zDef->setDefaultValueExpr(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
 		}
 	}
 
@@ -57,13 +57,13 @@ namespace zebra::back::tree {
 
 		sp<ZParam> zDef = initScopeSymbol<ZParam>(prnSbx, n->getIdentName());
 
-		sbx subSc = visitChildNode(n->getParamType(),  visitor);
-		zDef->setParamType(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
+		sbx symBx = visitChildNode(n->getParamType(),  visitor);
+		zDef->setParamType(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
 
 
 		if ( n->getDefaultValueExpr()) {
-			sbx subSc = visitChildNode(n->getDefaultValueExpr(), visitor);
-			zDef->setDefaultValueExpr(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
+			sbx symBx = visitChildNode(n->getDefaultValueExpr(), visitor);
+			zDef->setDefaultValueExpr(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
 		}
 	}
 
@@ -73,8 +73,8 @@ namespace zebra::back::tree {
 		sp<ZParamTypeList> zDef = initScopeSymbol<ZParamTypeList>(prnSbx);
 
 		for (const auto& paramType: *n->getParamTypes()) {
-			sbx subSc = visitChildNode(paramType,  visitor);
-			zDef->addParamType(dynSp<ZParamType>(subSc->getZSymbol()));
+			sbx symBx = visitChildNode(paramType,  visitor);
+			zDef->addParamType(dynSp<ZParamType>(symBx->getZSymbol()));
 		}
 	}
 
