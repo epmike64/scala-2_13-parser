@@ -13,6 +13,7 @@
 
 
 namespace zebra::ast::symbol {
+	class ZRegFunc;
 	class ZBlock;
 	class ZParam;
 	class ZTypeParamList;
@@ -26,18 +27,18 @@ namespace zebra::ast::symbol {
 
 	class ZId {
 	protected:
-		std::string qualId_;
+		std::string Id_;
 	public:
-		explicit ZId(std::string qId) : qualId_(std::move(qId)) {}
+		explicit ZId(std::string qId) : Id_(std::move(qId)) {}
 		ZId(const ZId&) = default;
 		ZId(ZId&&) = default;
 		ZId& operator=(const ZId&) = default;
 		ZId& operator=(ZId&&) = default;
 
-		const std::string& qualId() const { return qualId_; }
+		const std::string& strId() const { return Id_; }
 
 		bool operator==(const ZId& other) const {
-			return qualId_ == other.qualId_;
+			return Id_ == other.Id_;
 		}
 	};
 
@@ -81,6 +82,18 @@ namespace zebra::ast::symbol {
 		}
 	};
 
+	class ZScope {
+	protected:
+		std::unordered_map<std::string, sp<ZSymbol>> symbols_;
+	public:
+		void addSymbol(const std::string& name, sp<ZSymbol> symbol) {
+			zaccert(symbol != nullptr, "Cannot add null symbol to scope");
+			if (symbols_.find(name) != symbols_.end()) {
+				throw std::runtime_error("Symbol with name '" + name + "' already exists in scope");
+			}
+			symbols_[name] = symbol;
+		}
+	};
 
 
 	class ZImport : public ZSymbol {
@@ -368,19 +381,15 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZStmtList  {
+	class ZStmtList: public ZScope  {
 	protected:
 		PVecP<ZSymbol> statements_;
 	public:
 		ZStmtList() = default;
 		~ZStmtList() = default;
 
-		void addStmt(sp<ZSymbol> stmt) {
-			if (statements_ == nullptr) {
-				statements_ = ms<std::vector<std::shared_ptr<ZSymbol>>>();
-			}
-			statements_->push_back(stmt);
-		}
+		void addStmt(sp<ZSymbol> stmt); // defined after ZRegFunc is fully declared
+
 		PVecP<ZSymbol> getStmts() {
 			return statements_;
 		}
@@ -416,7 +425,6 @@ namespace zebra::ast::symbol {
 	class ZRegFunc: public ZSymbol {
 	protected:
 		sp<ZFunSig> funSig_;
-		// sp<ZType> returnType_;
 		sp<ZTreePostOrderSS> returnType_;
 		sp<ZProdSubTreeN> funBodyExpr_;
 		sp<ZBlock> funBodyBlock_;
@@ -443,7 +451,33 @@ namespace zebra::ast::symbol {
 		void setFunBodyBlock(sp<ZBlock> b) {
 			funBodyBlock_ = b;
 		}
+
+		sp<ZFunSig> getFunSig() const {
+			return funSig_;
+		}
 	};
+
+	// ZRegFunc is now fully defined — provide the body of ZStmtList::addStmt here
+	// to break the circular dependency (ZBlock inherits ZStmtList, ZRegFunc holds sp<ZBlock>).
+	inline void ZStmtList::addStmt(sp<ZSymbol> stmt) {
+		if (statements_ == nullptr) {
+			statements_ = ms<std::vector<std::shared_ptr<ZSymbol>>>();
+		}
+		statements_->push_back(stmt);
+		switch (stmt->getZLangConstruct()) {
+			case Z_CLASS_DEF: case Z_TRAIT_DEF: case Z_OBJECT_DEF: case Z_VALUE_DCL: {
+				symbols_[std::dynamic_pointer_cast<ZIdSymbol>(stmt)->getZId().strId()] = stmt;
+				break;
+			}
+			case Z_REG_FUNC_DEF: {
+				// ZFunSig inherits its id via I_ZId::getZId(), so use getZId().strId()
+				symbols_[std::dynamic_pointer_cast<ZRegFunc>(stmt)->getFunSig()->getZId().strId()] = stmt;
+				break;
+			}
+			default:
+				break;
+		}
+	}
 
 	class ZClassParam: public ZIdSymbol{
 	protected:
@@ -486,15 +520,11 @@ namespace zebra::ast::symbol {
 		~ZBlock() override = default;
 	};
 
-	class ZTemplateBody : public ZSymbol {
-	protected:
-		vecP<ZSymbol> stmts_;
+	class ZTemplateBody : public ZSymbol, public ZStmtList {
 	public:
 		ZTemplateBody() : ZSymbol(Z_TEMPLATE_BODY) {}
 		ZTemplateBody(ZLangConstruct c) : ZSymbol(c) {}
-		void addStmt(sp<ZSymbol> s) {
-			stmts_.push_back(s);
-		}
+		~ZTemplateBody() override = default;
 	};
 
 	class ZClassTemplate:  public ZSymbol  {
@@ -631,7 +661,7 @@ namespace std {
 	template <>
 	struct hash<zebra::ast::symbol::ZId> {
 		std::size_t operator()(const zebra::ast::symbol::ZId& id) const noexcept {
-			return std::hash<std::string>{}(id.qualId());
+			return std::hash<std::string>{}(id.strId());
 		}
 	};
 }
