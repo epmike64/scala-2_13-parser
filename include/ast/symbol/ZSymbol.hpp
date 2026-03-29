@@ -481,6 +481,7 @@ namespace zebra::ast::symbol {
 
 	class ZTraitDef: public ZIdSymbol{
 	protected:
+		sp<ZModifiers> modifiers_;
 		sp<ZVariantTypeParamList> variantTypeParamList_;
 		sp<ZTemplateBody> templateBody_;
 	public:
@@ -498,6 +499,9 @@ namespace zebra::ast::symbol {
 		}
 		sp<ZTemplateBody> getTemplateBody() {
 			return templateBody_;
+		}
+		void setModifiers(sp<ZModifiers> mods) {
+			modifiers_ = mods;
 		}
 
 	};

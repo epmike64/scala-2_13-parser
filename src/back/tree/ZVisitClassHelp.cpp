@@ -81,8 +81,7 @@ namespace zebra::back::tree {
 		}
 
 		if (n->getExtendsTemplate()) {
-			esc subSc = ms<ZEnclScope>(prnSc);
-			n->getExtendsTemplate()->accept(visitor,  subSc);
+			esc subSc = visitChildNode(n->getExtendsTemplate(), prnSc, visitor);
 			switch (n->getExtendsTemplate()->getLangOprndType()) {
 				case fLangOprndType::CLASS_TEMPLATE: {
 					zDef->setClassTemplate(dynSp<ZClassTemplate>(subSc->getZSymbol()));
@@ -106,7 +105,8 @@ namespace zebra::back::tree {
 		sp<ZTraitDef> zDef = initScopeSymbol<ZTraitDef>(prnSc, n->getIdentName());
 
 		if (n->getModifiers()) {
-			n->getModifiers()->accept(visitor, prnSc);
+			esc subSc = visitChildNode(n->getModifiers(), prnSc, visitor);
+			zDef->setModifiers(dynSp<ZModifiers>(subSc->getZSymbol()));
 		}
 
 		if (n->getTypeParamClause()) {
@@ -116,28 +116,8 @@ namespace zebra::back::tree {
 		}
 
 		if (n->getExtendsTemplate()) {
-			// switch (n->getExtendsTemplate()->getLangOprndType()) {
-			// 	case fLangOprndType::CLASS_TEMPLATE: {
-			// 		std::cout << "Class extends a class template" << std::endl;
-			// 		sp<ZClassTemplate> clsTmpl = ms<ZClassTemplate>();
-			// 		esc clsTmpScp = ms<ZEnclScope>(prnSc, clsTmpl);
-			// 		n->getExtendsTemplate()->accept(visitor,  clsTmpScp);
-			// 		zDef->setTemplateBody(clsTmpl->getTemplateBody());
-			// 		break;
-			// 	}
-			// 	case fLangOprndType::TEMPLATE: {
-			// 		std::cout << "Class extends a template" << std::endl;
-			// 		sp<ZTemplateBody> tb = ms<ZTemplateBody>();
-			// 		esc tbScp = ms<ZEnclScope>(prnSc, tb);
-			// 		n->getExtendsTemplate()->accept(visitor,  tbScp);
-			// 		zDef->setTemplateBody(tb);
-			// 		break;
-			// 	}
-			// 	default: {
-			// 		std::cout << "Class extends an unknown template type" << std::endl;
-			// 		throw std::runtime_error("unknown template type");
-			// 	}
-			// }
+			esc subSc = visitChildNode(n->getExtendsTemplate(), prnSc, visitor);
+			zDef->setTemplateBody(dynSp<ZTemplateBody>(subSc->getZSymbol()));
 		}
 	}
 
