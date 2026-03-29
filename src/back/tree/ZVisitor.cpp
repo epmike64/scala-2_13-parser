@@ -38,6 +38,7 @@
 #include "back/tree/ZVisitPSubTreeHelp.hpp"
 #include "back/tree/ZVisitParamHelp.hpp"
 #include "back/tree/ZVisitTypeParamHelp.hpp"
+#include "back/tree/ZVisitUtil.hpp"
 #include "util/fUtil.hpp"
 
 namespace zebra::back::tree {
@@ -51,22 +52,23 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fCompileUnit> n, esc prnSc)  {
 
-		sp<ZCompileUnit> zcu = ms<ZCompileUnit>("ZCompileUnit_" + UUID::generate().toString());
-		esc cuSc = ms<ZEnclScope>(prnSc);
-		cuSc->setZSymbol(zcu);
+
+		sp<ZCompileUnit> zDef = initScopeSymbol<ZCompileUnit>(prnSc, "ZCompileUnit_");
 
 		if (n->getPackages().size() > 0) {
 			std::string packgName;
 			for (const auto& pkg : n->getPackages()) {
 				packgName += pkg->getPackgQualName();
 			}
-			zcu->setPackage(packgName);
+			zDef->setPackage(packgName);
 		}
 
 		if (n->getStmts().size() > 0) {
 			std::cout << "Visiting Statements in Compile Unit" << std::endl;
 			for (const auto& stmt : n->getStmts()) {
-				stmt->accept(shared_from_this(), cuSc);
+				sp<ast::fLangOprnd> langOprnd = std::dynamic_pointer_cast<ast::fLangOprnd>(stmt);
+				esc subSc = visitChildNode(langOprnd,  prnSc, shared_from_this());
+				zDef->addStmt(dynSp<ZSymbol>(subSc->getZSymbol()));
 			}
 		}
 	}
@@ -94,14 +96,20 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fParamClauses> n, esc prnSc) {
 
+		sp<ZParamList> zDef = initScopeSymbol<ZParamList>(prnSc);
+
 		for (auto paramList : n->getParamLists()) {
 			for (auto param : paramList) {
 				param->accept(shared_from_this(), prnSc);
+				esc subSc = visitChildNode(param, prnSc, shared_from_this());
+				zDef->addParam(dynSp<ZParam>(subSc->getZSymbol()));
 			}
 		}
 		if (n->getImplicitParamList()) {
-			for (auto impicitParam: *n->getImplicitParamList()) {
-				impicitParam->accept(shared_from_this(), prnSc);
+			for (auto param: *n->getImplicitParamList()) {
+				param->accept(shared_from_this(), prnSc);
+				esc subSc = visitChildNode(param, prnSc, shared_from_this());
+				zDef->addParam(dynSp<ZParam>(subSc->getZSymbol()));
 			}
 		}
 	}
@@ -144,7 +152,6 @@ namespace zebra::back::tree {
 	}
 
 
-
 	void ZVisitor::visit(sp<fIf> n, esc prnSc) {
 		std::cout << "-- IF Cond Expr" << std::endl;
 
@@ -166,32 +173,27 @@ namespace zebra::back::tree {
 	void ZVisitor::visit(sp<fValueDcl> n, esc prnSc) {
 		std::cout << "Visiting Value Decl: " << std::endl;
 
-		sp<ZStmtList> list  = dynSp<ZStmtList>(prnSc->getZSymbol());
-		sp<ZValueDcl> val = ms<ZValueDcl>();
-		list->addStmt(val);
+		sp<ZValueDcl> zDef = initScopeSymbol<ZValueDcl>(prnSc);
 
 		if (n->getModifiers()) {
-			sp<ZModifiers> mods = ms<ZModifiers>();
-			esc modScp = ms<ZEnclScope>(prnSc);
-			modScp->setZSymbol(mods);
-			n->getModifiers()->accept(shared_from_this(), modScp);
-			val->setModifiers(mods);
+			esc subSc = visitChildNode(n->getModifiers(), prnSc, shared_from_this());
+			zDef->setModifiers(dynSp<ZModifiers>(subSc->getZSymbol()));
 		}
 
 		for (const auto& name : n->getNames()) {
-			val->addName(ZVisitPSubTreeHelp::visitIntoSubTree(name, prnSc, shared_from_this()));
+			// val->addName(ZVisitPSubTreeHelp::visitIntoSubTree(name, prnSc, shared_from_this()));
+			esc subSc = visitChildNode(name, prnSc, shared_from_this());
+			zDef->addName(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 		}
 
 		if (n->getType()) {
-			sp<ZType> type = ms<ZType>();
-			esc typeScp = ms<ZEnclScope>(prnSc);
-			typeScp->setZSymbol(type);
-			n->getType()->accept(shared_from_this(), typeScp);
-			val->setType(type);
+			esc subSc = visitChildNode(n->getType(), prnSc, shared_from_this());
+			zDef->setType(dynSp<ZType>(subSc->getZSymbol()));
 		}
 
 		if (n->getAssignExpr()) {
-			val->setAssignExpr(ZVisitPSubTreeHelp::visitIntoSubTree(n->getAssignExpr(), prnSc, shared_from_this()));
+			esc subSc = visitChildNode(n->getAssignExpr(), prnSc, shared_from_this());
+			zDef->setDefaultValueExpr(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 		}
 	}
 

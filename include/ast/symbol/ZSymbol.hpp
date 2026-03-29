@@ -219,20 +219,23 @@ namespace zebra::ast::symbol {
 	class ZValueDcl: public ZSymbol {
 		sp<ZModifiers> modifiers_;
 		sp<ZType> type_;
-		sp<ZProdSubTreeN> assignExpr_;
-		vecP<ZProdSubTreeN> names_ = vecP<ZProdSubTreeN>();
+
+		sp<ZTreePostOrderSS> defaultValueExpr_;
+		vecP<ZTreePostOrderSS> names_  = vecP<ZTreePostOrderSS>();
 		public:
 		ZValueDcl() : ZSymbol(Z_VALUE_DCL) {}
+
+		void setDefaultValueExpr(sp<ZTreePostOrderSS> de) {
+			defaultValueExpr_ = de;
+		}
 		void setModifiers(sp<ZModifiers> m) {
 			modifiers_ = m;
 		}
 		void setType(sp<ZType> t) {
 			type_ = t;
 		}
-		void setAssignExpr(sp<ZProdSubTreeN> e) {
-			assignExpr_ = e;
-		}
-		void addName(sp<ZProdSubTreeN> n) {
+
+		void addName(sp<ZTreePostOrderSS> n) {
 			names_.push_back(n);
 		}
 	};
@@ -350,10 +353,10 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZParamList {
+	class ZParamList: public ZSymbol {
 		protected:
 		PVecP<ZSymbol> params_;
-		public: ZParamList() = default;
+		public: ZParamList() : ZSymbol(Z_PARAM_LIST) {}
 		~ZParamList() = default;
 		void addParam(sp<ZParam> p) {
 			if (params_ == nullptr) {
