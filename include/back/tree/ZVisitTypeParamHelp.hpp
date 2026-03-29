@@ -10,14 +10,14 @@ namespace zebra::back::tree {
 
 	class ZVisitTypeParamHelp {
 	public:
-		static void visitTypeParamClause(sp<fTypeParamClause> n, ssc prnSc, sp<fAstNodVisitor> visitor);
-		static void visitVariantTypeParam(sp<fVariantTypeParam> n,  ssc prnSc, sp<fAstNodVisitor> visitor);
+		static void visitTypeParamClause(sp<fTypeParamClause> n, sbx prnSc, sp<fAstNodVisitor> visitor);
+		static void visitVariantTypeParam(sp<fVariantTypeParam> n,  sbx prnSc, sp<fAstNodVisitor> visitor);
 
-		static void buildVariantTypeParamClause(sp<fTypeParamClause> typeParamClause, sp<ZVariantTypeParamList> n, ssc prnSc,
+		static void buildVariantTypeParamClause(sp<fTypeParamClause> typeParamClause, sp<ZVariantTypeParamList> n, sbx prnSc,
 		                                 sp<fAstNodVisitor> visitor);
 
-		static void visitTypeParam(sp<fTypeParam> n,  ssc prnSc, sp<fAstNodVisitor> visitor);
-		static void visitFunTypeParamClause(sp<fFunTypeParamClause> n, ssc prnSc, sp<fAstNodVisitor> visitor);
+		static void visitTypeParam(sp<fTypeParam> n,  sbx prnSc, sp<fAstNodVisitor> visitor);
+		static void visitFunTypeParamClause(sp<fFunTypeParamClause> n, sbx prnSc, sp<fAstNodVisitor> visitor);
 	};
 
 }

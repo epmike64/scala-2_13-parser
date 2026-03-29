@@ -55,7 +55,7 @@ namespace zebra::ast::leaf {
 
 		std::vector<sp<fImportExpr>> getImportExprs();
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) override;
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {

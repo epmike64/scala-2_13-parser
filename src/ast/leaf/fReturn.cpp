@@ -13,7 +13,7 @@ namespace zebra::ast::leaf {
 		return returnExpr_;
 	}
 
-	void fReturn::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
+	void fReturn::accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) {
 		visitor->visit(std::static_pointer_cast<fReturn>(shared_from_this()), s);
 	}
 

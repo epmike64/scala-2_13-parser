@@ -4,7 +4,7 @@
 #include <stack>
 
 #include "ast/leaf/fClassParam.hpp"
-#include "ast/symbol/ZSymScope.hpp"
+#include "ast/symbol/ZSymbolBox.hpp"
 #include "back/tree/ZVisitUtil.hpp"
 #include "util/fUtil.hpp"
 
@@ -32,7 +32,7 @@ namespace zebra::back::tree {
 		}
 	}
 
-	void ZVisitPSubTreeHelp::traverseProdSubTree(sp<fAstProdSubTreeN> subTr, ssc prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitPSubTreeHelp::traverseProdSubTree(sp<fAstProdSubTreeN> subTr, sbx prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << subTr->toString() << std::endl;
 
 		sp<fAstNod> psubT = getAstPSTreeRightN(subTr);

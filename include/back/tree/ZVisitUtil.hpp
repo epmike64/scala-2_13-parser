@@ -2,7 +2,7 @@
 
 #include <type_traits>
 #include "ast/fLangOperand.hpp"
-#include "ast/symbol/ZSymScope.hpp"
+#include "ast/symbol/ZSymbolBox.hpp"
 #include "ast/symbol/ZSymbol.hpp"
 #include "ast/symbol/ZEnclScopeFwd.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
@@ -14,10 +14,10 @@ namespace zebra::back::tree {
 		 * T must be a subclass of fLangOprnd.
 		 */
 	template<typename T>
-	static ssc visitChildNode(sp<T> node, sp<fAstNodVisitor> visitor) {
+	static sbx visitChildNode(sp<T> node, sp<fAstNodVisitor> visitor) {
 		static_assert(std::is_base_of_v<ast::fLangOprnd, T>,
 						  "visitChildNode: T must be derived from fLangOprnd");
-		ssc symSc = ms<ZSymScope>();
+		sbx symSc = ms<ZSymbolBox>();
 		node->accept(visitor, symSc);
 		return symSc;
 	}
@@ -28,7 +28,7 @@ namespace zebra::back::tree {
  * T must be a subclass of ZSymbol.
  */
 	template<typename T, typename... Args>
-	static sp<T> initScopeSymbol(ssc prnSc, Args&&... args) {
+	static sp<T> initScopeSymbol(sbx prnSc, Args&&... args) {
 		static_assert(std::is_base_of_v<ZSymbol, T>,
 						  "initScopeSymbol: T must be derived from ZSymbol");
 		zaccert(prnSc->getZSymbol() == nullptr,

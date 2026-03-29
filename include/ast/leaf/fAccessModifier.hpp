@@ -1,7 +1,7 @@
 #pragma once
 
 #include "fModifier.hpp"
-#include "../symbol/ZSymScope.hpp"
+#include "../symbol/ZSymbolBox.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"
@@ -20,7 +20,7 @@ namespace zebra::ast::leaf {
 			return qualifier_;
 		}
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) override;
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {

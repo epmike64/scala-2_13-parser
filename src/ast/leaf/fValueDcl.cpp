@@ -39,7 +39,7 @@ namespace zebra::ast::leaf {
 	}
 
 
-	void fValueDcl::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
+	void fValueDcl::accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) {
 		visitor->visit(std::static_pointer_cast<fValueDcl>(shared_from_this()), s);
 	}
 

@@ -16,7 +16,7 @@ namespace zebra::ast::leaf {
 	public:
 		fTypeParamClause(sp<std::vector<sp<fVariantTypeParam>>> variantTypeParams);
 		sp<std::vector<sp<fVariantTypeParam>>> getVariantTypeParams() const;
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) override;
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {

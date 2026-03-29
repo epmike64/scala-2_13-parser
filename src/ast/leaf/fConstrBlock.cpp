@@ -28,7 +28,7 @@ namespace zebra::ast::leaf {
 	}
 
 
-	void fConstrBlock::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
+	void fConstrBlock::accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) {
 		visitor->visit(std::static_pointer_cast<fConstrBlock>(shared_from_this()), s);
 	}
 

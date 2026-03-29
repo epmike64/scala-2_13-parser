@@ -7,7 +7,7 @@
 #include "ast/leaf/fModifiers.hpp"
 #include "ast/leaf/fParamClauses.hpp"
 #include "ast/leaf/fRegFunc.hpp"
-#include "ast/symbol/ZSymScope.hpp"
+#include "ast/symbol/ZSymbolBox.hpp"
 #include "ast/symbol/ZSymbol.hpp"
 #include "back/tree/ZVisitUtil.hpp"
 
@@ -18,33 +18,33 @@ namespace zebra::back::tree {
 	using namespace ast::leaf;
 	using namespace util;
 
-	void ZVisitFuncHelp::visitFunSig(sp<fFunSig> n, ssc prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitFuncHelp::visitFunSig(sp<fFunSig> n, sbx prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting FunSig: " << n->getIdentName() << std::endl;
 
 		sp<ZFunSig> zDef = initScopeSymbol<ZFunSig>(prnSc, n->getIdentName());
 
 		if (n->getFunTypeParamClause()) {
-			ssc subSc = visitChildNode(n->getFunTypeParamClause(), visitor);
+			sbx subSc = visitChildNode(n->getFunTypeParamClause(), visitor);
 			zDef->setFunTypeParamList(dynSp<ZTypeParamList>(subSc->getZSymbol()));
 		}
 
 		if (n->getParamClauses()) {
-			ssc subSc = visitChildNode(n->getParamClauses(), visitor);
+			sbx subSc = visitChildNode(n->getParamClauses(), visitor);
 			zDef->setParamClauses(dynSp<ZParamList>(subSc->getZSymbol()));
 		}
 	}
 
-	void ZVisitFuncHelp::visitRegFunc(sp<fRegFunc> n, ssc prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitFuncHelp::visitRegFunc(sp<fRegFunc> n, sbx prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Regular Function: " << n->getFunSig()->getIdentName() << std::endl;
 
 		sp<ZRegFunc> zDef = initScopeSymbol<ZRegFunc>(prnSc);
 
 		if (n->getModifiers()) {
-			ssc subSc = visitChildNode(n->getModifiers(), visitor);
+			sbx subSc = visitChildNode(n->getModifiers(), visitor);
 			zDef->setModifiers(dynSp<ZModifiers>(subSc->getZSymbol()));
 		}
 
-		ssc subSc = visitChildNode(n->getFunSig(), visitor);
+		sbx subSc = visitChildNode(n->getFunSig(), visitor);
 		zDef->setFunSig(dynSp<ZFunSig>(subSc->getZSymbol()));
 
 		if (n->getReturnType()) {
@@ -63,7 +63,7 @@ namespace zebra::back::tree {
 	}
 
 
-	void ZVisitFuncHelp::visitThisFunc(sp<fThisFunc> n, ssc prnSc, sp<fAstNodVisitor> visitor) {
+	void ZVisitFuncHelp::visitThisFunc(sp<fThisFunc> n, sbx prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting This Function" << std::endl;
 	}
 

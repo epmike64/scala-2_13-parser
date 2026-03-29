@@ -15,7 +15,7 @@ namespace zebra::ast::leaf {
 		return typeParams_;
 	}
 
-	void fFunTypeParamClause::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
+	void fFunTypeParamClause::accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) {
 		visitor->visit(std::static_pointer_cast<fFunTypeParamClause>(shared_from_this()), s);
 	}
 

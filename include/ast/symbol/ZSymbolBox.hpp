@@ -19,12 +19,12 @@ namespace zebra::ast::symbol {
 
 	class ZSymbol;
 
-	class ZSymScope {
+	class ZSymbolBox {
 	protected:
 		sp<ZSymbol> zSymbol_;
 	public:
 
-		ZSymScope();
+		ZSymbolBox();
 		sp<ZSymbol> getZSymbol();
 		void setZSymbol(sp<ZSymbol> zSymbol) ;
 	};

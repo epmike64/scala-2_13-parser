@@ -10,8 +10,8 @@ namespace zebra::back::tree {
 	using namespace ast::node;
 	class ZVisitLoopHelp {
 	public:
-		static void visitWhileLoop(sp<fWhile> n, ssc prnSc, sp<fAstNodVisitor> visitor);
-		static void visitForLoop(sp<fFor> n, ssc prnSc, sp<fAstNodVisitor> visitor);
-		static void visitGenerator(sp<fGenerator> n, ssc prnSc, sp<fAstNodVisitor> visitor);
+		static void visitWhileLoop(sp<fWhile> n, sbx prnSc, sp<fAstNodVisitor> visitor);
+		static void visitForLoop(sp<fFor> n, sbx prnSc, sp<fAstNodVisitor> visitor);
+		static void visitGenerator(sp<fGenerator> n, sbx prnSc, sp<fAstNodVisitor> visitor);
 	};
 }

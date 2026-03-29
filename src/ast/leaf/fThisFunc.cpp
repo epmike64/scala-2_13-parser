@@ -27,7 +27,7 @@ namespace zebra::ast::leaf {
 		this->clauses = std::move(clauses);
 	}
 
-	void fThisFunc::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
+	void fThisFunc::accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) {
 		visitor->visit(std::static_pointer_cast<fThisFunc>(shared_from_this()), s);
 	}
 

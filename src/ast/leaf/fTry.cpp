@@ -31,7 +31,7 @@ namespace zebra::ast::leaf {
 		return finallyBlock_;
 	}
 
-	void fTry::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
+	void fTry::accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) {
 		visitor->visit(std::static_pointer_cast<fTry>(shared_from_this()), s);
 	}
 

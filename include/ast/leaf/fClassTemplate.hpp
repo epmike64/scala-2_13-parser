@@ -17,7 +17,7 @@ namespace zebra::ast::leaf {
 
 		sp<fClassParents> getClassParents() const ;
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) override;
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {

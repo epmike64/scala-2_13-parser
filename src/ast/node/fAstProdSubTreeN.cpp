@@ -3,7 +3,7 @@
 
 namespace zebra::ast::node {
 
-	void fAstProdSubTreeN::accept(sp<fAstNodVisitor> visitor, ssc s) {
+	void fAstProdSubTreeN::accept(sp<fAstNodVisitor> visitor, sbx s) {
 		visitor->visit(std::static_pointer_cast<fAstProdSubTreeN>(shared_from_this()), s);
 	}
 

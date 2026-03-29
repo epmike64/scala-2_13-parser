@@ -4,7 +4,7 @@
 
 namespace zebra::ast::leaf {
 
-	void fLiteral::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
+	void fLiteral::accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) {
 		visitor->visit(std::static_pointer_cast<fLiteral>(shared_from_this()), s);
 	}
 

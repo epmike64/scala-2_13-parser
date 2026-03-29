@@ -9,7 +9,7 @@ namespace zebra::ast::leaf {
 		: fType(sp<fAstProdSubTreeN>(type->getTypeTree())), isFatArrow(isFatArrow), isStar(isStar) {}
 
 
-	void fParamType::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
+	void fParamType::accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) {
 		visitor->visit(std::static_pointer_cast<fParamType>(shared_from_this()), s);
 	}
 

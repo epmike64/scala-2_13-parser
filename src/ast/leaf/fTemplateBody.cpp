@@ -17,7 +17,7 @@ namespace zebra::ast::leaf {
 	}
 
 
-	void fTemplateBody::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
+	void fTemplateBody::accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) {
 		visitor->visit(std::static_pointer_cast<fTemplateBody>(shared_from_this()), s);
 	}
 

@@ -37,7 +37,7 @@ namespace zebra::ast::leaf {
 		return identName_->getTStrVal();
 	}
 
-	void fObjectDef::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
+	void fObjectDef::accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) {
 		visitor->visit(std::static_pointer_cast<fObjectDef>(shared_from_this()), s);
 	}
 

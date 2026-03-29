@@ -68,7 +68,7 @@ namespace zebra::ast::leaf {
 	}
 
 
-	void fImport::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
+	void fImport::accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) {
 		visitor->visit(std::static_pointer_cast<fImport>(shared_from_this()), s);
 	}
 

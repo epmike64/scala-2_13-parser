@@ -3,7 +3,7 @@
 
 
 #include "ast/fLangOperand.hpp"
-#include "ast/symbol/ZSymScope.hpp"
+#include "ast/symbol/ZSymbolBox.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 
 namespace zebra::back::tree {
@@ -13,8 +13,8 @@ namespace zebra::back::tree {
 
 	class ZVisitFuncHelp {
 	public:
-		static void visitRegFunc(sp<fRegFunc> n, ssc prnSc, sp<fAstNodVisitor> visitor);
-		static void visitFunSig(sp<fFunSig> n, ssc prnSc, sp<fAstNodVisitor> visitor);
-		static void visitThisFunc(sp<fThisFunc> n, ssc prnSc, sp<fAstNodVisitor> visitor);
+		static void visitRegFunc(sp<fRegFunc> n, sbx prnSc, sp<fAstNodVisitor> visitor);
+		static void visitFunSig(sp<fFunSig> n, sbx prnSc, sp<fAstNodVisitor> visitor);
+		static void visitThisFunc(sp<fThisFunc> n, sbx prnSc, sp<fAstNodVisitor> visitor);
 	};
 }

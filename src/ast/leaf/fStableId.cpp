@@ -65,7 +65,7 @@ namespace zebra::ast::leaf {
 	}
 
 
-	void  fStableId::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s)  {
+	void  fStableId::accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s)  {
 		visitor->visit(std::static_pointer_cast<fStableId>(shared_from_this()), s);
 	}
 

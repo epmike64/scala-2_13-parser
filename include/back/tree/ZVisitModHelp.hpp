@@ -11,9 +11,9 @@ namespace zebra::back::tree {
 
 	class ZVisitModHelp {
 		public:
-		static void visitOverrideMod(sp<fOverrideModifier> n, ssc prnSc, sp<fAstNodVisitor> visitor);
-		static void visitAccessMod(sp<fAccessModifier> n, ssc prnSc, sp<fAstNodVisitor> visitor);
-		static void visitLocalMod(sp<fLocalModifier> n, ssc prnSc, sp<fAstNodVisitor> visitor);
-		static void visitModifiers(sp<fModifiers> n, ssc, sp<fAstNodVisitor> visitor);
+		static void visitOverrideMod(sp<fOverrideModifier> n, sbx prnSc, sp<fAstNodVisitor> visitor);
+		static void visitAccessMod(sp<fAccessModifier> n, sbx prnSc, sp<fAstNodVisitor> visitor);
+		static void visitLocalMod(sp<fLocalModifier> n, sbx prnSc, sp<fAstNodVisitor> visitor);
+		static void visitModifiers(sp<fModifiers> n, sbx, sp<fAstNodVisitor> visitor);
 	};
 }

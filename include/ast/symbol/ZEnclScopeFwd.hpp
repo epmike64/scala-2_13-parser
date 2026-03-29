@@ -11,8 +11,8 @@ namespace zebra::ast::symbol{
 	class ZTypeParam;
 	class ZTraitDef;
 	class ZClassDef;
-	class ZSymScope;
-	using ssc = std::shared_ptr<ZSymScope>;
+	class ZSymbolBox;
+	using sbx = std::shared_ptr<ZSymbolBox>;
 
 }
 

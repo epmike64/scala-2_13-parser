@@ -64,7 +64,7 @@ namespace zebra::ast::leaf {
 	}
 
 
-	void fGenerator::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
+	void fGenerator::accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) {
 		visitor->visit(std::static_pointer_cast<fGenerator>(shared_from_this()), s);
 	}
 

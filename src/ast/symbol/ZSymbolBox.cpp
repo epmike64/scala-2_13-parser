@@ -1,17 +1,17 @@
-#include "ast/symbol/ZSymScope.hpp"
+#include "ast/symbol/ZSymbolBox.hpp"
 
 namespace zebra::ast::symbol {
-	ZSymScope::ZSymScope(){}
+	ZSymbolBox::ZSymbolBox(){}
 
 	// ssc ZSymScope::getParentScope() const {
 	// 	return parentScope_;
 	// }
 
-	sp<ZSymbol> ZSymScope::getZSymbol() {
+	sp<ZSymbol> ZSymbolBox::getZSymbol() {
 		return zSymbol_;
 	}
 
-	void ZSymScope::setZSymbol(sp<ZSymbol> zSymbol) {
+	void ZSymbolBox::setZSymbol(sp<ZSymbol> zSymbol) {
 		this->zSymbol_ = zSymbol;
 	}
 }

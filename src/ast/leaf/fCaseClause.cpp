@@ -36,7 +36,7 @@ namespace zebra::ast::leaf {
 		this->block = std::move(block);
 	}
 
-	void fCaseClause::accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) {
+	void fCaseClause::accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) {
 		visitor->visit(std::static_pointer_cast<fCaseClause>(shared_from_this()), s);
 	}
 

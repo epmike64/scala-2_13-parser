@@ -16,7 +16,7 @@ namespace zebra::ast::leaf {
 		~fFunc() = default;
 		 sp<fModifiers> getModifiers() const ;
 
-		void accept(std::shared_ptr<fAstNodVisitor> visitor, ssc s) override;
+		void accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) override;
 		std::string toString() const override;
 
 		fLangOprndType getLangOprndType() override {
