@@ -24,12 +24,12 @@ namespace zebra::back::tree {
 		sp<ZFunSig> zDef = initScopeSymbol<ZFunSig>(prnSc, n->getIdentName());
 
 		if (n->getFunTypeParamClause()) {
-			ssc subSc = visitChildNode(n->getFunTypeParamClause(), prnSc, visitor);
+			ssc subSc = visitChildNode(n->getFunTypeParamClause(), visitor);
 			zDef->setFunTypeParamList(dynSp<ZTypeParamList>(subSc->getZSymbol()));
 		}
 
 		if (n->getParamClauses()) {
-			ssc subSc = visitChildNode(n->getParamClauses(), prnSc, visitor);
+			ssc subSc = visitChildNode(n->getParamClauses(), visitor);
 			zDef->setParamClauses(dynSp<ZParamList>(subSc->getZSymbol()));
 		}
 	}
@@ -40,24 +40,24 @@ namespace zebra::back::tree {
 		sp<ZRegFunc> zDef = initScopeSymbol<ZRegFunc>(prnSc);
 
 		if (n->getModifiers()) {
-			ssc subSc = visitChildNode(n->getModifiers(), prnSc, visitor);
+			ssc subSc = visitChildNode(n->getModifiers(), visitor);
 			zDef->setModifiers(dynSp<ZModifiers>(subSc->getZSymbol()));
 		}
 
-		ssc subSc = visitChildNode(n->getFunSig(), prnSc, visitor);
+		ssc subSc = visitChildNode(n->getFunSig(), visitor);
 		zDef->setFunSig(dynSp<ZFunSig>(subSc->getZSymbol()));
 
 		if (n->getReturnType()) {
-			subSc = visitChildNode(n->getReturnType(), prnSc, visitor);
+			subSc = visitChildNode(n->getReturnType(), visitor);
 			zDef->setReturnType(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 		}
 
 		if (n->getFunBodyExpr()) {
-			subSc = visitChildNode(n->getFunBodyExpr(), prnSc, visitor);
+			subSc = visitChildNode(n->getFunBodyExpr(), visitor);
 			zDef->setFunBodyExpr(dynSp<ZProdSubTreeN>(subSc->getZSymbol()));
 
 		} else if (n->getFunBodyBlock()) {
-			subSc = visitChildNode(n->getFunBodyBlock(), prnSc, visitor);
+			subSc = visitChildNode(n->getFunBodyBlock(), visitor);
 			zDef->setFunBodyBlock(dynSp<ZBlock>(subSc->getZSymbol()));
 		}
 	}

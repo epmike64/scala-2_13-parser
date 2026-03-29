@@ -24,12 +24,12 @@ namespace zebra::back::tree {
 
 		for (const auto &classParamList: n->getClassParamLists()) {
 			for (const auto &classParam: classParamList) {
-				ssc subSc = visitChildNode(classParam, prnSc, visitor);
+				ssc subSc = visitChildNode(classParam, visitor);
 				zDef->addClassParam(dynSp<ZClassParam>(subSc->getZSymbol()));
 			}
 		}
 		for (const auto &classParam: n->getImplicitClassParamList()) {
-			ssc subSc = visitChildNode(classParam, prnSc, visitor);
+			ssc subSc = visitChildNode(classParam,  visitor);
 			zDef->addClassParam(dynSp<ZClassParam>(subSc->getZSymbol()));
 		}
 	}
@@ -42,12 +42,12 @@ namespace zebra::back::tree {
 		sp<ZClassParam> zDef = initScopeSymbol<ZClassParam>(prnSc, n->getIdentName(), n->isMutable());
 
 		if (n->getParamType()) {
-			ssc subSc = visitChildNode(n->getParamType(), prnSc, visitor);
+			ssc subSc = visitChildNode(n->getParamType(),  visitor);
 			zDef->setParamType(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 		}
 
 		if (n->getDefaultValueExpr()) {
-			ssc subSc = visitChildNode(n->getDefaultValueExpr(), prnSc, visitor);
+			ssc subSc = visitChildNode(n->getDefaultValueExpr(),visitor);
 			zDef->setDefaultValueExpr(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 		}
 	}
@@ -57,12 +57,12 @@ namespace zebra::back::tree {
 
 		sp<ZParam> zDef = initScopeSymbol<ZParam>(prnSc, n->getIdentName());
 
-		ssc subSc = visitChildNode(n->getParamType(), prnSc, visitor);
+		ssc subSc = visitChildNode(n->getParamType(),  visitor);
 		zDef->setParamType(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 
 
 		if ( n->getDefaultValueExpr()) {
-			ssc subSc = visitChildNode(n->getDefaultValueExpr(), prnSc, visitor);
+			ssc subSc = visitChildNode(n->getDefaultValueExpr(), visitor);
 			zDef->setDefaultValueExpr(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 		}
 	}
@@ -73,7 +73,7 @@ namespace zebra::back::tree {
 		sp<ZParamTypeList> zDef = initScopeSymbol<ZParamTypeList>(prnSc);
 
 		for (const auto& paramType: *n->getParamTypes()) {
-			ssc subSc = visitChildNode(paramType, prnSc, visitor);
+			ssc subSc = visitChildNode(paramType,  visitor);
 			zDef->addParamType(dynSp<ZParamType>(subSc->getZSymbol()));
 		}
 	}

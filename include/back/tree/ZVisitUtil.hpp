@@ -14,12 +14,12 @@ namespace zebra::back::tree {
 		 * T must be a subclass of fLangOprnd.
 		 */
 	template<typename T>
-	static ssc visitChildNode(sp<T> node, ssc prnSc, sp<fAstNodVisitor> visitor) {
+	static ssc visitChildNode(sp<T> node, sp<fAstNodVisitor> visitor) {
 		static_assert(std::is_base_of_v<ast::fLangOprnd, T>,
 						  "visitChildNode: T must be derived from fLangOprnd");
-		ssc subSc = ms<ZSymScope>(prnSc);
-		node->accept(visitor, subSc);
-		return subSc;
+		ssc symSc = ms<ZSymScope>();
+		node->accept(visitor, symSc);
+		return symSc;
 	}
 
 	/**

@@ -20,7 +20,7 @@ namespace zebra::back::tree {
 		sp<ZTypeParamList> zDef = initScopeSymbol<ZTypeParamList>(prnSc);
 
 		for (auto typeParam: n->getTypeParamList()) {
-			ssc subSc = visitChildNode(typeParam, prnSc, visitor);
+			ssc subSc = visitChildNode(typeParam, visitor);
 			zDef->addTypeParam(dynSp<ZTypeParam>(subSc->getZSymbol()));
 		}
 	}
@@ -30,7 +30,7 @@ namespace zebra::back::tree {
 		sp<ZVariantTypeParamList> zDef = initScopeSymbol<ZVariantTypeParamList>(prnSc);
 
 		for (auto variantTypeParam: *n->getVariantTypeParams()) {
-			ssc subSc = visitChildNode(variantTypeParam, prnSc, visitor);
+			ssc subSc = visitChildNode(variantTypeParam, visitor);
 			zDef->addVariantTypeParam(dynSp<ZVariantTypeParam>(subSc->getZSymbol()));
 		}
 	}
@@ -40,7 +40,7 @@ namespace zebra::back::tree {
 
 		sp<ZVariantTypeParam> zDef = initScopeSymbol<ZVariantTypeParam>(prnSc, n->getVariance());
 
-		ssc subSc = visitChildNode(n->getTypeParam(), prnSc, visitor);
+		ssc subSc = visitChildNode(n->getTypeParam(), visitor);
 		zDef->setTypeParam(dynSp<ZTypeParam>(subSc->getZSymbol()));
 	}
 
@@ -51,7 +51,7 @@ namespace zebra::back::tree {
 		sp<ZTypeParam> zDef = initScopeSymbol<ZTypeParam>(prnSc, n->getIdentName());
 
 		if (n->getTypeParamClause()) {
-			ssc subSc = visitChildNode(n->getTypeParamClause(), prnSc, visitor);
+			ssc subSc = visitChildNode(n->getTypeParamClause(), visitor);
 			zDef->setVariantTypeParamList(dynSp<ZVariantTypeParamList>(subSc->getZSymbol()));
 		}
 	}

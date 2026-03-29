@@ -19,35 +19,13 @@ namespace zebra::ast::symbol {
 
 	class ZSymbol;
 
-	class ZFullyQualName {
-		std::vector<std::string> simpleNames;
-	public:
-
-		ZFullyQualName(std::vector<std::string> qualifiers) : simpleNames(qualifiers) {}
-
-		std::string getSimpleName() {
-			return simpleNames.empty() ? "" : simpleNames.back();
-		}
-
-		std::vector<std::string> getFullyQualifiedName() const {
-			return simpleNames;
-		}
-	};
-
-
 	class ZSymScope {
 	protected:
-		const ssc parentScope_;
 		sp<ZSymbol> zSymbol_;
 	public:
 
-		ZSymScope(ssc parentScope);
-		ssc getParentScope() const;
+		ZSymScope();
 		sp<ZSymbol> getZSymbol();
 		void setZSymbol(sp<ZSymbol> zSymbol) ;
 	};
-
-
-
-	//esc
 }
