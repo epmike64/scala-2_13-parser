@@ -41,17 +41,13 @@ namespace zebra::ast::symbol {
 	 *
 	 */
 	class ZEnclScope {
-		const esc parentScope_;
-
 	protected:
-		sp<ZSymbol> zSymbol = nullptr;
+		const esc parentScope_;
+		sp<ZSymbol> zSymbol_;
 	public:
 
 		ZEnclScope(esc parentScope);
 		esc getParentScope() const;
-
-		ZLangConstruct getLangConstruct() const;
-
 		sp<ZSymbol> getZSymbol();
 		void setZSymbol(sp<ZSymbol> zSymbol) ;
 	};
