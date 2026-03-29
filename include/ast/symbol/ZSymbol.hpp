@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cassert>
+
 #include "ZLangConstruct.hpp"
 #include "lex/kind/fVarianceE.hpp"
 #include "ast/node/fAstNod.hpp"
@@ -150,6 +152,10 @@ namespace zebra::ast::symbol {
 			out << "]";
 			return out.str();
 		}
+
+		PVecP<ZSymbol> getTreePostOrderSS() {
+			return postOrderSS_;
+		}
 	};
 
 	class ZProdSubTreeN: public ZSymbol {
@@ -252,6 +258,10 @@ namespace zebra::ast::symbol {
 		}
 		void addName(sp<ZTreePostOrderSS> n) {
 			names_.push_back(n);
+		}
+
+		vecP<ZTreePostOrderSS> getNames() {
+			return names_;
 		}
 	};
 
@@ -460,18 +470,46 @@ namespace zebra::ast::symbol {
 	// ZRegFunc is now fully defined — provide the body of ZStmtList::addStmt here
 	// to break the circular dependency (ZBlock inherits ZStmtList, ZRegFunc holds sp<ZBlock>).
 	inline void ZStmtList::addStmt(sp<ZSymbol> stmt) {
+		assert(stmt != nullptr);
 		if (statements_ == nullptr) {
 			statements_ = ms<std::vector<std::shared_ptr<ZSymbol>>>();
 		}
 		statements_->push_back(stmt);
 		switch (stmt->getZLangConstruct()) {
-			case Z_CLASS_DEF: case Z_TRAIT_DEF: case Z_OBJECT_DEF: case Z_VALUE_DCL: {
-				symbols_[std::dynamic_pointer_cast<ZIdSymbol>(stmt)->getZId().strId()] = stmt;
+			case Z_CLASS_DEF: case Z_TRAIT_DEF: case Z_OBJECT_DEF:  {
+				addSymbol(std::dynamic_pointer_cast<ZIdSymbol>(stmt)->getZId().strId(), stmt);
 				break;
 			}
 			case Z_REG_FUNC_DEF: {
 				// ZFunSig inherits its id via I_ZId::getZId(), so use getZId().strId()
-				symbols_[std::dynamic_pointer_cast<ZRegFunc>(stmt)->getFunSig()->getZId().strId()] = stmt;
+				addSymbol(std::dynamic_pointer_cast<ZRegFunc>(stmt)->getFunSig()->getZId().strId(), stmt);
+				break;
+			}
+			case Z_VALUE_DCL: {
+				sp<ZValueDcl> v = std::dynamic_pointer_cast<ZValueDcl>(stmt);
+				std::string name;
+				for (const auto& nameSS : v->getNames()) {
+					PVecP<ZSymbol> vp = nameSS->getTreePostOrderSS();
+					if (vp != nullptr) {
+						sp<ZSymbol> first = vp->front();
+						if (first != nullptr && first->getZLangConstruct() == Z_F_WRAPPER) {
+							sp<ZAstNWrap> astNWrap = std::dynamic_pointer_cast<ZAstNWrap>(first);
+							if (astNWrap != nullptr && astNWrap->getZLangConstruct() == Z_F_WRAPPER) {
+								std::string varName = astNWrap->toString(); // Assuming toString returns the variable name
+								// addSymbol(varName, stmt);
+								name += varName;
+							} else {
+								throw std::runtime_error("Expected ZAstNWrap in post-order symbol stack for value declaration");
+							}
+						} else {
+							throw std::runtime_error("Expected first symbol in post-order symbol stack to be a ZAstNWrap for value declaration");
+						}
+					}
+					if (!name.empty()) {
+						addSymbol(name, stmt);
+					}
+					// addSymbol(nameSS->getTreePostOrderSS()->getTreePostOrderSS()->front()->strId(), stmt);
+				}
 				break;
 			}
 			default:
