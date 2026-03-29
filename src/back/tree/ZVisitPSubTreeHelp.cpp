@@ -21,18 +21,6 @@ namespace zebra::back::tree {
 		return tr;
 	}
 
-	// void ZVisitPSubTreeHelp::treePostOrderPush(sp<fAstNod> n, esc prnSc) {
-	// 	sp<ZProdSubTreeN> prnt = std::dynamic_pointer_cast<ZProdSubTreeN>(prnSc->getZSymbol());
-	// 	if (prnt) {
-	// 		prnt->getTreePostOrderSS()->push_back(n);
-	// 		std::cout << "Pushed: " + n->toString() << std::endl;
-	// 		std::cout << prnt->getTreePostOrderSS()->toString() << std::endl;
-	// 		std::cout << "" << std::endl;
-	// 	} else {
-	// 		std::cout << "" << std::endl;
-	// 	}
-	// }
-
 	sp<fAstNod> ZVisitPSubTreeHelp::getAstPSTreeRightN(sp<fAstProdSubTreeN> subTr) {
 		while (true) {
 			sp<fAstNod> subTRight = subTr->getRootOpNod()->getAstRightN();
