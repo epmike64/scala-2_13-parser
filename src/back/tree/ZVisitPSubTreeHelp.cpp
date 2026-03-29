@@ -151,16 +151,4 @@ namespace zebra::back::tree {
 
 		std::cout << subTr->toString() + " END" << std::endl;
 	}
-
-
-	esc ZVisitPSubTreeHelp::getWrapScope(esc prnSc, ZLangConstruct lc) {
-		assert(prnSc != nullptr);
-		while (prnSc->getLangConstruct() != lc) {
-			prnSc = prnSc->getParentScope();
-			if (prnSc == nullptr) {
-				throw std::runtime_error("No enclosing scope found for language construct: " + std::to_string(lc));
-			}
-		}
-		return prnSc;
-	}
 }
