@@ -48,8 +48,8 @@ namespace zebra::back::tree {
 		zDef->setFunSig(dynSp<ZFunSig>(subSc->getZSymbol()));
 
 		if (n->getReturnType()) {
-			subSc = visitChildNode(n->getFunSig(), prnSc, visitor);
-			zDef->setReturnType(dynSp<ZType>(subSc->getZSymbol()));
+			subSc = visitChildNode(n->getReturnType(), prnSc, visitor);
+			zDef->setReturnType(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 		}
 
 		if (n->getFunBodyExpr()) {

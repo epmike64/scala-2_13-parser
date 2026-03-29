@@ -180,19 +180,19 @@ namespace zebra::ast::symbol {
 
 	class ZIf: public ZSymbol {
 	protected:
-		sp<ZProdSubTreeN> condExpr_;
-		sp<ZProdSubTreeN> bodyExpr_;
-		sp<ZProdSubTreeN> elseBodyExpr_;
+		sp<ZTreePostOrderSS>  condExpr_;
+		sp<ZTreePostOrderSS>  bodyExpr_;
+		sp<ZTreePostOrderSS>  elseBodyExpr_;
 	public:
 		ZIf() : ZSymbol(Z_IF) {}
-		void setCondExpr(sp<ZProdSubTreeN> p) {
-			condExpr_ = p;
+		void setCondExpr(sp<ZTreePostOrderSS> c) {
+			condExpr_ = c;
 		}
-		void setBody(sp<ZProdSubTreeN> p) {
-			bodyExpr_ = p;
+		void setBody(sp<ZTreePostOrderSS> b) {
+			bodyExpr_ = b;
 		}
-		void setElseBody(sp<ZProdSubTreeN> p) {
-			elseBodyExpr_ = p;
+		void setElseBody(sp<ZTreePostOrderSS> eb) {
+			elseBodyExpr_ = eb;
 		}
 	};
 
@@ -207,21 +207,21 @@ namespace zebra::ast::symbol {
 
 	class ZWhile: public ZSymbol {
 	protected:
-		sp<ZProdSubTreeN> condExpr_;
-		sp<ZProdSubTreeN> bodyExpr_;
+		sp<ZTreePostOrderSS>  condExpr_;
+		sp<ZTreePostOrderSS>  bodyExpr_;
 	public:
 		ZWhile() : ZSymbol(Z_WHILE) {}
-		void setCondExpr(sp<ZProdSubTreeN> p) {
-			condExpr_ = p;
+		void setCondExpr(sp<ZTreePostOrderSS> c) {
+			condExpr_ = c;
 		}
-		void setBody(sp<ZProdSubTreeN> p) {
-			bodyExpr_ = p;
+		void setBody(sp<ZTreePostOrderSS> b) {
+			bodyExpr_ = b;
 		}
 	};
 
 	class ZValueDcl: public ZSymbol {
 		sp<ZModifiers> modifiers_;
-		sp<ZType> type_;
+		sp<ZTreePostOrderSS> type_;
 
 		sp<ZTreePostOrderSS> defaultValueExpr_;
 		vecP<ZTreePostOrderSS> names_  = vecP<ZTreePostOrderSS>();
@@ -234,10 +234,9 @@ namespace zebra::ast::symbol {
 		void setModifiers(sp<ZModifiers> m) {
 			modifiers_ = m;
 		}
-		void setType(sp<ZType> t) {
+		void setType(sp<ZTreePostOrderSS> t) {
 			type_ = t;
 		}
-
 		void addName(sp<ZTreePostOrderSS> n) {
 			names_.push_back(n);
 		}
@@ -245,12 +244,12 @@ namespace zebra::ast::symbol {
 
 	class ZParamType: public ZSymbol {
 	protected:
-		sp<ZProdSubTreeN> type_;
+		sp<ZTreePostOrderSS> type_;
 		public:
 		ZParamType() : ZSymbol(Z_PARAM_TYPE) {}
 		explicit ZParamType(ZLangConstruct c) : ZSymbol(c) {}
 		~ZParamType() override = default;
-		void setType(sp<ZProdSubTreeN> t) {
+		void setType(sp<ZTreePostOrderSS> t) {
 			type_ = t;
 		}
 	};
@@ -318,16 +317,15 @@ namespace zebra::ast::symbol {
 
 
 	class ZParam : public ZIdSymbol {
+		sp<ZTreePostOrderSS> paramType_;
 		sp<ZTreePostOrderSS> defaultExpr_;
-		sp<ZParamType> paramType_;
 		public:
 		explicit ZParam(std::string sid): ZIdSymbol(sid, Z_PARAM) {}
 		ZParam(std::string sid, ZLangConstruct c) : ZIdSymbol(sid, c) {}
 
-		void setParamType(sp<ZParamType> pt) {
-			paramType_ = pt;
+		void setParamType(sp<ZTreePostOrderSS> tp) {
+			paramType_ = tp;
 		}
-
 		void setDefaultValueExpr(sp<ZTreePostOrderSS> de) {
 			defaultExpr_ = de;
 		}
@@ -344,13 +342,29 @@ namespace zebra::ast::symbol {
 		}
 	};
 
+	class ZClassConstr: public ZSymbol {
+		protected:
+		sp<ZParamType> paramType_;
+		sp<ZTreePostOrderSS> args_;
+	public:
+		ZClassConstr() : ZSymbol(Z_CLASS_CONSTR) {}
+		ZClassConstr(ZLangConstruct c) : ZSymbol(c) {}
+
+		void setParamType(sp<ZParamType> tp) {
+			paramType_ = tp;
+		}
+		void setArgs(sp<ZTreePostOrderSS> args) {
+			args_ = args;
+		}
+	};
+
 	class ZClassParents: public ZSymbol {
-		sp<ZType> type_;
+		sp<ZClassConstr> classConstr_;
 	public:
 		ZClassParents() : ZSymbol(Z_CLASS_PARENTS) {}
 		~ZClassParents() override = default;
-		void setType(sp<ZType> t) {
-			type_ = t;
+		void setClassConstr(sp<ZClassConstr> cc) {
+			classConstr_ = cc;
 		}
 	};
 
@@ -402,7 +416,8 @@ namespace zebra::ast::symbol {
 	class ZRegFunc: public ZSymbol {
 	protected:
 		sp<ZFunSig> funSig_;
-		sp<ZType> returnType_;
+		// sp<ZType> returnType_;
+		sp<ZTreePostOrderSS> returnType_;
 		sp<ZProdSubTreeN> funBodyExpr_;
 		sp<ZBlock> funBodyBlock_;
 		sp<ZModifiers> modifiers_;
@@ -418,9 +433,10 @@ namespace zebra::ast::symbol {
 			funSig_ = sig;
 		}
 
-		void setReturnType(sp<ZType> t) {
-			returnType_ = t;
+		void setReturnType(sp<ZTreePostOrderSS> rt) {
+			returnType_ = rt;
 		}
+
 		void setFunBodyExpr(sp<ZProdSubTreeN> e) {
 			funBodyExpr_ = e;
 		}
@@ -470,18 +486,15 @@ namespace zebra::ast::symbol {
 		~ZBlock() override = default;
 	};
 
-	class ZClassConstr: public ZSymbol {
+	class ZTemplateBody : public ZSymbol {
 	protected:
-		PVecP<ZClassParam> clsParams_;
-	public:
-		ZClassConstr() : ZSymbol(Z_CLASS_CONSTR) {}
-	};
-
-
-	class ZTemplateBody : public ZSymbol, public ZStmtList {
+		vecP<ZSymbol> stmts_;
 	public:
 		ZTemplateBody() : ZSymbol(Z_TEMPLATE_BODY) {}
 		ZTemplateBody(ZLangConstruct c) : ZSymbol(c) {}
+		void addStmt(sp<ZSymbol> s) {
+			stmts_.push_back(s);
+		}
 	};
 
 	class ZClassTemplate:  public ZSymbol  {

@@ -13,13 +13,13 @@ namespace zebra::back::tree {
 	using namespace ast;
 
 
-	sp<ZProdSubTreeN> ZVisitPSubTreeHelp::visitIntoSubTree(sp<fAstNod> node, esc prnSc, sp<fAstNodVisitor> visitor) {
-		sp<ZProdSubTreeN> tr = ms<ZProdSubTreeN>();
-		esc trSc = ms<ZEnclScope>(prnSc);
-		trSc->setZSymbol(tr);
-		node->accept(visitor, trSc);
-		return tr;
-	}
+	// sp<ZProdSubTreeN> ZVisitPSubTreeHelp::visitIntoSubTree(sp<fAstNod> node, esc prnSc, sp<fAstNodVisitor> visitor) {
+	// 	sp<ZProdSubTreeN> tr = ms<ZProdSubTreeN>();
+	// 	esc trSc = ms<ZEnclScope>(prnSc);
+	// 	trSc->setZSymbol(tr);
+	// 	node->accept(visitor, trSc);
+	// 	return tr;
+	// }
 
 	sp<fAstNod> ZVisitPSubTreeHelp::getAstPSTreeRightN(sp<fAstProdSubTreeN> subTr) {
 		while (true) {

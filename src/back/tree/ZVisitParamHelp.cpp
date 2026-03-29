@@ -58,7 +58,7 @@ namespace zebra::back::tree {
 		sp<ZParam> zDef = initScopeSymbol<ZParam>(prnSc, n->getIdentName());
 
 		esc subSc = visitChildNode(n->getParamType(), prnSc, visitor);
-		zDef->setParamType(dynSp<ZParamType>(subSc->getZSymbol()));
+		zDef->setParamType(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 
 
 		if ( n->getDefaultValueExpr()) {

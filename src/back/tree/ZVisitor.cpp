@@ -109,14 +109,12 @@ namespace zebra::back::tree {
 
 		for (auto paramList : n->getParamLists()) {
 			for (auto param : paramList) {
-				param->accept(shared_from_this(), prnSc);
 				esc subSc = visitChildNode(param, prnSc, shared_from_this());
 				zDef->addParam(dynSp<ZParam>(subSc->getZSymbol()));
 			}
 		}
 		if (n->getImplicitParamList()) {
 			for (auto param: *n->getImplicitParamList()) {
-				param->accept(shared_from_this(), prnSc);
 				esc subSc = visitChildNode(param, prnSc, shared_from_this());
 				zDef->addParam(dynSp<ZParam>(subSc->getZSymbol()));
 			}
@@ -164,18 +162,19 @@ namespace zebra::back::tree {
 	void ZVisitor::visit(sp<fIf> n, esc prnSc) {
 		std::cout << "-- IF Cond Expr" << std::endl;
 
-		zaccert(prnSc->getZSymbol() == nullptr, "Parent symbol in scope should be null when visiting an if statement");
-		sp<ZIf> zif = ms<ZIf>();
-		prnSc->setZSymbol(zif);
+		sp<ZIf> zDef = initScopeSymbol<ZIf>(prnSc);
 
-		zif->setCondExpr(ZVisitPSubTreeHelp::visitIntoSubTree(n->getCondExpr(), prnSc, shared_from_this()));
+		esc subSc = visitChildNode(n->getCondExpr(), prnSc, shared_from_this());
+		zDef->setCondExpr(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 
 		if (n->getIfBody()) {
-			zif->setBody(ZVisitPSubTreeHelp::visitIntoSubTree(n->getIfBody(), prnSc, shared_from_this()));
+			esc subSc = visitChildNode(n->getIfBody(), prnSc, shared_from_this());
+			zDef->setBody(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 		}
 
 		if (n->getElseBody()) {
-			zif->setElseBody(ZVisitPSubTreeHelp::visitIntoSubTree(n->getElseBody(), prnSc, shared_from_this()));
+			esc subSc = visitChildNode(n->getElseBody(), prnSc, shared_from_this());
+			zDef->setElseBody(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 		}
 	}
 
@@ -197,7 +196,7 @@ namespace zebra::back::tree {
 
 		if (n->getType()) {
 			esc subSc = visitChildNode(n->getType(), prnSc, shared_from_this());
-			zDef->setType(dynSp<ZType>(subSc->getZSymbol()));
+			zDef->setType(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 		}
 
 		if (n->getAssignExpr()) {
@@ -208,14 +207,14 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fWhile > n, esc prnSc) {
 		std::cout << "-- WHILE Cond Expr" << std::endl;
-		zaccert(prnSc->getZSymbol() == nullptr, "Parent symbol in scope should be null when visiting a while loop");
 
-		sp<ZWhile> zwhile = ms<ZWhile>();
-		prnSc->setZSymbol(zwhile);
+		sp<ZWhile> zDef = initScopeSymbol<ZWhile>(prnSc);
 
-		zwhile->setCondExpr(ZVisitPSubTreeHelp::visitIntoSubTree(n->getCondExpr(), prnSc, shared_from_this()));
+		esc subSc = visitChildNode(n->getCondExpr(), prnSc, shared_from_this());
+		zDef->setCondExpr(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 		if (n->getBody()) {
-			zwhile->setBody(ZVisitPSubTreeHelp::visitIntoSubTree(n->getBody(), prnSc, shared_from_this()));
+			esc subSc = visitChildNode(n->getBody(), prnSc, shared_from_this());
+			zDef->setBody(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 		}
 	}
 

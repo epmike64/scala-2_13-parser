@@ -110,8 +110,7 @@ namespace zebra::back::tree {
 		}
 
 		if (n->getTypeParamClause()) {
-			esc subSc = ms<ZEnclScope>(prnSc);
-			n->getTypeParamClause()->accept(visitor, subSc);
+			esc subSc = visitChildNode(n->getTypeParamClause(), prnSc, visitor);
 			zDef->setVariantTypeParamList(dynSp<ZVariantTypeParamList>(subSc->getZSymbol()));
 		}
 
@@ -127,13 +126,11 @@ namespace zebra::back::tree {
 
 		sp<ZClassTemplate> zDef = initScopeSymbol<ZClassTemplate>(prnSc);
 
-		esc subSc = ms<ZEnclScope>(prnSc);
-		n->getClassParents()->accept(visitor, subSc);
+		esc subSc = visitChildNode(n->getClassParents(), prnSc, visitor);
 		zDef->setClassParents(dynSp<ZClassParents>(subSc->getZSymbol()));
 
 		if (n->getTemplateBody()) {
-			subSc = ms<ZEnclScope>(prnSc);
-			n->getTemplateBody()->accept(visitor, subSc);
+			esc subSc = visitChildNode(n->getTemplateBody(), prnSc, visitor);
 			zDef->setTemplateBody(dynSp<ZTemplateBody>(subSc->getZSymbol()));
 		}
 	}
@@ -142,21 +139,27 @@ namespace zebra::back::tree {
 	void ZVisitClassHelp::visitClassParents(sp<fClassParents> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Class Parents" << std::endl;
 
-		n->getConstr()->accept(visitor, prnSc);
-
-		if (n->getWithTypes()) {
-			std::cout << "Visiting With Types in Class Parents" << std::endl;
-			n->getWithTypes()->accept(visitor, prnSc);
-		}
+		sp<ZClassParents> zDef = initScopeSymbol<ZClassParents>(prnSc);
+		esc subSc = visitChildNode(n->getConstr(),  prnSc, visitor);
+		zDef->setClassConstr(dynSp<ZClassConstr>(subSc->getZSymbol()));
+		//
+		// if (n->getWithTypes()) {
+		// 	std::cout << "Visiting With Types in Class Parents" << std::endl;
+		// 	n->getWithTypes()->accept(visitor, prnSc);
+		// }
 	}
 
 	void ZVisitClassHelp::visitClassConstr(sp<fClassConstr> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Class Constructor" << std::endl;
 
-		ZVisitPSubTreeHelp::visitIntoSubTree(n->getParamType(), prnSc, visitor);
+		sp<ZClassConstr> zDef = initScopeSymbol<ZClassConstr>(prnSc);
+		esc subSc = visitChildNode(n->getParamType(),  prnSc, visitor);
+		zDef->setParamType(dynSp<ZParamType>(subSc->getZSymbol()));
+
 		if (n->getArgs()) {
 			std::cout << "Visiting Constructor Arguments" << std::endl;
-			ZVisitPSubTreeHelp::visitIntoSubTree(n->getArgs(), prnSc, visitor);
+			esc subSc = visitChildNode(n->getArgs(),  prnSc, visitor);
+			zDef->setArgs(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 		}
 	}
 
@@ -168,16 +171,14 @@ namespace zebra::back::tree {
 
 	void ZVisitClassHelp::visitTemplateBody(sp<fTemplateBody> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting Template Body" << std::endl;
-		zaccert(prnSc->getZSymbol() == nullptr, "Parent symbol in scope should be null when visiting a template body");
 
-		sp<ZTemplateBody> zDef = ms<ZTemplateBody>();
-		prnSc->setZSymbol(zDef);
-
+		sp<ZTemplateBody> zDef = initScopeSymbol<ZTemplateBody>(prnSc);
 
 		for (const auto& stmt : n->getStmts()) {
-			esc subSc = ms<ZEnclScope>(prnSc);
-			stmt->accept(visitor, subSc);
-			zDef->addStmt(subSc->getZSymbol());
+			sp<ast::fLangOprnd> langOprnd = std::dynamic_pointer_cast<ast::fLangOprnd>(stmt);
+			esc subSc = visitChildNode(langOprnd,  prnSc, visitor);
+			zDef->addStmt(dynSp<ZSymbol>(subSc->getZSymbol()));
+			subSc->setZSymbol(nullptr); // Clear the symbol from the child scope after adding it to the template body
 		}
 	}
 
