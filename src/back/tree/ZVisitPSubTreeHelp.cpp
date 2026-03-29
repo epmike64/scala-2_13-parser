@@ -4,7 +4,7 @@
 #include <stack>
 
 #include "ast/leaf/fClassParam.hpp"
-#include "ast/symbol/ZEnclScope.hpp"
+#include "ast/symbol/ZSymScope.hpp"
 #include "back/tree/ZVisitUtil.hpp"
 #include "util/fUtil.hpp"
 

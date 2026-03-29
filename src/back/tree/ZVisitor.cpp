@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "ast/leaf/fAccessQualifier.hpp"
-#include "ast/symbol/ZEnclScope.hpp"
+#include "ast/symbol/ZSymScope.hpp"
 #include "ast/leaf/fCaseClause.hpp"
 #include "ast/leaf/fCaseClauses.hpp"
 #include "ast/leaf/fClassParents.hpp"
@@ -54,7 +54,7 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit() {
 		// std::cout << "--- Visitor starts ---" << std::endl;
-		sp<ZEnclScope> programSc = ms<ZEnclScope>(nullptr);
+		sp<ZSymScope> programSc = ms<ZSymScope>(nullptr);
 		// sp<ZProgram> zDef = initScopeSymbol<ZProgram>(programSc);
 		compileUnit_->accept(shared_from_this(), programSc);
 	}

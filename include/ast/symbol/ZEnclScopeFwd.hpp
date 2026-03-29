@@ -11,8 +11,8 @@ namespace zebra::ast::symbol{
 	class ZTypeParam;
 	class ZTraitDef;
 	class ZClassDef;
-	class ZEnclScope;
-	using esc = std::shared_ptr<ZEnclScope>;
+	class ZSymScope;
+	using esc = std::shared_ptr<ZSymScope>;
 
 }
 

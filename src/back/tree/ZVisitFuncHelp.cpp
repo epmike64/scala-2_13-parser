@@ -7,7 +7,7 @@
 #include "ast/leaf/fModifiers.hpp"
 #include "ast/leaf/fParamClauses.hpp"
 #include "ast/leaf/fRegFunc.hpp"
-#include "ast/symbol/ZEnclScope.hpp"
+#include "ast/symbol/ZSymScope.hpp"
 #include "ast/symbol/ZSymbol.hpp"
 #include "back/tree/ZVisitUtil.hpp"
 

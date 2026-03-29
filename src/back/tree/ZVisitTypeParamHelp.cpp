@@ -6,7 +6,7 @@
 #include "ast/leaf/fClassParam.hpp"
 #include "ast/leaf/fFunTypeParamClause.hpp"
 #include "ast/leaf/fTypeParamClause.hpp"
-#include "ast/symbol/ZEnclScope.hpp"
+#include "ast/symbol/ZSymScope.hpp"
 #include "back/tree/ZVisitUtil.hpp"
 
 namespace zebra::back::tree {

@@ -8,7 +8,7 @@
 #include "ast/leaf/fParam.hpp"
 #include "ast/leaf/fParamType.hpp"
 #include "ast/leaf/fParamTypes.hpp"
-#include "ast/symbol/ZEnclScope.hpp"
+#include "ast/symbol/ZSymScope.hpp"
 #include "ast/symbol/ZLangConstruct.hpp"
 #include "back/tree/ZVisitUtil.hpp"
 

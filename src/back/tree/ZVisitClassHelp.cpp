@@ -12,7 +12,7 @@
 #include "ast/leaf/fObjectDef.hpp"
 #include "ast/leaf/fTemplate.hpp"
 #include "ast/leaf/fTemplateBody.hpp"
-#include "ast/symbol/ZEnclScope.hpp"
+#include "ast/symbol/ZSymScope.hpp"
 #include "back/tree/ZVisitPSubTreeHelp.hpp"
 #include "back/tree/ZVisitTypeParamHelp.hpp"
 #include "util/fUtil.hpp"
@@ -192,7 +192,7 @@ namespace zebra::back::tree {
 		prnSc->setZSymbol(zDef);
 
 		for (const auto& stmt : n->getStmts()) {
-			esc subSc = ms<ZEnclScope>(prnSc);
+			esc subSc = ms<ZSymScope>(prnSc);
 			stmt->accept(visitor, subSc);
 			zDef->addStmt(subSc->getZSymbol());
 		}

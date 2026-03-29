@@ -2,7 +2,7 @@
 
 #include <type_traits>
 #include "ast/fLangOperand.hpp"
-#include "ast/symbol/ZEnclScope.hpp"
+#include "ast/symbol/ZSymScope.hpp"
 #include "ast/symbol/ZSymbol.hpp"
 #include "ast/symbol/ZEnclScopeFwd.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
@@ -17,7 +17,7 @@ namespace zebra::back::tree {
 	static esc visitChildNode(sp<T> node, esc prnSc, sp<fAstNodVisitor> visitor) {
 		static_assert(std::is_base_of_v<ast::fLangOprnd, T>,
 						  "visitChildNode: T must be derived from fLangOprnd");
-		esc subSc = ms<ZEnclScope>(prnSc);
+		esc subSc = ms<ZSymScope>(prnSc);
 		node->accept(visitor, subSc);
 		return subSc;
 	}

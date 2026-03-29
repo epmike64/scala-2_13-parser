@@ -35,18 +35,13 @@ namespace zebra::ast::symbol {
 	};
 
 
-
-
-	/**
-	 *
-	 */
-	class ZEnclScope {
+	class ZSymScope {
 	protected:
 		const esc parentScope_;
 		sp<ZSymbol> zSymbol_;
 	public:
 
-		ZEnclScope(esc parentScope);
+		ZSymScope(esc parentScope);
 		esc getParentScope() const;
 		sp<ZSymbol> getZSymbol();
 		void setZSymbol(sp<ZSymbol> zSymbol) ;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../fLangOperand.hpp"
-#include "../symbol/ZEnclScope.hpp"
+#include "../symbol/ZSymScope.hpp"
 #include "ast/node/fAstOprndNod.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
 #include "util/fCommon.hpp"
