@@ -100,9 +100,10 @@ namespace zebra::back::tree {
 			ss.pop();
 			if (!currNode->isOperator()) {
 				switch (dynSp<ast::fLangOprnd>(currNode)->getLangOprndType()) {
-					case LOprndT::LITERAL: case LOprndT::STABLE_ID:
+					case LOprndT::LITERAL: case LOprndT::STABLE_ID: case LOprndT::ID: case LOprndT::UNDERSCORE: {
 						prnt->getTreePostOrderSS()->push_back(ms<ZAstNWrap>(currNode));
 						break;
+					}
 					case LOprndT::TYPE: {
 						sp<ZType> zType = ms<ZType>();
 						esc typeScp = ms<ZEnclScope>(prnSc, zType);
@@ -122,6 +123,20 @@ namespace zebra::back::tree {
 						esc classTemplateScp = ms<ZEnclScope>(prnSc, zClassTemplate);
 						currNode->accept(visitor, classTemplateScp);
 						prnt->getTreePostOrderSS()->push_back(zClassTemplate);
+						break;
+					}
+					case LOprndT::IF: {
+						sp<ZIf> zIf = ms<ZIf>();
+						esc ifScp = ms<ZEnclScope>(prnSc, zIf);
+						currNode->accept(visitor, ifScp);
+						prnt->getTreePostOrderSS()->push_back(zIf);
+						break;
+					}
+					case LOprndT::BLOCK: {
+						sp<ZBlock> zBlock = ms<ZBlock>();
+						esc blockScp = ms<ZEnclScope>(prnSc, zBlock);
+						currNode->accept(visitor, blockScp);
+						prnt->getTreePostOrderSS()->push_back(zBlock);
 						break;
 					}
 					default:

@@ -171,13 +171,13 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class Zif: public ZSymbol {
+	class ZIf: public ZSymbol {
 	protected:
 		sp<ZProdSubTreeN> condExpr_;
 		sp<ZProdSubTreeN> bodyExpr_;
 		sp<ZProdSubTreeN> elseBodyExpr_;
 	public:
-		Zif() : ZSymbol(Z_IF) {}
+		ZIf() : ZSymbol(Z_IF) {}
 		void setCondExpr(sp<ZProdSubTreeN> p) {
 			condExpr_ = p;
 		}
@@ -368,11 +368,6 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-
-
-
-
-
 	class ZClassParam: public ZParam{
 	protected:
 		const bool isMutable_;
@@ -415,18 +410,12 @@ namespace zebra::ast::symbol {
 		ZTemplateBody(ZLangConstruct c) : ZSymbol(c) {}
 	};
 
-	class ITemplateBody {
-	public:
-		virtual ~ITemplateBody() = default;
-		virtual void setTemplateBody(sp<ZTemplateBody> t) = 0;
-		virtual sp<ZTemplateBody> getTemplateBody() = 0;
-	};
-
-	class ZClassTemplate:  public ZSymbol, public ITemplateBody {
+	class ZClassTemplate:  public ZSymbol  {
 		protected:
 		sp<ZClassParents> classParents_;
 		sp<ZTemplateBody> templateBody_;
 	public:
+		ZClassTemplate(sp<ZClassParents> parents, sp<ZTemplateBody> tb) : ZSymbol(Z_CLASS_TEMPLATE), classParents_(parents), templateBody_(tb) {}
 		ZClassTemplate() : ZSymbol(Z_CLASS_TEMPLATE) {}
 		ZClassTemplate(ZLangConstruct c) : ZSymbol(Z_CLASS_TEMPLATE) {}
 
@@ -441,7 +430,7 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZTraitDef: public ZIdSymbol,public ITemplateBody {
+	class ZTraitDef: public ZIdSymbol{
 	protected:
 		sp<ZVariantTypeParamList> variantTypeParamList_;
 		sp<ZTemplateBody> templateBody_;
@@ -464,7 +453,7 @@ namespace zebra::ast::symbol {
 
 	};
 
-	class ZObjectDef: public ZIdSymbol, public ITemplateBody{
+	class ZObjectDef: public ZIdSymbol {
 		protected:
 		const bool isCase_;
 		sp<ZModifiers> modifiers_;
@@ -477,23 +466,14 @@ namespace zebra::ast::symbol {
 		void setClassTemplate(sp<ZClassTemplate> ct) {
 			classTemplate_ = ct;
 		}
-		void setTemplateBody(sp<ZTemplateBody> tb) override {
-			throw std::logic_error("Use ZClassTemplate");
-		}
-		sp<ZTemplateBody> getTemplateBody() override{
-			if (classTemplate_ == nullptr) {
-				return nullptr;
-			}
-			return classTemplate_->getTemplateBody();
-		}
 	};
 
-	class ZClassDef : public ZIdSymbol, public ITemplateBody{
+	class ZClassDef : public ZIdSymbol{
 		sp<ZModifiers> modifiers_;
 		sp<ZClassDef> parentClass_;
 		sp<ZVariantTypeParamList> typeParams_;
 		sp<ZClassParamList> classParamList_;
-		sp<ZTemplateBody> classTemplate_;
+		sp<ZClassTemplate> classTemplate_;
 	public:
 		explicit ZClassDef(std::string zId) : ZIdSymbol(std::move(zId), Z_CLASS_DEF) {}
 
@@ -512,12 +492,8 @@ namespace zebra::ast::symbol {
 		void setClassParamList(sp<ZClassParamList> cpl) {
 			classParamList_ = cpl;
 		}
-		void setTemplateBody(sp<ZTemplateBody> tb) override {
-			classTemplate_ = tb;
-		}
-
-		sp<ZTemplateBody> getTemplateBody() override {
-			return classTemplate_;
+		void setClassTemplate(sp<ZClassTemplate> ct) {
+			classTemplate_ = ct;
 		}
 	};
 

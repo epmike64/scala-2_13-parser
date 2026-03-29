@@ -147,7 +147,7 @@ namespace zebra::back::tree {
 	void ZVisitor::visit(sp<fIf> n, esc prnSc) {
 		std::cout << "-- IF Cond Expr" << std::endl;
 
-		sp<Zif> zif = ms<Zif>();
+		sp<ZIf> zif = ms<ZIf>();
 		zif->setCondExpr(ZVisitPSubTreeHelp::visitIntoSubTree(n->getCondExpr(), prnSc, shared_from_this()));
 
 		if (n->getIfBody()) {
