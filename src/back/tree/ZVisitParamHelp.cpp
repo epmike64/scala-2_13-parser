@@ -58,13 +58,15 @@ namespace zebra::back::tree {
 		assert(prnSc->getLangConstruct() == Z_REG_FUNC_DEF || prnSc->getLangConstruct() == Z_THIS_FUNC_DEF);
 		sp<ZParam> zParam = ms<ZParam>(par->getIdentName());
 
-		esc zParamScp = ms<ZEnclScope>(prnSc, zParam);
+		esc zParamScp = ms<ZEnclScope>(prnSc);
+		zParamScp->setZSymbol(zParam);
 		par->getParamType()->accept(visitor, zParamScp);
 
 		sp<fAstProdSubTreeN> assignExpr = par->getDefaultValueExpr();
 		if (assignExpr != nullptr) {
 			sp<ZProdSubTreeN> zPSubTr = ms<ZProdSubTreeN>(Z_PARAM_DEFAULT_EXPR);
-			esc zPSubTrScp = ms<ZEnclScope>(prnSc, zPSubTr);
+			esc zPSubTrScp = ms<ZEnclScope>(prnSc);
+			zPSubTrScp->setZSymbol(zPSubTr);
 
 			assignExpr->accept(visitor, zPSubTrScp);
 			zParam->setDefaultValueExpr(zPSubTr->getTreePostOrderSS());

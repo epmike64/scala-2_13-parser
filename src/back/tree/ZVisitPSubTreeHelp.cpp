@@ -15,7 +15,8 @@ namespace zebra::back::tree {
 
 	sp<ZProdSubTreeN> ZVisitPSubTreeHelp::visitIntoSubTree(sp<fAstNod> node, esc prnSc, sp<fAstNodVisitor> visitor) {
 		sp<ZProdSubTreeN> tr = ms<ZProdSubTreeN>();
-		esc trSc = ms<ZEnclScope>(prnSc, tr);
+		esc trSc = ms<ZEnclScope>(prnSc);
+		trSc->setZSymbol(tr);
 		node->accept(visitor, trSc);
 		return tr;
 	}

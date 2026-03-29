@@ -44,14 +44,16 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit() {
 		std::cout << "--- Visitor starts ---" << std::endl;
-		esc s = ms<ZEnclScope>(nullptr, ms<ZProgram>());
+		esc s = ms<ZEnclScope>(nullptr);
+		s->setZSymbol(ms<ZProgram>());
 		compileUnit_->accept(shared_from_this(), s);
 	}
 
 	void ZVisitor::visit(sp<fCompileUnit> n, esc prnSc)  {
 
 		sp<ZCompileUnit> zcu = ms<ZCompileUnit>("ZCompileUnit_" + UUID::generate().toString());
-		esc cuSc = ms<ZEnclScope>(prnSc, zcu);
+		esc cuSc = ms<ZEnclScope>(prnSc);
+		cuSc->setZSymbol(zcu);
 
 		if (n->getPackages().size() > 0) {
 			std::string packgName;
@@ -170,7 +172,8 @@ namespace zebra::back::tree {
 
 		if (n->getModifiers()) {
 			sp<ZModifiers> mods = ms<ZModifiers>();
-			esc modScp = ms<ZEnclScope>(prnSc, mods);
+			esc modScp = ms<ZEnclScope>(prnSc);
+			modScp->setZSymbol(mods);
 			n->getModifiers()->accept(shared_from_this(), modScp);
 			val->setModifiers(mods);
 		}
@@ -181,7 +184,8 @@ namespace zebra::back::tree {
 
 		if (n->getType()) {
 			sp<ZType> type = ms<ZType>();
-			esc typeScp = ms<ZEnclScope>(prnSc, type);
+			esc typeScp = ms<ZEnclScope>(prnSc);
+			typeScp->setZSymbol(type);
 			n->getType()->accept(shared_from_this(), typeScp);
 			val->setType(type);
 		}
@@ -390,7 +394,8 @@ namespace zebra::back::tree {
 
 		for (const auto& typeArg : n->getTypeArgs()) {
 			sp<ZType> zType = ms<ZType>();
-			esc typeScp = ms<ZEnclScope>(prnSc, zType);
+			esc typeScp = ms<ZEnclScope>(prnSc);
+			typeScp->setZSymbol(zType);
 			typeArg->accept(shared_from_this(), typeScp);
 			list->addType(zType);
 		}
