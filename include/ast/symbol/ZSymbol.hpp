@@ -151,12 +151,17 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZType : public ZProdSubTreeN {
+	class ZType : public ZSymbol {
+	protected:
+		sp<ZProdSubTreeN> typeTree_;
 	public:
-		ZType(): ZProdSubTreeN( Z_TYPE) {}
-		explicit ZType(ZLangConstruct c) : ZProdSubTreeN(c) {}
-		sp<ZTreePostOrderSS> getZType() const {
-			return postOrderSS_;
+		ZType(): ZSymbol(Z_TYPE) {}
+		explicit ZType(ZLangConstruct c) : ZSymbol(c) {}
+		void setTypeTree(sp<ZProdSubTreeN> t) {
+			typeTree_ = t;
+		}
+		sp<ZProdSubTreeN> getTypeTree() const {
+			return typeTree_;
 		}
 	};
 
@@ -232,11 +237,16 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZParamType: public ZType {
+	class ZParamType: public ZSymbol {
+	protected:
+		sp<ZProdSubTreeN> type_;
 		public:
-		ZParamType() : ZType(Z_PARAM_TYPE) {}
-		explicit ZParamType(ZLangConstruct c) : ZType(c) {}
+		ZParamType() : ZSymbol(Z_PARAM_TYPE) {}
+		explicit ZParamType(ZLangConstruct c) : ZSymbol(c) {}
 		~ZParamType() override = default;
+		void setType(sp<ZProdSubTreeN> t) {
+			type_ = t;
+		}
 	};
 
 	class ZTypeParamList: public ZSymbol {
@@ -301,11 +311,12 @@ namespace zebra::ast::symbol {
 	};
 
 
-	class ZParam : public I_ZId, public ZParamType {
+	class ZParam : public ZIdSymbol {
 		sp<ZTreePostOrderSS> defaultExpr_;
 		public:
-		explicit ZParam(std::string sid) : I_ZId(std::move(sid)), ZParamType(Z_PARAM) {}
-		ZParam(std::string sid, ZLangConstruct c) : I_ZId(std::move(sid)), ZParamType(c) {}
+		explicit ZParam(std::string sid): ZIdSymbol(sid, Z_PARAM) {}
+		ZParam(std::string sid, ZLangConstruct c) : ZIdSymbol(sid, c) {}
+
 		void setDefaultValueExpr(sp<ZTreePostOrderSS> de) {
 			defaultExpr_ = de;
 		}
@@ -396,13 +407,23 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZClassParam: public ZParam{
+	class ZClassParam: public ZIdSymbol{
 	protected:
 		const bool isMutable_;
-		sp<ZTreePostOrderSS> defaultExpr_;
+		sp<ZParamType> paramType_;
+		sp<ZTreePostOrderSS> defaultValueExpr_;
 	public:
-		ZClassParam(std::string sid, bool isMutable) : ZParam(std::move(sid), Z_CLASS_PARAM), isMutable_(isMutable) {}
-		ZClassParam(std::string sid, ZLangConstruct c, bool isMutable) :ZParam(std::move(sid), c), isMutable_(isMutable){}
+		ZClassParam(std::string sid, bool isMutable) : ZIdSymbol(std::move(sid), Z_CLASS_PARAM), isMutable_(isMutable) {}
+		ZClassParam(std::string sid, ZLangConstruct c, bool isMutable) : ZIdSymbol(std::move(sid), c), isMutable_(isMutable) {}
+		void setZParamType(sp<ZParamType> t) {
+			paramType_ = t;
+		}
+		void setDefaultValueExpr(sp<ZTreePostOrderSS> de) {
+			defaultValueExpr_ = de;
+		}
+		bool isMutable() const {
+			return isMutable_;
+		}
 	};
 
 	class ZClassParamList: public ZSymbol {

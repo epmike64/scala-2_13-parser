@@ -10,6 +10,7 @@
 #include "ast/leaf/fParamTypes.hpp"
 #include "ast/symbol/ZEnclScope.hpp"
 #include "ast/symbol/ZLangConstruct.hpp"
+#include "back/tree/ZVisitUtil.hpp"
 
 namespace zebra::back::tree {
 
@@ -19,35 +20,35 @@ namespace zebra::back::tree {
 
 	void ZVisitParamHelp::visitClassParamClauses(sp<fClassParamClauses> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 
+		sp<ZClassParamList> zDef = initScopeSymbol<ZClassParamList>(prnSc);
+
 		for (const auto &classParamList: n->getClassParamLists()) {
 			for (const auto &classParam: classParamList) {
-				classParam->accept(visitor, prnSc);
+				esc subSc = visitChildNode(classParam, prnSc, visitor);
+				zDef->addClassParam(dynSp<ZClassParam>(subSc->getZSymbol()));
 			}
 		}
-		for (const auto &implicitClassParam: n->getImplicitClassParamList()) {
-			implicitClassParam->accept(visitor, prnSc);
+		for (const auto &classParam: n->getImplicitClassParamList()) {
+			esc subSc = visitChildNode(classParam, prnSc, visitor);
+			zDef->addClassParam(dynSp<ZClassParam>(subSc->getZSymbol()));
 		}
 	}
 
 
 
-	void ZVisitParamHelp::visitClassParam(sp<fClassParam> clsPar, esc prnSc, sp<fAstNodVisitor> visitor) {
-		std::cout << "Visiting Class Parameter: " << clsPar->getIdentName() << std::endl;
+	void ZVisitParamHelp::visitClassParam(sp<fClassParam> n, esc prnSc, sp<fAstNodVisitor> visitor) {
+		std::cout << "Visiting Class Parameter: " << n->getIdentName() << std::endl;
 
-		sp<ZClassParamList> classParamList = util::dynSp<ZClassParamList>(prnSc->getZSymbol());
-		sp<ZClassParam> clsParam = ms<ZClassParam>(clsPar->getIdentName(), clsPar->isMutable());
-		classParamList->addClassParam(clsParam);
+		sp<ZClassParam> zDef = initScopeSymbol<ZClassParam>(prnSc, n->getIdentName(), n->isMutable());
 
-		esc clsParamScp = ms<ZEnclScope>(prnSc, clsParam);
-		clsPar->getParamType()->accept(visitor, clsParamScp);
+		if (n->getParamType()) {
+			esc subSc = visitChildNode(n->getParamType(), prnSc, visitor);
+			zDef->setZParamType(dynSp<ZParamType>(subSc->getZSymbol()));
+		}
 
-		sp<fAstProdSubTreeN> assignExpr = clsPar->getDefaultValueExpr();
-		if (assignExpr != nullptr) {
-			sp<ZProdSubTreeN> pSubTr = ms<ZProdSubTreeN>(Z_CLASS_PARAM_DEFAULT_EXPR);
-			esc pSubTrScp = ms<ZEnclScope>(prnSc, pSubTr);
-
-			assignExpr->accept(visitor, pSubTrScp);
-			clsParam->setDefaultValueExpr(pSubTr->getTreePostOrderSS());
+		if (n->getDefaultValueExpr()) {
+			esc subSc = visitChildNode(n->getDefaultValueExpr(), prnSc, visitor);
+			zDef->setDefaultValueExpr(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 		}
 	}
 
