@@ -154,7 +154,7 @@ namespace zebra::back::tree {
 
 		sp<ZClassConstr> zDef = initScopeSymbol<ZClassConstr>(prnSc);
 		esc subSc = visitChildNode(n->getParamType(),  prnSc, visitor);
-		zDef->setParamType(dynSp<ZParamType>(subSc->getZSymbol()));
+		zDef->setParamType(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
 
 		if (n->getArgs()) {
 			std::cout << "Visiting Constructor Arguments" << std::endl;

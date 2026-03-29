@@ -344,14 +344,14 @@ namespace zebra::ast::symbol {
 
 	class ZClassConstr: public ZSymbol {
 		protected:
-		sp<ZParamType> paramType_;
 		sp<ZTreePostOrderSS> args_;
+		sp<ZTreePostOrderSS> paramType_;
 	public:
 		ZClassConstr() : ZSymbol(Z_CLASS_CONSTR) {}
 		ZClassConstr(ZLangConstruct c) : ZSymbol(c) {}
 
-		void setParamType(sp<ZParamType> tp) {
-			paramType_ = tp;
+		void setParamType(sp<ZTreePostOrderSS> pt) {
+			paramType_ = pt;
 		}
 		void setArgs(sp<ZTreePostOrderSS> args) {
 			args_ = args;
