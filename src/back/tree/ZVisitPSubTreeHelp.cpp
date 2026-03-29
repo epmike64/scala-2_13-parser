@@ -5,7 +5,6 @@
 
 #include "ast/leaf/fClassParam.hpp"
 #include "ast/symbol/ZEnclScope.hpp"
-#include "ast/leaf/fParamType.hpp"
 #include "back/tree/ZVisitUtil.hpp"
 #include "util/fUtil.hpp"
 
