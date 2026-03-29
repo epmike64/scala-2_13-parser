@@ -508,7 +508,6 @@ namespace zebra::ast::symbol {
 					if (!name.empty()) {
 						addSymbol(name, stmt);
 					}
-					// addSymbol(nameSS->getTreePostOrderSS()->getTreePostOrderSS()->front()->strId(), stmt);
 				}
 				break;
 			}
