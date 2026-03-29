@@ -100,7 +100,7 @@ namespace zebra::back::tree {
 			ss.pop();
 			if (!currNode->isOperator()) {
 				switch (dynSp<ast::fLangOprnd>(currNode)->getLangOprndType()) {
-					case LOprndT::LITERAL: case LOprndT::STABLE_ID: case LOprndT::ID: case LOprndT::UNDERSCORE: {
+					case LOprndT::LITERAL: case LOprndT::STABLE_ID: case LOprndT::ID: case LOprndT::IDS: case LOprndT::UNDERSCORE: {
 						prnt->getTreePostOrderSS()->push_back(ms<ZAstNWrap>(currNode));
 						break;
 					}
