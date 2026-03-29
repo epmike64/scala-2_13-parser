@@ -200,6 +200,9 @@ namespace zebra::ast::symbol {
 		std::vector<std::string> modifiers_;
 		public:
 		ZModifiers() : ZSymbol(Z_MODIFIERS) {}
+		void addModifiers(std::string m) {
+			modifiers_.push_back(std::move(m));
+		}
 	};
 
 	class ZWhile: public ZSymbol {
@@ -316,12 +319,28 @@ namespace zebra::ast::symbol {
 
 	class ZParam : public ZIdSymbol {
 		sp<ZTreePostOrderSS> defaultExpr_;
+		sp<ZParamType> paramType_;
 		public:
 		explicit ZParam(std::string sid): ZIdSymbol(sid, Z_PARAM) {}
 		ZParam(std::string sid, ZLangConstruct c) : ZIdSymbol(sid, c) {}
 
+		void setParamType(sp<ZParamType> pt) {
+			paramType_ = pt;
+		}
+
 		void setDefaultValueExpr(sp<ZTreePostOrderSS> de) {
 			defaultExpr_ = de;
+		}
+	};
+
+	class ZParamTypeList: public ZSymbol {
+		protected:
+		vecP<ZParamType> paramTypes_;
+		public:
+		ZParamTypeList() : ZSymbol(Z_TYPE_PARAMS) {}
+		~ZParamTypeList() override = default;
+		void addParamType(sp<ZParamType> pt) {
+			paramTypes_.push_back(pt);
 		}
 	};
 
@@ -413,17 +432,20 @@ namespace zebra::ast::symbol {
 	class ZClassParam: public ZIdSymbol{
 	protected:
 		const bool isMutable_;
-		sp<ZParamType> paramType_;
+		sp<ZTreePostOrderSS> paramType_;
 		sp<ZTreePostOrderSS> defaultValueExpr_;
 	public:
 		ZClassParam(std::string sid, bool isMutable) : ZIdSymbol(std::move(sid), Z_CLASS_PARAM), isMutable_(isMutable) {}
 		ZClassParam(std::string sid, ZLangConstruct c, bool isMutable) : ZIdSymbol(std::move(sid), c), isMutable_(isMutable) {}
-		void setZParamType(sp<ZParamType> t) {
-			paramType_ = t;
-		}
+
 		void setDefaultValueExpr(sp<ZTreePostOrderSS> de) {
 			defaultValueExpr_ = de;
 		}
+
+		void setParamType(sp<ZTreePostOrderSS> pt) {
+			paramType_ = pt;
+		}
+
 		bool isMutable() const {
 			return isMutable_;
 		}
@@ -562,10 +584,7 @@ namespace zebra::ast::symbol {
 		}
 	};
 
-	class ZProgram: public ZSymbol {
-		public:
-		ZProgram() : ZSymbol(Z_PROGRAM) {}
-	};
+
 
 
 	class ZCompileUnit: public ZIdSymbol, public ZStmtList {
@@ -582,6 +601,16 @@ namespace zebra::ast::symbol {
 		}
 	};
 
+	class ZProgram: public ZSymbol {
+	protected:
+		vecP<ZCompileUnit> compileUnits_;
+	public:
+		ZProgram() : ZSymbol(Z_PROGRAM) {}
+
+		void addCompileUnit(sp<ZCompileUnit> cu) {
+			compileUnits_.push_back(cu);
+		}
+	};
 
 }
 

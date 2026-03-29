@@ -20,7 +20,6 @@ namespace zebra::back::tree {
 
 	void ZVisitFuncHelp::visitFunSig(sp<fFunSig> n, esc prnSc, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting FunSig: " << n->getIdentName() << std::endl;
-		assert(prnSc->getLangConstruct() == Z_REG_FUNC_DEF);
 
 		sp<ZFunSig> zDef = initScopeSymbol<ZFunSig>(prnSc, n->getIdentName());
 

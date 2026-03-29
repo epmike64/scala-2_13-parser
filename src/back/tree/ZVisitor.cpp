@@ -43,17 +43,26 @@
 
 namespace zebra::back::tree {
 
+	// void ZVisitor::visit() {
+	// 	std::cout << "--- Visitor starts ---" << std::endl;
+	// 	sp<ZEnclScope> programSc = ms<ZEnclScope>(nullptr);
+	// 	sp<ZProgram> zDef = initScopeSymbol<ZProgram>(programSc);
+	// 	esc subSc = visitChildNode(ms<fCompileUnit>(),  programSc, shared_from_this());
+	// 	zDef->addCompileUnit(dynSp<ZCompileUnit>(subSc->getZSymbol()));
+	// }
+
+
 	void ZVisitor::visit() {
-		std::cout << "--- Visitor starts ---" << std::endl;
-		esc s = ms<ZEnclScope>(nullptr);
-		s->setZSymbol(ms<ZProgram>());
-		compileUnit_->accept(shared_from_this(), s);
+		// std::cout << "--- Visitor starts ---" << std::endl;
+		sp<ZEnclScope> programSc = ms<ZEnclScope>(nullptr);
+		// sp<ZProgram> zDef = initScopeSymbol<ZProgram>(programSc);
+		compileUnit_->accept(shared_from_this(), programSc);
 	}
+
 
 	void ZVisitor::visit(sp<fCompileUnit> n, esc prnSc)  {
 
-
-		sp<ZCompileUnit> zDef = initScopeSymbol<ZCompileUnit>(prnSc, "ZCompileUnit_");
+		sp<ZCompileUnit> zDef = ms<ZCompileUnit>("ZCompileUnit");
 
 		if (n->getPackages().size() > 0) {
 			std::string packgName;
@@ -220,56 +229,56 @@ namespace zebra::back::tree {
 		ZVisitClassHelp::visitBlock(n, prnSc, shared_from_this());
 	}
 	void ZVisitor::visit(sp<fCaseClause> n, esc prnSc) {
-		std::cout << "Visiting Case Clause" << std::endl;
-		if (n->getPattern()) {
-			std::cout << "Visiting Case Clause Pattern" << std::endl;
-			n->getPattern()->accept(shared_from_this(), prnSc);
-		}
-		if (n->getGuard()) {
-			std::cout << "Visiting Case Clause Guard" << std::endl;
-			n->getGuard()->accept(shared_from_this(), prnSc);
-		}
-		if (n->getBlock()) {
-			std::cout << "Visiting Case Clause Block" << std::endl;
-			n->getBlock()->accept(shared_from_this(), prnSc);
-		}
+		// std::cout << "Visiting Case Clause" << std::endl;
+		// if (n->getPattern()) {
+		// 	std::cout << "Visiting Case Clause Pattern" << std::endl;
+		// 	n->getPattern()->accept(shared_from_this(), prnSc);
+		// }
+		// if (n->getGuard()) {
+		// 	std::cout << "Visiting Case Clause Guard" << std::endl;
+		// 	n->getGuard()->accept(shared_from_this(), prnSc);
+		// }
+		// if (n->getBlock()) {
+		// 	std::cout << "Visiting Case Clause Block" << std::endl;
+		// 	n->getBlock()->accept(shared_from_this(), prnSc);
+		// }
 	}
 
 	void ZVisitor::visit(sp<fCaseClauses> n, esc prnSc) {
 		std::cout << "Visiting Case Clauses" << std::endl;
-		for (const auto& caseClause : n->getCaseClauses()) {
-			caseClause->accept(shared_from_this(), prnSc);
-		}
+		// for (const auto& caseClause : n->getCaseClauses()) {
+		// 	caseClause->accept(shared_from_this(), prnSc);
+		// }
 	}
 
 
 
 	void ZVisitor::visit(sp<fConstrBlock> n, esc prnSc) {
 		std::cout << "Visiting Constructor Block" << std::endl;
-		if (n->getArgExprs()) {
-			std::cout << "Visiting Constructor Block Argument Expressions" << std::endl;
-			ZVisitPSubTreeHelp::visitIntoSubTree(n->getArgExprs(), prnSc, shared_from_this());
-		}
-		if (n->getBlockStmts().size() > 0) {
-			std::cout << "Visiting Constructor Block Statements" << std::endl;
-			for (const auto& stmt : n->getBlockStmts()) {
-				stmt->accept(shared_from_this(), prnSc);
-			}
-		}
+		// if (n->getArgExprs()) {
+		// 	std::cout << "Visiting Constructor Block Argument Expressions" << std::endl;
+		// 	ZVisitPSubTreeHelp::visitIntoSubTree(n->getArgExprs(), prnSc, shared_from_this());
+		// }
+		// if (n->getBlockStmts().size() > 0) {
+		// 	std::cout << "Visiting Constructor Block Statements" << std::endl;
+		// 	for (const auto& stmt : n->getBlockStmts()) {
+		// 		stmt->accept(shared_from_this(), prnSc);
+		// 	}
+		// }
 	}
 
 	void ZVisitor::visit(sp<fFor> n, esc prnSc) {
 		std::cout << "Visiting For Loop" << std::endl;
-		if (n->getGenerators().size() > 0) {
-			std::cout << "Visiting Generators in For Loop" << std::endl;
-			for (const auto& gen : n->getGenerators()) {
-				gen->accept(shared_from_this(), prnSc);
-			}
-		}
-		if (n->getYieldExpr()) {
-			std::cout << "Visiting For Loop Body" << std::endl;
-			n->getYieldExpr()->accept(shared_from_this(), prnSc);
-		}
+		// if (n->getGenerators().size() > 0) {
+		// 	std::cout << "Visiting Generators in For Loop" << std::endl;
+		// 	for (const auto& gen : n->getGenerators()) {
+		// 		gen->accept(shared_from_this(), prnSc);
+		// 	}
+		// }
+		// if (n->getYieldExpr()) {
+		// 	std::cout << "Visiting For Loop Body" << std::endl;
+		// 	n->getYieldExpr()->accept(shared_from_this(), prnSc);
+		// }
 	}
 
 	void ZVisitor::visit(sp<fFunc> n, esc prnSc) {
@@ -279,22 +288,22 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fGenerator> n, esc prnSc) {
 		std::cout << "Visiting Generator" << std::endl;
-		if (n->getCasePattern1()) {
-			std::cout << "Visiting Enumerator in Generator" << std::endl;
-			n->getCasePattern1()->accept(shared_from_this(), prnSc);
-		}
-		for (const auto& guard : n->getGuards()) {
-			std::cout << "Visiting Guard in Generator" << std::endl;
-			guard->accept(shared_from_this(), prnSc);
-		}
-		for (const auto& ep : n->getEndingPattern1s()) {
-			std::cout << "Visiting Ending Pattern in Generator" << std::endl;
-			ep->accept(shared_from_this(), prnSc);
-		}
-		for (const auto& ee : n->getEndingExprs()) {
-			std::cout << "Visiting Ending Expression in Generator" << std::endl;
-			ee->accept(shared_from_this(), prnSc);
-		}
+		// if (n->getCasePattern1()) {
+		// 	std::cout << "Visiting Enumerator in Generator" << std::endl;
+		// 	n->getCasePattern1()->accept(shared_from_this(), prnSc);
+		// }
+		// for (const auto& guard : n->getGuards()) {
+		// 	std::cout << "Visiting Guard in Generator" << std::endl;
+		// 	guard->accept(shared_from_this(), prnSc);
+		// }
+		// for (const auto& ep : n->getEndingPattern1s()) {
+		// 	std::cout << "Visiting Ending Pattern in Generator" << std::endl;
+		// 	ep->accept(shared_from_this(), prnSc);
+		// }
+		// for (const auto& ee : n->getEndingExprs()) {
+		// 	std::cout << "Visiting Ending Expression in Generator" << std::endl;
+		// 	ee->accept(shared_from_this(), prnSc);
+		// }
 	}
 
 	void ZVisitor::visit(sp<fId> n, esc prnSc) {
@@ -302,9 +311,9 @@ namespace zebra::back::tree {
 	}
 	void ZVisitor::visit(sp<fIds> n, esc prnSc) {
 		std::cout << "Visiting Identifiers" << std::endl;
-		for (const auto& id : n->getIds()) {
-			id->accept(shared_from_this(), prnSc);
-		}
+		// for (const auto& id : n->getIds()) {
+		// 	id->accept(shared_from_this(), prnSc);
+		// }
 	}
 
 
@@ -318,20 +327,25 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fModifiers> n, esc prnSc) {
 		std::cout << "Visiting Modifiers" << std::endl;
+
+		sp<ZModifiers> zDef = initScopeSymbol<ZModifiers>(prnSc);
 		if (n->getAccessModifier()) {
-			std::cout << "Visiting Access Modifier in Modifiers" << std::endl;
-			n->getAccessModifier()->accept(shared_from_this(), prnSc);
+			// std::cout << "Visiting Access Modifier in Modifiers" << std::endl;
+			// n->getAccessModifier()->accept(shared_from_this(), prnSc);
+			esc subSc = visitChildNode(n->getAccessModifier(), prnSc, shared_from_this());
+			zDef->addModifiers("access");
 		}
-		if (n->getOverrideModifier()) {
-			std::cout << "Visiting Override Modifier in Modifiers" << std::endl;
-			n->getOverrideModifier()->accept(shared_from_this(), prnSc);
-		}
-		if (n->getLocalModifiers()) {
-			std::cout << "Visiting Local Modifier in Modifiers" << std::endl;
-			for (auto m : *(n->getLocalModifiers())) {
-				m->accept(shared_from_this(), prnSc);
-			}
-		}
+
+		// if (n->getOverrideModifier()) {
+		// 	std::cout << "Visiting Override Modifier in Modifiers" << std::endl;
+		// 	n->getOverrideModifier()->accept(shared_from_this(), prnSc);
+		// }
+		// if (n->getLocalModifiers()) {
+		// 	std::cout << "Visiting Local Modifier in Modifiers" << std::endl;
+		// 	for (auto m : *(n->getLocalModifiers())) {
+		// 		m->accept(shared_from_this(), prnSc);
+		// 	}
+		// }
 	}
 
 	void ZVisitor::visit(sp<fRegFunc> fun, esc prnSc) {
@@ -356,9 +370,9 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fReturn> n, esc prnSc) {
 		std::cout << "Visiting Return Statement" << std::endl;
-		if (n->getReturnExpr()) {
-			n->getReturnExpr()->accept(shared_from_this(), prnSc);
-		}
+		// if (n->getReturnExpr()) {
+		// 	n->getReturnExpr()->accept(shared_from_this(), prnSc);
+		// }
 	}
 
 	void ZVisitor::visit(sp<fThisFunc> n, esc prnSc) {
@@ -367,9 +381,9 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fThrow> n, esc prnSc) {
 		std::cout << "Visiting Throw" << std::endl;
-		if (n->getThrowExpr()) {
-			n->getThrowExpr()->accept(shared_from_this(), prnSc);
-		}
+		// if (n->getThrowExpr()) {
+		// 	n->getThrowExpr()->accept(shared_from_this(), prnSc);
+		// }
 	}
 
 	void ZVisitor::visit(sp<fTraitDef> n, esc prnSc) {
@@ -378,38 +392,34 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fTry> n, esc prnSc) {
 		std::cout << "Visiting Try Block" << std::endl;
-		if (n->getTryBlock()) {
-			std::cout << "Visiting Try Block Body" << std::endl;
-			n->getTryBlock()->accept(shared_from_this(), prnSc);
-		}
-		if (n->getCatchBlock()) {
-			std::cout << "Visiting Catch Clauses in Try Block" << std::endl;
-			n->getCatchBlock()->accept(shared_from_this(), prnSc);
-		}
+		// if (n->getTryBlock()) {
+		// 	std::cout << "Visiting Try Block Body" << std::endl;
+		// 	n->getTryBlock()->accept(shared_from_this(), prnSc);
+		// }
+		// if (n->getCatchBlock()) {
+		// 	std::cout << "Visiting Catch Clauses in Try Block" << std::endl;
+		// 	n->getCatchBlock()->accept(shared_from_this(), prnSc);
+		// }
 	}
 
 	void ZVisitor::visit(sp<fTypeArgs> n, esc prnSc) {
 		std::cout << "Visiting Type Arguments" << std::endl;
-		zaccert(prnSc->getZSymbol() == nullptr, "Parent symbol in scope should be null when visiting type arguments");
-		sp<ZTypeList> list = ms<ZTypeList>();
-		prnSc->setZSymbol(list);
+
+		sp<ZTypeList> zDef = initScopeSymbol<ZTypeList>(prnSc);
 
 		for (const auto& typeArg : n->getTypeArgs()) {
-			sp<ZType> zType = ms<ZType>();
-			esc typeScp = ms<ZEnclScope>(prnSc);
-			typeScp->setZSymbol(zType);
-			typeArg->accept(shared_from_this(), typeScp);
-			list->addType(zType);
+			esc subSc = visitChildNode(typeArg, prnSc, shared_from_this());
+			zDef->addType(dynSp<ZType>(subSc->getZSymbol()));
 		}
 	}
 	void ZVisitor::visit(sp<fTypeDef> n, esc prnSc) {
 		std::cout << "Visiting Type Definition: " << n->getTypeDefName()->toString() << std::endl;
-		if (n->getTypeParams()) {
-			n->getTypeParams()->accept(shared_from_this(), prnSc);
-		}
-		if (n->getAssignedType()) {
-			n->getAssignedType()->accept(shared_from_this(), prnSc);
-		}
+		// if (n->getTypeParams()) {
+		// 	n->getTypeParams()->accept(shared_from_this(), prnSc);
+		// }
+		// if (n->getAssignedType()) {
+		// 	n->getAssignedType()->accept(shared_from_this(), prnSc);
+		// }
 	}
 
 	void ZVisitor::visit(sp<fTypeParam> n, esc prnSc) {
@@ -456,25 +466,29 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fImport> n, esc prnSc) {
 
-		sp<ZImport> zim =  ms<ZImport>();
+		sp<ZImport> zDef = initScopeSymbol<ZImport>(prnSc);
+
 		for (sp<fImportExpr>& impExpr : n->getImportExprs()) {
 			std::string qualName = impExpr->getId()->getQualName();
 			if (impExpr->getUnderscore()) {
 				qualName += "._";
-				zim->addImport(std::move(qualName));
+				zDef->addImport(std::move(qualName));
+
 			} else if (impExpr->getSelectors()) {
 
 				for (size_t i = 0; i < impExpr->getSelectors()->size(); i++) {
 					std::string qualNameSel =  qualName + "." + impExpr->getSelectors()->at(i)->getFrom()->toString();
-					zim->addImport(std::move(qualNameSel));
+					// zim->addImport(std::move(qualNameSel));
+					zDef->addImport(std::move(qualNameSel));
 				}
 			} else {
-				zim->addImport(std::move(qualName));
+				// zim->addImport(std::move(qualName));
+				zDef->addImport(std::move(qualName));
 			}
 		}
 
-		sp<ZStmtList> ss = std::dynamic_pointer_cast<ZStmtList>(prnSc->getZSymbol());
-		zaccert(ss != nullptr, "Expected ZStatementList in scope for import statement");
-		ss->addStmt(zim);
+		// sp<ZStmtList> ss = std::dynamic_pointer_cast<ZStmtList>(prnSc->getZSymbol());
+		// zaccert(ss != nullptr, "Expected ZStatementList in scope for import statement");
+		// ss->addStmt(zim);
 	}
 }

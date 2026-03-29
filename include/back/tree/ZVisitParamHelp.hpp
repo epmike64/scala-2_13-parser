@@ -14,7 +14,7 @@ namespace zebra::back::tree {
 		// static void visitTypeParamClauses(sp<fTypeParamClause> n, esc prnSc, sp<fAstNodVisitor> visitor);
 		// static void visitVariantTypeParam(sp<fVariantTypeParam> n,  esc prnSc, sp<fAstNodVisitor> visitor);
 		// static void visitTypeParam(sp<fTypeParam> n,  esc prnSc, sp<fAstNodVisitor> visitor);
-		static void visitParam(sp<fParam> par, esc prnSc, sp<fAstNodVisitor> visitor);
+		static void visitParam(sp<fParam> n, esc prnSc, sp<fAstNodVisitor> visitor);
 		static void visitParamTypes(sp<fParamTypes> n, esc prnSc, sp<fAstNodVisitor> visitor);
 	};
 
