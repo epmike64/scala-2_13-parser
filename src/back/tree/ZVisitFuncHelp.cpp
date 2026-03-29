@@ -24,13 +24,13 @@ namespace zebra::back::tree {
 		sp<ZFunSig> zDef = initScopeSymbol<ZFunSig>(prnSbx, n->getIdentName());
 
 		if (n->getFunTypeParamClause()) {
-			sbx subSc = visitChildNode(n->getFunTypeParamClause(), visitor);
-			zDef->setFunTypeParamList(dynSp<ZTypeParamList>(subSc->getZSymbol()));
+			sbx symBx = visitChildNode(n->getFunTypeParamClause(), visitor);
+			zDef->setFunTypeParamList(dynSp<ZTypeParamList>(symBx->getZSymbol()));
 		}
 
 		if (n->getParamClauses()) {
-			sbx subSc = visitChildNode(n->getParamClauses(), visitor);
-			zDef->setParamClauses(dynSp<ZParamList>(subSc->getZSymbol()));
+			sbx symBx = visitChildNode(n->getParamClauses(), visitor);
+			zDef->setParamClauses(dynSp<ZParamList>(symBx->getZSymbol()));
 		}
 	}
 
@@ -40,25 +40,25 @@ namespace zebra::back::tree {
 		sp<ZRegFunc> zDef = initScopeSymbol<ZRegFunc>(prnSbx);
 
 		if (n->getModifiers()) {
-			sbx subSc = visitChildNode(n->getModifiers(), visitor);
-			zDef->setModifiers(dynSp<ZModifiers>(subSc->getZSymbol()));
+			sbx symBx = visitChildNode(n->getModifiers(), visitor);
+			zDef->setModifiers(dynSp<ZModifiers>(symBx->getZSymbol()));
 		}
 
-		sbx subSc = visitChildNode(n->getFunSig(), visitor);
-		zDef->setFunSig(dynSp<ZFunSig>(subSc->getZSymbol()));
+		sbx symBx = visitChildNode(n->getFunSig(), visitor);
+		zDef->setFunSig(dynSp<ZFunSig>(symBx->getZSymbol()));
 
 		if (n->getReturnType()) {
-			subSc = visitChildNode(n->getReturnType(), visitor);
-			zDef->setReturnType(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
+			symBx = visitChildNode(n->getReturnType(), visitor);
+			zDef->setReturnType(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
 		}
 
 		if (n->getFunBodyExpr()) {
-			subSc = visitChildNode(n->getFunBodyExpr(), visitor);
-			zDef->setFunBodyExpr(dynSp<ZProdSubTreeN>(subSc->getZSymbol()));
+			symBx = visitChildNode(n->getFunBodyExpr(), visitor);
+			zDef->setFunBodyExpr(dynSp<ZProdSubTreeN>(symBx->getZSymbol()));
 
 		} else if (n->getFunBodyBlock()) {
-			subSc = visitChildNode(n->getFunBodyBlock(), visitor);
-			zDef->setFunBodyBlock(dynSp<ZBlock>(subSc->getZSymbol()));
+			symBx = visitChildNode(n->getFunBodyBlock(), visitor);
+			zDef->setFunBodyBlock(dynSp<ZBlock>(symBx->getZSymbol()));
 		}
 	}
 

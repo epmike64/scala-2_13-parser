@@ -31,35 +31,35 @@ namespace zebra::back::tree {
 		sp<ZClassDef> zDef = initScopeSymbol<ZClassDef>(prnSbx, n->getIdentName());
 
 		if (n->getModifiers()) {
-			sbx symSc = visitChildNode(n->getModifiers(), visitor);
-			zDef->setModifiers(dynSp<ZModifiers>(symSc->getZSymbol()));
+			sbx symBx = visitChildNode(n->getModifiers(), visitor);
+			zDef->setModifiers(dynSp<ZModifiers>(symBx->getZSymbol()));
 		}
 
 		if (n->getConstrAccessModifier()) {
-			sbx symSc = visitChildNode(n->getConstrAccessModifier(), visitor);
-			zDef->setConstrAccessModifier(dynSp<ZAccessModifier>(symSc->getZSymbol()));
+			sbx symBx = visitChildNode(n->getConstrAccessModifier(), visitor);
+			zDef->setConstrAccessModifier(dynSp<ZAccessModifier>(symBx->getZSymbol()));
 		}
 
 		if (n->getTypeParamClause()) {
-			sbx symSc = visitChildNode(n->getTypeParamClause(), visitor);
-			zDef->setVariantTypeParamList(dynSp<ZVariantTypeParamList>(symSc->getZSymbol()));
+			sbx symBx = visitChildNode(n->getTypeParamClause(), visitor);
+			zDef->setVariantTypeParamList(dynSp<ZVariantTypeParamList>(symBx->getZSymbol()));
 		}
 
 		if (n->getClassParamClauses()) {
-			sbx symSc = visitChildNode(n->getClassParamClauses(), visitor);
-			zDef->setClassParamList(dynSp<ZClassParamList>(symSc->getZSymbol()));
+			sbx symBx = visitChildNode(n->getClassParamClauses(), visitor);
+			zDef->setClassParamList(dynSp<ZClassParamList>(symBx->getZSymbol()));
 		}
 
 		if (n->getExtendsTemplate()) {
-			sbx symSc = visitChildNode(n->getExtendsTemplate(), visitor);
+			sbx symBx = visitChildNode(n->getExtendsTemplate(), visitor);
 
 			switch (n->getExtendsTemplate()->getLangOprndType()) {
 				case fLangOprndType::CLASS_TEMPLATE: {
-					zDef->setClassTemplate(dynSp<ZClassTemplate>(symSc->getZSymbol()));
+					zDef->setClassTemplate(dynSp<ZClassTemplate>(symBx->getZSymbol()));
 					break;
 				}
 				case fLangOprndType::TEMPLATE: {
-					zDef->setClassTemplate(ms<ZClassTemplate>(nullptr, dynSp<ZTemplateBody>(symSc->getZSymbol())));
+					zDef->setClassTemplate(ms<ZClassTemplate>(nullptr, dynSp<ZTemplateBody>(symBx->getZSymbol())));
 					break;
 				}
 				default: {
@@ -76,19 +76,19 @@ namespace zebra::back::tree {
 		sp<ZObjectDef> zDef = initScopeSymbol<ZObjectDef>(prnSbx, n->isCaseObj(), n->getIdentName());
 
 		if (n->getModifiers()) {
-			sbx symSc = visitChildNode(n->getModifiers(), visitor);
-			zDef->setModifiers(dynSp<ZModifiers>(symSc->getZSymbol()));
+			sbx symBx = visitChildNode(n->getModifiers(), visitor);
+			zDef->setModifiers(dynSp<ZModifiers>(symBx->getZSymbol()));
 		}
 
 		if (n->getExtendsTemplate()) {
-			sbx symSc = visitChildNode(n->getExtendsTemplate(), visitor);
+			sbx symBx = visitChildNode(n->getExtendsTemplate(), visitor);
 			switch (n->getExtendsTemplate()->getLangOprndType()) {
 				case fLangOprndType::CLASS_TEMPLATE: {
-					zDef->setClassTemplate(dynSp<ZClassTemplate>(symSc->getZSymbol()));
+					zDef->setClassTemplate(dynSp<ZClassTemplate>(symBx->getZSymbol()));
 					break;
 				}
 				case fLangOprndType::TEMPLATE: {
-					zDef->setClassTemplate(ms<ZClassTemplate>(nullptr, dynSp<ZTemplateBody>(symSc->getZSymbol())));
+					zDef->setClassTemplate(ms<ZClassTemplate>(nullptr, dynSp<ZTemplateBody>(symBx->getZSymbol())));
 					break;
 				}
 				default: {
@@ -105,18 +105,18 @@ namespace zebra::back::tree {
 		sp<ZTraitDef> zDef = initScopeSymbol<ZTraitDef>(prnSbx, n->getIdentName());
 
 		if (n->getModifiers()) {
-			sbx symSc = visitChildNode(n->getModifiers(), visitor);
-			zDef->setModifiers(dynSp<ZModifiers>(symSc->getZSymbol()));
+			sbx symBx = visitChildNode(n->getModifiers(), visitor);
+			zDef->setModifiers(dynSp<ZModifiers>(symBx->getZSymbol()));
 		}
 
 		if (n->getTypeParamClause()) {
-			sbx symSc = visitChildNode(n->getTypeParamClause(), visitor);
-			zDef->setVariantTypeParamList(dynSp<ZVariantTypeParamList>(symSc->getZSymbol()));
+			sbx symBx = visitChildNode(n->getTypeParamClause(), visitor);
+			zDef->setVariantTypeParamList(dynSp<ZVariantTypeParamList>(symBx->getZSymbol()));
 		}
 
 		if (n->getExtendsTemplate()) {
-			sbx symSc = visitChildNode(n->getExtendsTemplate(), visitor);
-			zDef->setTemplateBody(dynSp<ZTemplateBody>(symSc->getZSymbol()));
+			sbx symBx = visitChildNode(n->getExtendsTemplate(), visitor);
+			zDef->setTemplateBody(dynSp<ZTemplateBody>(symBx->getZSymbol()));
 		}
 	}
 
@@ -126,12 +126,12 @@ namespace zebra::back::tree {
 
 		sp<ZClassTemplate> zDef = initScopeSymbol<ZClassTemplate>(prnSbx);
 
-		sbx symSc = visitChildNode(n->getClassParents(), visitor);
-		zDef->setClassParents(dynSp<ZClassParents>(symSc->getZSymbol()));
+		sbx symBx = visitChildNode(n->getClassParents(), visitor);
+		zDef->setClassParents(dynSp<ZClassParents>(symBx->getZSymbol()));
 
 		if (n->getTemplateBody()) {
-			sbx symSc = visitChildNode(n->getTemplateBody(), visitor);
-			zDef->setTemplateBody(dynSp<ZTemplateBody>(symSc->getZSymbol()));
+			sbx symBx = visitChildNode(n->getTemplateBody(), visitor);
+			zDef->setTemplateBody(dynSp<ZTemplateBody>(symBx->getZSymbol()));
 		}
 	}
 
@@ -140,8 +140,8 @@ namespace zebra::back::tree {
 		std::cout << "Visiting Class Parents" << std::endl;
 
 		sp<ZClassParents> zDef = initScopeSymbol<ZClassParents>(prnSbx);
-		sbx symSc = visitChildNode(n->getConstr(),  visitor);
-		zDef->setClassConstr(dynSp<ZClassConstr>(symSc->getZSymbol()));
+		sbx symBx = visitChildNode(n->getConstr(),  visitor);
+		zDef->setClassConstr(dynSp<ZClassConstr>(symBx->getZSymbol()));
 		//
 		// if (n->getWithTypes()) {
 		// 	std::cout << "Visiting With Types in Class Parents" << std::endl;
