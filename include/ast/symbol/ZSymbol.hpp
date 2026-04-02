@@ -683,16 +683,28 @@ namespace zebra::ast::symbol {
 		void setPackage(std::string n) {
 			packgName_ += "." + n;
 		}
+
+		std::string toString() {
+			return "ZCompileUnit(" + getZId().strId() + ", Package: " + packgName_ + ", Stmts: " + std::to_string(statements_ ? statements_->size() : 0) + ")";
+		}
 	};
 
-	class ZProgram: public ZSymbol {
+	class ZProgram: public ZIdSymbol {
 	protected:
 		vecP<ZCompileUnit> compileUnits_;
 	public:
-		ZProgram() : ZSymbol(Z_PROGRAM) {}
+		ZProgram(std::string progName) : ZIdSymbol(std::move(progName), Z_PROGRAM) {}
 
 		void addCompileUnit(sp<ZCompileUnit> cu) {
 			compileUnits_.push_back(cu);
+		}
+
+		vecP<ZCompileUnit> getCompileUnits() {
+			return compileUnits_;
+		}
+
+		std::string toString() {
+			return "ZProgram(" + getZId().strId() + ", CompileUnits: " + std::to_string(compileUnits_.size()) + ")";
 		}
 	};
 

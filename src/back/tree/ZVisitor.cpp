@@ -47,14 +47,14 @@ namespace zebra::back::tree {
 	void ZVisitor::visit() {
 		std::cout << "--- Visitor starts ---" << std::endl;
 		sp<ZSymbolBox> programSc = ms<ZSymbolBox>();
-		zProgram_ = initScopeSymbol<ZProgram>(programSc);
+		zProgram_ = initScopeSymbol<ZProgram>(programSc, "_TestProgram_PROGRAM_");
 		sbx symBx = visitChildNode(compileUnit_, shared_from_this());
 		zProgram_->addCompileUnit(dynSp<ZCompileUnit>(symBx->getZSymbol()));
 	}
 
 	void ZVisitor::visit(sp<fCompileUnit> n, sbx prnSbx)  {
 
-		sp<ZCompileUnit> zDef = initScopeSymbol<ZCompileUnit>(prnSbx, "_TestClass_CompileUnit_");
+		sp<ZCompileUnit> zDef = initScopeSymbol<ZCompileUnit>(prnSbx, "_TestClass_COMPILE_UNIT_");
 
 		if (n->getPackages().size() > 0) {
 			std::string packgName;

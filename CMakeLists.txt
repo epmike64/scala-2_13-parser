@@ -198,6 +198,8 @@ add_executable(zebra-4-backend
 		src/util/fUtil.cpp
 		src/ast/fLangOperand.cpp
 		include/back/tree/ZVisitUtil.hpp
+		include/back/code/XCodeGen.hpp
+		src/back/code/XCodeGen.cpp
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE

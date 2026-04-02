@@ -8,6 +8,7 @@
 #include <fstream>
 #include <iterator>
 
+#include "back/code/XCodeGen.hpp"
 #include "back/tree/ZVisitor.hpp"
 #include "lex/fTokzr.hpp"
 #include "lex/fReader.hpp"
@@ -36,6 +37,9 @@ void run_compiler(const std::string& filepath) {
 
 	zebra::util::sp<ZVisitor> visitor = zebra::util::ms<ZVisitor>(cu);
 	visitor->visit();
+	std::cout << "--- Visitor: Done normally ... " << '\n';
+	zebra::back::code::XCodeGen codeGen(visitor->getZProgram());
+	codeGen.gen();
 }
 
 int main(int argc, char *argv[]) {
@@ -55,6 +59,6 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	std::cout << "--- Exiting normally ... " << '\n';
+	std::cout << "--- WHOLE PROGRAM: Exiting normally ... " << '\n';
 	return 0;
 }
