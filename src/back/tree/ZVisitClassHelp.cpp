@@ -142,11 +142,13 @@ namespace zebra::back::tree {
 		sp<ZClassParents> zDef = initScopeSymbol<ZClassParents>(prnSbx);
 		sbx symBx = visitChildNode(n->getConstr(),  visitor);
 		zDef->setClassConstr(dynSp<ZClassConstr>(symBx->getZSymbol()));
-		//
-		// if (n->getWithTypes()) {
-		// 	std::cout << "Visiting With Types in Class Parents" << std::endl;
-		// 	n->getWithTypes()->accept(visitor, prnSc);
-		// }
+
+		if (n->getWithType()) {
+			std::cout << "Visiting With Types in Class Parents" << std::endl;
+			sp<ZParamType> withType = ms<ZParamType>();
+			sbx symBx = visitChildNode(n->getWithType(),  visitor);
+			zDef->setWithType(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
+		}
 	}
 
 	void ZVisitClassHelp::visitClassConstr(sp<fClassConstr> n, sbx prnSbx, sp<fAstNodVisitor> visitor) {

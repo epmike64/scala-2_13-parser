@@ -12,7 +12,7 @@ namespace zebra::ast::leaf {
 
 	class fClassParents: public fLangOprnd {
 		const sp<fClassConstr> constr_;
-		sp<fParamType> withTypes_;
+		sp<fParamType> withType_;
 	public:
 
 		fClassParents(sp<fClassConstr> &&constr);
@@ -21,7 +21,7 @@ namespace zebra::ast::leaf {
 
 		 sp<fClassConstr> getConstr() const;
 
-		 sp<fParamType> getWithTypes() const;
+		 sp<fParamType> getWithType() const;
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) override;
 		std::string toString() const override;

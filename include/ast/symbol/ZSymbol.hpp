@@ -383,11 +383,15 @@ namespace zebra::ast::symbol {
 
 	class ZClassParents: public ZSymbol {
 		sp<ZClassConstr> classConstr_;
+		sp<ZTreePostOrderSS> withType_;
 	public:
 		ZClassParents() : ZSymbol(Z_CLASS_PARENTS) {}
 		~ZClassParents() override = default;
 		void setClassConstr(sp<ZClassConstr> cc) {
 			classConstr_ = cc;
+		}
+		void setWithType(sp<ZTreePostOrderSS> withType) {
+			withType_ = withType;
 		}
 	};
 
