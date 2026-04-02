@@ -37,7 +37,7 @@ namespace zebra::back::tree {
 	protected:
 		sp<fCompileUnit> compileUnit_;
 		sp<fAstNod> getAstPSTreeRightN(sp<fAstProdSubTreeN> subTree);
-
+		sp<ZProgram> zProgram_;
 	public:
 		explicit ZVisitor(sp<fCompileUnit> cu) : compileUnit_(cu){}
 		void visit() override;
@@ -98,5 +98,8 @@ namespace zebra::back::tree {
 		void visit(sp<fTypeParamClause> n, sbx) override;
 		 void visit(sp<fVariantTypeParam>, sbx) override;
 		 void visit(sp<fWhile>, sbx) override;
+		sp<ZProgram> getZProgram() {
+			return zProgram_;
+		}
 	};
 }

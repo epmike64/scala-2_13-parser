@@ -43,26 +43,18 @@
 
 namespace zebra::back::tree {
 
-	// void ZVisitor::visit() {
-	// 	std::cout << "--- Visitor starts ---" << std::endl;
-	// 	sp<ZEnclScope> programSc = ms<ZEnclScope>(nullptr);
-	// 	sp<ZProgram> zDef = initScopeSymbol<ZProgram>(programSc);
-	// 	esc subSc = visitChildNode(ms<fCompileUnit>(),  programSc, shared_from_this());
-	// 	zDef->addCompileUnit(dynSp<ZCompileUnit>(subSc->getZSymbol()));
-	// }
-
 
 	void ZVisitor::visit() {
-		// std::cout << "--- Visitor starts ---" << std::endl;
+		std::cout << "--- Visitor starts ---" << std::endl;
 		sp<ZSymbolBox> programSc = ms<ZSymbolBox>();
-		// sp<ZProgram> zDef = initScopeSymbol<ZProgram>(programSc);
-		compileUnit_->accept(shared_from_this(), programSc);
+		zProgram_ = initScopeSymbol<ZProgram>(programSc);
+		sbx symBx = visitChildNode(compileUnit_, shared_from_this());
+		zProgram_->addCompileUnit(dynSp<ZCompileUnit>(symBx->getZSymbol()));
 	}
-
 
 	void ZVisitor::visit(sp<fCompileUnit> n, sbx prnSbx)  {
 
-		sp<ZCompileUnit> zDef = ms<ZCompileUnit>("ZCompileUnit");
+		sp<ZCompileUnit> zDef = initScopeSymbol<ZCompileUnit>(prnSbx, "_TestClass_CompileUnit_");
 
 		if (n->getPackages().size() > 0) {
 			std::string packgName;
@@ -76,8 +68,8 @@ namespace zebra::back::tree {
 			std::cout << "Visiting Statements in Compile Unit" << std::endl;
 			for (const auto& stmt : n->getStmts()) {
 				sp<ast::fLangOprnd> langOprnd = std::dynamic_pointer_cast<ast::fLangOprnd>(stmt);
-				sbx subSc = visitChildNode(langOprnd,  shared_from_this());
-				zDef->addStmt(dynSp<ZSymbol>(subSc->getZSymbol()));
+				sbx symBx = visitChildNode(langOprnd,  shared_from_this());
+				zDef->addStmt(dynSp<ZSymbol>(symBx->getZSymbol()));
 			}
 		}
 	}
