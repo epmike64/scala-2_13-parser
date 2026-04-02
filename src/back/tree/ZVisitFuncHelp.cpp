@@ -21,6 +21,12 @@ namespace zebra::back::tree {
 	void ZVisitFuncHelp::visitFunSig(sp<fFunSig> n, sbx prnSbx, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting FunSig: " << n->getIdentName() << std::endl;
 
+		if ("_OPERATOR_" == n->getIdentName()) {
+			std::cout << "Visiting Method Name: " << n->getIdentName() << std::endl;
+			std::cerr << __FILE__ << ":" << __LINE__ << " " << __FUNCTION__ << "(): _OPERATOR_" << std::endl;
+			std::cerr << "Fix 'operator' method name. Exiting...  " << std::endl;
+			exit(1);
+		}
 		sp<ZFunSig> zDef = initScopeSymbol<ZFunSig>(prnSbx, n->getIdentName());
 
 		if (n->getFunTypeParamClause()) {

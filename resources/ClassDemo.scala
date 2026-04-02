@@ -1,12 +1,12 @@
 
-/*abstract class Storage[K, V](val namespace: String, val maxSize: Int) {
+abstract class Storage[K, V](val namespace: String, val maxSize: Int) {
 
   def put(key: K, value: V): Boolean
   def get(key: K): Option[V]
 
   def isFull(currentSize: Int): Boolean = currentSize >= maxSize
   def qualifiedName(tag: String): String = s"$namespace::$tag"
-}*/
+}
 
 
 class Repository[K, V](val name: String, private val capacity: Int)
