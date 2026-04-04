@@ -45,6 +45,7 @@ namespace zebra::ast::leaf {
 	class fParamTypes;
 	class fReturn;
 	class fStableId;
+	class fSelfType;
 	class fTemplate;
 	class fTemplateBody;
 	class fThisFunc;
@@ -122,6 +123,7 @@ namespace zebra::ast::node {
 		virtual void visit(sp<fParamTypes>, sbx) = 0;
 		virtual void visit(sp<fReturn>, sbx) = 0;
 		virtual void visit(sp<fStableId>, sbx) = 0;
+		virtual void visit(sp<fSelfType>, sbx) = 0;
 		virtual void visit(sp<fTemplate>, sbx) = 0;
 		virtual void visit(sp<fTemplateBody>, sbx) = 0;
 		virtual void visit(sp<fThisFunc>, sbx) = 0;

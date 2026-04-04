@@ -25,6 +25,7 @@
 #include "ast/leaf/fParamClauses.hpp"
 #include "ast/leaf/fParamTypes.hpp"
 #include "ast/leaf/fReturn.hpp"
+#include "ast/leaf/fSelfType.hpp"
 #include "ast/leaf/fTemplate.hpp"
 #include "ast/leaf/fTemplateBody.hpp"
 #include "ast/leaf/fThisFunc.hpp"
@@ -1434,11 +1435,53 @@ namespace zebra::parse {
 		throw std::runtime_error( "BlockOrTemplateStat in unexpected place: " + h.getToken()->toString());
 	}
 
+	sp<fSelfType> fParser::selfType() {
+		sp<fSelfType> st;
+		switch (*h.tKnd()) {
+			case fTKnd::T_THIS_E: {
+				st =  ms<fSelfType>(h.next());
+				h.accept(fTKnd::T_COLON);
+				st->setSelfType(type());
+				break;
+			}
+			case fTKnd::T_ID_E: {
+				st = ms<fSelfType>(h.next());
+				if (h.isTkColon()) {
+					h.next();
+					st->setSelfType(type());
+				}
+				break;
+			}
+			default:
+				throw std::runtime_error("Expected identifier or 'this' for self type but found: " + h.getToken()->toString());
+		}
+		h.accept(fTKnd::T_FAT_ARROW);
+		return st;
+	}
+
 	sp<fTemplateBody> fParser::templateBody() {
 		sp<fTemplateBody> tb = ms<fTemplateBody>();
 		if (h.isTkNL()) h.next();
 		int sz = h.pushNLEnabled(true);
 		h.accept(fTKnd::T_LCURL);
+
+		switch (*h.tKnd()) {
+			case fTKnd::T_ID_E: {
+				if (h.isLa(1, {fTKnd::T_COLON, fTKnd::T_FAT_ARROW})) {
+					tb->addStmt(selfType());
+					break;
+				}
+			}
+			case fTKnd::T_THIS_E: {
+				if (h.isLa(1, fTKnd::T_COLON)) {
+					tb->addStmt(selfType());
+					break;
+				}
+			}
+			default:
+				break;
+		}
+
 		loop:
 		while (true) {
 			switch (*h.tKnd()) {

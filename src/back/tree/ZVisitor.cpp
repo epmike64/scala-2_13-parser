@@ -95,6 +95,10 @@ namespace zebra::back::tree {
 	}
 
 
+	void ZVisitor::visit(sp<fSelfType> n, sbx prnSbx) {
+		std::cout << "Visiting Self Type" << std::endl;
+	}
+
 	void ZVisitor::visit(sp<fParamClauses> n, sbx prnSbx) {
 
 		sp<ZParamList> zDef = initScopeSymbol<ZParamList>(prnSbx);

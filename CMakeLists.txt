@@ -200,6 +200,8 @@ add_executable(zebra-4-backend
 		include/back/tree/ZVisitUtil.hpp
 		include/back/code/XCodeGen.hpp
 		src/back/code/XCodeGen.cpp
+		include/ast/leaf/fSelfType.hpp
+		src/ast/leaf/fSelfType.cpp
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE

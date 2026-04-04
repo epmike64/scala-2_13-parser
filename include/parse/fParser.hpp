@@ -13,6 +13,7 @@
 #include "ast/leaf/fImport.hpp"
 #include "ast/leaf/fLiteral.hpp"
 #include "ast/leaf/fObjectDef.hpp"
+#include "ast/leaf/fSelfType.hpp"
 #include "ast/leaf/fStableId.hpp"
 #include "ast/leaf/fType.hpp"
 #include "lex/kind/fVarMutTypeE.hpp"
@@ -162,6 +163,8 @@ namespace zebra::parse {
 		sp<fTypeDef> typeDef();
 
 		sp<fAstOprndNod> blockOrTemplateStmt();
+
+		sp<fSelfType> selfType();
 
 		sp<fTemplateBody> templateBody();
 

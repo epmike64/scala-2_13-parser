@@ -45,6 +45,7 @@ namespace zebra::ast {
 		REG_FUNC,
 		RETURN,
 		STABLE_ID,
+		SELF_TYPE,
 		TEMPLATE,
 		TEMPLATE_BODY,
 		THIS,
