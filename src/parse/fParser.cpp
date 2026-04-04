@@ -1306,11 +1306,7 @@ namespace zebra::parse {
 		sp<fConstrBlock> cb = ms<fConstrBlock>();
 		h.accept(fTKnd::T_LCURL);
 		if (h.isTkTHIS()) {
-			h.next();
-			cb->addArgExprs(exprs());
-			while (h.isTkLParen()) {
-				cb->addArgExprs(exprs());
-			}
+			selfInvocation(cb);
 		}
 		while (true) {
 			h.skipSemi();
@@ -1326,23 +1322,15 @@ namespace zebra::parse {
 
 
 	sp<fConstrBlock> fParser::constrExpr() {
-		sp<fConstrBlock> cb = ms<fConstrBlock>();
 
 		switch (*h.tKnd()) {
 			case fTKnd::T_THIS_E: {
+				sp<fConstrBlock> cb = ms<fConstrBlock>();
 				selfInvocation(cb);
 				return cb;
 			}
 			case fTKnd::T_LCURL_E: {
-				h.next();
-				if (h.isTkTHIS()) {
-					selfInvocation(cb);
-				}
-				if (!h.isTkRCurl()) {
-					cb->addBlockStmt(blockOrTemplateStmt());
-				}
-				h.accept(fTKnd::T_RCURL);
-				return cb;
+				return constrBlock();
 			}
 			default:
 				break;
