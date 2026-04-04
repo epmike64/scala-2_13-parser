@@ -588,6 +588,51 @@ namespace zebra::ast::symbol {
 		}
 	};
 
+	class ZCaseClause: public ZSymbol {
+		protected:
+		sp<ZTreePostOrderSS> guard_;
+		sp<ZTreePostOrderSS> pattern_;
+		sp<ZBlock> block_;
+		public:
+		ZCaseClause() : ZSymbol(Z_CASE_CLAUSE) {}
+		ZCaseClause(ZLangConstruct c) : ZSymbol(c) {}
+		void setGuard(sp<ZTreePostOrderSS> g) {
+			guard_ = g;
+		}
+		void setPattern(sp<ZTreePostOrderSS> p) {
+			pattern_ = p;
+		}
+		void setBlock(sp<ZBlock> b) {
+			block_ = b;
+		}
+	};
+
+	class ZCaseClauses: public ZSymbol {
+		protected:
+		vecP<ZCaseClause> casesClauses_;
+		public:
+		ZCaseClauses() : ZSymbol(Z_CASE_CLAUSES) {}
+		ZCaseClauses(ZLangConstruct c) : ZSymbol(c) {}
+		void addCaseClause(sp<ZCaseClause> c) {
+			casesClauses_.push_back(c);
+		}
+	};
+
+	class ZConstrBlock: public ZSymbol, public ZStmtList {
+		protected:
+		PVecP<ZTreePostOrderSS> argExprs_;
+
+		public:
+		ZConstrBlock() : ZSymbol(Z_CONSTR_BLOCK) {}
+		ZConstrBlock(ZLangConstruct c) : ZSymbol(c) {}
+		void addArgExprs(sp<ZTreePostOrderSS> argExpr) {
+			if (argExprs_ == nullptr) {
+				argExprs_ = ms<std::vector<std::shared_ptr<ZTreePostOrderSS>>>();
+			}
+			argExprs_->push_back(argExpr);
+		}
+	};
+
 	class ZTraitDef: public ZIdSymbol{
 	protected:
 		sp<ZModifiers> modifiers_;

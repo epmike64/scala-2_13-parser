@@ -11,20 +11,19 @@ namespace zebra::ast::leaf {
 	using namespace ast::node;
 
 	class fConstrBlock : public fLangOprnd {
-		sp<fAstProdSubTreeN> argExprs_;
-		std::vector<sp<fAstNod>> blockStmts_;
+		PVecP<fAstProdSubTreeN> argExprs_;
+		PVecP<fAstNod> blockStmts_;
 		public:
 
-		fConstrBlock() = default;
+		 fConstrBlock() = default;
 
-		 void setArgExprs(sp<fAstProdSubTreeN> &&argExprs);
+		 void addArgExprs(sp<fAstProdSubTreeN>&& argExpr);
 
-		 void addBlockStmt(sp<fAstOprndNod> && stmt) ;
+		 void addBlockStmt(sp<fAstNod> && stmt) ;
 
-		 sp<fAstProdSubTreeN> getArgExprs() const;
+		 PVecP<fAstProdSubTreeN> getArgExprs() const;
 
-
-		 std::vector<sp<fAstNod>>& getBlockStmts();
+		PVecP<fAstNod> getBlockStmts();
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) override;
 		std::string toString() const override;

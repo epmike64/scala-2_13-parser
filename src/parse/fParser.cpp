@@ -1294,12 +1294,23 @@ namespace zebra::parse {
 		return p;
 	}
 
+	void fParser::selfInvocation(sp<fConstrBlock> cb) {
+		h.accept(fTKnd::T_THIS);
+		cb->addArgExprs(exprs());
+		while (h.isTkLParen()) {
+			cb->addArgExprs(exprs());
+		}
+	}
+
 	sp<fConstrBlock> fParser::constrBlock() {
 		sp<fConstrBlock> cb = ms<fConstrBlock>();
 		h.accept(fTKnd::T_LCURL);
 		if (h.isTkTHIS()) {
 			h.next();
-			cb->setArgExprs(exprs());
+			cb->addArgExprs(exprs());
+			while (h.isTkLParen()) {
+				cb->addArgExprs(exprs());
+			}
 		}
 		while (true) {
 			h.skipSemi();
@@ -1313,29 +1324,59 @@ namespace zebra::parse {
 		return cb;
 	}
 
+
+	sp<fConstrBlock> fParser::constrExpr() {
+		sp<fConstrBlock> cb = ms<fConstrBlock>();
+
+		switch (*h.tKnd()) {
+			case fTKnd::T_THIS_E: {
+				selfInvocation(cb);
+				return cb;
+			}
+			case fTKnd::T_LCURL_E: {
+				h.next();
+				if (h.isTkTHIS()) {
+					selfInvocation(cb);
+				}
+				if (!h.isTkRCurl()) {
+					cb->addBlockStmt(blockOrTemplateStmt());
+				}
+				h.accept(fTKnd::T_RCURL);
+				return cb;
+			}
+			default:
+				break;
+		}
+		throw std::runtime_error("ConstrExpr expected 'this' invocation or block but found: " + h.getToken()->toString());
+	}
+
+
 	sp<fThisFunc> fParser::thisFun(sp<fModifiers> mods) {
 		h.accept(fTKnd::T_THIS);
 		sp<fThisFunc> fun = ms<fThisFunc>(std::move(mods));
 		fun->setParamClauses(paramClauses());
-		if (h.isTkAssign()) {
-			h.next();
-			sp<fConstrBlock> cb = nullptr;
-			if (h.isTkTHIS()) {
+
+		switch (*h.tKnd()) {
+			case fTKnd::T_ASSIGN_E: {
 				h.next();
-				cb = ms<fConstrBlock>();
-				cb->setArgExprs(exprs());
-			} else if (h.isTkLCurl()) {
-				cb = constrBlock();
-			} else {
-				throw std::runtime_error("Expected 'this' or '{' after '=' in function definition but found: " + h.getToken()->toString());
+				fun->setConstrBlock(constrExpr());
+				return fun;
 			}
-			fun->setConstrBlock(std::move(cb));
-
-		} else {
-
-			fun->setConstrBlock(constrBlock());
+			case fTKnd::T_NL_E: {
+				h.next();
+				if (!h.isTkLCurl()) {
+					break;
+				}
+				// fall through
+			}
+			case fTKnd::T_LCURL_E: {
+				fun->setConstrBlock(constrBlock());
+				return fun;
+			}
+			default:
+				break;
 		}
-		return fun;
+		throw std::runtime_error("Expected  function body for 'this' function but found: " + h.getToken()->toString());
 	}
 
 

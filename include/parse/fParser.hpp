@@ -149,7 +149,11 @@ namespace zebra::parse {
 
 		sp<fParam> param();
 
+		void selfInvocation(sp<fConstrBlock> cb);
+
 		sp<fConstrBlock> constrBlock();
+
+		sp<fConstrBlock> constrExpr();
 
 		sp<fThisFunc> thisFun(sp<fModifiers> mods);
 

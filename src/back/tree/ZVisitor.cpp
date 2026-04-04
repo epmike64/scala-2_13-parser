@@ -156,17 +156,17 @@ namespace zebra::back::tree {
 
 		sp<ZIf> zDef = initScopeSymbol<ZIf>(prnSbx);
 
-		sbx subSc = visitChildNode(n->getCondExpr(),  shared_from_this());
-		zDef->setCondExpr(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
+		sbx symBx = visitChildNode(n->getCondExpr(),  shared_from_this());
+		zDef->setCondExpr(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
 
 		if (n->getIfBody()) {
-			sbx subSc = visitChildNode(n->getIfBody(), shared_from_this());
-			zDef->setBody(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
+			symBx = visitChildNode(n->getIfBody(), shared_from_this());
+			zDef->setBody(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
 		}
 
 		if (n->getElseBody()) {
-			sbx subSc = visitChildNode(n->getElseBody(),  shared_from_this());
-			zDef->setElseBody(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
+			symBx = visitChildNode(n->getElseBody(),  shared_from_this());
+			zDef->setElseBody(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
 		}
 	}
 
@@ -176,24 +176,23 @@ namespace zebra::back::tree {
 		sp<ZValueDcl> zDef = initScopeSymbol<ZValueDcl>(prnSbx);
 
 		if (n->getModifiers()) {
-			sbx subSc = visitChildNode(n->getModifiers(), shared_from_this());
-			zDef->setModifiers(dynSp<ZModifiers>(subSc->getZSymbol()));
+			sbx symBx = visitChildNode(n->getModifiers(), shared_from_this());
+			zDef->setModifiers(dynSp<ZModifiers>(symBx->getZSymbol()));
 		}
 
 		for (const auto& name : n->getNames()) {
-			// val->addName(ZVisitPSubTreeHelp::visitIntoSubTree(name, prnSbx, shared_from_this()));
-			sbx subSc = visitChildNode(name,  shared_from_this());
-			zDef->addName(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
+			sbx symBx = visitChildNode(name,  shared_from_this());
+			zDef->addName(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
 		}
 
 		if (n->getType()) {
-			sbx subSc = visitChildNode(n->getType(),  shared_from_this());
-			zDef->setType(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
+			sbx symBx = visitChildNode(n->getType(),  shared_from_this());
+			zDef->setType(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
 		}
 
 		if (n->getAssignExpr()) {
-			sbx subSc = visitChildNode(n->getAssignExpr(), shared_from_this());
-			zDef->setDefaultValueExpr(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
+			sbx symBx = visitChildNode(n->getAssignExpr(), shared_from_this());
+			zDef->setDefaultValueExpr(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
 		}
 	}
 
@@ -202,60 +201,69 @@ namespace zebra::back::tree {
 
 		sp<ZWhile> zDef = initScopeSymbol<ZWhile>(prnSbx);
 
-		sbx subSc = visitChildNode(n->getCondExpr(), shared_from_this());
-		zDef->setCondExpr(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
+		sbx symBx = visitChildNode(n->getCondExpr(), shared_from_this());
+		zDef->setCondExpr(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
 		if (n->getBody()) {
-			sbx subSc = visitChildNode(n->getBody(),  shared_from_this());
-			zDef->setBody(dynSp<ZProdSubTreeN>(subSc->getZSymbol())->getTreePostOrderSS());
+			symBx = visitChildNode(n->getBody(),  shared_from_this());
+			zDef->setBody(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
 		}
 	}
 
-	void ZVisitor::visit(sp<fAccessModifier> n, sbx prnSbx) {
-		std::cout << "Visiting Access Modifier: " << n->toString() << std::endl;
-	}
-	void ZVisitor::visit(sp<fAccessQualifier> n, sbx prnSbx) {
-		std::cout << "Visiting Access Qualifier: " << n->toString() << std::endl;
-	}
-	void ZVisitor::visit(sp<fBlock> n, sbx prnSbx) {
-		ZVisitClassHelp::visitBlock(n, prnSbx, shared_from_this());
-	}
 	void ZVisitor::visit(sp<fCaseClause> n, sbx prnSbx) {
-		// std::cout << "Visiting Case Clause" << std::endl;
-		// if (n->getPattern()) {
-		// 	std::cout << "Visiting Case Clause Pattern" << std::endl;
-		// 	n->getPattern()->accept(shared_from_this(), prnSbx);
-		// }
-		// if (n->getGuard()) {
-		// 	std::cout << "Visiting Case Clause Guard" << std::endl;
-		// 	n->getGuard()->accept(shared_from_this(), prnSbx);
-		// }
-		// if (n->getBlock()) {
-		// 	std::cout << "Visiting Case Clause Block" << std::endl;
-		// 	n->getBlock()->accept(shared_from_this(), prnSbx);
-		// }
+		std::cout << "Visiting Case Clause" << std::endl;
+
+		sp<ZCaseClause> zDef = initScopeSymbol<ZCaseClause>(prnSbx);
+
+		if (n->getPattern()) {
+			std::cout << "Visiting Case Clause Pattern" << std::endl;
+			sbx symBx = visitChildNode(n->getPattern(), shared_from_this());
+			zDef->setPattern(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
+		}
+
+		if (n->getGuard()) {
+			std::cout << "Visiting Case Clause Guard" << std::endl;
+			sbx symBx = visitChildNode(n->getGuard(), shared_from_this());
+			zDef->setGuard(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
+		}
+
+		if (n->getBlock()) {
+			std::cout << "Visiting Case Clause Block" << std::endl;
+			sbx symBx = visitChildNode(n->getBlock(), shared_from_this());
+			zDef->setBlock(dynSp<ZBlock>(symBx->getZSymbol()));
+		}
 	}
 
 	void ZVisitor::visit(sp<fCaseClauses> n, sbx prnSbx) {
 		std::cout << "Visiting Case Clauses" << std::endl;
-		// for (const auto& caseClause : n->getCaseClauses()) {
-		// 	caseClause->accept(shared_from_this(), prnSbx);
-		// }
+		sp<ZCaseClauses> zDef = initScopeSymbol<ZCaseClauses>(prnSbx);
+		for (const auto& caseClause : n->getCaseClauses()) {
+			sbx symBx = visitChildNode(caseClause, shared_from_this());
+			zDef->addCaseClause(dynSp<ZCaseClause>(symBx->getZSymbol()));
+		}
 	}
 
 
 
 	void ZVisitor::visit(sp<fConstrBlock> n, sbx prnSbx) {
 		std::cout << "Visiting Constructor Block" << std::endl;
-		// if (n->getArgExprs()) {
-		// 	std::cout << "Visiting Constructor Block Argument Expressions" << std::endl;
-		// 	ZVisitPSubTreeHelp::visitIntoSubTree(n->getArgExprs(), prnSbx, shared_from_this());
-		// }
-		// if (n->getBlockStmts().size() > 0) {
-		// 	std::cout << "Visiting Constructor Block Statements" << std::endl;
-		// 	for (const auto& stmt : n->getBlockStmts()) {
-		// 		stmt->accept(shared_from_this(), prnSbx);
-		// 	}
-		// }
+		sp<ZConstrBlock> zDef = initScopeSymbol<ZConstrBlock>(prnSbx);
+
+		if (n->getArgExprs()) {
+			std::cout << "Visiting Constructor Block Argument Expressions" << std::endl;
+			for (const auto& argExpr : *n->getArgExprs()) {
+				sbx symBx = visitChildNode(argExpr, shared_from_this());
+				zDef->addArgExprs(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
+			}
+		}
+
+		if (n->getBlockStmts()) {
+			std::cout << "Visiting Constructor Block Statements" << std::endl;
+			for (const auto& stmt : *n->getBlockStmts()) {
+				sp<ast::fLangOprnd> langOprnd = std::dynamic_pointer_cast<ast::fLangOprnd>(stmt);
+				sbx symBx = visitChildNode(langOprnd, shared_from_this());
+				zDef->addStmt(dynSp<ZSymbol>(symBx->getZSymbol()));
+			}
+		}
 	}
 
 	void ZVisitor::visit(sp<fFor> n, sbx prnSbx) {
@@ -431,6 +439,16 @@ namespace zebra::back::tree {
 		ZVisitPSubTreeHelp::traverseProdSubTree(subTr, prnSbx, shared_from_this());
 	}
 
+
+	void ZVisitor::visit(sp<fAccessModifier> n, sbx prnSbx) {
+		std::cout << "Visiting Access Modifier: " << n->toString() << std::endl;
+	}
+	void ZVisitor::visit(sp<fAccessQualifier> n, sbx prnSbx) {
+		std::cout << "Visiting Access Qualifier: " << n->toString() << std::endl;
+	}
+	void ZVisitor::visit(sp<fBlock> n, sbx prnSbx) {
+		ZVisitClassHelp::visitBlock(n, prnSbx, shared_from_this());
+	}
 
 	void  ZVisitor::visit(sp<fAstOprndNod> n, sbx prnSbx)  {
 		assert(n != nullptr && n->getAstLeftN() == nullptr && n->getAstRightN() == nullptr);
