@@ -56,6 +56,7 @@ public:
     const fTKnd* getTokenKind() const ;
 
     // Token kind checking methods
+    bool isTkAt() const { return token_->getTKind() == fTKnd::T_AT; }
     bool isTkColon() const { return token_->getTKind() == fTKnd::T_COLON; }
     bool isTkAssign() const { return token_->getTKind() == fTKnd::T_ASSIGN; }
     bool isTkPlus() const { return token_->getTKind() == fTKnd::T_PLUS; }

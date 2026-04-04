@@ -204,6 +204,9 @@ add_executable(zebra-4-backend
 		src/ast/leaf/fSelfType.cpp
 		include/ast/leaf/fVarargsExpansion.hpp
 		src/ast/leaf/fVarargsExpansion.cpp
+		include/ast/leaf/fAnnotation.hpp
+		src/ast/leaf/fAnnotations.cpp
+		include/ast/leaf/fAnnotations.hpp
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE

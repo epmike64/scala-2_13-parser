@@ -1,6 +1,10 @@
 #pragma once
 
 
+#include <memory>
+
+#include "ast/leaf/fAnnotation.hpp"
+#include "ast/leaf/fAnnotations.hpp"
 #include "parse/fParseHelp.hpp"
 #include "ast/leaf/fCompileUnit.hpp"
 #include "lex/fLexerIFace.hpp"
@@ -36,8 +40,9 @@ namespace zebra::parse {
 		sp<fTypeArgs> types();
 		sp<fTraitDef> traitDef(sp<fModifiers> mods);
 		sp<fAstOprndNod> classObjectDef(bool isCase, sp<fModifiers> mods);
-		sp<fAstOprndNod> tmplDef(sp<fModifiers> mods);
+		sp<fAstOprndNod> tmplDef(sp<fAnnotations> anns, sp<fModifiers> mods);
 		sp<fAccessModifier> accessModifier();
+		sp<fAnnotations> annotations();
 		sp<fLocalModifier> localModifier();
 		sp<fModifiers> modifiers();
 
@@ -133,17 +138,17 @@ namespace zebra::parse {
 
 		sp<fBlock> block();
 
-		sp<fValueDcl> patDef(fVarMutTypeE mutType, sp<fModifiers> mods);
+		sp<fValueDcl> patDef(sp<fAnnotations> anns, sp<fModifiers> mods, fVarMutTypeE mutType );
 
 		sp<fTypeParam> typeParam();
 
 		std::vector<sp<fTypeParam> > funTypeParams();
 
-		sp<fValueDcl> varDef(sp<fModifiers> mods);
+		sp<fValueDcl> varDef(sp<fAnnotations> anns, sp<fModifiers> mods);
 
 		sp<fFunSig> funSig();
 
-		sp<fRegFunc> regularFun(sp<fModifiers> mods);
+		sp<fRegFunc> regularFun(sp<fAnnotations> anns, sp<fModifiers> mods);
 
 		sp<fParamClauses> paramClauses();
 
@@ -157,15 +162,16 @@ namespace zebra::parse {
 
 		sp<fConstrBlock> constrExpr();
 
-		sp<fThisFunc> thisFun(sp<fModifiers> mods);
+		sp<fThisFunc> thisFun(sp<fAnnotations> anns, sp<fModifiers> mods);
 
-		sp<fFunc> funDef(sp<fModifiers> mods);
+		sp<fFunc> funDef(sp<fAnnotations> anns, sp<fModifiers> mods);
 
-		sp<fTypeDef> typeDef();
+		sp<fTypeDef> typeDef(sp<fAnnotations> anns, sp<fModifiers> mods);
 
 		sp<fAstOprndNod> blockOrTemplateStmt();
 
 		sp<fSelfType> selfType();
+		sp<fAnnotation> annotation(bool isConstrAnn);
 
 		sp<fTemplateBody> templateBody();
 

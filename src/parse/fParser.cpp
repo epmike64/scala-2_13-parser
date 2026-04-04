@@ -2,6 +2,8 @@
 
 #include "ast/leaf/fAccessModifier.hpp"
 #include "ast/leaf/fAccessQualifier.hpp"
+#include "ast/leaf/fAnnotation.hpp"
+#include "ast/leaf/fAnnotations.hpp"
 #include "ast/leaf/fBlock.hpp"
 #include "ast/leaf/fCaseClause.hpp"
 #include "ast/leaf/fCaseClauses.hpp"
@@ -763,7 +765,7 @@ namespace zebra::parse {
 				h.insertPseudoOperator(a, fLangPseudoOperatorKindE::O_COLON, h.next());
 				switch (*h.tKnd()) {
 					case fTKnd::T_AT_E: {
-						//a->setRight(ms<fAnnotation>(h.next(), type()));
+						a->setRight(annotation(false));
 						return;
 					}
 					case fTKnd::T_ID_E: case fTKnd::T_THIS_E: case fTKnd::T_SUPER_E: case fTKnd::T_LPAREN_E:  {
@@ -1217,7 +1219,7 @@ namespace zebra::parse {
 		return block;
 	}
 
-	sp<fValueDcl> fParser::patDef(fVarMutTypeE mutType, sp<fModifiers> mods) {
+	sp<fValueDcl> fParser::patDef(sp<fAnnotations> anns, sp<fModifiers> mods, fVarMutTypeE mutType) {
 		sp<fValueDcl> value = nullptr;
 		switch (mutType){
 			case fVarMutTypeE::VAL: {
@@ -1267,9 +1269,9 @@ namespace zebra::parse {
 		return params;
 	}
 
-	sp<fValueDcl> fParser::varDef(sp<fModifiers> mods) {
+	sp<fValueDcl> fParser::varDef(sp<fAnnotations> anns, sp<fModifiers> mods) {
 		// patDef() + "ids: Type = _"
-		return patDef(fVarMutTypeE::VAR, mods);
+		return patDef(anns, mods, fVarMutTypeE::VAR);
 	}
 
 	sp<fFunSig> fParser::funSig() {
@@ -1281,7 +1283,7 @@ namespace zebra::parse {
 		return fs;
 	}
 
-	sp<fRegFunc> fParser::regularFun(sp<fModifiers> mods) {
+	sp<fRegFunc> fParser::regularFun(sp<fAnnotations> anns, sp<fModifiers> mods) {
 		sp<fRegFunc> fun = ms<fRegFunc>(std::move(mods), funSig());
 		if (h.isTkColon()) {
 			h.next();
@@ -1389,7 +1391,7 @@ namespace zebra::parse {
 	}
 
 
-	sp<fThisFunc> fParser::thisFun(sp<fModifiers> mods) {
+	sp<fThisFunc> fParser::thisFun(sp<fAnnotations> anns, sp<fModifiers> mods) {
 		h.accept(fTKnd::T_THIS);
 		sp<fThisFunc> fun = ms<fThisFunc>(std::move(mods));
 		fun->setParamClauses(paramClauses());
@@ -1418,23 +1420,23 @@ namespace zebra::parse {
 	}
 
 
-	sp<fFunc> fParser::funDef(sp<fModifiers> mods) {
+	sp<fFunc> fParser::funDef(sp<fAnnotations> anns, sp<fModifiers> mods) {
 		h.accept(fTKnd::T_DEF);
 		switch (*h.tKnd()) {
 			case fTKnd::T_ID_E: case fTKnd::T_PLUS_E: case fTKnd::T_MINUS_E: case fTKnd::T_STAR_E: case fTKnd::T_FORWARD_SLASH_E: case fTKnd::T_PERCENT_E:
 			case fTKnd::T_TILDE_E: case fTKnd::T_EXCLAMATION_E: case fTKnd::T_POUND_E: case fTKnd::T_AMPERSAND_E: case fTKnd::T_PIPE_E: case fTKnd::T_LT_E: case fTKnd::T_GT_E:
 			case fTKnd::T_CARET_E: case fTKnd::T_QUESTION_E:{
-				return regularFun(mods);
+				return regularFun(anns, mods);
 			}
 			case fTKnd::T_THIS_E: {
-				return thisFun(mods);
+				return thisFun(anns, mods);
 			}
 			default:
 				throw std::runtime_error("Expected 'def' followed by identifier or 'this' but found: " + h.getToken()->toString());
 		}
 	}
 
-	sp<fTypeDef> fParser::typeDef() {
+	sp<fTypeDef> fParser::typeDef(sp<fAnnotations> anns, sp<fModifiers> mods) {
 		h.accept(fTKnd::T_TYPE);
 		sp<fTypeDef> t = ms<fTypeDef>(h.next());
 		if (h.isTkLBracket()) {
@@ -1451,25 +1453,26 @@ namespace zebra::parse {
 			return importClause();
 		}
 
+		sp<fAnnotations> anns = annotations();
 		sp<fModifiers> mods = modifiers();
 
 		switch (*h.tKnd()) {
 			case fTKnd::T_CASE_E: case fTKnd::T_CLASS_E: case fTKnd::T_OBJECT_E: case fTKnd::T_TRAIT_E: {
-				return tmplDef(mods);
+				return tmplDef(anns, mods);
 			}
 			case fTKnd::T_VAL_E: {
 				h.next();
-				return patDef(fVarMutTypeE::VAL, mods);
+				return patDef(anns,  mods, fVarMutTypeE::VAL);
 			}
 			case fTKnd::T_VAR_E: {
 				h.next();
-				return varDef(mods);
+				return varDef(anns, mods);
 			}
 			case fTKnd::T_DEF_E: {
-				return funDef(mods);
+				return funDef(anns, mods);
 			}
 			case fTKnd::T_TYPE_E: {
-				return typeDef();
+				return typeDef(anns, mods);
 			}
 			case fTKnd::T_IF_E: case fTKnd::T_WHILE_E: case fTKnd::T_FOR_E: case fTKnd::T_TRY_E: case fTKnd::T_THROW_E: case fTKnd::T_RETURN_E:
 			case fTKnd::T_ID_E: case fTKnd::T_THIS_E: case fTKnd::T_SUPER_E: case fTKnd::T_LPAREN_E: case fTKnd::T_LCURL_E: case fTKnd::T_NEW_E:
@@ -1508,6 +1511,19 @@ namespace zebra::parse {
 		return st;
 	}
 
+	sp<fAnnotation> fParser::annotation(bool isConstrAnn) {
+		h.accept(fTKnd::T_AT);
+		sp<fAnnotation> ann = ms<fAnnotation>(simpleType());
+		if (isConstrAnn) {
+			ann->addArgExprs(exprs());
+		} else {
+			while (h.isTkLParen()) {
+				ann->addArgExprs(exprs());
+			}
+		}
+		return ann;
+	}
+
 	sp<fTemplateBody> fParser::templateBody() {
 		sp<fTemplateBody> tb = ms<fTemplateBody>();
 		if (h.isTkNL()) h.next();
@@ -1534,7 +1550,7 @@ namespace zebra::parse {
 		loop:
 		while (true) {
 			switch (*h.tKnd()) {
-				case fTKnd::T_IMPORT_E: case fTKnd::T_ABSTRACT_E: case fTKnd::T_FINAL_E: case fTKnd::T_SEALED_E: case fTKnd::T_IMPLICIT_E: case fTKnd::T_LAZY_E:
+				case fTKnd::T_AT_E: case fTKnd::T_IMPORT_E: case fTKnd::T_ABSTRACT_E: case fTKnd::T_FINAL_E: case fTKnd::T_SEALED_E: case fTKnd::T_IMPLICIT_E: case fTKnd::T_LAZY_E:
 				case fTKnd::T_OVERRIDE_E: case fTKnd::T_PROTECTED_E: case fTKnd::T_PRIVATE_E:
 				case fTKnd::T_VAL_E: case fTKnd::T_VAR_E: case fTKnd::T_DEF_E: case fTKnd::T_TYPE_E: case fTKnd::T_CASE_E: case fTKnd::T_CLASS_E: case fTKnd::T_OBJECT_E: case fTKnd::T_TRAIT_E:
 				case fTKnd::T_IF_E: case fTKnd::T_WHILE_E: case fTKnd::T_FOR_E: case fTKnd::T_TRY_E: case fTKnd::T_THROW_E: case fTKnd::T_RETURN_E: case fTKnd::T_NEW_E:
@@ -1942,6 +1958,18 @@ namespace zebra::parse {
 		return am;
 	}
 
+	sp<fAnnotations> fParser::annotations() {
+		sp<fAnnotations> ans = nullptr;
+		while (h.isTkAt()) {
+			if (ans == nullptr) {
+				ans = ms<fAnnotations>();
+			}
+			ans->addAnnotation(annotation(false));
+			h.skipNL();
+		}
+		return ans;
+	}
+
 	sp<fModifiers> fParser::modifiers() {
 		sp<fModifiers> mods = nullptr;
 
@@ -1994,7 +2022,7 @@ namespace zebra::parse {
 		}
 	}
 
-	sp<fAstOprndNod> fParser::tmplDef(sp<fModifiers> mods) {
+	sp<fAstOprndNod> fParser::tmplDef(sp<fAnnotations> anns, sp<fModifiers> mods) {
 		bool isCase = false;
 		switch (*h.tKnd()) {
 			case fTKnd::T_CASE_E: {
@@ -2030,10 +2058,11 @@ namespace zebra::parse {
 				cu->addStmt(importClause());
 			} else {
 
+				sp<fAnnotations> anns = annotations();
 				sp<fModifiers> mods = modifiers();
 				switch (*h.tKnd()) {
 					case fTKnd::T_CASE_E: case fTKnd::T_CLASS_E: case fTKnd::T_OBJECT_E: case fTKnd::T_TRAIT_E: {
-						cu->addStmt(tmplDef(mods));
+						cu->addStmt(tmplDef(anns, mods));
 						break;
 					}
 					case fTKnd::T_EOF_E:
