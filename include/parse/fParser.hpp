@@ -20,7 +20,6 @@
 #include "util/fCommon.hpp"
 
 namespace zebra::parse {
-
 	using namespace zebra::ast::leaf;
 	using namespace zebra::lex;
 	using namespace zebra::util;
@@ -29,21 +28,22 @@ namespace zebra::parse {
 	public:
 		fParseHelp h;
 
-		fParser(fLexerIFace& lexer)
+		fParser(fLexerIFace &lexer)
 			: h(lexer) {
 		}
+
 	private:
 		sp<fTypeArgs> types();
-		sp<fTraitDef>  traitDef(sp<fModifiers> mods);
+		sp<fTraitDef> traitDef(sp<fModifiers> mods);
 		sp<fAstOprndNod> classObjectDef(bool isCase, sp<fModifiers> mods);
 		sp<fAstOprndNod> tmplDef(sp<fModifiers> mods);
 		sp<fAccessModifier> accessModifier();
 		sp<fLocalModifier> localModifier();
 		sp<fModifiers> modifiers();
 
-		sp<vector<sp<fImportSelector>>> ImportSelectors();
+		sp<vector<sp<fImportSelector> > > ImportSelectors();
 		sp<fImport> importClause();
-		std::vector<const fToken*> qualIds();
+		std::vector<const fToken *> qualIds();
 		sp<fPackage> packageClause();
 
 		sp<fWhile> exprWhile(sp<fAst> a);
@@ -63,7 +63,7 @@ namespace zebra::parse {
 
 		void typeWith(sp<fAst> a);
 
-		vector<sp<fParamType>> paramTypes(bool isSimpleType);
+		vector<sp<fParamType> > paramTypes(bool isSimpleType);
 
 		void typeFatArrow(sp<fAst> a);
 
@@ -97,19 +97,19 @@ namespace zebra::parse {
 
 		sp<fAstProdSubTreeN> pattern1();
 
-		std::vector<sp<fGenerator>> generators();
+		std::vector<sp<fGenerator> > generators();
 
 		sp<fLiteral> literal();
 
 		sp<fStableId> pathWithKwType();
 
-		sp<fStableId> stableId(bool );
+		sp<fStableId> stableId(bool);
 
 		sp<fStableId> stableId(bool isPath, bool withKwType);
 
-		void exprTid(sp<fAst> a) ;
+		void exprTid(sp<fAst> a);
 		void exprLit(sp<fAst> a);
-		std::vector<const fToken*> ids();
+		std::vector<const fToken *> ids();
 		sp<fAstProdSubTreeN> pattern2();
 
 		sp<fAstProdSubTreeN> pattern();
@@ -136,7 +136,7 @@ namespace zebra::parse {
 
 		sp<fTypeParam> typeParam();
 
-		std::vector<sp<fTypeParam>> funTypeParams();
+		std::vector<sp<fTypeParam> > funTypeParams();
 
 		sp<fValueDcl> varDef(sp<fModifiers> mods);
 
@@ -146,7 +146,7 @@ namespace zebra::parse {
 
 		sp<fParamClauses> paramClauses();
 
-		std::vector<sp<fParam>> paramClause(bool isImplicit);
+		std::vector<sp<fParam> > paramClause(bool isImplicit);
 
 		sp<fParam> param();
 
@@ -170,7 +170,7 @@ namespace zebra::parse {
 
 		sp<fClassParamClauses> classParamClauses();
 
-		std::vector<sp<fClassParam>> classParamClause();
+		std::vector<sp<fClassParam> > classParamClause();
 
 		sp<fParamType> paramType(bool isSimpleType);
 
@@ -192,9 +192,8 @@ namespace zebra::parse {
 		void classParamClauses2(sp<fClassParamClauses> cpcs);
 
 		sp<fAstProdSubTreeN> expr(sp<fAst>);
+
 	public:
 		sp<fCompileUnit> compileUnit();
 	};
-
-
 }
