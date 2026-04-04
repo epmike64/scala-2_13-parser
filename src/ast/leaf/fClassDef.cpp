@@ -13,6 +13,10 @@ namespace zebra::ast::leaf {
 			std::move(modifiers)), isCaseClass_(isCaseClass) {
 	}
 
+	void fClassDef::setConstrAnnotations(sp<fAnnotations> &&annotations) {
+		this->annotations_ = std::move(annotations);
+	}
+
 	void fClassDef::setConstrAccessModifier(sp<fAccessModifier> &&constrAccessModifier) {
 		this->constrAccessModifier_ = std::move(constrAccessModifier);
 	}

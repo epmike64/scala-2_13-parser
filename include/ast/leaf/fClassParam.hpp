@@ -15,7 +15,7 @@ namespace zebra::ast::leaf {
 		sp<fParamType> paramType_;
 		sp<fAstProdSubTreeN> defaultValueExpr_;
 		sp<fModifiers> modifiers_;
-
+		sp<fAnnotations> annotations_;
 	public:
 		fClassParam() = default;
 
@@ -30,6 +30,8 @@ namespace zebra::ast::leaf {
 		void setDefaultValueExpr(sp<fAstProdSubTreeN> &&defaultValue);
 
 		void setModifiers(sp<fModifiers> &&modifiers) ;
+
+		void setAnnotations(sp<fAnnotations> &&annotations) ;
 
 		const fToken* getIdentToken() const;
 

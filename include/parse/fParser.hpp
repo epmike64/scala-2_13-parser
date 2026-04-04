@@ -42,7 +42,7 @@ namespace zebra::parse {
 		sp<fAstOprndNod> classObjectDef(bool isCase, sp<fModifiers> mods);
 		sp<fAstOprndNod> tmplDef(sp<fAnnotations> anns, sp<fModifiers> mods);
 		sp<fAccessModifier> accessModifier();
-		sp<fAnnotations> annotations();
+		sp<fAnnotations> annotations(bool isConstrAnn);
 		sp<fLocalModifier> localModifier();
 		sp<fModifiers> modifiers();
 

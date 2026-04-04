@@ -12,6 +12,10 @@ namespace zebra::ast::leaf {
 		return identifier_;
 	}
 
+	void fClassParam::setAnnotations(sp<fAnnotations> &&annotations) {
+		this->annotations_ = std::move(annotations);
+	}
+
 	const std::string fClassParam::getIdentName() const {
 		if (identifier_ == nullptr) {
 			throw std::runtime_error("Identifier token is null");

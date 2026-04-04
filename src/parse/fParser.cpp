@@ -1453,7 +1453,7 @@ namespace zebra::parse {
 			return importClause();
 		}
 
-		sp<fAnnotations> anns = annotations();
+		sp<fAnnotations> anns = annotations(false);
 		sp<fModifiers> mods = modifiers();
 
 		switch (*h.tKnd()) {
@@ -1576,6 +1576,9 @@ namespace zebra::parse {
 		if (h.isTkLBracket()) {
 			cls->setTypeParamClause(typeParamClause());
 		}
+
+		cls->setConstrAnnotations(annotations(true));
+
 		switch(*h.tKnd()){
 			case fTKnd::T_PRIVATE_E: case fTKnd::T_PROTECTED_E: {
 				cls->setConstrAccessModifier(accessModifier());
@@ -1669,6 +1672,8 @@ namespace zebra::parse {
 
 	sp<fClassParam> fParser::classParam() {
 		sp<fClassParam> p = ms<fClassParam>();
+
+		p->setAnnotations(annotations(false));
 		p->setModifiers(modifiers());
 
 		switch (*h.tKnd()) {
@@ -1958,13 +1963,13 @@ namespace zebra::parse {
 		return am;
 	}
 
-	sp<fAnnotations> fParser::annotations() {
+	sp<fAnnotations> fParser::annotations(bool isConstrAnn) {
 		sp<fAnnotations> ans = nullptr;
 		while (h.isTkAt()) {
 			if (ans == nullptr) {
 				ans = ms<fAnnotations>();
 			}
-			ans->addAnnotation(annotation(false));
+			ans->addAnnotation(annotation(isConstrAnn));
 			h.skipNL();
 		}
 		return ans;
@@ -2058,7 +2063,7 @@ namespace zebra::parse {
 				cu->addStmt(importClause());
 			} else {
 
-				sp<fAnnotations> anns = annotations();
+				sp<fAnnotations> anns = annotations(false);
 				sp<fModifiers> mods = modifiers();
 				switch (*h.tKnd()) {
 					case fTKnd::T_CASE_E: case fTKnd::T_CLASS_E: case fTKnd::T_OBJECT_E: case fTKnd::T_TRAIT_E: {

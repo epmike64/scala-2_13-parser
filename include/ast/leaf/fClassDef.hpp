@@ -15,7 +15,7 @@ namespace zebra::ast::leaf {
 		const bool isCaseClass_;
 		sp<fClassParamClauses> classParamClauses_;
 		sp<fAccessModifier> constrAccessModifier_;
-
+		sp<fAnnotations> annotations_;
 	public:
 		fClassDef(const fToken *className, sp<fModifiers> &&modifiers, bool isCaseClass) ;
 
@@ -33,6 +33,7 @@ namespace zebra::ast::leaf {
 			return isCaseClass_;
 		}
 
+		void setConstrAnnotations(sp<fAnnotations> &&annotations);
 
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) override;
 
