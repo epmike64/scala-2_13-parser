@@ -2,6 +2,14 @@ object ForExamples extends App {
 
   def section(title: String): Unit = println(s"\n=== $title ===")
 
+     // 7. val definitions inside for
+     section("7. val inside for")
+     for {
+       i  <- 1 to 5
+       sq  = i * i
+       if sq > 5
+     } println(s"$i^2 = $sq")
+
   // 1. Basic iteration
   section("1. Basic iteration")
   for (i <- 1 to 5) print(s"$i ")
@@ -61,13 +69,7 @@ object ForExamples extends App {
   val pts = List(Point(1, 2), Point(3, 4))
   for (Point(x, y) <- pts) println(s"x=$x y=$y")
 
-  // 7. val definitions inside for
-  section("7. val inside for")
-  for {
-    i  <- 1 to 5
-    sq  = i * i
-    if sq > 5
-  } println(s"$i^2 = $sq")
+
 
   // 8. Iterating maps
   section("8. Map iteration")

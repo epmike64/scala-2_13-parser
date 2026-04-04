@@ -18,13 +18,13 @@ namespace zebra::ast::leaf {
 		std::vector<sp<fAstProdSubTreeN>> endingExprs_;
 		public:
 
-		fGenerator(sp<fAstProdSubTreeN> &&casePattern1, bool isCase);
+		fGenerator(sp<fAstProdSubTreeN> casePattern1, bool isCase);
 
 		void addGuard(sp<fAstProdSubTreeN> &&guard);
 
 		 void setInExpr(sp<fAstProdSubTreeN> &&inExpr) ;
 
-		 void addEndingPattern1(sp<fAstProdSubTreeN> &&endingPattern1);
+		 void addEndingPattern1(sp<fAstProdSubTreeN> endingPattern1);
 
 		 void addEndingExpr(sp<fAstProdSubTreeN> &&endingExpr) ;
 		 sp<fAstProdSubTreeN> getCasePattern1() const ;

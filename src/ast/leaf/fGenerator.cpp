@@ -5,7 +5,7 @@
 
 namespace zebra::ast::leaf {
 
-	fGenerator::fGenerator(sp<fAstProdSubTreeN> &&casePattern1, bool isCase) : casePattern1_(std::move(casePattern1)), isCase(isCase) {
+	fGenerator::fGenerator(sp<fAstProdSubTreeN> casePattern1, bool isCase) : casePattern1_(std::move(casePattern1)), isCase(isCase) {
 		if (this->casePattern1_ == nullptr) {
 			throw std::invalid_argument("Case pattern cannot be null");
 		}
@@ -25,7 +25,7 @@ namespace zebra::ast::leaf {
 		this->inExpr_ = std::move(inExpr);
 	}
 
-	void fGenerator::addEndingPattern1(sp<fAstProdSubTreeN> &&endingPattern1) {
+	void fGenerator::addEndingPattern1(sp<fAstProdSubTreeN> endingPattern1) {
 		if (endingPattern1 == nullptr) {
 			throw std::invalid_argument("Ending pattern cannot be null");
 		}

@@ -163,6 +163,8 @@ namespace zebra::parse {
 	std::vector<sp<fGenerator>> fParser::generators() {
 		std::vector<sp<fGenerator>> gens;
 
+		sp<fAstProdSubTreeN> p1 = nullptr;
+
 		outerLoopTop:
 		while (true) {
 			bool isCase = false;
@@ -170,7 +172,9 @@ namespace zebra::parse {
 				h.next();
 				isCase = true;
 			}
-			sp<fGenerator> g = ms<fGenerator>(pattern1(), isCase);
+			if (!p1) p1 = pattern1();
+			sp<fGenerator> g = ms<fGenerator>(p1, isCase);
+			p1 = nullptr;
 			gens.push_back(g);
 			h.accept(fTKnd::T_IN);
 			g->setInExpr(expr(nullptr));
@@ -190,7 +194,17 @@ namespace zebra::parse {
 					case fTKnd::T_UNDERSCORE_E: case fTKnd::T_ID_E: case fTKnd::T_THIS_E: case fTKnd::T_SUPER_E: case fTKnd::T_LPAREN_E:
 					case fTKnd::T_INT_LIT_E: case fTKnd::T_FLOAT_LIT_E: case fTKnd::T_STRING_LIT_E: case fTKnd::T_CHAR_LIT_E: case fTKnd::T_TRUE_E: case fTKnd::T_FALSE_E:
 					case fTKnd::T_NULL_E: {
-						if(gotSemi) goto outerLoopTop;
+						// if(gotSemi) goto outerLoopTop;
+						if (gotSemi) {
+							p1 = pattern1();
+							if (h.isTkAssign()) {
+								g->addEndingPattern1(p1); p1 = nullptr;
+								h.next();
+								g->addEndingExpr(expr(nullptr));
+								goto innerLoopTop;
+							}
+							goto outerLoopTop;
+						}
 						g->addEndingPattern1(pattern1());
 						h.accept(fTKnd::T_ASSIGN);
 						g->addEndingExpr(expr(nullptr));
