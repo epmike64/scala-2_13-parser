@@ -17,11 +17,15 @@ namespace zebra::ast::leaf {
 
 		 fConstrBlock() = default;
 
+		bool isSelfInvocation()  {
+			return argExprs_ != nullptr;
+		}
+
 		 void addArgExprs(sp<fAstProdSubTreeN>&& argExpr);
 
 		 void addBlockStmt(sp<fAstNod> && stmt) ;
 
-		 PVecP<fAstProdSubTreeN> getArgExprs() const;
+		 PVecP<fAstProdSubTreeN> getArgExprs();
 
 		PVecP<fAstNod> getBlockStmts();
 

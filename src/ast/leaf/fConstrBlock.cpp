@@ -25,6 +25,13 @@ namespace zebra::ast::leaf {
 		argExprs_->push_back(std::move(expr));
 	}
 
+	PVecP<fAstNod> fConstrBlock::getBlockStmts() {
+		return blockStmts_;
+	}
+
+	PVecP<fAstProdSubTreeN> fConstrBlock::getArgExprs() {
+		return argExprs_;
+	}
 
 	void fConstrBlock::accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) {
 		visitor->visit(std::static_pointer_cast<fConstrBlock>(shared_from_this()), s);
