@@ -128,10 +128,6 @@ namespace zebra::ast::symbol {
 
 
 
-	class ZThisFunc: public ZFunc{
-	public:
-		ZThisFunc() : ZFunc(Z_THIS_FUNC_DEF){}
-	};
 
 	class ZTreePostOrderSS {
 		PVecP<ZSymbol> postOrderSS_;
@@ -726,6 +722,19 @@ namespace zebra::ast::symbol {
 	};
 
 
+	class ZThisFunc: public ZFunc{
+	protected:
+		sp<ZParamList> paramList_;
+		sp<ZConstrBlock> constrBlock_;
+	public:
+		ZThisFunc() : ZFunc(Z_THIS_FUNC_DEF){}
+		void setParamClauses(sp<ZParamList> p) {
+			paramList_ = p;
+		}
+		void setConstrBlock(sp<ZConstrBlock> cb) {
+			constrBlock_ = cb;
+		}
+	};
 
 
 	class ZCompileUnit: public ZIdSymbol, public ZStmtList {

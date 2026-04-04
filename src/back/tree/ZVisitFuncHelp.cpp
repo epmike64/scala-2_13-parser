@@ -7,6 +7,8 @@
 #include "ast/leaf/fModifiers.hpp"
 #include "ast/leaf/fParamClauses.hpp"
 #include "ast/leaf/fRegFunc.hpp"
+#include "ast/leaf/fThisFunc.hpp"
+#include "ast/leaf/fConstrBlock.hpp"
 #include "ast/symbol/ZSymbolBox.hpp"
 #include "ast/symbol/ZSymbol.hpp"
 #include "back/tree/ZVisitUtil.hpp"
@@ -69,6 +71,15 @@ namespace zebra::back::tree {
 
 	void ZVisitFuncHelp::visitThisFunc(sp<fThisFunc> n, sbx prnSbx, sp<fAstNodVisitor> visitor) {
 		std::cout << "Visiting This Function" << std::endl;
+		sp<ZThisFunc> zDef = initScopeSymbol<ZThisFunc>(prnSbx);
+		if (n->getParamClauses()) {
+			sbx symBx = visitChildNode(n->getParamClauses(), visitor);
+			zDef->setParamClauses(dynSp<ZParamList>(symBx->getZSymbol()));
+		}
+		if (n->getConstrBlock()) {
+			sbx symBx = visitChildNode(n->getConstrBlock(), visitor);
+			zDef->setConstrBlock(dynSp<ZConstrBlock>(symBx->getZSymbol()));
+		}
 	}
 
 }
