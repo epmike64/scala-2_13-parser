@@ -11,13 +11,17 @@ namespace zebra::ast::leaf {
 	using namespace ast::symbol;
 
 	class fSelfType: public fLangOprnd {
-		const fToken* selfToken_;
+		const fToken* identName_;
 		sp<fType> selfType_;
 	public:
 		explicit fSelfType(const fToken* selfToken) ;
 
 		void setSelfType(sp<fType> &&selfType);
 		sp<fType> getSelfType();
+
+		const fToken* getIdentToken() const ;
+
+		const std::string& getIdentName() const;
 
 		std::string toString() const override;
 		void accept(std::shared_ptr<fAstNodVisitor> visitor, sbx s) override;

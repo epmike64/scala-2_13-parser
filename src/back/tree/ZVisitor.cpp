@@ -97,6 +97,11 @@ namespace zebra::back::tree {
 
 	void ZVisitor::visit(sp<fSelfType> n, sbx prnSbx) {
 		std::cout << "Visiting Self Type" << std::endl;
+		sp<ZSelfType> zDef = initScopeSymbol<ZSelfType>(prnSbx, n->getIdentName());
+		if (n->getSelfType()) {
+			sbx symBx = visitChildNode(n->getSelfType(),  shared_from_this());
+			zDef->setSelfType(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
+		}
 	}
 
 	void ZVisitor::visit(sp<fParamClauses> n, sbx prnSbx) {
@@ -105,14 +110,14 @@ namespace zebra::back::tree {
 
 		for (auto paramList : n->getParamLists()) {
 			for (auto param : paramList) {
-				sbx subSc = visitChildNode(param, shared_from_this());
-				zDef->addParam(dynSp<ZParam>(subSc->getZSymbol()));
+				sbx symBx = visitChildNode(param, shared_from_this());
+				zDef->addParam(dynSp<ZParam>(symBx->getZSymbol()));
 			}
 		}
 		if (n->getImplicitParamList()) {
 			for (auto param: *n->getImplicitParamList()) {
-				sbx subSc = visitChildNode(param,  shared_from_this());
-				zDef->addParam(dynSp<ZParam>(subSc->getZSymbol()));
+				sbx symBx = visitChildNode(param,  shared_from_this());
+				zDef->addParam(dynSp<ZParam>(symBx->getZSymbol()));
 			}
 		}
 	}

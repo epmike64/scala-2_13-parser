@@ -436,6 +436,18 @@ namespace zebra::ast::symbol {
 		}
 	};
 
+	class ZSelfType: public ZIdSymbol {
+		protected:
+		const std::string name_;
+		sp<ZTreePostOrderSS> selfType_;
+		public:
+		ZSelfType(std::string name) : ZIdSymbol(name, Z_SELF_TYPE), name_(std::move(name)) {}
+		ZSelfType(std::string name, ZLangConstruct c) : ZIdSymbol(name, c), name_(std::move(name)) {}
+		void setSelfType(sp<ZTreePostOrderSS> s) {
+			selfType_ = s;
+		}
+	};
+
 	class ZRegFunc: public ZSymbol {
 	protected:
 		sp<ZFunSig> funSig_;
