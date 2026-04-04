@@ -1,9 +1,7 @@
 #pragma once
 
 #include "fAstNod.hpp"
-
 #include "fAstProdSubTreeN.hpp"
-#include "ast/leaf/fVarargsExpansion.hpp"
 #include "util/fCommon.hpp"
 
 // fIf and fTypeParamClause are forward-declared in the namespace block below;
@@ -12,6 +10,8 @@
 namespace zebra::ast::leaf {
 	class fAccessModifier;
 	class fAccessQualifier;
+	class fAnnotation;
+	class fAnnotations;
 	class fBlock;
 	class fCaseClause;
 	class fCaseClauses;
@@ -91,6 +91,8 @@ namespace zebra::ast::node {
 
 		virtual void visit(sp<fAccessModifier>, sbx) = 0;
 		virtual void visit(sp<fAccessQualifier>, sbx) = 0;
+		virtual void visit(sp<fAnnotation>, sbx) = 0;
+		virtual void visit(sp<fAnnotations>, sbx) = 0;
 		virtual void visit(sp<fBlock>, sbx) = 0;
 		virtual void visit(sp<fCaseClause>, sbx) = 0;
 		virtual void visit(sp<fCaseClauses>, sbx) = 0;

@@ -14,6 +14,8 @@
 #include "ast/leaf/fWhile.hpp"
 #include "ast/leaf/fBlock.hpp"
 #include "ast/leaf/fAccessModifier.hpp"
+#include "ast/leaf/fAnnotation.hpp"
+#include "ast/leaf/fAnnotations.hpp"
 #include "ast/leaf/fClassConstr.hpp"
 #include "ast/leaf/fClassParam.hpp"
 #include "ast/leaf/fFunc.hpp"
@@ -51,6 +53,8 @@ namespace zebra::back::tree {
 		//-- Leaf node visit methods
 		void visit(sp<fAccessModifier>, sbx) override;
 		void visit(sp<fAccessQualifier>, sbx) override;
+		void visit(sp<fAnnotation>, sbx) override;
+		void visit(sp<fAnnotations>, sbx) override;
 		void visit(sp<fBlock>, sbx) override;
 		void visit(sp<fCaseClause>, sbx) override;
 		void visit(sp<fCaseClauses>, sbx) override;

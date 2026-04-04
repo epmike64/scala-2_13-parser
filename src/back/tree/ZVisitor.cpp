@@ -28,6 +28,7 @@
 #include "ast/leaf/fThrow.hpp"
 #include "ast/leaf/fTry.hpp"
 #include "ast/leaf/fTypeDef.hpp"
+#include "ast/leaf/fVarargsExpansion.hpp"
 #include "ast/leaf/fTypeParam.hpp"
 #include "ast/leaf/fUnderscore.hpp"
 #include "ast/leaf/fValueDcl.hpp"
@@ -94,6 +95,13 @@ namespace zebra::back::tree {
 		ZVisitClassHelp::visitTemplateBody(n, prnSbx, shared_from_this());
 	}
 
+	void ZVisitor::visit(sp<fAnnotations> n, sbx prnSbx) {
+
+	}
+
+	void ZVisitor::visit(sp<fAnnotation> n, sbx prnSbx) {
+
+	}
 
 	void ZVisitor::visit(sp<fSelfType> n, sbx prnSbx) {
 		std::cout << "Visiting Self Type" << std::endl;

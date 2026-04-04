@@ -2,10 +2,11 @@
 #include "fAnnotation.hpp"
 #include "fParamType.hpp"
 #include "ast/node/fAstProdSubTreeN.hpp"
-
+#include "util/fCommon.hpp"
 
 namespace zebra::ast::leaf {
 	using namespace ast::node;
+	using namespace util;
 
 	class fAnnotations: public fLangOprnd {
 		PVecP<fAnnotation> annotations_;
