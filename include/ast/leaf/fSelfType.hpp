@@ -1,20 +1,20 @@
 #pragma once
+
+#include "../fLangOperand.hpp"
+#include "ast/node/fAstOprndNod.hpp"
+#include "ast/node/fAstNodVisitor.hpp"
 #include "fType.hpp"
 #include "util/fCommon.hpp"
-#include "../fLangOperand.hpp"
-#include "lex/kind/fLangOperatorKind.hpp"
-
-
 
 namespace zebra::ast::leaf {
 	using namespace ast::node;
 	using namespace ast::symbol;
 
 	class fSelfType: public fLangOprnd {
-		fToken selfToken_;
+		const fToken* selfToken_;
 		sp<fType> selfType_;
 	public:
-		explicit fSelfType(const lex::token::fToken &selfToken) ;
+		explicit fSelfType(const fToken* selfToken) ;
 
 		void setSelfType(sp<fType> &&selfType);
 		sp<fType> getSelfType();
