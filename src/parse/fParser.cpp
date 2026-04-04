@@ -326,10 +326,10 @@ namespace zebra::parse {
 				break;
 			}
 			default:
-				throw std::runtime_error("Unexpected AST node kind: " + std::to_string(static_cast<int>(a->astLastNKnd())));
+				a->setIsContinue(false);
+		      break;
 		}
 	}
-
 
 	void fParser::exprUnderscore(sp<fAst> a) {
 		switch (a->astLastNKnd()) {

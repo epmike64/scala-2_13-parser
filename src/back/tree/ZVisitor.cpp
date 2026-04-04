@@ -263,7 +263,6 @@ namespace zebra::back::tree {
 		sp<ZGenerator> zDef = initScopeSymbol<ZGenerator>(prnSbx);
 
 		if (n->getCasePattern1()) {
-			// n->getCasePattern1()->accept(shared_from_this(), prnSbx);
 			sbx symBx = visitChildNode(n->getCasePattern1(), shared_from_this());
 			zDef->setCasePattern1(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
 		}
