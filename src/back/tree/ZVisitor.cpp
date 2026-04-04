@@ -242,6 +242,48 @@ namespace zebra::back::tree {
 		}
 	}
 
+	void ZVisitor::visit(sp<fFor> n, sbx prnSbx) {
+		std::cout << "Visiting For Loop" << std::endl;
+
+		sp<ZFor> zDef = initScopeSymbol<ZFor>(prnSbx);
+
+		for (const auto& gen : n->getGenerators()) {
+			sbx symBx = visitChildNode(gen, shared_from_this());
+			zDef->addGenerator(dynSp<ZGenerator>(symBx->getZSymbol()));
+		}
+
+		if (n->getYieldExpr()) {
+			sbx symBx = visitChildNode(n->getYieldExpr(), shared_from_this());
+			zDef->setYieldExpr(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
+		}
+	}
+
+	void ZVisitor::visit(sp<fGenerator> n, sbx prnSbx) {
+		std::cout << "Visiting Generator" << std::endl;
+		sp<ZGenerator> zDef = initScopeSymbol<ZGenerator>(prnSbx);
+
+		if (n->getCasePattern1()) {
+			// n->getCasePattern1()->accept(shared_from_this(), prnSbx);
+			sbx symBx = visitChildNode(n->getCasePattern1(), shared_from_this());
+			zDef->setCasePattern1(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
+		}
+
+		for (const auto& guard : n->getGuards()) {
+			sbx symBx = visitChildNode(guard, shared_from_this());
+			zDef->addGuard(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
+		}
+
+		for (const auto& ep : n->getEndingPattern1s()) {
+			sbx symBx = visitChildNode(ep, shared_from_this());
+			zDef->addEndingPattern1(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
+		}
+
+		for (const auto& ee : n->getEndingExprs()) {
+			sbx symBx = visitChildNode(ee, shared_from_this());
+			zDef->addEndingExpr(dynSp<ZProdSubTreeN>(symBx->getZSymbol())->getTreePostOrderSS());
+		}
+	}
+
 	void ZVisitor::visit(sp<fCaseClauses> n, sbx prnSbx) {
 		std::cout << "Visiting Case Clauses" << std::endl;
 		sp<ZCaseClauses> zDef = initScopeSymbol<ZCaseClauses>(prnSbx);
@@ -275,44 +317,14 @@ namespace zebra::back::tree {
 		}
 	}
 
-	void ZVisitor::visit(sp<fFor> n, sbx prnSbx) {
-		std::cout << "Visiting For Loop" << std::endl;
-		// if (n->getGenerators().size() > 0) {
-		// 	std::cout << "Visiting Generators in For Loop" << std::endl;
-		// 	for (const auto& gen : n->getGenerators()) {
-		// 		gen->accept(shared_from_this(), prnSbx);
-		// 	}
-		// }
-		// if (n->getYieldExpr()) {
-		// 	std::cout << "Visiting For Loop Body" << std::endl;
-		// 	n->getYieldExpr()->accept(shared_from_this(), prnSbx);
-		// }
-	}
+
 
 	void ZVisitor::visit(sp<fFunc> n, sbx prnSbx) {
 		std::cout << "Visiting fFun" << std::endl;
 		throw std::runtime_error("Unimplemented");
 	}
 
-	void ZVisitor::visit(sp<fGenerator> n, sbx prnSbx) {
-		std::cout << "Visiting Generator" << std::endl;
-		// if (n->getCasePattern1()) {
-		// 	std::cout << "Visiting Enumerator in Generator" << std::endl;
-		// 	n->getCasePattern1()->accept(shared_from_this(), prnSbx);
-		// }
-		// for (const auto& guard : n->getGuards()) {
-		// 	std::cout << "Visiting Guard in Generator" << std::endl;
-		// 	guard->accept(shared_from_this(), prnSbx);
-		// }
-		// for (const auto& ep : n->getEndingPattern1s()) {
-		// 	std::cout << "Visiting Ending Pattern in Generator" << std::endl;
-		// 	ep->accept(shared_from_this(), prnSbx);
-		// }
-		// for (const auto& ee : n->getEndingExprs()) {
-		// 	std::cout << "Visiting Ending Expression in Generator" << std::endl;
-		// 	ee->accept(shared_from_this(), prnSbx);
-		// }
-	}
+
 
 	void ZVisitor::visit(sp<fId> n, sbx prnSbx) {
 		std::cout << "Visiting Identifier: " << n->toString() << std::endl;

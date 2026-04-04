@@ -736,7 +736,52 @@ namespace zebra::ast::symbol {
 		}
 	};
 
+	class ZGenerator: public ZSymbol {
+	protected:
+		sp<ZTreePostOrderSS> casePattern1_;
+		sp<ZTreePostOrderSS> inExpr_;
+		PVecP<ZTreePostOrderSS> guards_;
+		PVecP<ZTreePostOrderSS> endingPattern1s_;
+	public:
+		ZGenerator() : ZSymbol(Z_GENERATOR) {}
+		void setCasePattern1(sp<ZTreePostOrderSS> cp) {
+			casePattern1_ = cp;
+		}
+		void setInExpr(sp<ZTreePostOrderSS> ie) {
+			inExpr_ = ie;
+		}
+		void addGuard(sp<ZTreePostOrderSS> g) {
+			if (guards_ == nullptr) {
+				guards_ = ms<std::vector<std::shared_ptr<ZTreePostOrderSS>>>();
+			}
+			guards_->push_back(g);
+		}
+		void addEndingPattern1(sp<ZTreePostOrderSS> ep) {
+			if (endingPattern1s_ == nullptr) {
+				endingPattern1s_ = ms<std::vector<std::shared_ptr<ZTreePostOrderSS>>>();
+			}
+			endingPattern1s_->push_back(ep);
+		}
+		void addEndingExpr(sp<ZTreePostOrderSS> ee) {
+			if (endingPattern1s_ == nullptr) {
+				endingPattern1s_ = ms<std::vector<std::shared_ptr<ZTreePostOrderSS>>>();
+			}
+			endingPattern1s_->push_back(ee);
+		}
+	};
 
+	class ZFor : public ZSymbol {
+		vecP<ZGenerator> generators_;
+		sp<ZTreePostOrderSS> yieldExpr_;
+		public:
+		ZFor() : ZSymbol(Z_FOR) {}
+		void addGenerator(sp<ZGenerator> g) {
+			generators_.push_back(g);
+		}
+		void setYieldExpr(sp<ZTreePostOrderSS> y) {
+			yieldExpr_ = y;
+		}
+	 };
 	class ZCompileUnit: public ZIdSymbol, public ZStmtList {
 	protected:
 		std::string packgName_;
