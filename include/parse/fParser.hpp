@@ -79,6 +79,7 @@ namespace zebra::parse {
 
 
 		void exprDot(sp<fAst> a);
+		void exprColon(sp<fAst> a);
 
 		void exprFatArrow(sp<fAst> a);
 

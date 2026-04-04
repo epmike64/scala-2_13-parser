@@ -3,6 +3,7 @@
 #include "fAstNod.hpp"
 
 #include "fAstProdSubTreeN.hpp"
+#include "ast/leaf/fVarargsExpansion.hpp"
 #include "util/fCommon.hpp"
 
 // fIf and fTypeParamClause are forward-declared in the namespace block below;
@@ -60,6 +61,7 @@ namespace zebra::ast::leaf {
 	class fUnderscore;
 	class fValueDcl;
 	class fVariantTypeParam;
+	class fVarargsExpansion;
 	class fWhile;
 }
 
@@ -138,6 +140,7 @@ namespace zebra::ast::node {
 		virtual void visit(sp<fValueDcl>, sbx) = 0;
 		virtual void visit(sp<fTypeParamClause> n, sbx)  = 0;
 		virtual void visit(sp<fVariantTypeParam>, sbx) = 0;
+		virtual void visit(sp<fVarargsExpansion>, sbx) = 0;
 		virtual void visit(sp<fWhile>, sbx) = 0;
 	};
 }

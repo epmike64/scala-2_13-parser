@@ -459,6 +459,9 @@ namespace zebra::back::tree {
 		ZVisitPSubTreeHelp::traverseProdSubTree(subTr, prnSbx, shared_from_this());
 	}
 
+	void ZVisitor::visit(sp<fVarargsExpansion> n, sbx prnSbx) {
+		std::cout << "Visiting Varargs Expansion: " << n->toString() << std::endl;
+	}
 
 	void ZVisitor::visit(sp<fAccessModifier> n, sbx prnSbx) {
 		std::cout << "Visiting Access Modifier: " << n->toString() << std::endl;

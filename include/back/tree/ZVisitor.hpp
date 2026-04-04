@@ -99,6 +99,7 @@ namespace zebra::back::tree {
 		void visit(sp<fValueDcl>, sbx) override;
 		void visit(sp<fTypeParamClause> n, sbx) override;
 		void visit(sp<fVariantTypeParam>, sbx) override;
+		void visit(sp<fVarargsExpansion> n, sbx prnSbx) override;
 		void visit(sp<fWhile>, sbx) override;
 
 		sp<ZProgram> getZProgram() {

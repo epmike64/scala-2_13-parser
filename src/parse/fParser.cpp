@@ -35,6 +35,7 @@
 #include "ast/leaf/fTypeDef.hpp"
 #include "ast/leaf/fUnderscore.hpp"
 #include "ast/leaf/fValueDcl.hpp"
+#include "ast/leaf/fVarargsExpansion.hpp"
 #include "ast/leaf/fVariantTypeParam.hpp"
 #include "ast/leaf/fWhile.hpp"
 #include "lex/kind/fVarianceE.hpp"
@@ -756,6 +757,36 @@ namespace zebra::parse {
 		}
 	}
 
+	void fParser::exprColon(sp<fAst> a) {//Ascription
+		switch (a->astLastNKnd()){
+			case fAstNodKndE::AST_OPERAND: {
+				h.insertPseudoOperator(a, fLangPseudoOperatorKindE::O_COLON, h.next());
+				switch (*h.tKnd()) {
+					case fTKnd::T_AT_E: {
+						//a->setRight(ms<fAnnotation>(h.next(), type()));
+						return;
+					}
+					case fTKnd::T_ID_E: case fTKnd::T_THIS_E: case fTKnd::T_SUPER_E: case fTKnd::T_LPAREN_E:  {
+						a->setRight(type());
+						return;
+					}
+					case fTKnd::T_UNDERSCORE_E: {
+						if (h.isLa(1, fTKnd::T_STAR)) {
+							a->setRight(ms<fVarargsExpansion>(h.next()));
+							h.next();
+							return;
+						}
+					}
+					default:
+						throw std::runtime_error("Unexpected token after colon: " + h.getToken()->toString());
+				}
+				break;
+			}
+			default:
+				throw std::runtime_error("Colon in unexpected place: " + h.getToken()->toString());
+		}
+	}
+
 	void fParser::exprFatArrow(sp<fAst> a) {
 		switch (a->astLastNKnd()){
 			case fAstNodKndE::AST_OPERAND: {
@@ -833,6 +864,10 @@ namespace zebra::parse {
 						a->setRight(expr(nullptr));
 						goto out_wlp;
 					}
+					continue;
+				}
+				case fTKnd::T_COLON_E: {// expr1 : PostfixExpr Ascription
+					exprColon(a);
 					continue;
 				}
 				case fTKnd::T_FAT_ARROW_E: {

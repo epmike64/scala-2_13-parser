@@ -2,13 +2,10 @@ object ForExamples extends App {
 
   def section(title: String): Unit = println(s"\n=== $title ===")
 
-     // 7. val definitions inside for
-     section("7. val inside for")
-     for {
-       i  <- 1 to 5
-       sq  = i * i
-       if sq > 5
-     } println(s"$i^2 = $sq")
+  val right0: Either[String, Int] = for {
+    a <- Right(10): Either[String, Int]
+    b <- Right(5):  Either[String, Int]
+  } yield a + b
 
   // 1. Basic iteration
   section("1. Basic iteration")
@@ -49,7 +46,7 @@ object ForExamples extends App {
 
   // 5. yield
   section("5. yield")
-  val squares = for (i <- 1 to 5) yield i * i
+  val squares = for (i <- 1 + 20 * 9 to 5 + 20 if i % 2 == 0) yield i * i
   println(squares)
   val evens = for (i <- 1 to 10 if i % 2 == 0) yield i
   println(evens)
@@ -69,7 +66,13 @@ object ForExamples extends App {
   val pts = List(Point(1, 2), Point(3, 4))
   for (Point(x, y) <- pts) println(s"x=$x y=$y")
 
-
+  // 7. val definitions inside for
+  section("7. val inside for")
+  for {
+    i  <- 1 to 5
+    sq  = i * i
+    if sq > 5
+  } println(s"$i^2 = $sq")
 
   // 8. Iterating maps
   section("8. Map iteration")
@@ -103,4 +106,7 @@ object ForExamples extends App {
     b <- Left("err"): Either[String, Int]
   } yield a + b
   println(left)
+
+//  val z = true
+//  val Z = 10 + 5 if(z) 10
 }
