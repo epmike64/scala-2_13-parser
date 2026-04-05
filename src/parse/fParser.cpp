@@ -1338,7 +1338,14 @@ namespace zebra::parse {
 	}
 
 	sp<fParam> fParser::param() {
+		sp<fAnnotations> anns;
+		if (h.isTkAt()) {
+			anns = annotations(false);
+		}
 		sp<fParam> p = ms<fParam>(h.next());
+		if (anns) {
+			p->setAnnotations(std::move(anns));
+		}
 		if (h.isTkColon()) {
 			h.next();
 			p->setParamType(paramType(false));
@@ -1754,6 +1761,11 @@ namespace zebra::parse {
 
 	sp<fVariantTypeParam> fParser::variantTypeParam() {
 		fVarianceE variance = fVarianceE::INVARIANT;
+
+		sp<fAnnotations> anns;
+		if (h.isTkAt()) {
+			anns = annotations(false);
+		}
 		if (h.isTkPlus()) {
 			h.next();
 			variance = fVarianceE::COVARIANT;
@@ -1762,6 +1774,9 @@ namespace zebra::parse {
 			variance = fVarianceE::CONTRAVARIANT;
 		}
 		sp<fVariantTypeParam> p = ms<fVariantTypeParam>(variance);
+		if (anns) {
+			p->setAnnotations(std::move(anns));
+		}
 		p->setTypeParam(typeParam());
 		return p;
 	}

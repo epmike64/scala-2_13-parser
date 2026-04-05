@@ -13,9 +13,14 @@ namespace zebra::ast::leaf {
 		const fToken* identifier_;
 		sp<fParamType> paramType_;
 		sp<fAstProdSubTreeN> defaultValue_;
+		sp<fAnnotations> anns;
 		public:
 
 		fParam(const fToken* identifier);
+
+		void setAnnotations(sp<fAnnotations> &&annotations);
+
+		 sp<fAnnotations> getAnnotations() const;
 
 		void setParamType(sp<fParamType> &&paramType);
 

@@ -14,11 +14,16 @@ namespace zebra::ast::leaf {
 	class fVariantTypeParam : public fLangOprnd {
 		fVarianceE variance_ = fVarianceE::INVARIANT;
 		sp<fTypeParam> typeParam_;
+		sp<fAnnotations> anns_;
+
 	public:
 		explicit fVariantTypeParam(lex::kind::fVarianceE variance) : variance_(variance) {
 		}
 
-		 void setTypeParam(const sp<fTypeParam> &typeParam) ;
+		void setAnnotations(sp<fAnnotations> &&annotations);
+		 sp<fAnnotations> getAnnotations() const;
+
+		void setTypeParam(const sp<fTypeParam> &typeParam);
 
 		sp<fTypeParam> getTypeParam();
 		fVarianceE getVariance() const;
@@ -29,6 +34,6 @@ namespace zebra::ast::leaf {
 
 		fLangOprndType getLangOprndType() override {
 			return LOprndT::VARIANT_TYPE_PARAM;
-		 }
+		}
 	};
 }

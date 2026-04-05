@@ -15,6 +15,17 @@ namespace zebra::ast::leaf {
 		}
 	}
 
+	void fParam::setAnnotations(sp<fAnnotations> &&annotations) {
+		if (annotations == nullptr) {
+			throw std::invalid_argument("Annotations cannot be null");
+		}
+		this->anns = std::move(annotations);
+	}
+
+	sp<fAnnotations> fParam::getAnnotations() const {
+		return anns;
+	}
+
 	void fParam::setParamType(sp<fParamType> &&paramType) {
 		this->paramType_ = std::move(paramType);
 	}

@@ -5,6 +5,14 @@
 
 namespace zebra::ast::leaf {
 
+	void fVariantTypeParam::setAnnotations(sp<fAnnotations> &&annotations) {
+		this->anns_ = std::move(annotations);
+	}
+	
+	sp<fAnnotations> fVariantTypeParam::getAnnotations() const {
+		return anns_;
+	}
+
 	lex::kind::fVarianceE fVariantTypeParam::getVariance() const {
 		return variance_;
 	}
