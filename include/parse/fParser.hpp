@@ -64,8 +64,6 @@ namespace zebra::parse {
 
 		sp<fParamType> simpleType(sp<fAst> a);
 
-		void simpleType_2(sp<fAst> a);
-
 		void typeWith(sp<fAst> a);
 		sp<fParamType> annotType(sp<fAst> a);
 
