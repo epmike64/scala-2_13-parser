@@ -9,9 +9,15 @@ namespace zebra::ast::leaf {
 	using namespace ast::node;
 
 	class fParamType : public fType {
-	const bool isFatArrow, isStar;
-		public:
-		fParamType(sp<fType> &&type, bool isFatArrow, bool isStar) ;
+		const bool isFatArrow, isStar;
+		sp<fAnnotations> annotations_;
+
+	public:
+		fParamType(sp<fType> &&type, bool isFatArrow, bool isStar);
+
+		void addAnnotations(sp<fAnnotations> &&annotations);
+		sp<fAnnotations> getAnnotations() const;
+
 		const bool getIsFatArrow() const {
 			return isFatArrow;
 		}
@@ -25,6 +31,6 @@ namespace zebra::ast::leaf {
 
 		fLangOprndType getLangOprndType() override {
 			return LOprndT::PARAM_TYPE;
-		 }
+		}
 	};
 }
