@@ -872,10 +872,6 @@ namespace zebra::parse {
 					}
 					continue;
 				}
-				case fTKnd::T_COLON_E: {// expr1 : PostfixExpr Ascription
-					exprColon(a);
-					continue;
-				}
 				case fTKnd::T_FAT_ARROW_E: {
 					exprFatArrow(a);
 					continue;
@@ -966,12 +962,12 @@ namespace zebra::parse {
 					}
 					continue;
 				}
+				case fTKnd::T_COLON_E: {// expr1 : PostfixExpr Ascription
+					exprColon(a);
+					continue;
+				}
 				case fTKnd::T_ID_E: {
 					exprTID(a, false);
-					if (h.isTkColon()) {  // Binding ::= (id | '_') [':' Type]
-						h.insertPseudoOperator(a,  fLangPseudoOperatorKindE::O_COLON, h.next());
-						a->setRight(type());
-					}
 					continue;
 				}
 				case fTKnd::T_THIS_E: case fTKnd::T_SUPER_E: {
@@ -1206,7 +1202,7 @@ namespace zebra::parse {
 					}
 				}
 					//fall through
-				case fTKnd::T_IMPORT_E: case fTKnd::T_IMPLICIT_E: case fTKnd::T_LAZY_E: case fTKnd::T_ABSTRACT_E: case fTKnd::T_FINAL_E: case fTKnd::T_SEALED_E:
+				case  fTKnd::T_AT_E: case fTKnd::T_IMPORT_E: case fTKnd::T_IMPLICIT_E: case fTKnd::T_LAZY_E: case fTKnd::T_ABSTRACT_E: case fTKnd::T_FINAL_E: case fTKnd::T_SEALED_E:
 				case fTKnd::T_VAL_E: case fTKnd::T_VAR_E: case fTKnd::T_DEF_E: case fTKnd::T_TYPE_E: case fTKnd::T_CLASS_E: case fTKnd::T_OBJECT_E: case fTKnd::T_TRAIT_E:
 				case fTKnd::T_IF_E: case fTKnd::T_WHILE_E: case fTKnd::T_FOR_E: case fTKnd::T_TRY_E: case fTKnd::T_THROW_E: case fTKnd::T_RETURN_E: case fTKnd::T_NEW_E:
 				case fTKnd::T_LCURL_E: case fTKnd::T_LPAREN_E: case fTKnd::T_ID_E: case fTKnd::T_THIS_E: case fTKnd::T_SUPER_E: case fTKnd::T_INT_LIT_E: case fTKnd::T_FLOAT_LIT_E:
