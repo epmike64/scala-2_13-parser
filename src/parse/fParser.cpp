@@ -514,7 +514,7 @@ namespace zebra::parse {
 		sp<fAst> a = ms<fAst>();
 		simpleType_2(a);
 		sp<fParamType> pt = ms<fParamType>(ms<fType>(ms<fAstProdSubTreeN>(fLangGrmrProdE::SIMPLE_TYPE, std::move(a->astRootOpr()))), false, false);
-		if (isAnnotated) {
+		if (isAnnotated && h.isTkAt()) {
 			pt->addAnnotations(annotations(false));
 		}
 		return pt;
