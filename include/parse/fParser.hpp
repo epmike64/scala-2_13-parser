@@ -62,11 +62,12 @@ namespace zebra::parse {
 		sp<fAstProdSubTreeN> exprs();
 		void exprLParen(sp<fAst> a);
 
-		sp<fParamType> simpleType(bool isAnnotated);
+		sp<fParamType> simpleType(sp<fAst> a);
 
 		void simpleType_2(sp<fAst> a);
 
 		void typeWith(sp<fAst> a);
+		sp<fParamType> annotType(sp<fAst> a);
 
 		vector<sp<fParamType> > paramTypes(bool isSimpleType);
 

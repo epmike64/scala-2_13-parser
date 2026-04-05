@@ -510,17 +510,16 @@ namespace zebra::parse {
 		}
 	}
 
-	sp<fParamType> fParser::simpleType(bool isAnnotated) {
-		sp<fAst> a = ms<fAst>();
-		simpleType_2(a);
-		sp<fParamType> pt = ms<fParamType>(ms<fType>(ms<fAstProdSubTreeN>(fLangGrmrProdE::SIMPLE_TYPE, std::move(a->astRootOpr()))), false, false);
-		if (isAnnotated && h.isTkAt()) {
+	sp<fParamType> fParser::annotType(sp<fAst> a) {
+		sp<fParamType> pt = simpleType(a);
+		if (h.isTkAt()) {
 			pt->addAnnotations(annotations(false));
 		}
 		return pt;
 	}
 
-	void fParser::simpleType_2(sp<fAst> a) {
+	sp<fParamType> fParser::simpleType(sp<fAst> a) {
+		if (!a) a = ms<fAst>();
 
 		while (true) {
 			switch (*h.tKnd()) {
@@ -557,7 +556,7 @@ namespace zebra::parse {
 			}
 		}
 		whl_bottom:
-		return;
+		return  ms<fParamType>(ms<fType>(ms<fAstProdSubTreeN>(fLangGrmrProdE::SIMPLE_TYPE, std::move(a->astRootOpr()))), false, false);
 	}
 
 	sp<fTypeArgs> fParser::types() {
@@ -1009,7 +1008,7 @@ namespace zebra::parse {
 					//fall through
 				}
 				case fTKnd::T_SUPER_E: case fTKnd::T_THIS_E: case fTKnd::T_LPAREN_E: {
-					simpleType_2(a);
+					annotType(a);
 					continue;
 				}
 
@@ -1520,7 +1519,7 @@ namespace zebra::parse {
 
 	sp<fAnnotation> fParser::annotation(bool isConstrAnn) {
 		h.accept(fTKnd::T_AT);
-		sp<fAnnotation> ann = ms<fAnnotation>(simpleType(false));
+		sp<fAnnotation> ann = ms<fAnnotation>(simpleType(nullptr));
 		if (isConstrAnn) {
 			ann->addArgExprs(exprs());
 		} else {
@@ -1715,13 +1714,13 @@ namespace zebra::parse {
 		sp<fClassParents> parents = ms<fClassParents>(classConstr(isTrait));
 		while (h.isTkWith()) {
 			h.next();
-			parents->setWithType(simpleType(true));
+			parents->setWithType(annotType(nullptr));
 		}
 		return parents;
 	}
 
 	sp<fClassConstr> fParser::classConstr(bool isTrait) {
-		sp<fClassConstr> cc = ms<fClassConstr>(simpleType(true));
+		sp<fClassConstr> cc = ms<fClassConstr>(annotType(nullptr));
 		if (!isTrait && h.isTkLParen()) {
 			cc->setArgsExpr(exprs());
 		}
