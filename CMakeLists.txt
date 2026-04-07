@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 4.1)
-project(zebra-4-backend)
+project(scala-2_13-parser)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -9,9 +9,9 @@ include_directories(
 
 
 
-add_executable(zebra-4-backend
+add_executable(scala-2_13-parser
 
-		src/zebra_main.cpp
+		src/main.cpp
 
 		include/ast/node/fAstNod.hpp
 		include/ast/node/fAstNodKndE.hpp
@@ -212,9 +212,9 @@ add_executable(zebra-4-backend
 		include/ast/symbol/XEnclSc.hpp
 )
 
-target_compile_definitions(zebra-4-backend PRIVATE
+target_compile_definitions(scala-2_13-parser PRIVATE
 		PROJECT_ROOT="${CMAKE_SOURCE_DIR}"
 )
 
-target_compile_options(zebra-4-backend PUBLIC -g -O0
+target_compile_options(scala-2_13-parser PUBLIC -g -O0
 )
