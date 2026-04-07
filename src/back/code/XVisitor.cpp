@@ -8,7 +8,12 @@
 namespace zebra::back::code {
 
 	XVisitor::XVisitor(sp<ZProgram> program) : zProgram_(std::move(program)) {
-		zaccert(zProgram_ != nullptr, "ZProgram cannot be null for code generation");
+	}
+
+	void XVisitor::visit() {
+		for (const auto& cu : zProgram_->getCompileUnits()) {
+			visit(cu);
+		}
 	}
 
 	void XVisitor::visit(sp<ZCompileUnit> zCompileUnit) {
