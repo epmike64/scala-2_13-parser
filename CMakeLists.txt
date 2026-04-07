@@ -198,8 +198,6 @@ add_executable(zebra-4-backend
 		src/util/fUtil.cpp
 		src/ast/fLangOperand.cpp
 		include/back/tree/ZVisitUtil.hpp
-		include/back/code/XCodeGen.hpp
-		src/back/code/XCodeGen.cpp
 		include/ast/leaf/fSelfType.hpp
 		src/ast/leaf/fSelfType.cpp
 		include/ast/leaf/fVarargsExpansion.hpp
@@ -208,6 +206,8 @@ add_executable(zebra-4-backend
 		src/ast/leaf/fAnnotations.cpp
 		include/ast/leaf/fAnnotations.hpp
 		src/ast/leaf/fAnnotation.cpp
+		include/back/code/XVisitor.hpp
+		src/back/code/XVisitor.cpp
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE
