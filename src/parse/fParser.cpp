@@ -1368,7 +1368,7 @@ namespace zebra::parse {
 		}
 		while (true) {
 			h.skipSemi();
-			if (!h.isTkRParen()) {
+			if (!h.isTkRCurl()) {
 				cb->addBlockStmt(blockOrTemplateStmt());
 			} else {
 				break;

@@ -46,13 +46,19 @@ int main(int argc, char *argv[]) {
 	try {
 
 		if (argc == 1) {
-			std::cerr <<"Error: No input file provided. "<< '\n';
-			return 1;
+			std::filesystem::path resourcesDir = std::filesystem::path(ROOT) / "resources";
+			std::cout << "No file specified. Compiling all files in: " << resourcesDir << '\n';
+			for (const auto& entry : std::filesystem::directory_iterator(resourcesDir)) {
+				if (entry.is_regular_file()) {
+					std::cout << "\n=== Compiling: " << entry.path().filename().string() << " ===\n";
+					run_compiler(entry.path().string());
+				}
+			}
+		} else {
+			std::string filepath = std::string(ROOT) + "/resources/" + argv[1];
+			std::cout << "Compiling file: " << filepath << '\n';
+			run_compiler(filepath);
 		}
-
-		std::string filepath =  std::string(ROOT) + "/resources/" + argv[1];
-		std::cout << "Compiling file: " << filepath << '\n';
-		run_compiler(filepath);
 
 	} catch (const std::exception& e) {
 		std::cerr << "Error: " << e.what() << '\n';
