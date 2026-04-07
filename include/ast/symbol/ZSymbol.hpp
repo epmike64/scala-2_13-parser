@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "XEnclSc.hpp"
 #include "util/fUtil.hpp"
 
 
@@ -45,7 +46,7 @@ namespace zebra::ast::symbol {
 	public:
 		ZBaseSymbol() = default;
 		virtual ~ZBaseSymbol() = default;
-		virtual void accept(std::shared_ptr<XVisitor> visitor) = 0;
+		virtual void accept(std::shared_ptr<XVisitor> visitor,  sp<XEnclSc> sc) = 0;
 	};
 	class ZSymbol: public ZBaseSymbol {
 	protected:
@@ -54,7 +55,7 @@ namespace zebra::ast::symbol {
 		explicit ZSymbol(ZLangConstruct c);
 		virtual ~ZSymbol() = default;
 		ZLangConstruct getZLangConstruct();
-		void accept(std::shared_ptr<XVisitor> visitor) override;
+		void accept(std::shared_ptr<XVisitor> visitor, sp<XEnclSc> sc) override;
 	};
 
 	class I_ZId {
@@ -424,7 +425,7 @@ namespace zebra::ast::symbol {
 		void setTemplateBody(sp<ZTemplateBody> tb);
 		sp<ZTemplateBody> getTemplateBody();
 		void setModifiers(sp<ZModifiers> mods);
-		void accept(std::shared_ptr<XVisitor> visitor) override;
+		void accept(std::shared_ptr<XVisitor> visitor,  sp<XEnclSc> sc) override;
 	};
 
 	class ZObjectDef : public ZIdSymbol {
@@ -436,7 +437,7 @@ namespace zebra::ast::symbol {
 		explicit ZObjectDef(bool isCase, std::string zId);
 		void setModifiers(sp<ZModifiers> mods);
 		void setClassTemplate(sp<ZClassTemplate> ct);
-		void accept(std::shared_ptr<XVisitor> visitor) override;
+		void accept(std::shared_ptr<XVisitor> visitor, sp<XEnclSc> sc) override;
 	};
 
 	class ZAccessModifier : public ZSymbol {
@@ -460,7 +461,7 @@ namespace zebra::ast::symbol {
 		void setClassParamList(sp<ZClassParamList> cpl);
 		void setClassTemplate(sp<ZClassTemplate> ct);
 		void setConstrAccessModifier(sp<ZAccessModifier> acmod);
-		void accept(std::shared_ptr<XVisitor> visitor) override;
+		void accept(std::shared_ptr<XVisitor> visitor, sp<XEnclSc> sc) override;
 	};
 
 	class ZThisFunc : public ZFunc {

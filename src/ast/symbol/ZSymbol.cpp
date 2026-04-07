@@ -2,8 +2,9 @@
 
 #include <cassert>
 
-#include "../../../include/ast/symbol/XVisitor.hpp"
+#include "ast/symbol/XVisitor.hpp"
 #include "util/fUtil.hpp"
+#include "ast/symbol/XEnclSc.hpp"
 
 namespace zebra::ast::symbol {
 
@@ -507,20 +508,20 @@ namespace zebra::ast::symbol {
 
 
 	/////////////////////////////////////////
-	void ZClassDef::accept(std::shared_ptr<XVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<ZClassDef>(shared_from_this()));
+	void ZClassDef::accept(std::shared_ptr<XVisitor> visitor, sp<XEnclSc> sc) {
+		visitor->visit(std::static_pointer_cast<ZClassDef>(shared_from_this()),  sc);
 	}
 
-	void ZObjectDef::accept(std::shared_ptr<XVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<ZObjectDef>(shared_from_this()));
+	void ZObjectDef::accept(std::shared_ptr<XVisitor> visitor, sp<XEnclSc> sc) {
+		visitor->visit(std::static_pointer_cast<ZObjectDef>(shared_from_this()), sc);
 	}
 
-	void ZTraitDef::accept(std::shared_ptr<XVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<ZTraitDef>(shared_from_this()));
+	void ZTraitDef::accept(std::shared_ptr<XVisitor> visitor, sp<XEnclSc> sc) {
+		visitor->visit(std::static_pointer_cast<ZTraitDef>(shared_from_this()), sc);
 	}
 
-	void ZSymbol::accept(std::shared_ptr<XVisitor> visitor) {
-		visitor->visit(std::static_pointer_cast<ZSymbol>(shared_from_this()));
+	void ZSymbol::accept(std::shared_ptr<XVisitor> visitor, sp<XEnclSc> sc) {
+		visitor->visit(std::static_pointer_cast<ZSymbol>(shared_from_this()), sc);
 	}
 
 

@@ -208,6 +208,8 @@ add_executable(zebra-4-backend
 		src/ast/leaf/fAnnotation.cpp
 		include/ast/symbol/XVisitor.hpp
 		src/ast/symbol/XVisitor.cpp
+		src/ast/symbol/XEncloseScope.cpp
+		include/ast/symbol/XEnclSc.hpp
 )
 
 target_compile_definitions(zebra-4-backend PRIVATE

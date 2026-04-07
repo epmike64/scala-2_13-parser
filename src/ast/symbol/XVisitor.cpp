@@ -12,31 +12,32 @@ namespace zebra::ast::symbol {
 	}
 
 	void XVisitor::visit() {
+		EncSc sc = ms<XEnclSc>(nullptr);
 		for (const auto& cu : zProgram_->getCompileUnits()) {
-			visit(cu);
+			visit(cu, sc);
 		}
 	}
 
-	void XVisitor::visit(sp<ZCompileUnit> zCompileUnit) {
+	void XVisitor::visit(sp<ZCompileUnit> zCompileUnit, EncSc sc) {
 		std::cout << "Visiting compile unit: " << zCompileUnit->toString() << std::endl;
 		for (const auto& stmt : *zCompileUnit->getStmts()) {
-			stmt->accept(shared_from_this());
+			stmt->accept(shared_from_this(), sc);
 		}
 	}
 
-	void XVisitor::visit(sp<ZClassDef> zClassDef) {
+	void XVisitor::visit(sp<ZClassDef> zClassDef, EncSc sc) {
 		std::cout << "Visiting class definition: " << std::endl;
 	}
 
-	void XVisitor::visit(sp<ZObjectDef> zObjectDef) {
+	void XVisitor::visit(sp<ZObjectDef> zObjectDef, EncSc sc) {
 		std::cout << "Visiting object definition: "  << std::endl;
 	}
 
-	void XVisitor::visit(sp<ZTraitDef> zTraitDef) {
+	void XVisitor::visit(sp<ZTraitDef> zTraitDef, EncSc sc) {
 		std::cout << "Visiting trait definition: " << std::endl;
 	}
 
-	void XVisitor::visit(sp<ZSymbol> zSymbol) {
+	void XVisitor::visit(sp<ZSymbol> zSymbol, EncSc sc) {
 		std::cout << "Visiting symbol: " << std::endl;
 	}
 }

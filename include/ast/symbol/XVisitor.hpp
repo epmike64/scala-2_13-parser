@@ -1,5 +1,6 @@
 #pragma once
 #include "util/fCommon.hpp"
+#include "XEnclSc.hpp"
 
 namespace zebra::ast::symbol {
 
@@ -20,10 +21,10 @@ namespace zebra::ast::symbol {
 		explicit XVisitor(sp<ZProgram> program) ;
 		virtual ~XVisitor() = default;
 		void visit();
-		void visit(sp<ZCompileUnit> zCompileUnit);
-		void visit(sp<ZClassDef> zClassDef);
-		void visit(sp<ZObjectDef> zObjectDef);
-		void visit(sp<ZTraitDef> zTraitDef);
-		void visit(sp<ZSymbol> zSymbol);
+		void visit(sp<ZCompileUnit>, EncSc);
+		void visit(sp<ZClassDef>, EncSc);
+		void visit(sp<ZObjectDef>, EncSc);
+		void visit(sp<ZTraitDef> , EncSc);
+		void visit(sp<ZSymbol>,  EncSc);
 	};
 }
