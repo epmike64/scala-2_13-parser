@@ -40,7 +40,7 @@ void run_compiler(const std::string& filepath) {
 	zVisitor->visit();
 	std::cout << "--- Z Visitor: Done normally ... " << '\n';
 	sp<XVisitor> xVisitor = zebra::util::ms<XVisitor>(zVisitor->getZProgram());
-	xVisitor->visit(zVisitor->getZProgram());
+	xVisitor->visit();
 	std::cout << "--- X Visitor: Done normally ... " << '\n';
 }
 

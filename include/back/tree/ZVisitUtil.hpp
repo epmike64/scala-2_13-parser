@@ -6,6 +6,8 @@
 #include "ast/symbol/ZSymbol.hpp"
 #include "ast/symbol/ZEnclScopeFwd.hpp"
 #include "ast/node/fAstNodVisitor.hpp"
+#include "util/fUtil.hpp"
+
 namespace zebra::back::tree {
 
 	/**
