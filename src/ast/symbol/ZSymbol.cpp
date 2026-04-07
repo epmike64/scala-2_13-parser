@@ -429,9 +429,9 @@ namespace zebra::ast::symbol {
 
 	void ZClassDef::setVariantTypeParamList(sp<ZVariantTypeParamList> tpl) { typeParams_ = tpl; }
 
-	sp<ZClassParamList> ZClassDef::getClassParamList() { return classParamList_; }
+	sp<ZClassParamList> ZClassDef::getClassParamList() { return classParams_; }
 
-	void ZClassDef::setClassParamList(sp<ZClassParamList> cpl) { classParamList_ = cpl; }
+	void ZClassDef::setClassParamList(sp<ZClassParamList> cpl) { classParams_ = cpl; }
 
 	void ZClassDef::setClassTemplate(sp<ZClassTemplate> ct) { classTemplate_ = ct; }
 

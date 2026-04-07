@@ -449,7 +449,7 @@ namespace zebra::ast::symbol {
 		sp<ZModifiers> modifiers_;
 		sp<ZClassDef> parentClass_;
 		sp<ZVariantTypeParamList> typeParams_;
-		sp<ZClassParamList> classParamList_;
+		sp<ZClassParamList> classParams_;
 		sp<ZClassTemplate> classTemplate_;
 		sp<ZAccessModifier> constrAccessModifier_;
 	public:
