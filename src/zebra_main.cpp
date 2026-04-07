@@ -8,7 +8,7 @@
 #include <fstream>
 #include <iterator>
 
-#include "back/code/XVisitor.hpp"
+#include "../include/ast/symbol/XVisitor.hpp"
 #include "back/tree/ZVisitor.hpp"
 #include "lex/fTokzr.hpp"
 #include "lex/fReader.hpp"
@@ -19,7 +19,7 @@ static constexpr const char* ROOT = PROJECT_ROOT;
 
 
 using namespace zebra::util;
-using namespace zebra::back::code;
+
 
 void run_compiler(const std::string& filepath) {
 	std::ifstream f(filepath);
@@ -39,7 +39,7 @@ void run_compiler(const std::string& filepath) {
 	zebra::util::sp<ZVisitor> zVisitor = zebra::util::ms<ZVisitor>(cu);
 	zVisitor->visit();
 	std::cout << "--- Z Visitor: Done normally ... " << '\n';
-	sp<XVisitor> xVisitor = zebra::util::ms<XVisitor>(zVisitor->getZProgram());
+	sp<zebra::ast::XVisitor> xVisitor = zebra::util::ms<zebra::ast::XVisitor>(zVisitor->getZProgram());
 	xVisitor->visit();
 	std::cout << "--- X Visitor: Done normally ... " << '\n';
 }

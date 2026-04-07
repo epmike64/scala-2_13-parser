@@ -2,6 +2,7 @@
 
 #include <cassert>
 
+#include "../../../include/ast/symbol/XVisitor.hpp"
 #include "util/fUtil.hpp"
 
 namespace zebra::ast::symbol {
@@ -437,6 +438,7 @@ namespace zebra::ast::symbol {
 		constrAccessModifier_ = acmod;
 	}
 
+
 	// ── ZThisFunc ─────────────────────────────────────────────────────────
 	ZThisFunc::ZThisFunc() : ZFunc(Z_THIS_FUNC_DEF) {}
 
@@ -502,6 +504,27 @@ namespace zebra::ast::symbol {
 		return "ZProgram(" + getZId().strId() +
 			", CompileUnits: " + std::to_string(compileUnits_.size()) + ")";
 	}
+
+
+	/////////////////////////////////////////
+	void ZClassDef::accept(std::shared_ptr<XVisitor> visitor) {
+		visitor->visit(std::static_pointer_cast<ZClassDef>(shared_from_this()));
+	}
+
+	void ZObjectDef::accept(std::shared_ptr<XVisitor> visitor) {
+		visitor->visit(std::static_pointer_cast<ZObjectDef>(shared_from_this()));
+	}
+
+	void ZTraitDef::accept(std::shared_ptr<XVisitor> visitor) {
+		visitor->visit(std::static_pointer_cast<ZTraitDef>(shared_from_this()));
+	}
+
+	void ZSymbol::accept(std::shared_ptr<XVisitor> visitor) {
+		visitor->visit(std::static_pointer_cast<ZSymbol>(shared_from_this()));
+	}
+
+
+
 
 } // namespace zebra::ast::symbol
 

@@ -1,10 +1,16 @@
 #pragma once
-#include "ast/symbol/ZSymbol.hpp"
 #include "util/fCommon.hpp"
 
-namespace zebra::back::code {
+namespace zebra::ast::symbol {
 
-	using namespace zebra::ast::symbol;
+	// forward declarations to avoid circular header dependency with ZSymbol.hpp
+	class ZProgram;
+	class ZCompileUnit;
+	class ZClassDef;
+	class ZObjectDef;
+	class ZTraitDef;
+	class ZSymbol;
+
 	using namespace zebra::util;
 
 	class XVisitor: public std::enable_shared_from_this<XVisitor> {
